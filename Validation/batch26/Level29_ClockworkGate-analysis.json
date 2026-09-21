@@ -1,0 +1,121 @@
+{
+    "minimum": 5,
+    "states": 146,
+    "meaningfulDecisions": 0,
+    "efficiencyDecisions": 4,
+    "finalDepth": 4,
+    "maxDepth": 18,
+    "routeMaxDepth": 6,
+    "solutionPaths": 116,
+    "randomSolveProbability": 0.37019890260631,
+    "optimalDiscoveryProbability": 0.018518518518518519,
+    "openings": [
+        {
+            "tap": {
+                "x": 0,
+                "y": 1
+            },
+            "winningPaths": 44,
+            "probability": 0.75,
+            "optimalProbability": 0.05555555555555555,
+            "depth": 4,
+            "minimumRemaining": 4
+        },
+        {
+            "tap": {
+                "x": 1,
+                "y": 1
+            },
+            "winningPaths": 36,
+            "probability": 0.22608024691358023,
+            "optimalProbability": 0.018518518518518519,
+            "depth": 3,
+            "minimumRemaining": 5
+        },
+        {
+            "tap": {
+                "x": 2,
+                "y": 1
+            },
+            "winningPaths": 36,
+            "probability": 0.1345164609053498,
+            "optimalProbability": 0.030864197530864197,
+            "depth": 1,
+            "minimumRemaining": 6
+        }
+    ],
+    "decisions": [
+        {
+            "step": 1,
+            "legal": 3,
+            "viable": 3,
+            "optimal": 1,
+            "intended": {
+                "x": 0,
+                "y": 1
+            }
+        },
+        {
+            "step": 2,
+            "legal": 3,
+            "viable": 3,
+            "optimal": 1,
+            "intended": {
+                "x": 1,
+                "y": 1
+            }
+        },
+        {
+            "step": 3,
+            "legal": 3,
+            "viable": 3,
+            "optimal": 1,
+            "intended": {
+                "x": 2,
+                "y": 1
+            }
+        },
+        {
+            "step": 4,
+            "legal": 2,
+            "viable": 2,
+            "optimal": 1,
+            "intended": {
+                "x": 3,
+                "y": 1
+            }
+        },
+        {
+            "step": 5,
+            "legal": 1,
+            "viable": 1,
+            "optimal": 1,
+            "intended": {
+                "x": 4,
+                "y": 1
+            }
+        }
+    ],
+    "shortest": [
+        {
+            "x": 0,
+            "y": 1
+        },
+        {
+            "x": 1,
+            "y": 1
+        },
+        {
+            "x": 2,
+            "y": 1
+        },
+        {
+            "x": 3,
+            "y": 1
+        },
+        {
+            "x": 4,
+            "y": 1
+        }
+    ]
+}

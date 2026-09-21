@@ -1,0 +1,875 @@
+[
+  {
+    "n": 31,
+    "name": "Level31_OnePadTwoGates",
+    "width": 5,
+    "height": 5,
+    "budget": 4,
+    "pieces": [
+      {
+        "type": 0,
+        "color": 1,
+        "direction": 4,
+        "x": 0,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 6,
+        "color": 0,
+        "direction": 0,
+        "x": 1,
+        "y": 1,
+        "channel": 1,
+        "initialOpen": false
+      },
+      {
+        "type": 7,
+        "color": 0,
+        "direction": 0,
+        "x": 2,
+        "y": 1,
+        "channel": 1,
+        "initialOpen": false
+      },
+      {
+        "type": 7,
+        "color": 0,
+        "direction": 0,
+        "x": 3,
+        "y": 1,
+        "channel": 1,
+        "initialOpen": false
+      },
+      {
+        "type": 5,
+        "color": 1,
+        "direction": 0,
+        "x": 4,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 2,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 3,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 4,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 0,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 1,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 2,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 3,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 0,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 1,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 2,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 3,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 0,
+        "y": 4,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 1,
+        "y": 4,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 2,
+        "y": 4,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 3,
+        "y": 4,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 4,
+        "y": 4,
+        "channel": 0,
+        "initialOpen": false
+      }
+    ]
+  },
+  {
+    "n": 32,
+    "name": "Level32_OppositeStates",
+    "width": 5,
+    "height": 5,
+    "budget": 8,
+    "pieces": [
+      {
+        "type": 0,
+        "color": 1,
+        "direction": 4,
+        "x": 0,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 7,
+        "color": 0,
+        "direction": 0,
+        "x": 1,
+        "y": 3,
+        "channel": 1,
+        "initialOpen": true
+      },
+      {
+        "type": 6,
+        "color": 0,
+        "direction": 0,
+        "x": 2,
+        "y": 3,
+        "channel": 1,
+        "initialOpen": false
+      },
+      {
+        "type": 7,
+        "color": 0,
+        "direction": 0,
+        "x": 3,
+        "y": 3,
+        "channel": 1,
+        "initialOpen": false
+      },
+      {
+        "type": 5,
+        "color": 1,
+        "direction": 0,
+        "x": 4,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 0,
+        "color": 1,
+        "direction": 4,
+        "x": 0,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 7,
+        "color": 0,
+        "direction": 0,
+        "x": 1,
+        "y": 1,
+        "channel": 1,
+        "initialOpen": false
+      },
+      {
+        "type": 6,
+        "color": 0,
+        "direction": 0,
+        "x": 2,
+        "y": 1,
+        "channel": 1,
+        "initialOpen": false
+      },
+      {
+        "type": 7,
+        "color": 0,
+        "direction": 0,
+        "x": 3,
+        "y": 1,
+        "channel": 1,
+        "initialOpen": true
+      },
+      {
+        "type": 5,
+        "color": 1,
+        "direction": 0,
+        "x": 4,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 2,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 0,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 1,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 2,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 3,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 4,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 2,
+        "y": 4,
+        "channel": 0,
+        "initialOpen": false
+      }
+    ]
+  },
+  {
+    "n": 33,
+    "name": "Level33_SharedDeliveryGate",
+    "width": 5,
+    "height": 5,
+    "budget": 5,
+    "pieces": [
+      {
+        "type": 0,
+        "color": 1,
+        "direction": 4,
+        "x": 0,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 0,
+        "color": 1,
+        "direction": 4,
+        "x": 1,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 7,
+        "color": 0,
+        "direction": 0,
+        "x": 2,
+        "y": 1,
+        "channel": 1,
+        "initialOpen": false
+      },
+      {
+        "type": 7,
+        "color": 0,
+        "direction": 0,
+        "x": 3,
+        "y": 1,
+        "channel": 1,
+        "initialOpen": false
+      },
+      {
+        "type": 5,
+        "color": 1,
+        "direction": 0,
+        "x": 4,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 0,
+        "color": 3,
+        "direction": 4,
+        "x": 0,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 6,
+        "color": 0,
+        "direction": 0,
+        "x": 1,
+        "y": 3,
+        "channel": 1,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 0,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 1,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 2,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 3,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 0,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 1,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 2,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 3,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 4,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 3,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 4,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 2,
+        "y": 4,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 3,
+        "y": 4,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 4,
+        "y": 4,
+        "channel": 0,
+        "initialOpen": false
+      }
+    ]
+  },
+  {
+    "n": 34,
+    "name": "Level34_ClearTheCorridor",
+    "width": 5,
+    "height": 5,
+    "budget": 5,
+    "pieces": [
+      {
+        "type": 0,
+        "color": 1,
+        "direction": 4,
+        "x": 0,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 0,
+        "color": 2,
+        "direction": 2,
+        "x": 2,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 6,
+        "color": 0,
+        "direction": 0,
+        "x": 2,
+        "y": 1,
+        "channel": 1,
+        "initialOpen": false
+      },
+      {
+        "type": 7,
+        "color": 0,
+        "direction": 0,
+        "x": 3,
+        "y": 2,
+        "channel": 1,
+        "initialOpen": false
+      },
+      {
+        "type": 3,
+        "color": 0,
+        "direction": 1,
+        "x": 4,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 5,
+        "color": 1,
+        "direction": 0,
+        "x": 4,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 0,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 1,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 3,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 4,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 1,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 3,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 4,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 1,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 3,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 0,
+        "y": 4,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 1,
+        "y": 4,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 3,
+        "y": 4,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 4,
+        "y": 4,
+        "channel": 0,
+        "initialOpen": false
+      }
+    ]
+  },
+  {
+    "n": 35,
+    "name": "Level35_TwoChannels",
+    "width": 4,
+    "height": 4,
+    "budget": 5,
+    "pieces": [
+      {
+        "type": 0,
+        "color": 1,
+        "direction": 4,
+        "x": 0,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 7,
+        "color": 0,
+        "direction": 0,
+        "x": 1,
+        "y": 2,
+        "channel": 1,
+        "initialOpen": false
+      },
+      {
+        "type": 7,
+        "color": 0,
+        "direction": 0,
+        "x": 2,
+        "y": 2,
+        "channel": 2,
+        "initialOpen": false
+      },
+      {
+        "type": 5,
+        "color": 1,
+        "direction": 0,
+        "x": 3,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 0,
+        "color": 3,
+        "direction": 4,
+        "x": 0,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 6,
+        "color": 0,
+        "direction": 0,
+        "x": 1,
+        "y": 0,
+        "channel": 1,
+        "initialOpen": false
+      },
+      {
+        "type": 0,
+        "color": 2,
+        "direction": 3,
+        "x": 3,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 6,
+        "color": 0,
+        "direction": 0,
+        "x": 2,
+        "y": 3,
+        "channel": 2,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 3,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 1,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 2,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 3,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 0,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 1,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      }
+    ]
+  }
+]

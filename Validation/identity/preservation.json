@@ -1,0 +1,20 @@
+{
+  "protectedFileCount": 72,
+  "protectedMismatches": [],
+  "testedAssetMismatches": [],
+  "changedExistingFiles": [
+    "Assets/_Game/README.md",
+    "Assets/_Game/Scripts/UI/ChapterSelect.cs",
+    "Assets/_Game/Scripts/UI/GameHud.cs",
+    "Assets/_Game/Scripts/UI/LayoutControls.cs",
+    "Assets/_Game/Scripts/UI/PresentationMotion.cs",
+    "Assets/_Game/Scripts/UI/SettingsPanel.cs",
+    "Assets/_Game/Scripts/UI/VisualTheme.cs",
+    "Assets/_Game/Tests/Editor/BoardVisualFrozenFiles.txt"
+  ],
+  "tests": 150,
+  "passed": 150,
+  "failed": 0,
+  "compilerErrors": 0,
+  "compilerWarnings": 0
+}

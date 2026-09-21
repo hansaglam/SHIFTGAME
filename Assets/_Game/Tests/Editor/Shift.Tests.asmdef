@@ -1,0 +1,7 @@
+{
+  "name": "Shift.Tests",
+  "rootNamespace": "Shift.Game.Tests",
+  "references": ["Shift.Game", "Shift.Editor", "Unity.ugui"],
+  "includePlatforms": ["Editor"],
+  "optionalUnityReferences": ["TestAssemblies"]
+}

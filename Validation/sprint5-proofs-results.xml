@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="5" result="Passed" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-09-20 20:55:09Z" end-time="2026-09-20 20:55:09Z" duration="0,0891817">
+  <test-suite type="TestSuite" id="1000" name="SHIFT" fullname="SHIFT" runstate="Runnable" testcasecount="143" result="Passed" start-time="2026-09-20 20:55:09Z" end-time="2026-09-20 20:55:09Z" duration="0.089182" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1174" name="Shift.Tests.dll" fullname="D:/UnityProjects/SHIFT/ValidationProject/Library/ScriptAssemblies/Shift.Tests.dll" runstate="Runnable" testcasecount="143" result="Passed" start-time="2026-09-20 20:55:09Z" end-time="2026-09-20 20:55:09Z" duration="0.078666" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="53000" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1175" name="Shift" fullname="Shift" runstate="Runnable" testcasecount="143" result="Passed" start-time="2026-09-20 20:55:09Z" end-time="2026-09-20 20:55:09Z" duration="0.075963" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1176" name="Game" fullname="Shift.Game" runstate="Runnable" testcasecount="143" result="Passed" start-time="2026-09-20 20:55:09Z" end-time="2026-09-20 20:55:09Z" duration="0.073660" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1177" name="Tests" fullname="Shift.Game.Tests" runstate="Runnable" testcasecount="143" result="Passed" start-time="2026-09-20 20:55:09Z" end-time="2026-09-20 20:55:09Z" duration="0.071591" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1068" name="LevelDesignTests" fullname="Shift.Game.Tests.LevelDesignTests" classname="Shift.Game.Tests.LevelDesignTests" runstate="Runnable" testcasecount="24" result="Passed" start-time="2026-09-20 20:55:09Z" end-time="2026-09-20 20:55:09Z" duration="0.067714" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="ParameterizedMethod" id="1081" name="ProveRedesignedMinimum" fullname="Shift.Game.Tests.LevelDesignTests.ProveRedesignedMinimum" classname="Shift.Game.Tests.LevelDesignTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-09-20 20:55:09Z" end-time="2026-09-20 20:55:09Z" duration="0.062317" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1076" name="ProveRedesignedMinimum(29,5)" fullname="Shift.Game.Tests.LevelDesignTests.ProveRedesignedMinimum(29,5)" methodname="ProveRedesignedMinimum" classname="Shift.Game.Tests.LevelDesignTests" runstate="Runnable" seed="1377653643" result="Passed" start-time="2026-09-20 20:55:09Z" end-time="2026-09-20 20:55:09Z" duration="0.036481" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1077" name="ProveRedesignedMinimum(33,5)" fullname="Shift.Game.Tests.LevelDesignTests.ProveRedesignedMinimum(33,5)" methodname="ProveRedesignedMinimum" classname="Shift.Game.Tests.LevelDesignTests" runstate="Runnable" seed="584047381" result="Passed" start-time="2026-09-20 20:55:09Z" end-time="2026-09-20 20:55:09Z" duration="0.001904" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1078" name="ProveRedesignedMinimum(36,6)" fullname="Shift.Game.Tests.LevelDesignTests.ProveRedesignedMinimum(36,6)" methodname="ProveRedesignedMinimum" classname="Shift.Game.Tests.LevelDesignTests" runstate="Runnable" seed="1092122582" result="Passed" start-time="2026-09-20 20:55:09Z" end-time="2026-09-20 20:55:09Z" duration="0.002224" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1079" name="ProveRedesignedMinimum(38,4)" fullname="Shift.Game.Tests.LevelDesignTests.ProveRedesignedMinimum(38,4)" methodname="ProveRedesignedMinimum" classname="Shift.Game.Tests.LevelDesignTests" runstate="Runnable" seed="1764347970" result="Passed" start-time="2026-09-20 20:55:09Z" end-time="2026-09-20 20:55:09Z" duration="0.001496" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1080" name="ProveRedesignedMinimum(39,6)" fullname="Shift.Game.Tests.LevelDesignTests.ProveRedesignedMinimum(39,6)" methodname="ProveRedesignedMinimum" classname="Shift.Game.Tests.LevelDesignTests" runstate="Runnable" seed="865437554" result="Passed" start-time="2026-09-20 20:55:09Z" end-time="2026-09-20 20:55:09Z" duration="0.008334" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[Saving results to: C:/Users/ahmet/AppData/LocalLow/DefaultCompany/SHIFT\TestResults.xml
+]]></output>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

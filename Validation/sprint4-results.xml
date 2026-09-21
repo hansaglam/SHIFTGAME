@@ -1,0 +1,799 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="115" result="Passed" total="115" passed="115" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-09-20 18:04:05Z" end-time="2026-09-20 18:04:35Z" duration="30,3785586">
+  <test-suite type="TestSuite" id="1000" name="SHIFT" fullname="SHIFT" runstate="Runnable" testcasecount="115" result="Passed" start-time="2026-09-20 18:04:05Z" end-time="2026-09-20 18:04:35Z" duration="30.378559" total="115" passed="115" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1141" name="Shift.Tests.dll" fullname="D:/UnityProjects/SHIFT/ValidationProject/Library/ScriptAssemblies/Shift.Tests.dll" runstate="Runnable" testcasecount="115" result="Passed" start-time="2026-09-20 18:04:05Z" end-time="2026-09-20 18:04:35Z" duration="30.366814" total="115" passed="115" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="15164" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1142" name="Shift" fullname="Shift" runstate="Runnable" testcasecount="115" result="Passed" start-time="2026-09-20 18:04:05Z" end-time="2026-09-20 18:04:35Z" duration="30.365115" total="115" passed="115" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1143" name="Game" fullname="Shift.Game" runstate="Runnable" testcasecount="115" result="Passed" start-time="2026-09-20 18:04:05Z" end-time="2026-09-20 18:04:35Z" duration="30.363681" total="115" passed="115" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1144" name="Tests" fullname="Shift.Game.Tests" runstate="Runnable" testcasecount="115" result="Passed" start-time="2026-09-20 18:04:05Z" end-time="2026-09-20 18:04:35Z" duration="30.362013" total="115" passed="115" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1001" name="BoardManagerTests" fullname="Shift.Game.Tests.BoardManagerTests" classname="Shift.Game.Tests.BoardManagerTests" runstate="Runnable" testcasecount="20" result="Passed" start-time="2026-09-20 18:04:05Z" end-time="2026-09-20 18:04:05Z" duration="0.065447" total="20" passed="20" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1015" name="AllTargetPiecesMustBeDelivered" fullname="Shift.Game.Tests.BoardManagerTests.AllTargetPiecesMustBeDelivered" methodname="AllTargetPiecesMustBeDelivered" classname="Shift.Game.Tests.BoardManagerTests" runstate="Runnable" seed="1543328997" result="Passed" start-time="2026-09-20 18:04:05Z" end-time="2026-09-20 18:04:05Z" duration="0.021145" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1012" name="BlockedTapCannotBeResubmittedUntilFeedbackCompletes" fullname="Shift.Game.Tests.BoardManagerTests.BlockedTapCannotBeResubmittedUntilFeedbackCompletes" methodname="BlockedTapCannotBeResubmittedUntilFeedbackCompletes" classname="Shift.Game.Tests.BoardManagerTests" runstate="Runnable" seed="1274146478" result="Passed" start-time="2026-09-20 18:04:05Z" end-time="2026-09-20 18:04:05Z" duration="0.001428" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1004" name="BoundsBlockedTapIsFreeAndReturnsToPlaying" fullname="Shift.Game.Tests.BoardManagerTests.BoundsBlockedTapIsFreeAndReturnsToPlaying" methodname="BoundsBlockedTapIsFreeAndReturnsToPlaying" classname="Shift.Game.Tests.BoardManagerTests" runstate="Runnable" seed="1142503106" result="Passed" start-time="2026-09-20 18:04:05Z" end-time="2026-09-20 18:04:05Z" duration="0.001784" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1002" name="ChainDeliversRedAndLocksInputUntilPresentationCompletes" fullname="Shift.Game.Tests.BoardManagerTests.ChainDeliversRedAndLocksInputUntilPresentationCompletes" methodname="ChainDeliversRedAndLocksInputUntilPresentationCompletes" classname="Shift.Game.Tests.BoardManagerTests" runstate="Runnable" seed="1146707378" result="Passed" start-time="2026-09-20 18:04:05Z" end-time="2026-09-20 18:04:05Z" duration="0.003065" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1013" name="DepthMatchesRecordedMoveTurnAndDeliveryActions" fullname="Shift.Game.Tests.BoardManagerTests.DepthMatchesRecordedMoveTurnAndDeliveryActions" methodname="DepthMatchesRecordedMoveTurnAndDeliveryActions" classname="Shift.Game.Tests.BoardManagerTests" runstate="Runnable" seed="2079650017" result="Passed" start-time="2026-09-20 18:04:05Z" end-time="2026-09-20 18:04:05Z" duration="0.000765" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1010" name="DirectionCycleRollsBackWholeTransaction" fullname="Shift.Game.Tests.BoardManagerTests.DirectionCycleRollsBackWholeTransaction" methodname="DirectionCycleRollsBackWholeTransaction" classname="Shift.Game.Tests.BoardManagerTests" runstate="Runnable" seed="1331199907" result="Passed" start-time="2026-09-20 18:04:05Z" end-time="2026-09-20 18:04:05Z" duration="0.001222" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1007" name="DirectionTileContinuesMovement" fullname="Shift.Game.Tests.BoardManagerTests.DirectionTileContinuesMovement" methodname="DirectionTileContinuesMovement" classname="Shift.Game.Tests.BoardManagerTests" runstate="Runnable" seed="1972726101" result="Passed" start-time="2026-09-20 18:04:05Z" end-time="2026-09-20 18:04:05Z" duration="0.000425" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1006" name="EmptyAndPushBlockTapsDoNotSpendMoves" fullname="Shift.Game.Tests.BoardManagerTests.EmptyAndPushBlockTapsDoNotSpendMoves" methodname="EmptyAndPushBlockTapsDoNotSpendMoves" classname="Shift.Game.Tests.BoardManagerTests" runstate="Runnable" seed="481072210" result="Passed" start-time="2026-09-20 18:04:05Z" end-time="2026-09-20 18:04:05Z" duration="0.000341" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1022" name="InvalidLevelRejectedBeforeReplacingCurrentBoard" fullname="Shift.Game.Tests.BoardManagerTests.InvalidLevelRejectedBeforeReplacingCurrentBoard" methodname="InvalidLevelRejectedBeforeReplacingCurrentBoard" classname="Shift.Game.Tests.BoardManagerTests" runstate="Runnable" seed="1452585275" result="Passed" start-time="2026-09-20 18:04:05Z" end-time="2026-09-20 18:04:05Z" duration="0.001565" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1003" name="LastMoveWinTakesPrecedenceOverLoss" fullname="Shift.Game.Tests.BoardManagerTests.LastMoveWinTakesPrecedenceOverLoss" methodname="LastMoveWinTakesPrecedenceOverLoss" classname="Shift.Game.Tests.BoardManagerTests" runstate="Runnable" seed="230184053" result="Passed" start-time="2026-09-20 18:04:05Z" end-time="2026-09-20 18:04:05Z" duration="0.000373" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1021" name="RepeatedInputProducesIdenticalActionSequence" fullname="Shift.Game.Tests.BoardManagerTests.RepeatedInputProducesIdenticalActionSequence" methodname="RepeatedInputProducesIdenticalActionSequence" classname="Shift.Game.Tests.BoardManagerTests" runstate="Runnable" seed="1844152813" result="Passed" start-time="2026-09-20 18:04:05Z" end-time="2026-09-20 18:04:05Z" duration="0.001246" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1008" name="RotatorTurnsClockwiseAndContinues" fullname="Shift.Game.Tests.BoardManagerTests.RotatorTurnsClockwiseAndContinues" methodname="RotatorTurnsClockwiseAndContinues" classname="Shift.Game.Tests.BoardManagerTests" runstate="Runnable" seed="1906937582" result="Passed" start-time="2026-09-20 18:04:05Z" end-time="2026-09-20 18:04:05Z" duration="0.000475" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1014" name="SuccessfulEntryWithBlockedContinuationStillCostsOneMove" fullname="Shift.Game.Tests.BoardManagerTests.SuccessfulEntryWithBlockedContinuationStillCostsOneMove" methodname="SuccessfulEntryWithBlockedContinuationStillCostsOneMove" classname="Shift.Game.Tests.BoardManagerTests" runstate="Runnable" seed="1057378617" result="Passed" start-time="2026-09-20 18:04:05Z" end-time="2026-09-20 18:04:05Z" duration="0.000609" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1011" name="SuccessfulNonWinningMoveConsumesLastMoveAndLoses" fullname="Shift.Game.Tests.BoardManagerTests.SuccessfulNonWinningMoveConsumesLastMoveAndLoses" methodname="SuccessfulNonWinningMoveConsumesLastMoveAndLoses" classname="Shift.Game.Tests.BoardManagerTests" runstate="Runnable" seed="697836906" result="Passed" start-time="2026-09-20 18:04:05Z" end-time="2026-09-20 18:04:05Z" duration="0.000504" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1020" name="VariableBoardSizeAndRestartAreDataDriven" fullname="Shift.Game.Tests.BoardManagerTests.VariableBoardSizeAndRestartAreDataDriven" classname="Shift.Game.Tests.BoardManagerTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-09-20 18:04:05Z" end-time="2026-09-20 18:04:05Z" duration="0.011732" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1016" name="VariableBoardSizeAndRestartAreDataDriven(4)" fullname="Shift.Game.Tests.BoardManagerTests.VariableBoardSizeAndRestartAreDataDriven(4)" methodname="VariableBoardSizeAndRestartAreDataDriven" classname="Shift.Game.Tests.BoardManagerTests" runstate="Runnable" seed="1071551312" result="Passed" start-time="2026-09-20 18:04:05Z" end-time="2026-09-20 18:04:05Z" duration="0.001121" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1017" name="VariableBoardSizeAndRestartAreDataDriven(5)" fullname="Shift.Game.Tests.BoardManagerTests.VariableBoardSizeAndRestartAreDataDriven(5)" methodname="VariableBoardSizeAndRestartAreDataDriven" classname="Shift.Game.Tests.BoardManagerTests" runstate="Runnable" seed="1618645416" result="Passed" start-time="2026-09-20 18:04:05Z" end-time="2026-09-20 18:04:05Z" duration="0.000603" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1018" name="VariableBoardSizeAndRestartAreDataDriven(6)" fullname="Shift.Game.Tests.BoardManagerTests.VariableBoardSizeAndRestartAreDataDriven(6)" methodname="VariableBoardSizeAndRestartAreDataDriven" classname="Shift.Game.Tests.BoardManagerTests" runstate="Runnable" seed="2032318876" result="Passed" start-time="2026-09-20 18:04:05Z" end-time="2026-09-20 18:04:05Z" duration="0.001052" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1019" name="VariableBoardSizeAndRestartAreDataDriven(7)" fullname="Shift.Game.Tests.BoardManagerTests.VariableBoardSizeAndRestartAreDataDriven(7)" methodname="VariableBoardSizeAndRestartAreDataDriven" classname="Shift.Game.Tests.BoardManagerTests" runstate="Runnable" seed="922187160" result="Passed" start-time="2026-09-20 18:04:05Z" end-time="2026-09-20 18:04:05Z" duration="0.001068" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-case id="1005" name="WallAtEndOfPushChainPreventsEveryMove" fullname="Shift.Game.Tests.BoardManagerTests.WallAtEndOfPushChainPreventsEveryMove" methodname="WallAtEndOfPushChainPreventsEveryMove" classname="Shift.Game.Tests.BoardManagerTests" runstate="Runnable" seed="1033029533" result="Passed" start-time="2026-09-20 18:04:05Z" end-time="2026-09-20 18:04:05Z" duration="0.000690" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1009" name="WrongColorExitAndPushBlockAreBlocked" fullname="Shift.Game.Tests.BoardManagerTests.WrongColorExitAndPushBlockAreBlocked" methodname="WrongColorExitAndPushBlockAreBlocked" classname="Shift.Game.Tests.BoardManagerTests" runstate="Runnable" seed="714994305" result="Passed" start-time="2026-09-20 18:04:05Z" end-time="2026-09-20 18:04:05Z" duration="0.000928" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1023" name="ChapterLevelTests" fullname="Shift.Game.Tests.ChapterLevelTests" classname="Shift.Game.Tests.ChapterLevelTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-09-20 18:04:05Z" end-time="2026-09-20 18:04:05Z" duration="0.423215" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="ParameterizedMethod" id="1029" name="HardLevelsMeetMinimumMoveBudget" fullname="Shift.Game.Tests.ChapterLevelTests.HardLevelsMeetMinimumMoveBudget" classname="Shift.Game.Tests.ChapterLevelTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-09-20 18:04:05Z" end-time="2026-09-20 18:04:05Z" duration="0.089467" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1026" name="HardLevelsMeetMinimumMoveBudget(14,5)" fullname="Shift.Game.Tests.ChapterLevelTests.HardLevelsMeetMinimumMoveBudget(14,5)" methodname="HardLevelsMeetMinimumMoveBudget" classname="Shift.Game.Tests.ChapterLevelTests" runstate="Runnable" seed="926954123" result="Passed" start-time="2026-09-20 18:04:05Z" end-time="2026-09-20 18:04:05Z" duration="0.024641" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1027" name="HardLevelsMeetMinimumMoveBudget(17,6)" fullname="Shift.Game.Tests.ChapterLevelTests.HardLevelsMeetMinimumMoveBudget(17,6)" methodname="HardLevelsMeetMinimumMoveBudget" classname="Shift.Game.Tests.ChapterLevelTests" runstate="Runnable" seed="891696306" result="Passed" start-time="2026-09-20 18:04:05Z" end-time="2026-09-20 18:04:05Z" duration="0.052098" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1028" name="HardLevelsMeetMinimumMoveBudget(19,6)" fullname="Shift.Game.Tests.ChapterLevelTests.HardLevelsMeetMinimumMoveBudget(19,6)" methodname="HardLevelsMeetMinimumMoveBudget" classname="Shift.Game.Tests.ChapterLevelTests" runstate="Runnable" seed="1950187862" result="Passed" start-time="2026-09-20 18:04:05Z" end-time="2026-09-20 18:04:05Z" duration="0.011156" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-case id="1024" name="LevelThirteenUsesTwoDistinctChains" fullname="Shift.Game.Tests.ChapterLevelTests.LevelThirteenUsesTwoDistinctChains" methodname="LevelThirteenUsesTwoDistinctChains" classname="Shift.Game.Tests.ChapterLevelTests" runstate="Runnable" seed="677569182" result="Passed" start-time="2026-09-20 18:04:05Z" end-time="2026-09-20 18:04:05Z" duration="0.001306" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1030" name="LevelTwelveWrongOrderTrapsBlueButRestartRestores" fullname="Shift.Game.Tests.ChapterLevelTests.LevelTwelveWrongOrderTrapsBlueButRestartRestores" methodname="LevelTwelveWrongOrderTrapsBlueButRestartRestores" classname="Shift.Game.Tests.ChapterLevelTests" runstate="Runnable" seed="787539660" result="Passed" start-time="2026-09-20 18:04:05Z" end-time="2026-09-20 18:04:05Z" duration="0.000608" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1025" name="TwentyLevelsAreWiredAndEverySolutionWins" fullname="Shift.Game.Tests.ChapterLevelTests.TwentyLevelsAreWiredAndEverySolutionWins" methodname="TwentyLevelsAreWiredAndEverySolutionWins" classname="Shift.Game.Tests.ChapterLevelTests" runstate="Runnable" seed="1493962315" result="Passed" start-time="2026-09-20 18:04:05Z" end-time="2026-09-20 18:04:05Z" duration="0.329904" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1031" name="ChapterTwoPresentationTests" fullname="Shift.Game.Tests.ChapterTwoPresentationTests" classname="Shift.Game.Tests.ChapterTwoPresentationTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-09-20 18:04:05Z" end-time="2026-09-20 18:04:13Z" duration="7.357395" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1032" name="ChapterBoundaryTabsFinaleAndStateCues" fullname="Shift.Game.Tests.ChapterTwoPresentationTests.ChapterBoundaryTabsFinaleAndStateCues" methodname="ChapterBoundaryTabsFinaleAndStateCues" classname="Shift.Game.Tests.ChapterTwoPresentationTests" runstate="Runnable" seed="1844465752" result="Passed" start-time="2026-09-20 18:04:05Z" end-time="2026-09-20 18:04:13Z" duration="7.355691" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1033" name="ChapterTwoTests" fullname="Shift.Game.Tests.ChapterTwoTests" classname="Shift.Game.Tests.ChapterTwoTests" runstate="Runnable" testcasecount="27" result="Passed" start-time="2026-09-20 18:04:13Z" end-time="2026-09-20 18:04:13Z" duration="0.023882" total="27" passed="27" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="ParameterizedMethod" id="1054" name="ChapterTwoSolutionsValidateAndAreDeterministic" fullname="Shift.Game.Tests.ChapterTwoTests.ChapterTwoSolutionsValidateAndAreDeterministic" classname="Shift.Game.Tests.ChapterTwoTests" runstate="Runnable" testcasecount="20" result="Passed" start-time="2026-09-20 18:04:13Z" end-time="2026-09-20 18:04:13Z" duration="0.012998" total="20" passed="20" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1034" name="ChapterTwoSolutionsValidateAndAreDeterministic(20)" fullname="Shift.Game.Tests.ChapterTwoTests.ChapterTwoSolutionsValidateAndAreDeterministic(20)" methodname="ChapterTwoSolutionsValidateAndAreDeterministic" classname="Shift.Game.Tests.ChapterTwoTests" runstate="Runnable" seed="1929490233" result="Passed" start-time="2026-09-20 18:04:13Z" end-time="2026-09-20 18:04:13Z" duration="0.002069" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1035" name="ChapterTwoSolutionsValidateAndAreDeterministic(21)" fullname="Shift.Game.Tests.ChapterTwoTests.ChapterTwoSolutionsValidateAndAreDeterministic(21)" methodname="ChapterTwoSolutionsValidateAndAreDeterministic" classname="Shift.Game.Tests.ChapterTwoTests" runstate="Runnable" seed="2063992585" result="Passed" start-time="2026-09-20 18:04:13Z" end-time="2026-09-20 18:04:13Z" duration="0.000488" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1036" name="ChapterTwoSolutionsValidateAndAreDeterministic(22)" fullname="Shift.Game.Tests.ChapterTwoTests.ChapterTwoSolutionsValidateAndAreDeterministic(22)" methodname="ChapterTwoSolutionsValidateAndAreDeterministic" classname="Shift.Game.Tests.ChapterTwoTests" runstate="Runnable" seed="738579833" result="Passed" start-time="2026-09-20 18:04:13Z" end-time="2026-09-20 18:04:13Z" duration="0.000446" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1037" name="ChapterTwoSolutionsValidateAndAreDeterministic(23)" fullname="Shift.Game.Tests.ChapterTwoTests.ChapterTwoSolutionsValidateAndAreDeterministic(23)" methodname="ChapterTwoSolutionsValidateAndAreDeterministic" classname="Shift.Game.Tests.ChapterTwoTests" runstate="Runnable" seed="407756278" result="Passed" start-time="2026-09-20 18:04:13Z" end-time="2026-09-20 18:04:13Z" duration="0.000412" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1038" name="ChapterTwoSolutionsValidateAndAreDeterministic(24)" fullname="Shift.Game.Tests.ChapterTwoTests.ChapterTwoSolutionsValidateAndAreDeterministic(24)" methodname="ChapterTwoSolutionsValidateAndAreDeterministic" classname="Shift.Game.Tests.ChapterTwoTests" runstate="Runnable" seed="1142089867" result="Passed" start-time="2026-09-20 18:04:13Z" end-time="2026-09-20 18:04:13Z" duration="0.000398" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1039" name="ChapterTwoSolutionsValidateAndAreDeterministic(25)" fullname="Shift.Game.Tests.ChapterTwoTests.ChapterTwoSolutionsValidateAndAreDeterministic(25)" methodname="ChapterTwoSolutionsValidateAndAreDeterministic" classname="Shift.Game.Tests.ChapterTwoTests" runstate="Runnable" seed="1890034146" result="Passed" start-time="2026-09-20 18:04:13Z" end-time="2026-09-20 18:04:13Z" duration="0.000424" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1040" name="ChapterTwoSolutionsValidateAndAreDeterministic(26)" fullname="Shift.Game.Tests.ChapterTwoTests.ChapterTwoSolutionsValidateAndAreDeterministic(26)" methodname="ChapterTwoSolutionsValidateAndAreDeterministic" classname="Shift.Game.Tests.ChapterTwoTests" runstate="Runnable" seed="2020609941" result="Passed" start-time="2026-09-20 18:04:13Z" end-time="2026-09-20 18:04:13Z" duration="0.000412" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1041" name="ChapterTwoSolutionsValidateAndAreDeterministic(27)" fullname="Shift.Game.Tests.ChapterTwoTests.ChapterTwoSolutionsValidateAndAreDeterministic(27)" methodname="ChapterTwoSolutionsValidateAndAreDeterministic" classname="Shift.Game.Tests.ChapterTwoTests" runstate="Runnable" seed="1135023593" result="Passed" start-time="2026-09-20 18:04:13Z" end-time="2026-09-20 18:04:13Z" duration="0.000394" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1042" name="ChapterTwoSolutionsValidateAndAreDeterministic(28)" fullname="Shift.Game.Tests.ChapterTwoTests.ChapterTwoSolutionsValidateAndAreDeterministic(28)" methodname="ChapterTwoSolutionsValidateAndAreDeterministic" classname="Shift.Game.Tests.ChapterTwoTests" runstate="Runnable" seed="1179595593" result="Passed" start-time="2026-09-20 18:04:13Z" end-time="2026-09-20 18:04:13Z" duration="0.000425" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1043" name="ChapterTwoSolutionsValidateAndAreDeterministic(29)" fullname="Shift.Game.Tests.ChapterTwoTests.ChapterTwoSolutionsValidateAndAreDeterministic(29)" methodname="ChapterTwoSolutionsValidateAndAreDeterministic" classname="Shift.Game.Tests.ChapterTwoTests" runstate="Runnable" seed="2142943582" result="Passed" start-time="2026-09-20 18:04:13Z" end-time="2026-09-20 18:04:13Z" duration="0.000475" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1044" name="ChapterTwoSolutionsValidateAndAreDeterministic(30)" fullname="Shift.Game.Tests.ChapterTwoTests.ChapterTwoSolutionsValidateAndAreDeterministic(30)" methodname="ChapterTwoSolutionsValidateAndAreDeterministic" classname="Shift.Game.Tests.ChapterTwoTests" runstate="Runnable" seed="2002714018" result="Passed" start-time="2026-09-20 18:04:13Z" end-time="2026-09-20 18:04:13Z" duration="0.000427" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1045" name="ChapterTwoSolutionsValidateAndAreDeterministic(31)" fullname="Shift.Game.Tests.ChapterTwoTests.ChapterTwoSolutionsValidateAndAreDeterministic(31)" methodname="ChapterTwoSolutionsValidateAndAreDeterministic" classname="Shift.Game.Tests.ChapterTwoTests" runstate="Runnable" seed="1006663402" result="Passed" start-time="2026-09-20 18:04:13Z" end-time="2026-09-20 18:04:13Z" duration="0.000447" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1046" name="ChapterTwoSolutionsValidateAndAreDeterministic(32)" fullname="Shift.Game.Tests.ChapterTwoTests.ChapterTwoSolutionsValidateAndAreDeterministic(32)" methodname="ChapterTwoSolutionsValidateAndAreDeterministic" classname="Shift.Game.Tests.ChapterTwoTests" runstate="Runnable" seed="1740808440" result="Passed" start-time="2026-09-20 18:04:13Z" end-time="2026-09-20 18:04:13Z" duration="0.000448" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1047" name="ChapterTwoSolutionsValidateAndAreDeterministic(33)" fullname="Shift.Game.Tests.ChapterTwoTests.ChapterTwoSolutionsValidateAndAreDeterministic(33)" methodname="ChapterTwoSolutionsValidateAndAreDeterministic" classname="Shift.Game.Tests.ChapterTwoTests" runstate="Runnable" seed="792365550" result="Passed" start-time="2026-09-20 18:04:13Z" end-time="2026-09-20 18:04:13Z" duration="0.000418" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1048" name="ChapterTwoSolutionsValidateAndAreDeterministic(34)" fullname="Shift.Game.Tests.ChapterTwoTests.ChapterTwoSolutionsValidateAndAreDeterministic(34)" methodname="ChapterTwoSolutionsValidateAndAreDeterministic" classname="Shift.Game.Tests.ChapterTwoTests" runstate="Runnable" seed="1084421788" result="Passed" start-time="2026-09-20 18:04:13Z" end-time="2026-09-20 18:04:13Z" duration="0.000441" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1049" name="ChapterTwoSolutionsValidateAndAreDeterministic(35)" fullname="Shift.Game.Tests.ChapterTwoTests.ChapterTwoSolutionsValidateAndAreDeterministic(35)" methodname="ChapterTwoSolutionsValidateAndAreDeterministic" classname="Shift.Game.Tests.ChapterTwoTests" runstate="Runnable" seed="347789324" result="Passed" start-time="2026-09-20 18:04:13Z" end-time="2026-09-20 18:04:13Z" duration="0.000448" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1050" name="ChapterTwoSolutionsValidateAndAreDeterministic(36)" fullname="Shift.Game.Tests.ChapterTwoTests.ChapterTwoSolutionsValidateAndAreDeterministic(36)" methodname="ChapterTwoSolutionsValidateAndAreDeterministic" classname="Shift.Game.Tests.ChapterTwoTests" runstate="Runnable" seed="307229752" result="Passed" start-time="2026-09-20 18:04:13Z" end-time="2026-09-20 18:04:13Z" duration="0.000468" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1051" name="ChapterTwoSolutionsValidateAndAreDeterministic(37)" fullname="Shift.Game.Tests.ChapterTwoTests.ChapterTwoSolutionsValidateAndAreDeterministic(37)" methodname="ChapterTwoSolutionsValidateAndAreDeterministic" classname="Shift.Game.Tests.ChapterTwoTests" runstate="Runnable" seed="1826292931" result="Passed" start-time="2026-09-20 18:04:13Z" end-time="2026-09-20 18:04:13Z" duration="0.000587" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1052" name="ChapterTwoSolutionsValidateAndAreDeterministic(38)" fullname="Shift.Game.Tests.ChapterTwoTests.ChapterTwoSolutionsValidateAndAreDeterministic(38)" methodname="ChapterTwoSolutionsValidateAndAreDeterministic" classname="Shift.Game.Tests.ChapterTwoTests" runstate="Runnable" seed="1326794803" result="Passed" start-time="2026-09-20 18:04:13Z" end-time="2026-09-20 18:04:13Z" duration="0.000497" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1053" name="ChapterTwoSolutionsValidateAndAreDeterministic(39)" fullname="Shift.Game.Tests.ChapterTwoTests.ChapterTwoSolutionsValidateAndAreDeterministic(39)" methodname="ChapterTwoSolutionsValidateAndAreDeterministic" classname="Shift.Game.Tests.ChapterTwoTests" runstate="Runnable" seed="1129748308" result="Passed" start-time="2026-09-20 18:04:13Z" end-time="2026-09-20 18:04:13Z" duration="0.000860" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-case id="1063" name="IncompleteOldSaveDoesNotUnlockChapterTwo" fullname="Shift.Game.Tests.ChapterTwoTests.IncompleteOldSaveDoesNotUnlockChapterTwo" methodname="IncompleteOldSaveDoesNotUnlockChapterTwo" classname="Shift.Game.Tests.ChapterTwoTests" runstate="Runnable" seed="351616948" result="Passed" start-time="2026-09-20 18:04:13Z" end-time="2026-09-20 18:04:13Z" duration="0.001708" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1062" name="OldCompletedChapterMigratesWithoutResettingReplay" fullname="Shift.Game.Tests.ChapterTwoTests.OldCompletedChapterMigratesWithoutResettingReplay" classname="Shift.Game.Tests.ChapterTwoTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-09-20 18:04:13Z" end-time="2026-09-20 18:04:13Z" duration="0.002901" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1060" name="OldCompletedChapterMigratesWithoutResettingReplay(19,20)" fullname="Shift.Game.Tests.ChapterTwoTests.OldCompletedChapterMigratesWithoutResettingReplay(19,20)" methodname="OldCompletedChapterMigratesWithoutResettingReplay" classname="Shift.Game.Tests.ChapterTwoTests" runstate="Runnable" seed="1167715069" result="Passed" start-time="2026-09-20 18:04:13Z" end-time="2026-09-20 18:04:13Z" duration="0.001784" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1061" name="OldCompletedChapterMigratesWithoutResettingReplay(4,4)" fullname="Shift.Game.Tests.ChapterTwoTests.OldCompletedChapterMigratesWithoutResettingReplay(4,4)" methodname="OldCompletedChapterMigratesWithoutResettingReplay" classname="Shift.Game.Tests.ChapterTwoTests" runstate="Runnable" seed="1102146995" result="Passed" start-time="2026-09-20 18:04:13Z" end-time="2026-09-20 18:04:13Z" duration="0.000615" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-suite type="ParameterizedMethod" id="1059" name="SelectedPuzzlesHaveVerifiedMinimum" fullname="Shift.Game.Tests.ChapterTwoTests.SelectedPuzzlesHaveVerifiedMinimum" classname="Shift.Game.Tests.ChapterTwoTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-09-20 18:04:13Z" end-time="2026-09-20 18:04:13Z" duration="0.005146" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1055" name="SelectedPuzzlesHaveVerifiedMinimum(29,5)" fullname="Shift.Game.Tests.ChapterTwoTests.SelectedPuzzlesHaveVerifiedMinimum(29,5)" methodname="SelectedPuzzlesHaveVerifiedMinimum" classname="Shift.Game.Tests.ChapterTwoTests" runstate="Runnable" seed="126255725" result="Passed" start-time="2026-09-20 18:04:13Z" end-time="2026-09-20 18:04:13Z" duration="0.001569" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1056" name="SelectedPuzzlesHaveVerifiedMinimum(33,5)" fullname="Shift.Game.Tests.ChapterTwoTests.SelectedPuzzlesHaveVerifiedMinimum(33,5)" methodname="SelectedPuzzlesHaveVerifiedMinimum" classname="Shift.Game.Tests.ChapterTwoTests" runstate="Runnable" seed="112668627" result="Passed" start-time="2026-09-20 18:04:13Z" end-time="2026-09-20 18:04:13Z" duration="0.000606" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1057" name="SelectedPuzzlesHaveVerifiedMinimum(36,6)" fullname="Shift.Game.Tests.ChapterTwoTests.SelectedPuzzlesHaveVerifiedMinimum(36,6)" methodname="SelectedPuzzlesHaveVerifiedMinimum" classname="Shift.Game.Tests.ChapterTwoTests" runstate="Runnable" seed="1850668387" result="Passed" start-time="2026-09-20 18:04:13Z" end-time="2026-09-20 18:04:13Z" duration="0.001407" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1058" name="SelectedPuzzlesHaveVerifiedMinimum(39,7)" fullname="Shift.Game.Tests.ChapterTwoTests.SelectedPuzzlesHaveVerifiedMinimum(39,7)" methodname="SelectedPuzzlesHaveVerifiedMinimum" classname="Shift.Game.Tests.ChapterTwoTests" runstate="Runnable" seed="1131314471" result="Passed" start-time="2026-09-20 18:04:13Z" end-time="2026-09-20 18:04:13Z" duration="0.001033" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+            </test-suite>
+            <test-suite type="TestFixture" id="1064" name="LevelWiringTests" fullname="Shift.Game.Tests.LevelWiringTests" classname="Shift.Game.Tests.LevelWiringTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-09-20 18:04:13Z" end-time="2026-09-20 18:04:17Z" duration="4.693168" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1068" name="CompletingTenAndElevenLoadsElevenAndTwelve" fullname="Shift.Game.Tests.LevelWiringTests.CompletingTenAndElevenLoadsElevenAndTwelve" methodname="CompletingTenAndElevenLoadsElevenAndTwelve" classname="Shift.Game.Tests.LevelWiringTests" runstate="Runnable" seed="324346743" result="Passed" start-time="2026-09-20 18:04:13Z" end-time="2026-09-20 18:04:16Z" duration="3.348052" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1067" name="ExistingSceneRestorationRepairsResizedLastElementDuplicatesAndSaves" fullname="Shift.Game.Tests.LevelWiringTests.ExistingSceneRestorationRepairsResizedLastElementDuplicatesAndSaves" methodname="ExistingSceneRestorationRepairsResizedLastElementDuplicatesAndSaves" classname="Shift.Game.Tests.LevelWiringTests" runstate="Runnable" seed="1694386375" result="Passed" start-time="2026-09-20 18:04:16Z" end-time="2026-09-20 18:04:17Z" duration="0.999945" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1066" name="NewObjectSetupAssignsEveryReference" fullname="Shift.Game.Tests.LevelWiringTests.NewObjectSetupAssignsEveryReference" methodname="NewObjectSetupAssignsEveryReference" classname="Shift.Game.Tests.LevelWiringTests" runstate="Runnable" seed="661268412" result="Passed" start-time="2026-09-20 18:04:17Z" end-time="2026-09-20 18:04:17Z" duration="0.001689" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1065" name="SavedSceneHasFortyUniqueSequentialReferences" fullname="Shift.Game.Tests.LevelWiringTests.SavedSceneHasFortyUniqueSequentialReferences" methodname="SavedSceneHasFortyUniqueSequentialReferences" classname="Shift.Game.Tests.LevelWiringTests" runstate="Runnable" seed="1429668698" result="Passed" start-time="2026-09-20 18:04:17Z" end-time="2026-09-20 18:04:17Z" duration="0.342310" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1069" name="ProgressionPresentationTests" fullname="Shift.Game.Tests.ProgressionPresentationTests" classname="Shift.Game.Tests.ProgressionPresentationTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-09-20 18:04:17Z" end-time="2026-09-20 18:04:23Z" duration="5.512181" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1070" name="PlayerProgressionModalSwitchAndFinale" fullname="Shift.Game.Tests.ProgressionPresentationTests.PlayerProgressionModalSwitchAndFinale" methodname="PlayerProgressionModalSwitchAndFinale" classname="Shift.Game.Tests.ProgressionPresentationTests" runstate="Runnable" seed="1087580466" result="Passed" start-time="2026-09-20 18:04:17Z" end-time="2026-09-20 18:04:23Z" duration="5.506853" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1071" name="ProgressionTests" fullname="Shift.Game.Tests.ProgressionTests" classname="Shift.Game.Tests.ProgressionTests" runstate="Runnable" testcasecount="9" result="Passed" start-time="2026-09-20 18:04:23Z" end-time="2026-09-20 18:04:23Z" duration="0.010076" total="9" passed="9" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1081" name="CannotCompleteAnotherOrLockedLevel" fullname="Shift.Game.Tests.ProgressionTests.CannotCompleteAnotherOrLockedLevel" methodname="CannotCompleteAnotherOrLockedLevel" classname="Shift.Game.Tests.ProgressionTests" runstate="Runnable" seed="1859582643" result="Passed" start-time="2026-09-20 18:04:23Z" end-time="2026-09-20 18:04:23Z" duration="0.001147" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1073" name="CompletionUnlocksNextAndRelaunchResumesIt" fullname="Shift.Game.Tests.ProgressionTests.CompletionUnlocksNextAndRelaunchResumesIt" methodname="CompletionUnlocksNextAndRelaunchResumesIt" classname="Shift.Game.Tests.ProgressionTests" runstate="Runnable" seed="1172512051" result="Passed" start-time="2026-09-20 18:04:23Z" end-time="2026-09-20 18:04:23Z" duration="0.002235" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1078" name="CorruptIndexesClamp" fullname="Shift.Game.Tests.ProgressionTests.CorruptIndexesClamp" classname="Shift.Game.Tests.ProgressionTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-09-20 18:04:23Z" end-time="2026-09-20 18:04:23Z" duration="0.001643" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1075" name="CorruptIndexesClamp(-100,-20,-9,0,0,-1)" fullname="Shift.Game.Tests.ProgressionTests.CorruptIndexesClamp(-100,-20,-9,0,0,-1)" methodname="CorruptIndexesClamp" classname="Shift.Game.Tests.ProgressionTests" runstate="Runnable" seed="1434024991" result="Passed" start-time="2026-09-20 18:04:23Z" end-time="2026-09-20 18:04:23Z" duration="0.000638" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1076" name="CorruptIndexesClamp(999,999,999,19,19,19)" fullname="Shift.Game.Tests.ProgressionTests.CorruptIndexesClamp(999,999,999,19,19,19)" methodname="CorruptIndexesClamp" classname="Shift.Game.Tests.ProgressionTests" runstate="Runnable" seed="1500263088" result="Passed" start-time="2026-09-20 18:04:23Z" end-time="2026-09-20 18:04:23Z" duration="0.000297" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1077" name="CorruptIndexesClamp(4,15,2,4,4,2)" fullname="Shift.Game.Tests.ProgressionTests.CorruptIndexesClamp(4,15,2,4,4,2)" methodname="CorruptIndexesClamp" classname="Shift.Game.Tests.ProgressionTests" runstate="Runnable" seed="130157240" result="Passed" start-time="2026-09-20 18:04:23Z" end-time="2026-09-20 18:04:23Z" duration="0.000295" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-case id="1079" name="FinalLevelCompletesChapterWithoutOverflow" fullname="Shift.Game.Tests.ProgressionTests.FinalLevelCompletesChapterWithoutOverflow" methodname="FinalLevelCompletesChapterWithoutOverflow" classname="Shift.Game.Tests.ProgressionTests" runstate="Runnable" seed="908477523" result="Passed" start-time="2026-09-20 18:04:23Z" end-time="2026-09-20 18:04:23Z" duration="0.001741" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1072" name="FirstInstallStartsAtOneAndLockedSelectionIsRejected" fullname="Shift.Game.Tests.ProgressionTests.FirstInstallStartsAtOneAndLockedSelectionIsRejected" methodname="FirstInstallStartsAtOneAndLockedSelectionIsRejected" classname="Shift.Game.Tests.ProgressionTests" runstate="Runnable" seed="118689294" result="Passed" start-time="2026-09-20 18:04:23Z" end-time="2026-09-20 18:04:23Z" duration="0.000458" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1074" name="ReplayNeverReducesUnlocksAndPersistsSelection" fullname="Shift.Game.Tests.ProgressionTests.ReplayNeverReducesUnlocksAndPersistsSelection" methodname="ReplayNeverReducesUnlocksAndPersistsSelection" classname="Shift.Game.Tests.ProgressionTests" runstate="Runnable" seed="2076000740" result="Passed" start-time="2026-09-20 18:04:23Z" end-time="2026-09-20 18:04:23Z" duration="0.000892" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1080" name="ResetOnlyDeletesOwnedKeys" fullname="Shift.Game.Tests.ProgressionTests.ResetOnlyDeletesOwnedKeys" methodname="ResetOnlyDeletesOwnedKeys" classname="Shift.Game.Tests.ProgressionTests" runstate="Runnable" seed="932211545" result="Passed" start-time="2026-09-20 18:04:23Z" end-time="2026-09-20 18:04:23Z" duration="0.000837" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1082" name="PrototypeSceneTests" fullname="Shift.Game.Tests.PrototypeSceneTests" classname="Shift.Game.Tests.PrototypeSceneTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-09-20 18:04:23Z" end-time="2026-09-20 18:04:25Z" duration="2.403911" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1083" name="SavedPrototypeContainsValidLevelReference" fullname="Shift.Game.Tests.PrototypeSceneTests.SavedPrototypeContainsValidLevelReference" methodname="SavedPrototypeContainsValidLevelReference" classname="Shift.Game.Tests.PrototypeSceneTests" runstate="Runnable" seed="586574686" result="Passed" start-time="2026-09-20 18:04:23Z" end-time="2026-09-20 18:04:23Z" duration="0.339887" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1084" name="ScenePlaysChainAndCanRestartDuringAnimation" fullname="Shift.Game.Tests.PrototypeSceneTests.ScenePlaysChainAndCanRestartDuringAnimation" methodname="ScenePlaysChainAndCanRestartDuringAnimation" classname="Shift.Game.Tests.PrototypeSceneTests" runstate="Runnable" seed="1393169992" result="Passed" start-time="2026-09-20 18:04:23Z" end-time="2026-09-20 18:04:25Z" duration="2.063385" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1085" name="SprintLevelTests" fullname="Shift.Game.Tests.SprintLevelTests" classname="Shift.Game.Tests.SprintLevelTests" runstate="Runnable" testcasecount="16" result="Passed" start-time="2026-09-20 18:04:25Z" end-time="2026-09-20 18:04:25Z" duration="0.010583" total="16" passed="16" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1086" name="ExactlyTenHandcraftedLevelsExist" fullname="Shift.Game.Tests.SprintLevelTests.ExactlyTenHandcraftedLevelsExist" methodname="ExactlyTenHandcraftedLevelsExist" classname="Shift.Game.Tests.SprintLevelTests" runstate="Runnable" seed="409533269" result="Passed" start-time="2026-09-20 18:04:25Z" end-time="2026-09-20 18:04:25Z" duration="0.000615" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1102" name="LevelFiveBlockedPieceDoesNotUseSolutionBudget" fullname="Shift.Game.Tests.SprintLevelTests.LevelFiveBlockedPieceDoesNotUseSolutionBudget" methodname="LevelFiveBlockedPieceDoesNotUseSolutionBudget" classname="Shift.Game.Tests.SprintLevelTests" runstate="Runnable" seed="818061147" result="Passed" start-time="2026-09-20 18:04:25Z" end-time="2026-09-20 18:04:25Z" duration="0.000554" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1097" name="LevelValidatesLoadsAndKnownSolutionWins" fullname="Shift.Game.Tests.SprintLevelTests.LevelValidatesLoadsAndKnownSolutionWins" classname="Shift.Game.Tests.SprintLevelTests" runstate="Runnable" testcasecount="10" result="Passed" start-time="2026-09-20 18:04:25Z" end-time="2026-09-20 18:04:25Z" duration="0.004705" total="10" passed="10" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1087" name="LevelValidatesLoadsAndKnownSolutionWins(0)" fullname="Shift.Game.Tests.SprintLevelTests.LevelValidatesLoadsAndKnownSolutionWins(0)" methodname="LevelValidatesLoadsAndKnownSolutionWins" classname="Shift.Game.Tests.SprintLevelTests" runstate="Runnable" seed="165359930" result="Passed" start-time="2026-09-20 18:04:25Z" end-time="2026-09-20 18:04:25Z" duration="0.000680" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1088" name="LevelValidatesLoadsAndKnownSolutionWins(1)" fullname="Shift.Game.Tests.SprintLevelTests.LevelValidatesLoadsAndKnownSolutionWins(1)" methodname="LevelValidatesLoadsAndKnownSolutionWins" classname="Shift.Game.Tests.SprintLevelTests" runstate="Runnable" seed="497937754" result="Passed" start-time="2026-09-20 18:04:25Z" end-time="2026-09-20 18:04:25Z" duration="0.000325" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1089" name="LevelValidatesLoadsAndKnownSolutionWins(2)" fullname="Shift.Game.Tests.SprintLevelTests.LevelValidatesLoadsAndKnownSolutionWins(2)" methodname="LevelValidatesLoadsAndKnownSolutionWins" classname="Shift.Game.Tests.SprintLevelTests" runstate="Runnable" seed="37408481" result="Passed" start-time="2026-09-20 18:04:25Z" end-time="2026-09-20 18:04:25Z" duration="0.000343" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1090" name="LevelValidatesLoadsAndKnownSolutionWins(3)" fullname="Shift.Game.Tests.SprintLevelTests.LevelValidatesLoadsAndKnownSolutionWins(3)" methodname="LevelValidatesLoadsAndKnownSolutionWins" classname="Shift.Game.Tests.SprintLevelTests" runstate="Runnable" seed="1906691677" result="Passed" start-time="2026-09-20 18:04:25Z" end-time="2026-09-20 18:04:25Z" duration="0.000338" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1091" name="LevelValidatesLoadsAndKnownSolutionWins(4)" fullname="Shift.Game.Tests.SprintLevelTests.LevelValidatesLoadsAndKnownSolutionWins(4)" methodname="LevelValidatesLoadsAndKnownSolutionWins" classname="Shift.Game.Tests.SprintLevelTests" runstate="Runnable" seed="369535125" result="Passed" start-time="2026-09-20 18:04:25Z" end-time="2026-09-20 18:04:25Z" duration="0.000335" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1092" name="LevelValidatesLoadsAndKnownSolutionWins(5)" fullname="Shift.Game.Tests.SprintLevelTests.LevelValidatesLoadsAndKnownSolutionWins(5)" methodname="LevelValidatesLoadsAndKnownSolutionWins" classname="Shift.Game.Tests.SprintLevelTests" runstate="Runnable" seed="819253439" result="Passed" start-time="2026-09-20 18:04:25Z" end-time="2026-09-20 18:04:25Z" duration="0.000338" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1093" name="LevelValidatesLoadsAndKnownSolutionWins(6)" fullname="Shift.Game.Tests.SprintLevelTests.LevelValidatesLoadsAndKnownSolutionWins(6)" methodname="LevelValidatesLoadsAndKnownSolutionWins" classname="Shift.Game.Tests.SprintLevelTests" runstate="Runnable" seed="940150506" result="Passed" start-time="2026-09-20 18:04:25Z" end-time="2026-09-20 18:04:25Z" duration="0.000326" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1094" name="LevelValidatesLoadsAndKnownSolutionWins(7)" fullname="Shift.Game.Tests.SprintLevelTests.LevelValidatesLoadsAndKnownSolutionWins(7)" methodname="LevelValidatesLoadsAndKnownSolutionWins" classname="Shift.Game.Tests.SprintLevelTests" runstate="Runnable" seed="1659392802" result="Passed" start-time="2026-09-20 18:04:25Z" end-time="2026-09-20 18:04:25Z" duration="0.000324" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1095" name="LevelValidatesLoadsAndKnownSolutionWins(8)" fullname="Shift.Game.Tests.SprintLevelTests.LevelValidatesLoadsAndKnownSolutionWins(8)" methodname="LevelValidatesLoadsAndKnownSolutionWins" classname="Shift.Game.Tests.SprintLevelTests" runstate="Runnable" seed="2022137228" result="Passed" start-time="2026-09-20 18:04:25Z" end-time="2026-09-20 18:04:25Z" duration="0.000350" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1096" name="LevelValidatesLoadsAndKnownSolutionWins(9)" fullname="Shift.Game.Tests.SprintLevelTests.LevelValidatesLoadsAndKnownSolutionWins(9)" methodname="LevelValidatesLoadsAndKnownSolutionWins" classname="Shift.Game.Tests.SprintLevelTests" runstate="Runnable" seed="827489974" result="Passed" start-time="2026-09-20 18:04:25Z" end-time="2026-09-20 18:04:25Z" duration="0.000359" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-suite type="ParameterizedMethod" id="1101" name="PlanningLevelsHaveNoShorterSolution" fullname="Shift.Game.Tests.SprintLevelTests.PlanningLevelsHaveNoShorterSolution" classname="Shift.Game.Tests.SprintLevelTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-09-20 18:04:25Z" end-time="2026-09-20 18:04:25Z" duration="0.003283" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1098" name="PlanningLevelsHaveNoShorterSolution(6,3)" fullname="Shift.Game.Tests.SprintLevelTests.PlanningLevelsHaveNoShorterSolution(6,3)" methodname="PlanningLevelsHaveNoShorterSolution" classname="Shift.Game.Tests.SprintLevelTests" runstate="Runnable" seed="1468475864" result="Passed" start-time="2026-09-20 18:04:25Z" end-time="2026-09-20 18:04:25Z" duration="0.000904" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1099" name="PlanningLevelsHaveNoShorterSolution(8,2)" fullname="Shift.Game.Tests.SprintLevelTests.PlanningLevelsHaveNoShorterSolution(8,2)" methodname="PlanningLevelsHaveNoShorterSolution" classname="Shift.Game.Tests.SprintLevelTests" runstate="Runnable" seed="860843628" result="Passed" start-time="2026-09-20 18:04:25Z" end-time="2026-09-20 18:04:25Z" duration="0.000384" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1100" name="PlanningLevelsHaveNoShorterSolution(9,4)" fullname="Shift.Game.Tests.SprintLevelTests.PlanningLevelsHaveNoShorterSolution(9,4)" methodname="PlanningLevelsHaveNoShorterSolution" classname="Shift.Game.Tests.SprintLevelTests" runstate="Runnable" seed="767413947" result="Passed" start-time="2026-09-20 18:04:25Z" end-time="2026-09-20 18:04:25Z" duration="0.001603" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-case id="1103" name="PlayableValidationRequiresAnExitForTargetColor" fullname="Shift.Game.Tests.SprintLevelTests.PlayableValidationRequiresAnExitForTargetColor" methodname="PlayableValidationRequiresAnExitForTargetColor" classname="Shift.Game.Tests.SprintLevelTests" runstate="Runnable" seed="2049111463" result="Passed" start-time="2026-09-20 18:04:25Z" end-time="2026-09-20 18:04:25Z" duration="0.000385" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1104" name="SprintPresentationTests" fullname="Shift.Game.Tests.SprintPresentationTests" classname="Shift.Game.Tests.SprintPresentationTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-09-20 18:04:25Z" end-time="2026-09-20 18:04:31Z" duration="5.681853" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1106" name="EmptyAudioAndEditorHapticsAreSafe" fullname="Shift.Game.Tests.SprintPresentationTests.EmptyAudioAndEditorHapticsAreSafe" methodname="EmptyAudioAndEditorHapticsAreSafe" classname="Shift.Game.Tests.SprintPresentationTests" runstate="Runnable" seed="548731838" result="Passed" start-time="2026-09-20 18:04:25Z" end-time="2026-09-20 18:04:25Z" duration="0.001656" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1105" name="FeedbackLevelSwitchAndRetryStayInSync" fullname="Shift.Game.Tests.SprintPresentationTests.FeedbackLevelSwitchAndRetryStayInSync" methodname="FeedbackLevelSwitchAndRetryStayInSync" classname="Shift.Game.Tests.SprintPresentationTests" runstate="Runnable" seed="2065377011" result="Passed" start-time="2026-09-20 18:04:25Z" end-time="2026-09-20 18:04:31Z" duration="5.679562" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1107" name="SwitchGateTests" fullname="Shift.Game.Tests.SwitchGateTests" classname="Shift.Game.Tests.SwitchGateTests" runstate="Runnable" testcasecount="12" result="Passed" start-time="2026-09-20 18:04:31Z" end-time="2026-09-20 18:04:31Z" duration="0.008818" total="12" passed="12" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1108" name="EntryTogglesOnceAndRestartRestoresInitialState" fullname="Shift.Game.Tests.SwitchGateTests.EntryTogglesOnceAndRestartRestoresInitialState" methodname="EntryTogglesOnceAndRestartRestoresInitialState" classname="Shift.Game.Tests.SwitchGateTests" runstate="Runnable" seed="773756788" result="Passed" start-time="2026-09-20 18:04:31Z" end-time="2026-09-20 18:04:31Z" duration="0.002126" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1113" name="GateBlocksOrPassesBothMovableKinds" fullname="Shift.Game.Tests.SwitchGateTests.GateBlocksOrPassesBothMovableKinds" classname="Shift.Game.Tests.SwitchGateTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-09-20 18:04:31Z" end-time="2026-09-20 18:04:31Z" duration="0.001073" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1111" name="GateBlocksOrPassesBothMovableKinds(False)" fullname="Shift.Game.Tests.SwitchGateTests.GateBlocksOrPassesBothMovableKinds(False)" methodname="GateBlocksOrPassesBothMovableKinds" classname="Shift.Game.Tests.SwitchGateTests" runstate="Runnable" seed="1670214068" result="Passed" start-time="2026-09-20 18:04:31Z" end-time="2026-09-20 18:04:31Z" duration="0.000596" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1112" name="GateBlocksOrPassesBothMovableKinds(True)" fullname="Shift.Game.Tests.SwitchGateTests.GateBlocksOrPassesBothMovableKinds(True)" methodname="GateBlocksOrPassesBothMovableKinds" classname="Shift.Game.Tests.SwitchGateTests" runstate="Runnable" seed="1725002068" result="Passed" start-time="2026-09-20 18:04:31Z" end-time="2026-09-20 18:04:31Z" duration="0.000175" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-suite type="ParameterizedMethod" id="1119" name="InvalidChannelsAreRejected" fullname="Shift.Game.Tests.SwitchGateTests.InvalidChannelsAreRejected" classname="Shift.Game.Tests.SwitchGateTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-09-20 18:04:31Z" end-time="2026-09-20 18:04:31Z" duration="0.000708" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1117" name="InvalidChannelsAreRejected(0)" fullname="Shift.Game.Tests.SwitchGateTests.InvalidChannelsAreRejected(0)" methodname="InvalidChannelsAreRejected" classname="Shift.Game.Tests.SwitchGateTests" runstate="Runnable" seed="478574035" result="Passed" start-time="2026-09-20 18:04:31Z" end-time="2026-09-20 18:04:31Z" duration="0.000286" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1118" name="InvalidChannelsAreRejected(3)" fullname="Shift.Game.Tests.SwitchGateTests.InvalidChannelsAreRejected(3)" methodname="InvalidChannelsAreRejected" classname="Shift.Game.Tests.SwitchGateTests" runstate="Runnable" seed="470988192" result="Passed" start-time="2026-09-20 18:04:31Z" end-time="2026-09-20 18:04:31Z" duration="0.000134" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-case id="1120" name="MissingRelationshipsAndDuplicateTerrainAreRejected" fullname="Shift.Game.Tests.SwitchGateTests.MissingRelationshipsAndDuplicateTerrainAreRejected" methodname="MissingRelationshipsAndDuplicateTerrainAreRejected" classname="Shift.Game.Tests.SwitchGateTests" runstate="Runnable" seed="2069304827" result="Passed" start-time="2026-09-20 18:04:31Z" end-time="2026-09-20 18:04:31Z" duration="0.000434" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1116" name="OccupiedGateCanCloseAndOccupantCanLeave" fullname="Shift.Game.Tests.SwitchGateTests.OccupiedGateCanCloseAndOccupantCanLeave" methodname="OccupiedGateCanCloseAndOccupantCanLeave" classname="Shift.Game.Tests.SwitchGateTests" runstate="Runnable" seed="1400910212" result="Passed" start-time="2026-09-20 18:04:31Z" end-time="2026-09-20 18:04:31Z" duration="0.000371" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1114" name="PushBlockDoesNotActivatePad" fullname="Shift.Game.Tests.SwitchGateTests.PushBlockDoesNotActivatePad" methodname="PushBlockDoesNotActivatePad" classname="Shift.Game.Tests.SwitchGateTests" runstate="Runnable" seed="1194512504" result="Passed" start-time="2026-09-20 18:04:31Z" end-time="2026-09-20 18:04:31Z" duration="0.000536" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1110" name="RepeatedEntriesToggleAllLinkedGatesButNotOtherChannel" fullname="Shift.Game.Tests.SwitchGateTests.RepeatedEntriesToggleAllLinkedGatesButNotOtherChannel" methodname="RepeatedEntriesToggleAllLinkedGatesButNotOtherChannel" classname="Shift.Game.Tests.SwitchGateTests" runstate="Runnable" seed="1975817297" result="Passed" start-time="2026-09-20 18:04:31Z" end-time="2026-09-20 18:04:31Z" duration="0.000461" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1109" name="StartingOnSwitchDoesNotActivate" fullname="Shift.Game.Tests.SwitchGateTests.StartingOnSwitchDoesNotActivate" methodname="StartingOnSwitchDoesNotActivate" classname="Shift.Game.Tests.SwitchGateTests" runstate="Runnable" seed="1326916793" result="Passed" start-time="2026-09-20 18:04:31Z" end-time="2026-09-20 18:04:31Z" duration="0.000319" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1121" name="TelemetryCountsOnlyCommittedStateActions" fullname="Shift.Game.Tests.SwitchGateTests.TelemetryCountsOnlyCommittedStateActions" methodname="TelemetryCountsOnlyCommittedStateActions" classname="Shift.Game.Tests.SwitchGateTests" runstate="Runnable" seed="641091223" result="Passed" start-time="2026-09-20 18:04:31Z" end-time="2026-09-20 18:04:31Z" duration="0.000762" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1115" name="UnsafePushRestoresGateOccupantsAndBudget" fullname="Shift.Game.Tests.SwitchGateTests.UnsafePushRestoresGateOccupantsAndBudget" methodname="UnsafePushRestoresGateOccupantsAndBudget" classname="Shift.Game.Tests.SwitchGateTests" runstate="Runnable" seed="959383675" result="Passed" start-time="2026-09-20 18:04:31Z" end-time="2026-09-20 18:04:31Z" duration="0.000550" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1122" name="TelemetryPresentationTests" fullname="Shift.Game.Tests.TelemetryPresentationTests" classname="Shift.Game.Tests.TelemetryPresentationTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-09-20 18:04:31Z" end-time="2026-09-20 18:04:33Z" duration="1.992918" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1123" name="DisabledAnalyticsOverlaySettingsAndAcceptedTapsPreserveGameplay" fullname="Shift.Game.Tests.TelemetryPresentationTests.DisabledAnalyticsOverlaySettingsAndAcceptedTapsPreserveGameplay" methodname="DisabledAnalyticsOverlaySettingsAndAcceptedTapsPreserveGameplay" classname="Shift.Game.Tests.TelemetryPresentationTests" runstate="Runnable" seed="1402777146" result="Passed" start-time="2026-09-20 18:04:31Z" end-time="2026-09-20 18:04:33Z" duration="1.992458" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1124" name="TelemetryTests" fullname="Shift.Game.Tests.TelemetryTests" classname="Shift.Game.Tests.TelemetryTests" runstate="Runnable" testcasecount="13" result="Passed" start-time="2026-09-20 18:04:33Z" end-time="2026-09-20 18:04:33Z" duration="0.017637" total="13" passed="13" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1126" name="AcceptedTapMetricsSeparateBlockedCancelledAndSuccessful" fullname="Shift.Game.Tests.TelemetryTests.AcceptedTapMetricsSeparateBlockedCancelledAndSuccessful" methodname="AcceptedTapMetricsSeparateBlockedCancelledAndSuccessful" classname="Shift.Game.Tests.TelemetryTests" runstate="Runnable" seed="2079195810" result="Passed" start-time="2026-09-20 18:04:33Z" end-time="2026-09-20 18:04:33Z" duration="0.002363" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1134" name="BoardManagerRemainsAnalyticsFree" fullname="Shift.Game.Tests.TelemetryTests.BoardManagerRemainsAnalyticsFree" methodname="BoardManagerRemainsAnalyticsFree" classname="Shift.Game.Tests.TelemetryTests" runstate="Runnable" seed="861700275" result="Passed" start-time="2026-09-20 18:04:33Z" end-time="2026-09-20 18:04:33Z" duration="0.001141" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1127" name="CompletionHasDeterministicDurationAndOptimalSummaryOnce" fullname="Shift.Game.Tests.TelemetryTests.CompletionHasDeterministicDurationAndOptimalSummaryOnce" methodname="CompletionHasDeterministicDurationAndOptimalSummaryOnce" classname="Shift.Game.Tests.TelemetryTests" runstate="Runnable" seed="1081986227" result="Passed" start-time="2026-09-20 18:04:33Z" end-time="2026-09-20 18:04:33Z" duration="0.000771" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1132" name="LocalProviderIsBoundedAndSnapshotsDoNotMutate" fullname="Shift.Game.Tests.TelemetryTests.LocalProviderIsBoundedAndSnapshotsDoNotMutate" methodname="LocalProviderIsBoundedAndSnapshotsDoNotMutate" classname="Shift.Game.Tests.TelemetryTests" runstate="Runnable" seed="13074420" result="Passed" start-time="2026-09-20 18:04:33Z" end-time="2026-09-20 18:04:33Z" duration="0.000698" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1133" name="OnlySearchVerifiedUnmodifiedPuzzlesExposeOptimalMoves" fullname="Shift.Game.Tests.TelemetryTests.OnlySearchVerifiedUnmodifiedPuzzlesExposeOptimalMoves" methodname="OnlySearchVerifiedUnmodifiedPuzzlesExposeOptimalMoves" classname="Shift.Game.Tests.TelemetryTests" runstate="Runnable" seed="421134506" result="Passed" start-time="2026-09-20 18:04:33Z" end-time="2026-09-20 18:04:33Z" duration="0.002658" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1131" name="ProviderExceptionsAndDisabledProviderCannotBreakMetrics" fullname="Shift.Game.Tests.TelemetryTests.ProviderExceptionsAndDisabledProviderCannotBreakMetrics" methodname="ProviderExceptionsAndDisabledProviderCannotBreakMetrics" classname="Shift.Game.Tests.TelemetryTests" runstate="Runnable" seed="2120405392" result="Passed" start-time="2026-09-20 18:04:33Z" end-time="2026-09-20 18:04:33Z" duration="0.000747" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1129" name="RestartSnapshotsPreviousAttemptAndCarriesVisitCount" fullname="Shift.Game.Tests.TelemetryTests.RestartSnapshotsPreviousAttemptAndCarriesVisitCount" methodname="RestartSnapshotsPreviousAttemptAndCarriesVisitCount" classname="Shift.Game.Tests.TelemetryTests" runstate="Runnable" seed="1343031493" result="Passed" start-time="2026-09-20 18:04:33Z" end-time="2026-09-20 18:04:33Z" duration="0.000725" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1130" name="SessionPauseEndAndNewSessionAreIdempotent" fullname="Shift.Game.Tests.TelemetryTests.SessionPauseEndAndNewSessionAreIdempotent" methodname="SessionPauseEndAndNewSessionAreIdempotent" classname="Shift.Game.Tests.TelemetryTests" runstate="Runnable" seed="478512176" result="Passed" start-time="2026-09-20 18:04:33Z" end-time="2026-09-20 18:04:33Z" duration="0.000766" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1138" name="SettingsDefaultsAndAudioGainMuteAndPoolAreSafe" fullname="Shift.Game.Tests.TelemetryTests.SettingsDefaultsAndAudioGainMuteAndPoolAreSafe" methodname="SettingsDefaultsAndAudioGainMuteAndPoolAreSafe" classname="Shift.Game.Tests.TelemetryTests" runstate="Runnable" seed="1798519548" result="Passed" start-time="2026-09-20 18:04:33Z" end-time="2026-09-20 18:04:33Z" duration="0.001885" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1137" name="SettingsPersistIndependentlyOfProgress" fullname="Shift.Game.Tests.TelemetryTests.SettingsPersistIndependentlyOfProgress" classname="Shift.Game.Tests.TelemetryTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-09-20 18:04:33Z" end-time="2026-09-20 18:04:33Z" duration="0.002603" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1135" name="SettingsPersistIndependentlyOfProgress(True,False,True)" fullname="Shift.Game.Tests.TelemetryTests.SettingsPersistIndependentlyOfProgress(True,False,True)" methodname="SettingsPersistIndependentlyOfProgress" classname="Shift.Game.Tests.TelemetryTests" runstate="Runnable" seed="511364268" result="Passed" start-time="2026-09-20 18:04:33Z" end-time="2026-09-20 18:04:33Z" duration="0.001246" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1136" name="SettingsPersistIndependentlyOfProgress(False,True,False)" fullname="Shift.Game.Tests.TelemetryTests.SettingsPersistIndependentlyOfProgress(False,True,False)" methodname="SettingsPersistIndependentlyOfProgress" classname="Shift.Game.Tests.TelemetryTests" runstate="Runnable" seed="921607556" result="Passed" start-time="2026-09-20 18:04:33Z" end-time="2026-09-20 18:04:33Z" duration="0.000635" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-case id="1125" name="StartIncludesLevelMetadata" fullname="Shift.Game.Tests.TelemetryTests.StartIncludesLevelMetadata" methodname="StartIncludesLevelMetadata" classname="Shift.Game.Tests.TelemetryTests" runstate="Runnable" seed="1893762286" result="Passed" start-time="2026-09-20 18:04:33Z" end-time="2026-09-20 18:04:33Z" duration="0.000989" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1128" name="UnknownOptimalAndFailureNeverAwardPerfectShift" fullname="Shift.Game.Tests.TelemetryTests.UnknownOptimalAndFailureNeverAwardPerfectShift" methodname="UnknownOptimalAndFailureNeverAwardPerfectShift" classname="Shift.Game.Tests.TelemetryTests" runstate="Runnable" seed="1779240150" result="Passed" start-time="2026-09-20 18:04:33Z" end-time="2026-09-20 18:04:33Z" duration="0.000589" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1139" name="VisualIdentityTests" fullname="Shift.Game.Tests.VisualIdentityTests" classname="Shift.Game.Tests.VisualIdentityTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-09-20 18:04:33Z" end-time="2026-09-20 18:04:35Z" duration="2.155925" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1140" name="ReducedMotionModalAndRestartPreserveInputAndLayout" fullname="Shift.Game.Tests.VisualIdentityTests.ReducedMotionModalAndRestartPreserveInputAndLayout" methodname="ReducedMotionModalAndRestartPreserveInputAndLayout" classname="Shift.Game.Tests.VisualIdentityTests" runstate="Runnable" seed="1396662900" result="Passed" start-time="2026-09-20 18:04:33Z" end-time="2026-09-20 18:04:35Z" duration="2.155424" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Saving results to: C:/Users/ahmet/AppData/LocalLow/DefaultCompany/SHIFT\TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

@@ -1,0 +1,1215 @@
+[
+  {
+    "n": 36,
+    "name": "Level36_CrossBeforeClosing",
+    "width": 5,
+    "height": 5,
+    "budget": 6,
+    "pieces": [
+      {
+        "type": 0,
+        "color": 1,
+        "direction": 1,
+        "x": 2,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 0,
+        "color": 1,
+        "direction": 4,
+        "x": 1,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 0,
+        "color": 3,
+        "direction": 1,
+        "x": 3,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 1,
+        "color": 0,
+        "direction": 0,
+        "x": 3,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 4,
+        "color": 0,
+        "direction": 0,
+        "x": 2,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 3,
+        "color": 0,
+        "direction": 1,
+        "x": 4,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 5,
+        "color": 1,
+        "direction": 0,
+        "x": 4,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 3,
+        "color": 0,
+        "direction": 3,
+        "x": 2,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 5,
+        "color": 1,
+        "direction": 0,
+        "x": 1,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 0,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 3,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 4,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 0,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 1,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 4,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 0,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 0,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 1,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 2,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 0,
+        "y": 4,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 1,
+        "y": 4,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 2,
+        "y": 4,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 4,
+        "y": 4,
+        "channel": 0,
+        "initialOpen": false
+      }
+    ],
+    "title": "36 - Two Ways Through",
+    "hint": "Two colors. One turning point.",
+    "targets": [
+      1
+    ]
+  },
+  {
+    "n": 37,
+    "name": "Level37_OpenTheSecondPad",
+    "width": 6,
+    "height": 5,
+    "budget": 6,
+    "pieces": [
+      {
+        "type": 0,
+        "color": 1,
+        "direction": 4,
+        "x": 0,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 0,
+        "color": 1,
+        "direction": 1,
+        "x": 2,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 0,
+        "color": 3,
+        "direction": 1,
+        "x": 2,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 3,
+        "color": 0,
+        "direction": 4,
+        "x": 2,
+        "y": 4,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 5,
+        "color": 1,
+        "direction": 0,
+        "x": 3,
+        "y": 4,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 3,
+        "color": 0,
+        "direction": 1,
+        "x": 5,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 5,
+        "color": 1,
+        "direction": 0,
+        "x": 5,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 0,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 1,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 2,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 3,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 4,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 5,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 0,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 1,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 3,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 4,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 5,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 0,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 1,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 3,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 4,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 0,
+        "y": 4,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 1,
+        "y": 4,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 4,
+        "y": 4,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 5,
+        "y": 4,
+        "channel": 0,
+        "initialOpen": false
+      }
+    ],
+    "title": "37 - Borrowed Ground",
+    "hint": "The same space, at different times.",
+    "targets": [
+      1
+    ]
+  },
+  {
+    "n": 38,
+    "name": "Level38_LiftAndTurn",
+    "width": 6,
+    "height": 5,
+    "budget": 7,
+    "pieces": [
+      {
+        "type": 0,
+        "color": 1,
+        "direction": 4,
+        "x": 1,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 0,
+        "color": 1,
+        "direction": 2,
+        "x": 1,
+        "y": 4,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 0,
+        "color": 1,
+        "direction": 3,
+        "x": 4,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 0,
+        "color": 1,
+        "direction": 2,
+        "x": 2,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 3,
+        "color": 0,
+        "direction": 1,
+        "x": 3,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 4,
+        "color": 0,
+        "direction": 0,
+        "x": 2,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 5,
+        "color": 1,
+        "direction": 0,
+        "x": 2,
+        "y": 4,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 4,
+        "color": 0,
+        "direction": 0,
+        "x": 3,
+        "y": 4,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 3,
+        "color": 0,
+        "direction": 4,
+        "x": 4,
+        "y": 4,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 5,
+        "color": 1,
+        "direction": 0,
+        "x": 5,
+        "y": 4,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 3,
+        "color": 0,
+        "direction": 2,
+        "x": 1,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 3,
+        "color": 0,
+        "direction": 4,
+        "x": 1,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 3,
+        "color": 0,
+        "direction": 4,
+        "x": 2,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 5,
+        "color": 1,
+        "direction": 0,
+        "x": 3,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 6,
+        "color": 0,
+        "direction": 0,
+        "x": 3,
+        "y": 3,
+        "channel": 1,
+        "initialOpen": false
+      },
+      {
+        "type": 7,
+        "color": 0,
+        "direction": 0,
+        "x": 1,
+        "y": 2,
+        "channel": 1,
+        "initialOpen": true
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 0,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 1,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 2,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 3,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 4,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 5,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 0,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 4,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 5,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 0,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 4,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 5,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 0,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 5,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 0,
+        "y": 4,
+        "channel": 0,
+        "initialOpen": false
+      }
+    ],
+    "title": "38 - A Favor Returned",
+    "hint": "Make room for each other.",
+    "targets": [
+      1
+    ]
+  },
+  {
+    "n": 39,
+    "name": "Level39_PrepareToggleRedirect",
+    "width": 5,
+    "height": 5,
+    "budget": 8,
+    "pieces": [
+      {
+        "type": 0,
+        "color": 1,
+        "direction": 2,
+        "x": 2,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 0,
+        "color": 1,
+        "direction": 4,
+        "x": 0,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 0,
+        "color": 3,
+        "direction": 4,
+        "x": 1,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 3,
+        "color": 0,
+        "direction": 1,
+        "x": 3,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 5,
+        "color": 1,
+        "direction": 0,
+        "x": 3,
+        "y": 4,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 3,
+        "color": 0,
+        "direction": 2,
+        "x": 4,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 5,
+        "color": 1,
+        "direction": 0,
+        "x": 4,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 4,
+        "color": 0,
+        "direction": 0,
+        "x": 2,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 3,
+        "color": 0,
+        "direction": 1,
+        "x": 0,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 5,
+        "color": 1,
+        "direction": 0,
+        "x": 0,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 3,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 4,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 1,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 3,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 4,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 0,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 0,
+        "y": 4,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 1,
+        "y": 4,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 2,
+        "y": 4,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 4,
+        "y": 4,
+        "channel": 0,
+        "initialOpen": false
+      }
+    ],
+    "title": "39 - Better Together",
+    "hint": "Can one move do two jobs?",
+    "targets": [
+      1
+    ]
+  },
+  {
+    "n": 40,
+    "name": "Level40_TheStateOfShift",
+    "width": 6,
+    "height": 5,
+    "budget": 8,
+    "pieces": [
+      {
+        "type": 0,
+        "color": 1,
+        "direction": 2,
+        "x": 1,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 0,
+        "color": 1,
+        "direction": 2,
+        "x": 3,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 0,
+        "color": 4,
+        "direction": 2,
+        "x": 0,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 0,
+        "color": 3,
+        "direction": 4,
+        "x": 2,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 3,
+        "color": 0,
+        "direction": 4,
+        "x": 0,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 3,
+        "color": 0,
+        "direction": 4,
+        "x": 2,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 7,
+        "color": 0,
+        "direction": 0,
+        "x": 4,
+        "y": 1,
+        "channel": 1,
+        "initialOpen": false
+      },
+      {
+        "type": 3,
+        "color": 0,
+        "direction": 1,
+        "x": 5,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 3,
+        "color": 0,
+        "direction": 1,
+        "x": 5,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 5,
+        "color": 1,
+        "direction": 0,
+        "x": 5,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 6,
+        "color": 0,
+        "direction": 0,
+        "x": 3,
+        "y": 0,
+        "channel": 1,
+        "initialOpen": false
+      },
+      {
+        "type": 3,
+        "color": 0,
+        "direction": 1,
+        "x": 4,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 3,
+        "color": 0,
+        "direction": 3,
+        "x": 4,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 4,
+        "color": 0,
+        "direction": 0,
+        "x": 3,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 3,
+        "color": 0,
+        "direction": 3,
+        "x": 3,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 3,
+        "color": 0,
+        "direction": 1,
+        "x": 2,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 5,
+        "color": 1,
+        "direction": 0,
+        "x": 2,
+        "y": 4,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 0,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 1,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 5,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 0,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 4,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 0,
+        "y": 4,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 1,
+        "y": 4,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 3,
+        "y": 4,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 4,
+        "y": 4,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 5,
+        "y": 4,
+        "channel": 0,
+        "initialOpen": false
+      }
+    ],
+    "title": "40 - The Color Machine",
+    "hint": "Build one system. Finish every color.",
+    "targets": [
+      1
+    ]
+  }
+]

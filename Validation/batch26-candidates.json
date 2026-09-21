@@ -1,0 +1,984 @@
+[
+  {
+    "n": 26,
+    "name": "Level26_ThreeEntries",
+    "width": 5,
+    "height": 4,
+    "budget": 4,
+    "pieces": [
+      {
+        "type": 0,
+        "color": 1,
+        "direction": 4,
+        "x": 0,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 0,
+        "color": 2,
+        "direction": 2,
+        "x": 1,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 3,
+        "color": 0,
+        "direction": 1,
+        "x": 3,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 3,
+        "color": 0,
+        "direction": 4,
+        "x": 3,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 5,
+        "color": 1,
+        "direction": 0,
+        "x": 4,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 0,
+        "color": 3,
+        "direction": 1,
+        "x": 0,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 0,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 2,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 3,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 4,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 2,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 3,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 4,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 4,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 1,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 2,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      }
+    ],
+    "title": "26 - Let It Wait",
+    "hint": "A clear lane is worth waiting for."
+  },
+  {
+    "n": 27,
+    "name": "Level27_BoxDoesNotPress",
+    "width": 5,
+    "height": 4,
+    "budget": 5,
+    "pieces": [
+      {
+        "type": 0,
+        "color": 1,
+        "direction": 2,
+        "x": 2,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 1,
+        "color": 0,
+        "direction": 0,
+        "x": 2,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 0,
+        "color": 2,
+        "direction": 4,
+        "x": 1,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 3,
+        "color": 0,
+        "direction": 4,
+        "x": 2,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 5,
+        "color": 1,
+        "direction": 0,
+        "x": 4,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 0,
+        "color": 3,
+        "direction": 2,
+        "x": 3,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 0,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 1,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 2,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 3,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 4,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 0,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 1,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 0,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 0,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 1,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 4,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      }
+    ],
+    "title": "27 - Borrowed Space",
+    "hint": "Moving aside is only half the plan."
+  },
+  {
+    "n": 28,
+    "name": "Level28_TurnThrough",
+    "width": 5,
+    "height": 5,
+    "budget": 5,
+    "pieces": [
+      {
+        "type": 0,
+        "color": 1,
+        "direction": 4,
+        "x": 1,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 0,
+        "color": 2,
+        "direction": 1,
+        "x": 1,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 3,
+        "color": 0,
+        "direction": 4,
+        "x": 1,
+        "y": 4,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 4,
+        "color": 0,
+        "direction": 0,
+        "x": 2,
+        "y": 4,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 3,
+        "color": 0,
+        "direction": 4,
+        "x": 2,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 4,
+        "color": 0,
+        "direction": 0,
+        "x": 3,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 3,
+        "color": 0,
+        "direction": 4,
+        "x": 3,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 5,
+        "color": 1,
+        "direction": 0,
+        "x": 4,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 0,
+        "color": 3,
+        "direction": 1,
+        "x": 2,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 0,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 0,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 4,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 0,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 3,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 4,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 0,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 3,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 4,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 0,
+        "y": 4,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 3,
+        "y": 4,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 4,
+        "y": 4,
+        "channel": 0,
+        "initialOpen": false
+      }
+    ],
+    "title": "28 - Beyond the Turn",
+    "hint": "Look past the first turn."
+  },
+  {
+    "n": 29,
+    "name": "Level29_ClockworkGate",
+    "width": 6,
+    "height": 4,
+    "budget": 8,
+    "pieces": [
+      {
+        "type": 0,
+        "color": 1,
+        "direction": 4,
+        "x": 0,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 0,
+        "color": 1,
+        "direction": 4,
+        "x": 1,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 0,
+        "color": 1,
+        "direction": 1,
+        "x": 2,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 3,
+        "color": 0,
+        "direction": 4,
+        "x": 2,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 4,
+        "color": 0,
+        "direction": 0,
+        "x": 3,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 3,
+        "color": 0,
+        "direction": 4,
+        "x": 3,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 4,
+        "color": 0,
+        "direction": 0,
+        "x": 4,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 3,
+        "color": 0,
+        "direction": 4,
+        "x": 4,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 3,
+        "color": 0,
+        "direction": 1,
+        "x": 5,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 3,
+        "color": 0,
+        "direction": 1,
+        "x": 5,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 5,
+        "color": 1,
+        "direction": 0,
+        "x": 5,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 0,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 1,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 2,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 3,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 0,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 1,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 0,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 1,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 4,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 5,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      }
+    ],
+    "title": "29 - One Move, More Work",
+    "hint": "One route does more work."
+  },
+  {
+    "n": 30,
+    "name": "Level30_ClearThenOpen",
+    "width": 6,
+    "height": 5,
+    "budget": 7,
+    "pieces": [
+      {
+        "type": 0,
+        "color": 1,
+        "direction": 4,
+        "x": 0,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 0,
+        "color": 1,
+        "direction": 4,
+        "x": 1,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 0,
+        "color": 2,
+        "direction": 2,
+        "x": 2,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 1,
+        "color": 0,
+        "direction": 0,
+        "x": 2,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 6,
+        "color": 0,
+        "direction": 0,
+        "x": 2,
+        "y": 1,
+        "channel": 1,
+        "initialOpen": false
+      },
+      {
+        "type": 0,
+        "color": 3,
+        "direction": 4,
+        "x": 1,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 7,
+        "color": 0,
+        "direction": 0,
+        "x": 3,
+        "y": 2,
+        "channel": 1,
+        "initialOpen": true
+      },
+      {
+        "type": 3,
+        "color": 0,
+        "direction": 1,
+        "x": 4,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 3,
+        "color": 0,
+        "direction": 4,
+        "x": 4,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 3,
+        "color": 0,
+        "direction": 1,
+        "x": 5,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 5,
+        "color": 1,
+        "direction": 0,
+        "x": 5,
+        "y": 4,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 0,
+        "color": 3,
+        "direction": 2,
+        "x": 0,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 0,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 1,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 2,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 3,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 4,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 5,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 5,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 5,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 1,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 2,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 3,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 0,
+        "y": 4,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 1,
+        "y": 4,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 2,
+        "y": 4,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 3,
+        "y": 4,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 2,
+        "color": 0,
+        "direction": 0,
+        "x": 4,
+        "y": 4,
+        "channel": 0,
+        "initialOpen": false
+      }
+    ],
+    "title": "30 - Release the Relay",
+    "hint": "Prepare the board, then release it."
+  }
+]

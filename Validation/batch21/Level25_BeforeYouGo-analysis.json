@@ -1,0 +1,119 @@
+{
+    "minimum": 6,
+    "states": 32,
+    "meaningfulDecisions": 6,
+    "finalDepth": 4,
+    "solutionPaths": 2,
+    "randomSolveProbability": 0.020833333333333333,
+    "openings": [
+        {
+            "tap": {
+                "x": 0,
+                "y": 1
+            },
+            "winningPaths": 1,
+            "probability": 0.03125,
+            "depth": 6
+        },
+        {
+            "tap": {
+                "x": 3,
+                "y": 1
+            },
+            "winningPaths": 1,
+            "probability": 0.03125,
+            "depth": 1
+        },
+        {
+            "tap": {
+                "x": 1,
+                "y": 0
+            },
+            "winningPaths": 0,
+            "probability": 0.0,
+            "depth": 5
+        }
+    ],
+    "decisions": [
+        {
+            "step": 1,
+            "legal": 3,
+            "viable": 2,
+            "intended": {
+                "x": 3,
+                "y": 1
+            }
+        },
+        {
+            "step": 2,
+            "legal": 2,
+            "viable": 1,
+            "intended": {
+                "x": 0,
+                "y": 1
+            }
+        },
+        {
+            "step": 3,
+            "legal": 2,
+            "viable": 1,
+            "intended": {
+                "x": 1,
+                "y": 1
+            }
+        },
+        {
+            "step": 4,
+            "legal": 2,
+            "viable": 1,
+            "intended": {
+                "x": 2,
+                "y": 2
+            }
+        },
+        {
+            "step": 5,
+            "legal": 2,
+            "viable": 1,
+            "intended": {
+                "x": 2,
+                "y": 3
+            }
+        },
+        {
+            "step": 6,
+            "legal": 2,
+            "viable": 1,
+            "intended": {
+                "x": 3,
+                "y": 4
+            }
+        }
+    ],
+    "shortest": [
+        {
+            "x": 0,
+            "y": 1
+        },
+        {
+            "x": 3,
+            "y": 1
+        },
+        {
+            "x": 1,
+            "y": 1
+        },
+        {
+            "x": 2,
+            "y": 2
+        },
+        {
+            "x": 2,
+            "y": 3
+        },
+        {
+            "x": 3,
+            "y": 4
+        }
+    ]
+}

@@ -1,0 +1,50 @@
+{
+  "protectedFiles": 85,
+  "protectedMismatches": [],
+  "testedAssetMismatches": [],
+  "total": "163",
+  "passed": "163",
+  "failed": "0",
+  "skipped": "0",
+  "compilerDiagnostics": 0,
+  "changedBaselineFiles": [
+    "Assets/_Game/README.md",
+    "Assets/_Game/Data/Levels/Level21_FirstSwitch.asset",
+    "Assets/_Game/Data/Levels/Level22_OpenForRed.asset",
+    "Assets/_Game/Data/Levels/Level23_ToggleTwice.asset",
+    "Assets/_Game/Data/Levels/Level24_ClosedLane.asset",
+    "Assets/_Game/Data/Levels/Level25_BeforeYouGo.asset",
+    "Assets/_Game/Resources/LevelDesignCatalog.asset",
+    "Assets/_Game/Scripts/Levels/VerifiedOptimality.cs",
+    "Assets/_Game/Tests/Editor/BoardVisualFrozenFiles.txt",
+    "Assets/_Game/Tests/Editor/IdentityFrozenFiles.txt",
+    "Assets/_Game/Tests/Editor/Sprint5FrozenFiles.txt"
+  ],
+  "screenshots": [
+    {
+      "name": "batch21-level21.png",
+      "width": 1080,
+      "height": 1920
+    },
+    {
+      "name": "batch21-level22.png",
+      "width": 1080,
+      "height": 1920
+    },
+    {
+      "name": "batch21-level23.png",
+      "width": 1080,
+      "height": 1920
+    },
+    {
+      "name": "batch21-level24.png",
+      "width": 1080,
+      "height": 1920
+    },
+    {
+      "name": "batch21-level25.png",
+      "width": 1080,
+      "height": 1920
+    }
+  ]
+}

@@ -1,0 +1,390 @@
+[
+  {
+    "Path": "Assets\\_Game\\Art.meta",
+    "Hash": "8BB86290EC421F9B018E3A998DECBC775D1EC1230698510DCCEC90D801E31C48"
+  },
+  {
+    "Path": "Assets\\_Game\\Audio.meta",
+    "Hash": "1199974FEB4BD4C7C7C9334132934B7C5B68006162B17F19D075F9BF9D094F4E"
+  },
+  {
+    "Path": "Assets\\_Game\\Data.meta",
+    "Hash": "E2F278013F9DE8B516D1F3ADBB4066A912BBFB1679E0547D34B36B4EDBD89E2A"
+  },
+  {
+    "Path": "Assets\\_Game\\Editor.meta",
+    "Hash": "C5528A902C0AAC4ED4FA6127830A6EFDAC35771A022B0B62EB3F3B74890A31CF"
+  },
+  {
+    "Path": "Assets\\_Game\\Prefabs.meta",
+    "Hash": "05D32D00B2107642210F4CB564BC13FC27D4F2EAC8C67FD33A213EAF1BFB1F59"
+  },
+  {
+    "Path": "Assets\\_Game\\README.md",
+    "Hash": "C96E135AB5E83102F9FBC94060952793AF4F429835E78001D88F5D9A5C12B8B7"
+  },
+  {
+    "Path": "Assets\\_Game\\README.md.meta",
+    "Hash": "F09FA2026F65EC35124DFFD3F08374E1B2F08CBA442CAF061AB2ED2A0BBAD612"
+  },
+  {
+    "Path": "Assets\\_Game\\Scenes.meta",
+    "Hash": "F0C807AF2C137EB4431AE5AEF74E07B65931C90E1806A239EB19A3356AFA2841"
+  },
+  {
+    "Path": "Assets\\_Game\\Scripts.meta",
+    "Hash": "C2CDAF26E3A141280784F2D15E186BD81327B0CC1536312E234ECBC0B6B416CC"
+  },
+  {
+    "Path": "Assets\\_Game\\Settings.meta",
+    "Hash": "2A395C2BF36161144E3B36CED97BF3EA544A30BE3A3517CC7325C28F1281EFC7"
+  },
+  {
+    "Path": "Assets\\_Game\\Tests.meta",
+    "Hash": "446891ED6A489A9DE80720D907E0E0B6AE017A7F93ADAA599E94D547FD6EAE64"
+  },
+  {
+    "Path": "Assets\\_Game\\Art\\Materials.meta",
+    "Hash": "C2CB3D250F3251AE0770F2E2CE747B3FFD43B52F40D3BEC273DA6F3A32224BE2"
+  },
+  {
+    "Path": "Assets\\_Game\\Art\\Sprites.meta",
+    "Hash": "1B92ED1D560BB0C04E559735AB8C41FF3E096B332DDEB3E1B6E377B59B6A41F3"
+  },
+  {
+    "Path": "Assets\\_Game\\Art\\UI.meta",
+    "Hash": "A6E0002E7C0E0393DA307A955EAD0B45258BC62EC9FF3110B2CAD008EB06FDE7"
+  },
+  {
+    "Path": "Assets\\_Game\\Art\\VFX.meta",
+    "Hash": "C10F01F986DFD31C2CB2DF978BE38BB9A9A02B82EA23996D13BADDDAF2313DA7"
+  },
+  {
+    "Path": "Assets\\_Game\\Audio\\Music.meta",
+    "Hash": "DB6759B92EFC5E0BC36C4030D616930BD55758EB76D0FF104BF2ED09AD036654"
+  },
+  {
+    "Path": "Assets\\_Game\\Audio\\SFX.meta",
+    "Hash": "1C2B1A5006114CEC4381AD91CAB080C37D6C24CDE7739C159B7C9281F0129350"
+  },
+  {
+    "Path": "Assets\\_Game\\Data\\Levels.meta",
+    "Hash": "6EA945EAF7E975AA5093F15C2A05A7ADB66E824C70B150DF20C51F6458D07EB7"
+  },
+  {
+    "Path": "Assets\\_Game\\Data\\Levels\\FirstChain.asset",
+    "Hash": "810070F25B8222286BABD08C3C91B719B209CDC526917B47FEC9B6E70BF3E8D2"
+  },
+  {
+    "Path": "Assets\\_Game\\Data\\Levels\\FirstChain.asset.meta",
+    "Hash": "4D5D52730F00F7CB5A95614064CEAC18FEF198B534412C6563ADADA51E20F4DA"
+  },
+  {
+    "Path": "Assets\\_Game\\Editor\\PrototypeSetup.cs",
+    "Hash": "CBF4783CD4961EC0FD5EF645622C16FA117E86E7561ABA121483EA8B99E1B389"
+  },
+  {
+    "Path": "Assets\\_Game\\Editor\\PrototypeSetup.cs.meta",
+    "Hash": "8F5C05602197E4C4BE08A509D3EB6535E0E10EDD2818CA4AD17E6709A881067E"
+  },
+  {
+    "Path": "Assets\\_Game\\Editor\\Shift.Editor.asmdef",
+    "Hash": "639D2853F4970CDE75F5352D6CD537FA19238D873D56752F0E3F0270F5EA7D34"
+  },
+  {
+    "Path": "Assets\\_Game\\Editor\\Shift.Editor.asmdef.meta",
+    "Hash": "AA6A932ADF90B35991D10E1E05BF22754B34C6B10C9AFD06ED72C49327A727C9"
+  },
+  {
+    "Path": "Assets\\_Game\\Prefabs\\Board.meta",
+    "Hash": "19F8F5437A9C4B0C3396013A571A92DB7B1076479A7AFBE8AE34DA480CCD0BA2"
+  },
+  {
+    "Path": "Assets\\_Game\\Prefabs\\Pieces.meta",
+    "Hash": "D86E06120F9B89020E66B081D6DB0883B38F2CD5F4EE071F1F24523C66BFAB8B"
+  },
+  {
+    "Path": "Assets\\_Game\\Prefabs\\UI.meta",
+    "Hash": "D1F1181682CD7B95BA3A5E075DB074379105E78788ACE56BADBA43B41E7F6352"
+  },
+  {
+    "Path": "Assets\\_Game\\Scenes\\Prototype.unity",
+    "Hash": "18A2487CC766D7B711C0A6C4F5CAB3CDEE75F08177B14159964692E33C3AF696"
+  },
+  {
+    "Path": "Assets\\_Game\\Scenes\\Prototype.unity.meta",
+    "Hash": "8622A1B97D096A4E94EFE5404ADC79A49B36FB6694272FC542AB56B784A9FF4C"
+  },
+  {
+    "Path": "Assets\\_Game\\Scripts\\Board.meta",
+    "Hash": "090BB33DFF1760959CF6856A7EF77E079D59C1B8167DEC4C8E8A16A1D338AD42"
+  },
+  {
+    "Path": "Assets\\_Game\\Scripts\\Core.meta",
+    "Hash": "2F87B37DB4D74A2AB78F2EAB930C6D04FA7A66BDE89FBF7AAB01510474C32658"
+  },
+  {
+    "Path": "Assets\\_Game\\Scripts\\Levels.meta",
+    "Hash": "31E9DD17ADED0F10C352E73B8E0717B136F743650934934CB7D55770614CAB40"
+  },
+  {
+    "Path": "Assets\\_Game\\Scripts\\Pieces.meta",
+    "Hash": "760A2BEDDE56729A069248DE4F1E3CF126746618B511CC8292D0EC373798FCDD"
+  },
+  {
+    "Path": "Assets\\_Game\\Scripts\\Shift.Game.asmdef",
+    "Hash": "8C8303C9C7715C99156E49CBCBC7F6F9CD9C01CF386FC43DCB6B9E18F6A59A93"
+  },
+  {
+    "Path": "Assets\\_Game\\Scripts\\Shift.Game.asmdef.meta",
+    "Hash": "BA4055E4EB38449EECF44D6B3BC8C485ED5F93706928F17A17B7E9CACDEEFCB4"
+  },
+  {
+    "Path": "Assets\\_Game\\Scripts\\Systems.meta",
+    "Hash": "9769DED99222720A92A81B325BAB2ACDAE61AF334A48672AFC70CC030C5B00E6"
+  },
+  {
+    "Path": "Assets\\_Game\\Scripts\\UI.meta",
+    "Hash": "67C433B9105693C2F566EA0581E7B065D94C7F2C0601D53A643983215D270416"
+  },
+  {
+    "Path": "Assets\\_Game\\Scripts\\Board\\BoardAction.cs",
+    "Hash": "817EB27DFF97FFC3BE4C968DE03C31FFF092F789560E84EABAC22A9C4B1A6BE0"
+  },
+  {
+    "Path": "Assets\\_Game\\Scripts\\Board\\BoardAction.cs.meta",
+    "Hash": "226D8E55B2907769DC21BA9CED85097AA381B6B21F369AD6CD13693CB0EC4434"
+  },
+  {
+    "Path": "Assets\\_Game\\Scripts\\Board\\BoardManager.cs",
+    "Hash": "A74A4B8E4341CE17E362978A84AF6CFBF774CCA523142875BBD74667A8ABC241"
+  },
+  {
+    "Path": "Assets\\_Game\\Scripts\\Board\\BoardManager.cs.meta",
+    "Hash": "9E1F891A26C7D7D94D291691E46DB83B33A4A435B816ABA34BCE53C43132F46F"
+  },
+  {
+    "Path": "Assets\\_Game\\Scripts\\Board\\BoardView.cs",
+    "Hash": "98F2ABB139671C601AB81B66D43DE255925FE16BD2D858F9D2CA035D2C17EBF3"
+  },
+  {
+    "Path": "Assets\\_Game\\Scripts\\Board\\BoardView.cs.meta",
+    "Hash": "4CA8E245759AA27559285B69F5B8189598D5C079B063ADEC7F14D5B72311A2E8"
+  },
+  {
+    "Path": "Assets\\_Game\\Scripts\\Board\\GridCell.cs",
+    "Hash": "4ED769F86F5F7D946AEE9008BF9D07C1748EA7E349CEE45C55F37CF848568BA1"
+  },
+  {
+    "Path": "Assets\\_Game\\Scripts\\Board\\GridCell.cs.meta",
+    "Hash": "209C62794DE817D3D8E55270561F9ACEDB4B2901DBA7A337C4E63B8260594F81"
+  },
+  {
+    "Path": "Assets\\_Game\\Scripts\\Core\\DirectionUtility.cs",
+    "Hash": "4DF87A9854EC97C2DCA28B4D9754DC769083FA7DA1164F6CACE1EBE89CD46955"
+  },
+  {
+    "Path": "Assets\\_Game\\Scripts\\Core\\DirectionUtility.cs.meta",
+    "Hash": "13F7259594D002174B542C6ABC333F45F3760FEE457BF589F374AEE92732770B"
+  },
+  {
+    "Path": "Assets\\_Game\\Scripts\\Core\\GameEnums.cs",
+    "Hash": "A89BDACDE21618D3E9E97438F21321EE8C3D2510489133EF21F22D6B7F48483F"
+  },
+  {
+    "Path": "Assets\\_Game\\Scripts\\Core\\GameEnums.cs.meta",
+    "Hash": "FBF376B9CDC505FF1246D20D83124FBBCCEAAB2EF4386278A145BDA9CE6076EE"
+  },
+  {
+    "Path": "Assets\\_Game\\Scripts\\Core\\GridPosition.cs",
+    "Hash": "CFED4CEC78437042B5AC3FBE98A1B998C8CFA4BACD24B9AFF50AA2EC8DF24193"
+  },
+  {
+    "Path": "Assets\\_Game\\Scripts\\Core\\GridPosition.cs.meta",
+    "Hash": "0051358316242167C3C282365323C42E2736F21BCAAD46506428360A8D10189C"
+  },
+  {
+    "Path": "Assets\\_Game\\Scripts\\Levels\\LevelData.cs",
+    "Hash": "099C11AB7583CE4F2415B31A6B97E8FAF324896599F608274D3CF173E07BAE24"
+  },
+  {
+    "Path": "Assets\\_Game\\Scripts\\Levels\\LevelData.cs.meta",
+    "Hash": "1AF8A67E98710C7D47F736787E4807833428BB7A9D30F8D3D189F25EACC6C0AB"
+  },
+  {
+    "Path": "Assets\\_Game\\Scripts\\Pieces\\Piece.cs",
+    "Hash": "A7DBB8B2EDB039F2DABD16A5BD01AE0B8BF98C3C2DDAE2FA46381B9E67472B69"
+  },
+  {
+    "Path": "Assets\\_Game\\Scripts\\Pieces\\Piece.cs.meta",
+    "Hash": "12F771D80C381B709D61234B879373BCF773EC396E77A924ACBED5C89EBBE719"
+  },
+  {
+    "Path": "Assets\\_Game\\Scripts\\Systems\\PrototypeGame.cs",
+    "Hash": "B4AA1D776CE514BFEB981530A592ACF53ACE12B4ECDD77A68719F0DD932F9937"
+  },
+  {
+    "Path": "Assets\\_Game\\Scripts\\Systems\\PrototypeGame.cs.meta",
+    "Hash": "96CDC0A2530E75184B271FA3DC378C027B9EDEDD0B053AC7791FD32A599E2E79"
+  },
+  {
+    "Path": "Assets\\_Game\\Scripts\\UI\\GameHud.cs",
+    "Hash": "8E97AED0EDF43697E8D032AB9219FBD8B9A79F53C07B12439056A89DD2A99D84"
+  },
+  {
+    "Path": "Assets\\_Game\\Scripts\\UI\\GameHud.cs.meta",
+    "Hash": "5E426DA7C56D1549AE0903CBABFFFE553599B10A3A3C131EFC7D5BFFF7DB5B33"
+  },
+  {
+    "Path": "Assets\\_Game\\Scripts\\UI\\PlaceholderVisuals.cs",
+    "Hash": "4972A83E03E53214F70BA70689B901967C28F74C7BC4F87B728CECDEB3D679C3"
+  },
+  {
+    "Path": "Assets\\_Game\\Scripts\\UI\\PlaceholderVisuals.cs.meta",
+    "Hash": "C2EB243A3A08BC842E5167A181B9DC79070E6D68DCE6FB2229F3A8C1C8E71DDA"
+  },
+  {
+    "Path": "Assets\\_Game\\Scripts\\UI\\SafeArea.cs",
+    "Hash": "36EDE4CB22F3B59E9AC183E9999E94C2C6F6DBF0AEDC5AB0C5B3C0C59EFDAD8F"
+  },
+  {
+    "Path": "Assets\\_Game\\Scripts\\UI\\SafeArea.cs.meta",
+    "Hash": "D2E15205A4C7C5104E9B03540C4725D09C6060F5B3F72E23411BD77D1FFFDD50"
+  },
+  {
+    "Path": "Assets\\_Game\\Tests\\Editor.meta",
+    "Hash": "3E4DCB8D6D0BDF3D5ABF0666C902099AC1065AD86EEC490B088B7ACC1C692F9C"
+  },
+  {
+    "Path": "Assets\\_Game\\Tests\\Editor\\BoardManagerTests.cs",
+    "Hash": "08D0F709B32D34A3AB3B410E3822B0F2DBE94964286377BAB3E1334F70AAF5B8"
+  },
+  {
+    "Path": "Assets\\_Game\\Tests\\Editor\\BoardManagerTests.cs.meta",
+    "Hash": "4841BCBA661863EA1803CF2A59F95460BBEF3C7DF8BB75A38FB5A9B889291F73"
+  },
+  {
+    "Path": "Assets\\_Game\\Tests\\Editor\\PrototypeSceneTests.cs",
+    "Hash": "F2375AEBC119BE1BD0D5E474A2D4EAF44EF110E973514F89FEEEE36904A0CD5E"
+  },
+  {
+    "Path": "Assets\\_Game\\Tests\\Editor\\PrototypeSceneTests.cs.meta",
+    "Hash": "F3F04E3183C5960DE0B89E97EAAB2B8FFEDF43DCB9513A6A83EF3189E5CDBC25"
+  },
+  {
+    "Path": "Assets\\_Game\\Tests\\Editor\\Shift.Tests.asmdef",
+    "Hash": "F6DFE322A37F066E6A1170F2D9E4D76D398F92A63106F166DB707577B3F0B2D1"
+  },
+  {
+    "Path": "Assets\\_Game\\Tests\\Editor\\Shift.Tests.asmdef.meta",
+    "Hash": "CD4323A770AE7D4D2CD3037B5C17EB4DE8916F31957B1DD2C2DF31A52559CB0C"
+  },
+  {
+    "Path": "ProjectSettings\\AudioManager.asset",
+    "Hash": "AEEDEB3243F07B61DBBE854AA08B5EF6F0B5274DD9852AD9F6129DDE3E105A31"
+  },
+  {
+    "Path": "ProjectSettings\\ClusterInputManager.asset",
+    "Hash": "40E65DD214BF254955D2C8829CA8CE2130FD3510485560CE012E9A1DDD93E623"
+  },
+  {
+    "Path": "ProjectSettings\\DynamicsManager.asset",
+    "Hash": "B7C9A9DC08B98990109D4346F68745E15E238DE400F96C583E53E1C83C743A78"
+  },
+  {
+    "Path": "ProjectSettings\\EditorBuildSettings.asset",
+    "Hash": "49A2A46C3F85C3D93645D64E9BA79412D8C254C53B17FAD32E94004C2349562C"
+  },
+  {
+    "Path": "ProjectSettings\\EditorSettings.asset",
+    "Hash": "FE4A08AD89A92C468A8BEFD7D86D4389875B648E8EC60E712BA998F3DE7194E4"
+  },
+  {
+    "Path": "ProjectSettings\\GraphicsSettings.asset",
+    "Hash": "BCDB6EE570B5EDC137B79E48F860495035136E494030E214FE39C151D16FE993"
+  },
+  {
+    "Path": "ProjectSettings\\InputManager.asset",
+    "Hash": "7A1BB836A1008D26D0860D143E9D9DF7CA41731D30A72901B518063819C62DF2"
+  },
+  {
+    "Path": "ProjectSettings\\MemorySettings.asset",
+    "Hash": "1E8379A461B10AE09F3F696911088C16875D63E87ED5F2D95DF9E1892703F9FD"
+  },
+  {
+    "Path": "ProjectSettings\\MultiplayerManager.asset",
+    "Hash": "ABA89FD1A1DDAD182727AD82727E536D27372E90328A8196DA2A4560398983DD"
+  },
+  {
+    "Path": "ProjectSettings\\NavMeshAreas.asset",
+    "Hash": "80106CFA7E6181A1928B142C075F3E510D527441E3D79BC83590E4AC91E7CD66"
+  },
+  {
+    "Path": "ProjectSettings\\NetworkManager.asset",
+    "Hash": "46395DEF99A6B5AE38EBB19B3E18F75215A9D4172C219361521A5A51E051F386"
+  },
+  {
+    "Path": "ProjectSettings\\PackageManagerSettings.asset",
+    "Hash": "138547FBFA0C29CD6779387B25C492E7C302C268464010F936FBD14F61A12BCF"
+  },
+  {
+    "Path": "ProjectSettings\\Physics2DSettings.asset",
+    "Hash": "50E61D70BC38C632CB0E6EFE364A9C5BCFD9A8DBCF4E7B5ECFB06A2030C4518F"
+  },
+  {
+    "Path": "ProjectSettings\\PresetManager.asset",
+    "Hash": "29C125923FE6E29F90190D4FCE1C82D660E7051546E2C9D02908D18C9CF2436C"
+  },
+  {
+    "Path": "ProjectSettings\\ProjectSettings.asset",
+    "Hash": "160F7F9CAE26C5ADE2C34C25C7901421FFF93A8A192E3A1C81B1A722A666B968"
+  },
+  {
+    "Path": "ProjectSettings\\ProjectVersion.txt",
+    "Hash": "CCBDED48ADD235CEBC157983154AAA49ED9035F56398FCB5E2B41BAE3EBD2B66"
+  },
+  {
+    "Path": "ProjectSettings\\QualitySettings.asset",
+    "Hash": "C1ED060F85623D3595B1E9EEA133D957CD92191639A6EDC51C638E3EDCBA240C"
+  },
+  {
+    "Path": "ProjectSettings\\ShaderGraphSettings.asset",
+    "Hash": "3593FE2681C549DC2476E02C686C96F2A61F1D2808BDAC380B08262F3F2E0ADD"
+  },
+  {
+    "Path": "ProjectSettings\\TagManager.asset",
+    "Hash": "8E18B1C820E9C09E16BBD1F1B7842E9FB3B0158A0921B0964E0B8FA12C6E2C01"
+  },
+  {
+    "Path": "ProjectSettings\\TimeManager.asset",
+    "Hash": "1A83E54ADBBDA7C9F4851103A0C6AB7F6448A3343D4EA5B7620452FA08416ECD"
+  },
+  {
+    "Path": "ProjectSettings\\UnityConnectSettings.asset",
+    "Hash": "B7DD1E8290598F5CE86919BA1C98B42B766C8C42191A30FA2C4D12195C4ECD00"
+  },
+  {
+    "Path": "ProjectSettings\\URPProjectSettings.asset",
+    "Hash": "C317FE22B9488785C0611F0642429922E5D324430D929BFFB41648130F30C218"
+  },
+  {
+    "Path": "ProjectSettings\\VersionControlSettings.asset",
+    "Hash": "E199CDFA6A8F2BF33CFD47E549198F13E3EB2A5099E908FDB4E0F14D939CCC6B"
+  },
+  {
+    "Path": "ProjectSettings\\VFXManager.asset",
+    "Hash": "F066C6483919961332415EE64204F74FE52F38C02E82892EB02B7A5B2E381F0E"
+  },
+  {
+    "Path": "ProjectSettings\\XRSettings.asset",
+    "Hash": "EDD2BEB4A2E388312B4B7DA241AA51070434005D82C59363F1237DD2E567585F"
+  },
+  {
+    "Path": "Packages\\manifest.json",
+    "Hash": "737E967B53B452D640853201B810900974D6A146B3EDC0601CD69AD43D5EAD2B"
+  },
+  {
+    "Path": "Packages\\packages-lock.json",
+    "Hash": "5825FF1854AF2B6762DF9C5F385C0608B6BF5F5B03FFAB58D1CE50547C3AD705"
+  }
+]

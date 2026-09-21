@@ -1,0 +1,727 @@
+[
+  {
+    "number": 31,
+    "name": "Level31_OnePadTwoGates",
+    "fingerprint": "d9d9edcd513649fca8a8eef743be282b5aef31063c4658b4daf3b92d8bd82265",
+    "analysis": {
+      "minimum": 6,
+      "states": 52,
+      "meaningfulDecisions": 6,
+      "efficiencyDecisions": 0,
+      "finalDepth": 6,
+      "maxDepth": 6,
+      "routeMaxDepth": 6,
+      "solutionPaths": 1,
+      "randomSolveProbability": 0.004629629629629629,
+      "optimalDiscoveryProbability": 0.004629629629629629,
+      "openings": [
+        {
+          "tap": {
+            "x": 4,
+            "y": 1
+          },
+          "winningPaths": 0,
+          "probability": 0.0,
+          "optimalProbability": 0.0,
+          "depth": 3,
+          "minimumRemaining": -1
+        },
+        {
+          "tap": {
+            "x": 2,
+            "y": 2
+          },
+          "winningPaths": 1,
+          "probability": 0.013888888888888888,
+          "optimalProbability": 0.013888888888888888,
+          "depth": 3,
+          "minimumRemaining": 5
+        },
+        {
+          "tap": {
+            "x": 1,
+            "y": 0
+          },
+          "winningPaths": 0,
+          "probability": 0.0,
+          "optimalProbability": 0.0,
+          "depth": 4,
+          "minimumRemaining": -1
+        }
+      ],
+      "decisions": [
+        {
+          "step": 1,
+          "legal": 3,
+          "viable": 1,
+          "optimal": 1,
+          "intended": {
+            "x": 2,
+            "y": 2
+          }
+        },
+        {
+          "step": 2,
+          "legal": 3,
+          "viable": 1,
+          "optimal": 1,
+          "intended": {
+            "x": 3,
+            "y": 2
+          }
+        },
+        {
+          "step": 3,
+          "legal": 3,
+          "viable": 1,
+          "optimal": 1,
+          "intended": {
+            "x": 3,
+            "y": 1
+          }
+        },
+        {
+          "step": 4,
+          "legal": 2,
+          "viable": 1,
+          "optimal": 1,
+          "intended": {
+            "x": 4,
+            "y": 1
+          }
+        },
+        {
+          "step": 5,
+          "legal": 2,
+          "viable": 1,
+          "optimal": 1,
+          "intended": {
+            "x": 3,
+            "y": 1
+          }
+        },
+        {
+          "step": 6,
+          "legal": 2,
+          "viable": 1,
+          "optimal": 1,
+          "intended": {
+            "x": 2,
+            "y": 1
+          }
+        }
+      ],
+      "shortest": [
+        {
+          "x": 2,
+          "y": 2
+        },
+        {
+          "x": 3,
+          "y": 2
+        },
+        {
+          "x": 3,
+          "y": 1
+        },
+        {
+          "x": 4,
+          "y": 1
+        },
+        {
+          "x": 3,
+          "y": 1
+        },
+        {
+          "x": 2,
+          "y": 1
+        }
+      ]
+    }
+  },
+  {
+    "number": 32,
+    "name": "Level32_OppositeStates",
+    "fingerprint": "8c310620b64b6de7938cf540f44785c3de8800db4878127d7c6f3e93d3c907ba",
+    "analysis": {
+      "minimum": 6,
+      "states": 78,
+      "meaningfulDecisions": 6,
+      "efficiencyDecisions": 0,
+      "finalDepth": 4,
+      "maxDepth": 13,
+      "routeMaxDepth": 5,
+      "solutionPaths": 2,
+      "randomSolveProbability": 0.011574074074074072,
+      "optimalDiscoveryProbability": 0.011574074074074072,
+      "openings": [
+        {
+          "tap": {
+            "x": 2,
+            "y": 1
+          },
+          "winningPaths": 0,
+          "probability": 0.0,
+          "optimalProbability": 0.0,
+          "depth": 9,
+          "minimumRemaining": -1
+        },
+        {
+          "tap": {
+            "x": 1,
+            "y": 2
+          },
+          "winningPaths": 2,
+          "probability": 0.03472222222222222,
+          "optimalProbability": 0.03472222222222222,
+          "depth": 1,
+          "minimumRemaining": 5
+        },
+        {
+          "tap": {
+            "x": 0,
+            "y": 2
+          },
+          "winningPaths": 0,
+          "probability": 0.0,
+          "optimalProbability": 0.0,
+          "depth": 2,
+          "minimumRemaining": -1
+        }
+      ],
+      "decisions": [
+        {
+          "step": 1,
+          "legal": 3,
+          "viable": 1,
+          "optimal": 1,
+          "intended": {
+            "x": 1,
+            "y": 2
+          }
+        },
+        {
+          "step": 2,
+          "legal": 3,
+          "viable": 2,
+          "optimal": 2,
+          "intended": {
+            "x": 2,
+            "y": 1
+          }
+        },
+        {
+          "step": 3,
+          "legal": 3,
+          "viable": 1,
+          "optimal": 1,
+          "intended": {
+            "x": 2,
+            "y": 2
+          }
+        },
+        {
+          "step": 4,
+          "legal": 2,
+          "viable": 1,
+          "optimal": 1,
+          "intended": {
+            "x": 1,
+            "y": 2
+          }
+        },
+        {
+          "step": 5,
+          "legal": 2,
+          "viable": 1,
+          "optimal": 1,
+          "intended": {
+            "x": 2,
+            "y": 2
+          }
+        },
+        {
+          "step": 6,
+          "legal": 2,
+          "viable": 1,
+          "optimal": 1,
+          "intended": {
+            "x": 3,
+            "y": 1
+          }
+        }
+      ],
+      "shortest": [
+        {
+          "x": 1,
+          "y": 2
+        },
+        {
+          "x": 2,
+          "y": 1
+        },
+        {
+          "x": 2,
+          "y": 2
+        },
+        {
+          "x": 1,
+          "y": 2
+        },
+        {
+          "x": 2,
+          "y": 2
+        },
+        {
+          "x": 3,
+          "y": 1
+        }
+      ]
+    }
+  },
+  {
+    "number": 33,
+    "name": "Level33_SharedDeliveryGate",
+    "fingerprint": "51518d5ddc9e781896de5e1bf54c69680abb4164a4c56a7fcd6ddb9092e37018",
+    "analysis": {
+      "minimum": 6,
+      "states": 94,
+      "meaningfulDecisions": 5,
+      "efficiencyDecisions": 0,
+      "finalDepth": 8,
+      "maxDepth": 12,
+      "routeMaxDepth": 11,
+      "solutionPaths": 2,
+      "randomSolveProbability": 0.012345679012345678,
+      "optimalDiscoveryProbability": 0.012345679012345678,
+      "openings": [
+        {
+          "tap": {
+            "x": 1,
+            "y": 1
+          },
+          "winningPaths": 1,
+          "probability": 0.018518518518518517,
+          "optimalProbability": 0.018518518518518517,
+          "depth": 1,
+          "minimumRemaining": 5
+        },
+        {
+          "tap": {
+            "x": 2,
+            "y": 3
+          },
+          "winningPaths": 1,
+          "probability": 0.018518518518518517,
+          "optimalProbability": 0.018518518518518517,
+          "depth": 1,
+          "minimumRemaining": 5
+        },
+        {
+          "tap": {
+            "x": 2,
+            "y": 1
+          },
+          "winningPaths": 0,
+          "probability": 0.0,
+          "optimalProbability": 0.0,
+          "depth": 1,
+          "minimumRemaining": -1
+        }
+      ],
+      "decisions": [
+        {
+          "step": 1,
+          "legal": 3,
+          "viable": 2,
+          "optimal": 2,
+          "intended": {
+            "x": 1,
+            "y": 1
+          }
+        },
+        {
+          "step": 2,
+          "legal": 3,
+          "viable": 1,
+          "optimal": 1,
+          "intended": {
+            "x": 2,
+            "y": 3
+          }
+        },
+        {
+          "step": 3,
+          "legal": 3,
+          "viable": 1,
+          "optimal": 1,
+          "intended": {
+            "x": 1,
+            "y": 2
+          }
+        },
+        {
+          "step": 4,
+          "legal": 1,
+          "viable": 1,
+          "optimal": 1,
+          "intended": {
+            "x": 2,
+            "y": 3
+          }
+        },
+        {
+          "step": 5,
+          "legal": 3,
+          "viable": 1,
+          "optimal": 1,
+          "intended": {
+            "x": 3,
+            "y": 3
+          }
+        },
+        {
+          "step": 6,
+          "legal": 2,
+          "viable": 1,
+          "optimal": 1,
+          "intended": {
+            "x": 4,
+            "y": 2
+          }
+        }
+      ],
+      "shortest": [
+        {
+          "x": 1,
+          "y": 1
+        },
+        {
+          "x": 2,
+          "y": 3
+        },
+        {
+          "x": 1,
+          "y": 2
+        },
+        {
+          "x": 2,
+          "y": 3
+        },
+        {
+          "x": 3,
+          "y": 3
+        },
+        {
+          "x": 4,
+          "y": 2
+        }
+      ]
+    }
+  },
+  {
+    "number": 34,
+    "name": "Level34_ClearTheCorridor",
+    "fingerprint": "ce2dfd41bbe2e1f45bc29d392769de3296c2512297389fd14c99330d08ebf5bc",
+    "analysis": {
+      "minimum": 5,
+      "states": 77,
+      "meaningfulDecisions": 5,
+      "efficiencyDecisions": 0,
+      "finalDepth": 8,
+      "maxDepth": 15,
+      "routeMaxDepth": 8,
+      "solutionPaths": 6,
+      "randomSolveProbability": 0.024691358024691357,
+      "optimalDiscoveryProbability": 0.024691358024691357,
+      "openings": [
+        {
+          "tap": {
+            "x": 2,
+            "y": 2
+          },
+          "winningPaths": 0,
+          "probability": 0.0,
+          "optimalProbability": 0.0,
+          "depth": 3,
+          "minimumRemaining": -1
+        },
+        {
+          "tap": {
+            "x": 2,
+            "y": 0
+          },
+          "winningPaths": 3,
+          "probability": 0.037037037037037035,
+          "optimalProbability": 0.037037037037037035,
+          "depth": 1,
+          "minimumRemaining": 4
+        },
+        {
+          "tap": {
+            "x": 1,
+            "y": 0
+          },
+          "winningPaths": 3,
+          "probability": 0.037037037037037035,
+          "optimalProbability": 0.037037037037037035,
+          "depth": 3,
+          "minimumRemaining": 4
+        }
+      ],
+      "decisions": [
+        {
+          "step": 1,
+          "legal": 3,
+          "viable": 2,
+          "optimal": 2,
+          "intended": {
+            "x": 2,
+            "y": 0
+          }
+        },
+        {
+          "step": 2,
+          "legal": 3,
+          "viable": 1,
+          "optimal": 1,
+          "intended": {
+            "x": 2,
+            "y": 1
+          }
+        },
+        {
+          "step": 3,
+          "legal": 3,
+          "viable": 1,
+          "optimal": 1,
+          "intended": {
+            "x": 2,
+            "y": 2
+          }
+        },
+        {
+          "step": 4,
+          "legal": 3,
+          "viable": 2,
+          "optimal": 2,
+          "intended": {
+            "x": 3,
+            "y": 3
+          }
+        },
+        {
+          "step": 5,
+          "legal": 3,
+          "viable": 1,
+          "optimal": 1,
+          "intended": {
+            "x": 2,
+            "y": 2
+          }
+        }
+      ],
+      "shortest": [
+        {
+          "x": 2,
+          "y": 0
+        },
+        {
+          "x": 2,
+          "y": 1
+        },
+        {
+          "x": 2,
+          "y": 2
+        },
+        {
+          "x": 3,
+          "y": 3
+        },
+        {
+          "x": 2,
+          "y": 2
+        }
+      ]
+    }
+  },
+  {
+    "number": 35,
+    "name": "Level35_TwoChannels",
+    "fingerprint": "a4014867b8f7864d57f1c514fd4a590f845a299179d7ce14e6449fa6c2dd4a48",
+    "analysis": {
+      "minimum": 8,
+      "states": 412,
+      "meaningfulDecisions": 8,
+      "efficiencyDecisions": 0,
+      "finalDepth": 8,
+      "maxDepth": 18,
+      "routeMaxDepth": 15,
+      "solutionPaths": 102,
+      "randomSolveProbability": 0.00682789994855967,
+      "optimalDiscoveryProbability": 0.00682789994855967,
+      "openings": [
+        {
+          "tap": {
+            "x": 1,
+            "y": 3
+          },
+          "winningPaths": 42,
+          "probability": 0.012361754115226338,
+          "optimalProbability": 0.012361754115226338,
+          "depth": 1,
+          "minimumRemaining": 7
+        },
+        {
+          "tap": {
+            "x": 3,
+            "y": 3
+          },
+          "winningPaths": 42,
+          "probability": 0.010609567901234566,
+          "optimalProbability": 0.010609567901234566,
+          "depth": 1,
+          "minimumRemaining": 7
+        },
+        {
+          "tap": {
+            "x": 0,
+            "y": 2
+          },
+          "winningPaths": 0,
+          "probability": 0.0,
+          "optimalProbability": 0.0,
+          "depth": 3,
+          "minimumRemaining": -1
+        },
+        {
+          "tap": {
+            "x": 2,
+            "y": 0
+          },
+          "winningPaths": 18,
+          "probability": 0.004340277777777778,
+          "optimalProbability": 0.004340277777777778,
+          "depth": 3,
+          "minimumRemaining": 7
+        }
+      ],
+      "decisions": [
+        {
+          "step": 1,
+          "legal": 4,
+          "viable": 3,
+          "optimal": 3,
+          "intended": {
+            "x": 1,
+            "y": 3
+          }
+        },
+        {
+          "step": 2,
+          "legal": 4,
+          "viable": 3,
+          "optimal": 3,
+          "intended": {
+            "x": 1,
+            "y": 2
+          }
+        },
+        {
+          "step": 3,
+          "legal": 3,
+          "viable": 2,
+          "optimal": 2,
+          "intended": {
+            "x": 3,
+            "y": 3
+          }
+        },
+        {
+          "step": 4,
+          "legal": 3,
+          "viable": 2,
+          "optimal": 2,
+          "intended": {
+            "x": 3,
+            "y": 2
+          }
+        },
+        {
+          "step": 5,
+          "legal": 3,
+          "viable": 2,
+          "optimal": 2,
+          "intended": {
+            "x": 0,
+            "y": 2
+          }
+        },
+        {
+          "step": 6,
+          "legal": 2,
+          "viable": 1,
+          "optimal": 1,
+          "intended": {
+            "x": 2,
+            "y": 0
+          }
+        },
+        {
+          "step": 7,
+          "legal": 3,
+          "viable": 1,
+          "optimal": 1,
+          "intended": {
+            "x": 1,
+            "y": 1
+          }
+        },
+        {
+          "step": 8,
+          "legal": 3,
+          "viable": 2,
+          "optimal": 2,
+          "intended": {
+            "x": 4,
+            "y": 1
+          }
+        }
+      ],
+      "shortest": [
+        {
+          "x": 1,
+          "y": 3
+        },
+        {
+          "x": 1,
+          "y": 2
+        },
+        {
+          "x": 3,
+          "y": 3
+        },
+        {
+          "x": 3,
+          "y": 2
+        },
+        {
+          "x": 0,
+          "y": 2
+        },
+        {
+          "x": 2,
+          "y": 0
+        },
+        {
+          "x": 1,
+          "y": 1
+        },
+        {
+          "x": 4,
+          "y": 1
+        }
+      ]
+    }
+  }
+]

@@ -1,0 +1,32 @@
+{
+  "protectedFiles": 87,
+  "protectedMismatches": [],
+  "testedAssetMismatches": [],
+  "total": "181",
+  "passed": "181",
+  "failed": "0",
+  "skipped": "0",
+  "compilerDiagnostics": 0,
+  "screenshots": [
+    {
+      "name": "refine26-level26-start.png",
+      "width": 1080,
+      "height": 1920
+    },
+    {
+      "name": "refine26-level27-start.png",
+      "width": 1080,
+      "height": 1920
+    },
+    {
+      "name": "refine26-level30-payoff.png",
+      "width": 1080,
+      "height": 1920
+    },
+    {
+      "name": "refine26-level30-start.png",
+      "width": 1080,
+      "height": 1920
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c1f84ab736b460fa687851315dce861, type: 3}
+  m_Name: Level21_FirstSwitch
+  m_EditorClassIdentifier:
+  width: 3
+  height: 3
+  moveLimit: 3
+  targetColor: 1
+  placements:
+  - type: 0
+    color: 1
+    direction: 4
+    position: {x: 0, y: 1}
+    channel: 0
+    initialOpen: 0
+  - type: 7
+    color: 0
+    direction: 0
+    position: {x: 1, y: 1}
+    channel: 1
+    initialOpen: 0
+  - type: 3
+    color: 0
+    direction: 1
+    position: {x: 2, y: 1}
+    channel: 0
+    initialOpen: 0
+  - type: 5
+    color: 1
+    direction: 0
+    position: {x: 2, y: 2}
+    channel: 0
+    initialOpen: 0
+  - type: 0
+    color: 2
+    direction: 4
+    position: {x: 0, y: 0}
+    channel: 0
+    initialOpen: 0
+  - type: 6
+    color: 0
+    direction: 0
+    position: {x: 1, y: 0}
+    channel: 1
+    initialOpen: 0
+  - type: 0
+    color: 3
+    direction: 1
+    position: {x: 2, y: 0}
+    channel: 0
+    initialOpen: 0
+  - type: 2
+    color: 0
+    direction: 0
+    position: {x: 0, y: 2}
+    channel: 0
+    initialOpen: 0
+  - type: 2
+    color: 0
+    direction: 0
+    position: {x: 1, y: 2}
+    channel: 0
+    initialOpen: 0
+  displayTitle: 21 - Switch Discovery
+  hint: "A circle entering a diamond pad toggles its matching gate."
+  knownSolution:
+  - {x: 0, y: 0}
+  - {x: 0, y: 1}
+  - {x: 1, y: 1}

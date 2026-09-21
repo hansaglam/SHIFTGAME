@@ -1,0 +1,261 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!29 &1
+OcclusionCullingSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_OcclusionBakeSettings:
+    smallestOccluder: 5
+    smallestHole: 0.25
+    backfaceThreshold: 100
+  m_SceneGUID: 00000000000000000000000000000000
+  m_OcclusionCullingData: {fileID: 0}
+--- !u!104 &2
+RenderSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 10
+  m_Fog: 0
+  m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  m_FogMode: 3
+  m_FogDensity: 0.01
+  m_LinearFogStart: 0
+  m_LinearFogEnd: 300
+  m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
+  m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
+  m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
+  m_AmbientIntensity: 1
+  m_AmbientMode: 3
+  m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
+  m_SkyboxMaterial: {fileID: 0}
+  m_HaloStrength: 0.5
+  m_FlareStrength: 1
+  m_FlareFadeSpeed: 3
+  m_HaloTexture: {fileID: 0}
+  m_SpotCookie: {fileID: 10001, guid: 0000000000000000e000000000000000, type: 0}
+  m_DefaultReflectionMode: 0
+  m_DefaultReflectionResolution: 128
+  m_ReflectionBounces: 1
+  m_ReflectionIntensity: 1
+  m_CustomReflection: {fileID: 0}
+  m_Sun: {fileID: 0}
+  m_UseRadianceAmbientProbe: 0
+--- !u!157 &3
+LightmapSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 13
+  m_BakeOnSceneLoad: 0
+  m_GISettings:
+    serializedVersion: 2
+    m_BounceScale: 1
+    m_IndirectOutputScale: 1
+    m_AlbedoBoost: 1
+    m_EnvironmentLightingMode: 0
+    m_EnableBakedLightmaps: 0
+    m_EnableRealtimeLightmaps: 0
+  m_LightmapEditorSettings:
+    serializedVersion: 12
+    m_Resolution: 2
+    m_BakeResolution: 40
+    m_AtlasSize: 1024
+    m_AO: 0
+    m_AOMaxDistance: 1
+    m_CompAOExponent: 1
+    m_CompAOExponentDirect: 0
+    m_ExtractAmbientOcclusion: 0
+    m_Padding: 2
+    m_LightmapParameters: {fileID: 0}
+    m_LightmapsBakeMode: 1
+    m_TextureCompression: 1
+    m_ReflectionCompression: 2
+    m_MixedBakeMode: 2
+    m_BakeBackend: 2
+    m_PVRSampling: 1
+    m_PVRDirectSampleCount: 32
+    m_PVRSampleCount: 512
+    m_PVRBounces: 2
+    m_PVREnvironmentSampleCount: 256
+    m_PVREnvironmentReferencePointCount: 2048
+    m_PVRFilteringMode: 1
+    m_PVRDenoiserTypeDirect: 1
+    m_PVRDenoiserTypeIndirect: 1
+    m_PVRDenoiserTypeAO: 1
+    m_PVRFilterTypeDirect: 0
+    m_PVRFilterTypeIndirect: 0
+    m_PVRFilterTypeAO: 0
+    m_PVREnvironmentMIS: 1
+    m_PVRCulling: 1
+    m_PVRFilteringGaussRadiusDirect: 1
+    m_PVRFilteringGaussRadiusIndirect: 1
+    m_PVRFilteringGaussRadiusAO: 1
+    m_PVRFilteringAtrousPositionSigmaDirect: 0.5
+    m_PVRFilteringAtrousPositionSigmaIndirect: 2
+    m_PVRFilteringAtrousPositionSigmaAO: 1
+    m_ExportTrainingData: 0
+    m_TrainingDataDestination: TrainingData
+    m_LightProbeSampleCountMultiplier: 4
+  m_LightingDataAsset: {fileID: 20201, guid: 0000000000000000f000000000000000, type: 0}
+  m_LightingSettings: {fileID: 0}
+--- !u!196 &4
+NavMeshSettings:
+  serializedVersion: 2
+  m_ObjectHideFlags: 0
+  m_BuildSettings:
+    serializedVersion: 3
+    agentTypeID: 0
+    agentRadius: 0.5
+    agentHeight: 2
+    agentSlope: 45
+    agentClimb: 0.4
+    ledgeDropHeight: 0
+    maxJumpAcrossDistance: 0
+    minRegionArea: 2
+    manualCellSize: 0
+    cellSize: 0.16666667
+    manualTileSize: 0
+    tileSize: 256
+    buildHeightMesh: 0
+    maxJobWorkers: 0
+    preserveTilesOutsideBounds: 0
+    debug:
+      m_Flags: 0
+  m_NavMeshData: {fileID: 0}
+--- !u!1 &1000
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1001}
+  - component: {fileID: 1002}
+  m_Layer: 0
+  m_Name: SHIFT Prototype
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1001
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be392a7527cb486da852867cd7f5f493, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  level: {fileID: 11400000, guid: bd030febd6ea46a9a235ec51e453fcd4, type: 2}
+  useLevelSet: 1
+  levels:
+  - {fileID: 11400000, guid: 06dfe0bc952741bcae861c46d2629efc, type: 2}
+  - {fileID: 11400000, guid: 3461f945624242f9a4826b349d374168, type: 2}
+  - {fileID: 11400000, guid: 8d13455e6b634e91accc55b83f4ab5aa, type: 2}
+  - {fileID: 11400000, guid: e8670c7c345e4bf295b3df6ee2f7918c, type: 2}
+  - {fileID: 11400000, guid: 309986bb8e9449d48de201482bc5d9d8, type: 2}
+  - {fileID: 11400000, guid: 8205f08a242e49fdbd3a6971d6477fbb, type: 2}
+  - {fileID: 11400000, guid: e750c8baa0034f768513470b4fb9773c, type: 2}
+  - {fileID: 11400000, guid: 64c41da95c1b406ea0d008a444155e9a, type: 2}
+  - {fileID: 11400000, guid: c0791af01b144a80af597ee7d3202c6d, type: 2}
+  - {fileID: 11400000, guid: 35a6c5359a274628b9cac30b26d16ce0, type: 2}
+  - {fileID: 11400000, guid: da3218a0f0b24fd2b398fb76901d0ac7, type: 2}
+  - {fileID: 11400000, guid: 2d74e819d9794dfcb86f629e079a9c73, type: 2}
+  - {fileID: 11400000, guid: 7a408b3b61ca46b4b8bcab167347e048, type: 2}
+  - {fileID: 11400000, guid: 219522ff71054f819f8a131edc682ccf, type: 2}
+  - {fileID: 11400000, guid: bf7d9af56e2342a0959a805ffe39949b, type: 2}
+  - {fileID: 11400000, guid: f2e9c6a5154843ccbc8d92e1e7b3a1c0, type: 2}
+  - {fileID: 11400000, guid: 3e5deaea97294031adfc98168d70f6ff, type: 2}
+  - {fileID: 11400000, guid: 310025150e844272b39cb22a0c455a9e, type: 2}
+  - {fileID: 11400000, guid: 3fb7f7d5ca83485387fe7904788725da, type: 2}
+  - {fileID: 11400000, guid: b36769721b0e4b3a862e446b16e3f934, type: 2}
+  - {fileID: 11400000, guid: f75d89c9996d4829abd401bc7fdfed3d, type: 2}
+  - {fileID: 11400000, guid: 2f016941ef5e47de824abce9ccd398d0, type: 2}
+  - {fileID: 11400000, guid: a0137f4e643044c781263a9482de3546, type: 2}
+  - {fileID: 11400000, guid: 94697260f0fb47e2ad630daf9fa9db9a, type: 2}
+  - {fileID: 11400000, guid: 0e0e8411845b49a195ca9381ad0e8661, type: 2}
+  - {fileID: 11400000, guid: fd5169bc380c41e3bbde04660d2e78e1, type: 2}
+  - {fileID: 11400000, guid: dd52beb2527c498fbc6f3a2ac14fe35a, type: 2}
+  - {fileID: 11400000, guid: e1bc8cdfd85849b09f976362a7c83d44, type: 2}
+  - {fileID: 11400000, guid: 082d9b82c5e84c29b8cfaf162e7369a6, type: 2}
+  - {fileID: 11400000, guid: 3c88de0c6aa94f5d941a041d727f8bcf, type: 2}
+  - {fileID: 11400000, guid: 5ec8fdc6aee34905817e29fd0697997f, type: 2}
+  - {fileID: 11400000, guid: 5a12cbf1556d45648c024cb63116a5c1, type: 2}
+  - {fileID: 11400000, guid: 2eaa274ce5f747479998c3ea57ff5e69, type: 2}
+  - {fileID: 11400000, guid: cd83daebf1b341ff926fa9701abc192e, type: 2}
+  - {fileID: 11400000, guid: 48ea6ff4e88f4ce2a05a6e939db14a51, type: 2}
+  - {fileID: 11400000, guid: ae57c7fe1e124965a034f3459a6f85d8, type: 2}
+  - {fileID: 11400000, guid: ea37849c5cc64c528be6de8e74e5ddf8, type: 2}
+  - {fileID: 11400000, guid: 0fce10e5e4944513a83b0d1889ac752f, type: 2}
+  - {fileID: 11400000, guid: f87c8f1c30c445a0ba2fee77346d67a8, type: 2}
+  - {fileID: 11400000, guid: 44f8850dbea643c7aa9674743d7927e2, type: 2}
+  selectedLevel: 38
+  saveKeyPrefix: SHIFT.Progress.v1.
+  settingsKeyPrefix: SHIFT.Settings.v1.
+  gameFeel:
+    moveDuration: 0.14
+    tapAnticipation: 0.045
+    piecePulseDuration: 0.14
+    blockedDuration: 0.12
+    exitDuration: 0.1
+    shakeDuration: 0.1
+    successDuration: 0.28
+    hudPulseDuration: 0.22
+    chainFadeDuration: 0.55
+    panelDuration: 0.16
+    tapPunch: 0.12
+    impactPunch: 0.07
+    blockedPixels: 5
+    shakePixels: 2.5
+    successScale: 0.035
+    hudPunch: 0.12
+    trailOpacity: 0.25
+    highlightStrength: 0.3
+    lowMovesThreshold: 2
+    reducedMotion: 0
+    hapticsEnabled: 0
+    hapticCooldown: 0.25
+  audioClips:
+    tap: {fileID: 0}
+    move: {fileID: 0}
+    push: {fileID: 0}
+    directionChange: {fileID: 0}
+    exit: {fileID: 0}
+    blocked: {fileID: 0}
+    win: {fileID: 0}
+    lose: {fileID: 0}
+    rotate: {fileID: 0}
+    chapterComplete: {fileID: 0}
+    uiButton: {fileID: 0}
+    panelOpen: {fileID: 0}
+    panelClose: {fileID: 0}
+    switchActivate: {fileID: 0}
+    gateOpen: {fileID: 0}
+    gateClose: {fileID: 0}
+    volume: 0.65
+    sfxVolume: 1
+  analyticsEnabled: 1
+  verboseTelemetry: 0
+  showTelemetryOverlay: 0
+--- !u!1660057539 &9223372036854775807
+SceneRoots:
+  m_ObjectHideFlags: 0
+  m_Roots:
+  - {fileID: 1001}

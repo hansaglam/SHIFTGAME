@@ -1,0 +1,70 @@
+{
+  "protectedFiles": 85,
+  "protectedMismatches": [],
+  "testedAssetMismatches": [],
+  "total": "175",
+  "passed": "175",
+  "failed": "0",
+  "skipped": "0",
+  "compilerDiagnostics": 0,
+  "changedBaselineFiles": [
+    "Assets/_Game/README.md",
+    "Assets/_Game/Data/Levels/Level26_ThreeEntries.asset",
+    "Assets/_Game/Data/Levels/Level27_BoxDoesNotPress.asset",
+    "Assets/_Game/Data/Levels/Level28_TurnThrough.asset",
+    "Assets/_Game/Data/Levels/Level29_ClockworkGate.asset",
+    "Assets/_Game/Data/Levels/Level30_ClearThenOpen.asset",
+    "Assets/_Game/Editor/PuzzleBatchAnalysis.cs",
+    "Assets/_Game/Resources/LevelDesignCatalog.asset",
+    "Assets/_Game/Scripts/Levels/VerifiedOptimality.cs",
+    "Assets/_Game/Tests/Editor/Batch21CatalogFrozen.txt",
+    "Assets/_Game/Tests/Editor/Batch21FrozenFiles.txt",
+    "Assets/_Game/Tests/Editor/BoardVisualFrozenFiles.txt",
+    "Assets/_Game/Tests/Editor/ChapterTwoTests.cs",
+    "Assets/_Game/Tests/Editor/IdentityFrozenFiles.txt",
+    "Assets/_Game/Tests/Editor/LevelDesignTests.cs",
+    "Assets/_Game/Tests/Editor/Sprint5FrozenFiles.txt"
+  ],
+  "screenshots": [
+    {
+      "name": "batch26-level26.png",
+      "width": 1080,
+      "height": 1920
+    },
+    {
+      "name": "batch26-level27.png",
+      "width": 1080,
+      "height": 1920
+    },
+    {
+      "name": "batch26-level28.png",
+      "width": 1080,
+      "height": 1920
+    },
+    {
+      "name": "batch26-level29-normal.png",
+      "width": 1080,
+      "height": 1920
+    },
+    {
+      "name": "batch26-level29-perfect.png",
+      "width": 1080,
+      "height": 1920
+    },
+    {
+      "name": "batch26-level29.png",
+      "width": 1080,
+      "height": 1920
+    },
+    {
+      "name": "batch26-level30-payoff.png",
+      "width": 1080,
+      "height": 1920
+    },
+    {
+      "name": "batch26-level30.png",
+      "width": 1080,
+      "height": 1920
+    }
+  ]
+}

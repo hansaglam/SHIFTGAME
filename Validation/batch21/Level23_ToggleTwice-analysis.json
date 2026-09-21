@@ -1,0 +1,97 @@
+{
+    "minimum": 5,
+    "states": 21,
+    "meaningfulDecisions": 5,
+    "finalDepth": 2,
+    "solutionPaths": 1,
+    "randomSolveProbability": 0.013888888888888888,
+    "openings": [
+        {
+            "tap": {
+                "x": 4,
+                "y": 1
+            },
+            "winningPaths": 1,
+            "probability": 0.027777777777777777,
+            "depth": 4
+        },
+        {
+            "tap": {
+                "x": 0,
+                "y": 1
+            },
+            "winningPaths": 0,
+            "probability": 0.0,
+            "depth": 3
+        }
+    ],
+    "decisions": [
+        {
+            "step": 1,
+            "legal": 2,
+            "viable": 1,
+            "intended": {
+                "x": 4,
+                "y": 1
+            }
+        },
+        {
+            "step": 2,
+            "legal": 3,
+            "viable": 1,
+            "intended": {
+                "x": 0,
+                "y": 2
+            }
+        },
+        {
+            "step": 3,
+            "legal": 3,
+            "viable": 1,
+            "intended": {
+                "x": 3,
+                "y": 1
+            }
+        },
+        {
+            "step": 4,
+            "legal": 2,
+            "viable": 1,
+            "intended": {
+                "x": 1,
+                "y": 2
+            }
+        },
+        {
+            "step": 5,
+            "legal": 2,
+            "viable": 1,
+            "intended": {
+                "x": 3,
+                "y": 2
+            }
+        }
+    ],
+    "shortest": [
+        {
+            "x": 4,
+            "y": 1
+        },
+        {
+            "x": 0,
+            "y": 2
+        },
+        {
+            "x": 3,
+            "y": 1
+        },
+        {
+            "x": 1,
+            "y": 2
+        },
+        {
+            "x": 3,
+            "y": 2
+        }
+    ]
+}

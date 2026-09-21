@@ -1,0 +1,546 @@
+[
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Art.meta",
+    "Hash": "8BB86290EC421F9B018E3A998DECBC775D1EC1230698510DCCEC90D801E31C48"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Audio.meta",
+    "Hash": "1199974FEB4BD4C7C7C9334132934B7C5B68006162B17F19D075F9BF9D094F4E"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data.meta",
+    "Hash": "E2F278013F9DE8B516D1F3ADBB4066A912BBFB1679E0547D34B36B4EDBD89E2A"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Editor.meta",
+    "Hash": "C5528A902C0AAC4ED4FA6127830A6EFDAC35771A022B0B62EB3F3B74890A31CF"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Prefabs.meta",
+    "Hash": "05D32D00B2107642210F4CB564BC13FC27D4F2EAC8C67FD33A213EAF1BFB1F59"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\README.md",
+    "Hash": "A762FA44000C2BE288F77440219A701D5BFDAAD59EACBD27FFF08B652AB3A9F1"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\README.md.meta",
+    "Hash": "F09FA2026F65EC35124DFFD3F08374E1B2F08CBA442CAF061AB2ED2A0BBAD612"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scenes.meta",
+    "Hash": "F0C807AF2C137EB4431AE5AEF74E07B65931C90E1806A239EB19A3356AFA2841"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts.meta",
+    "Hash": "C2CDAF26E3A141280784F2D15E186BD81327B0CC1536312E234ECBC0B6B416CC"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Settings.meta",
+    "Hash": "2A395C2BF36161144E3B36CED97BF3EA544A30BE3A3517CC7325C28F1281EFC7"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Tests.meta",
+    "Hash": "446891ED6A489A9DE80720D907E0E0B6AE017A7F93ADAA599E94D547FD6EAE64"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Art\\Materials.meta",
+    "Hash": "C2CB3D250F3251AE0770F2E2CE747B3FFD43B52F40D3BEC273DA6F3A32224BE2"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Art\\Sprites.meta",
+    "Hash": "1B92ED1D560BB0C04E559735AB8C41FF3E096B332DDEB3E1B6E377B59B6A41F3"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Art\\UI.meta",
+    "Hash": "A6E0002E7C0E0393DA307A955EAD0B45258BC62EC9FF3110B2CAD008EB06FDE7"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Art\\VFX.meta",
+    "Hash": "C10F01F986DFD31C2CB2DF978BE38BB9A9A02B82EA23996D13BADDDAF2313DA7"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Audio\\Music.meta",
+    "Hash": "DB6759B92EFC5E0BC36C4030D616930BD55758EB76D0FF104BF2ED09AD036654"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Audio\\SFX.meta",
+    "Hash": "1C2B1A5006114CEC4381AD91CAB080C37D6C24CDE7739C159B7C9281F0129350"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels.meta",
+    "Hash": "6EA945EAF7E975AA5093F15C2A05A7ADB66E824C70B150DF20C51F6458D07EB7"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\FirstChain.asset",
+    "Hash": "810070F25B8222286BABD08C3C91B719B209CDC526917B47FEC9B6E70BF3E8D2"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\FirstChain.asset.meta",
+    "Hash": "4D5D52730F00F7CB5A95614064CEAC18FEF198B534412C6563ADADA51E20F4DA"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level01_FirstTap.asset",
+    "Hash": "9E73E5FA9AFB0776D12C3192400AFA21C7F23CD367B85B81B3D154B418A6AE03"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level01_FirstTap.asset.meta",
+    "Hash": "BD4C446AE806D2365102F381D79228611338547BE28648AE36B4EE5F46C9D21B"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level02_FindTheExit.asset",
+    "Hash": "2D8CECF7F339C081FDCC2F626739F228FE52534B570CAE989F5D5CBA76D9A807"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level02_FindTheExit.asset.meta",
+    "Hash": "71D07B43F7F39CADB54E605E4869F040A4DD4967758FB4FA232CB84A4249DED4"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level03_ClearTheBox.asset",
+    "Hash": "F4F8C5B037A613FA91DEC53C6558526E3C098AF91FD7C2FDD6AE39CB9621C9F4"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level03_ClearTheBox.asset.meta",
+    "Hash": "1C69BDBE730814804EA8033517479EAEC75B06CA07E426956B7A2E38913621FB"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level04_FirstChain.asset",
+    "Hash": "3A6EAF1758F1DE4EE2AD7B1522A99D0F08AFCE108222CFA2DD4050B9BB470A17"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level04_FirstChain.asset.meta",
+    "Hash": "88048F09C0DE18B8C5C742CFA993588EF2B4E8D2FA3A34023E14E2FD346CACDE"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level05_BlockedIsFree.asset",
+    "Hash": "FE784F2A836198A69C5F5B34470B45389DA413C9338BC9FFDAEFB1CE2CF138C6"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level05_BlockedIsFree.asset.meta",
+    "Hash": "D22B79ABA23E473CD3E98E6FE40E96CA245507795F306FC27C73A2769B0DAB85"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level06_TurnTheCorner.asset",
+    "Hash": "08B988F505D19DBDF52960B57BB5C820983B3BA390BF1792ABF5F3C309185B95"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level06_TurnTheCorner.asset.meta",
+    "Hash": "939512EB10450878E0C6CEFDFA8D346127B17CF4A0B0A82B931BCBA2C85B6CED"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level07_MakeRoom.asset",
+    "Hash": "8B87DD397DDA3357826D01036FFA781FC5152B464285FE6D3E7D9ABA5E5CB82E"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level07_MakeRoom.asset.meta",
+    "Hash": "A72B19F05063303DFAB220D5FC30824AFD14D8A94F60F7CF03BF447CBE88F1A3"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level08_Clockwise.asset",
+    "Hash": "F7FDC3F6F4E5859C6C14535C134CCAA1876D6327C8350A7E6C41DD96C119CD76"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level08_Clockwise.asset.meta",
+    "Hash": "25E3467157BDEE1EA2FEBA3F0B3165A3E205274940982C835A57BEB32902EBD6"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level09_PushAndTurn.asset",
+    "Hash": "380DF8DE7B548F68BB04B50F7E50BB018D71558E04A4BB8243ED38C75605E4E7"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level09_PushAndTurn.asset.meta",
+    "Hash": "A626253E41750C1B09FFFEFA5AC6DCDC31999633CBA248AEF0E54599BC146165"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level10_SetTheChain.asset",
+    "Hash": "515BB7C5DF69C893A84376FE08E78C6D17A785DC853C17E4FB9CCB67C3A6A463"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level10_SetTheChain.asset.meta",
+    "Hash": "9EBA039D2E811855614391324B68265175048C12049DEE1FE18BD91698D6DB98"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level11_OpenTheLane.asset",
+    "Hash": "84B51F48DAAEC608F98CB5618D047C996DE70C925639FB8DC2BC89DC7037B3A0"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level11_OpenTheLane.asset.meta",
+    "Hash": "270D44EE448FE0793A496D7CF7F0B7E54F92ADCEBF0C20F6F9ABB0BE9BA40BDF"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level12_CrossingOrder.asset",
+    "Hash": "A615ADAB1B2246AAC9E19457FF521118FD9E95FDF3367B4343E5172AAE331FCC"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level12_CrossingOrder.asset.meta",
+    "Hash": "8AED007FF585858CEE8DE682756414895B9CE061248ADABC312F57F397183EB1"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level13_SecondAct.asset",
+    "Hash": "23685D7717F37DFAEDFACE6EEEE43F240580EF100995006B03FC92B754252E86"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level13_SecondAct.asset.meta",
+    "Hash": "4C4D8350407884DB38744EA0A8963A3462DA76BBFBCACE4F7882E6FAC24DE283"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level14_TwoCorners.asset",
+    "Hash": "0873C5B7FF18F3AC7F9E3440F498E0644C73BF55F018BDF26D6B2513D453E3A6"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level14_TwoCorners.asset.meta",
+    "Hash": "2BD6D2C4AF6DBCAB3F2F9C21E7689E36636683E72929B98C714D73103DC60DBF"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level15_TheLongSetup.asset",
+    "Hash": "E6BBEDA4CC70439CC85874F851B9083DDAECF6F64AA418835C6F9A766EAA6903"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level15_TheLongSetup.asset.meta",
+    "Hash": "C4FC5B8662108667B25428F7780D97A43C2513DC96A68EE5A39781614A724286"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level16_TransformAhead.asset",
+    "Hash": "9DBD1F99942EA2C59C64D1830A32C27D2560D5B00EB22D6DDA2D7B49B19164BD"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level16_TransformAhead.asset.meta",
+    "Hash": "653EE6CEF382C75EA590603DC06DFCD60C0E01C0024A234ED894A2CBED59ED44"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level17_SharedCorridor.asset",
+    "Hash": "23F9579A1FC1361AE89A8444CC91F814C835BDFDEAD9D3F184929D3B29A0E6E4"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level17_SharedCorridor.asset.meta",
+    "Hash": "534AC683622BEEE05C9271BD33C255ED871254B87FD8040A17E89666C35A2C33"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level18_ClearTriggerFinish.asset",
+    "Hash": "D0FBE76D55F7E7FDE13EB4777CA0D2121AE7B08D274AE23D48FAF69CB9E30B35"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level18_ClearTriggerFinish.asset.meta",
+    "Hash": "B5C83E8CFE9AFDF71EE8D10D6BF9E244D3483983ABAEFFA9545D04836D717CB2"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level19_SharedDelivery.asset",
+    "Hash": "9EAAB1F78E20F01432B2E91FE35BF0AD8447B2CFB2D49968C6F42AEE696D40F2"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level19_SharedDelivery.asset.meta",
+    "Hash": "CD600826E14B7E11096DAAB25C32DAA513E13219E1BE63C0AADB7E2FDB07B830"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level20_TheFinalShift.asset",
+    "Hash": "FFD2A2E9213B65B78CABEEDC50D14CAE14B7CA811B0E074DCFB9B90ECD1E8A1B"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level20_TheFinalShift.asset.meta",
+    "Hash": "7694A42C6EE2F06923E0D532419DAFA16FA46AE99D02A2BC59E8F4873C373068"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Editor\\LevelValidation.cs",
+    "Hash": "CA470F90CE3BD44EDE2D324E4F8379DF1A3DEF223279B81337DF162E22562067"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Editor\\LevelValidation.cs.meta",
+    "Hash": "F39F526FA394FAC8FBEEDE49FCC5A3EBF6B2C9A722DA1FCA75D9CD0B390C848E"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Editor\\PrototypeGameEditor.cs",
+    "Hash": "0CB0BD8112BD3BE188A8E50C3EE5E065A02A2BDA0DC12D1954A7626ED84A4059"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Editor\\PrototypeGameEditor.cs.meta",
+    "Hash": "1FCD79B0A40CE842DEDA3176AECB8E703CA31FA61EED13BC0707B6F0065E0193"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Editor\\PrototypeSetup.cs",
+    "Hash": "F6274F325DAA8BADC9AD417CE2B648434C51B0DE4FEEBD0473BB1FDEB3B92B37"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Editor\\PrototypeSetup.cs.meta",
+    "Hash": "8F5C05602197E4C4BE08A509D3EB6535E0E10EDD2818CA4AD17E6709A881067E"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Editor\\Shift.Editor.asmdef",
+    "Hash": "639D2853F4970CDE75F5352D6CD537FA19238D873D56752F0E3F0270F5EA7D34"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Editor\\Shift.Editor.asmdef.meta",
+    "Hash": "AA6A932ADF90B35991D10E1E05BF22754B34C6B10C9AFD06ED72C49327A727C9"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Prefabs\\Board.meta",
+    "Hash": "19F8F5437A9C4B0C3396013A571A92DB7B1076479A7AFBE8AE34DA480CCD0BA2"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Prefabs\\Pieces.meta",
+    "Hash": "D86E06120F9B89020E66B081D6DB0883B38F2CD5F4EE071F1F24523C66BFAB8B"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Prefabs\\UI.meta",
+    "Hash": "D1F1181682CD7B95BA3A5E075DB074379105E78788ACE56BADBA43B41E7F6352"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scenes\\Prototype.unity",
+    "Hash": "BAF8A10B9A616949324FEE6C10A9EF81AA294C4A341DF9A6B9208AD58361C5CE"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scenes\\Prototype.unity.meta",
+    "Hash": "8622A1B97D096A4E94EFE5404ADC79A49B36FB6694272FC542AB56B784A9FF4C"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\Board.meta",
+    "Hash": "090BB33DFF1760959CF6856A7EF77E079D59C1B8167DEC4C8E8A16A1D338AD42"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\Core.meta",
+    "Hash": "2F87B37DB4D74A2AB78F2EAB930C6D04FA7A66BDE89FBF7AAB01510474C32658"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\Levels.meta",
+    "Hash": "31E9DD17ADED0F10C352E73B8E0717B136F743650934934CB7D55770614CAB40"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\Pieces.meta",
+    "Hash": "760A2BEDDE56729A069248DE4F1E3CF126746618B511CC8292D0EC373798FCDD"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\Shift.Game.asmdef",
+    "Hash": "8C8303C9C7715C99156E49CBCBC7F6F9CD9C01CF386FC43DCB6B9E18F6A59A93"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\Shift.Game.asmdef.meta",
+    "Hash": "BA4055E4EB38449EECF44D6B3BC8C485ED5F93706928F17A17B7E9CACDEEFCB4"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\Systems.meta",
+    "Hash": "9769DED99222720A92A81B325BAB2ACDAE61AF334A48672AFC70CC030C5B00E6"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\UI.meta",
+    "Hash": "67C433B9105693C2F566EA0581E7B065D94C7F2C0601D53A643983215D270416"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\Board\\BoardAction.cs",
+    "Hash": "817EB27DFF97FFC3BE4C968DE03C31FFF092F789560E84EABAC22A9C4B1A6BE0"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\Board\\BoardAction.cs.meta",
+    "Hash": "226D8E55B2907769DC21BA9CED85097AA381B6B21F369AD6CD13693CB0EC4434"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\Board\\BoardManager.cs",
+    "Hash": "2D80300C4730F6E957EEE42FEC4B299A84B8397542FEE723210B82BF13B16067"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\Board\\BoardManager.cs.meta",
+    "Hash": "9E1F891A26C7D7D94D291691E46DB83B33A4A435B816ABA34BCE53C43132F46F"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\Board\\BoardView.cs",
+    "Hash": "63AB7C14DCCED7692CB373DC7BC90BE2D1049700F801C6DBA83E1BFB216AA3FE"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\Board\\BoardView.cs.meta",
+    "Hash": "4CA8E245759AA27559285B69F5B8189598D5C079B063ADEC7F14D5B72311A2E8"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\Board\\GridCell.cs",
+    "Hash": "4ED769F86F5F7D946AEE9008BF9D07C1748EA7E349CEE45C55F37CF848568BA1"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\Board\\GridCell.cs.meta",
+    "Hash": "209C62794DE817D3D8E55270561F9ACEDB4B2901DBA7A337C4E63B8260594F81"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\Core\\DirectionUtility.cs",
+    "Hash": "4DF87A9854EC97C2DCA28B4D9754DC769083FA7DA1164F6CACE1EBE89CD46955"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\Core\\DirectionUtility.cs.meta",
+    "Hash": "13F7259594D002174B542C6ABC333F45F3760FEE457BF589F374AEE92732770B"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\Core\\GameEnums.cs",
+    "Hash": "A89BDACDE21618D3E9E97438F21321EE8C3D2510489133EF21F22D6B7F48483F"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\Core\\GameEnums.cs.meta",
+    "Hash": "FBF376B9CDC505FF1246D20D83124FBBCCEAAB2EF4386278A145BDA9CE6076EE"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\Core\\GridPosition.cs",
+    "Hash": "CFED4CEC78437042B5AC3FBE98A1B998C8CFA4BACD24B9AFF50AA2EC8DF24193"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\Core\\GridPosition.cs.meta",
+    "Hash": "0051358316242167C3C282365323C42E2736F21BCAAD46506428360A8D10189C"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\Levels\\LevelData.cs",
+    "Hash": "83D5B784E5011BC4F5BEBFC3EBC3EA2D75FB929D878AA25A5C7C6E69B3C7C13E"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\Levels\\LevelData.cs.meta",
+    "Hash": "1AF8A67E98710C7D47F736787E4807833428BB7A9D30F8D3D189F25EACC6C0AB"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\Pieces\\Piece.cs",
+    "Hash": "6F7220AEB48705D7551AA86B94B75E4FFB892A154F17DE4184A57B1B5E27617C"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\Pieces\\Piece.cs.meta",
+    "Hash": "12F771D80C381B709D61234B879373BCF773EC396E77A924ACBED5C89EBBE719"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\Systems\\AudioManager.cs",
+    "Hash": "05CCB614E852DF394D0AFBE7B46955B70A59D2EABA9F9939B8801065CF54ACB8"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\Systems\\AudioManager.cs.meta",
+    "Hash": "07324E7D6EC92E8117DEA0BF274E00E564EB179149947AFBF38FF032BB7ED262"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\Systems\\GameFeelSettings.cs",
+    "Hash": "AB7E3D4D001B715BC0DBDB2AB097B0D5700103DED4CFA48146EFFB66197BF68F"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\Systems\\GameFeelSettings.cs.meta",
+    "Hash": "9F76117A1E9EF334D9B156B73156647D3D9C112806D139CF6BF6A914644399BD"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\Systems\\HapticService.cs",
+    "Hash": "E680FE540313C873EEAE06032F5C79D9A4ED1B706880C1CDB0C9F995371FF62B"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\Systems\\HapticService.cs.meta",
+    "Hash": "CF88DBC2C1539F961B90AF3100DF93BE9F18322131153FBF8F7D2BBB5027481F"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\Systems\\LevelProgression.cs",
+    "Hash": "6BA7D38D9319EB96EAB1C46BAFDD790E16C49944BCBE779BB881FAF4A9EAA851"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\Systems\\LevelProgression.cs.meta",
+    "Hash": "5459869E8D7DBE18A8F07039AC642810EFD09610DBB70343A51AC09D908B8D87"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\Systems\\PrototypeGame.cs",
+    "Hash": "781BD02558028B1C392B91C7EF7F5B9F567AC94CE90EDAAE711BE7838D3D6465"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\Systems\\PrototypeGame.cs.meta",
+    "Hash": "96CDC0A2530E75184B271FA3DC378C027B9EDEDD0B053AC7791FD32A599E2E79"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\Systems\\SaveService.cs",
+    "Hash": "8D2EE22E02C3CFEB3A32BE2B70E77959E0E19934ED485018C18CDDBB821D71C2"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\Systems\\SaveService.cs.meta",
+    "Hash": "051E2EF1761798A95A0F2D94120604E4A10057FC08AC23D041B26BBE36446077"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\UI\\ChapterSelect.cs",
+    "Hash": "A6B6B253EE166C88286065AE5C75F795F1733D837A5E7D9D1B41BD0F4373D1E3"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\UI\\ChapterSelect.cs.meta",
+    "Hash": "42925D3D1CBB09DCD738F796A48109AF949066228E64CEAE0250265478A3493D"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\UI\\GameHud.cs",
+    "Hash": "ED62A4EE0F2E62D9BE1D051B02BCE3007A47C61E96DDDE432BE2DF82006E53FD"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\UI\\GameHud.cs.meta",
+    "Hash": "5E426DA7C56D1549AE0903CBABFFFE553599B10A3A3C131EFC7D5BFFF7DB5B33"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\UI\\PlaceholderVisuals.cs",
+    "Hash": "A5AAE4D35A4C1882F8F1552148FFA4EB893C534F4B6E62D42EB1454D3A4E58A5"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\UI\\PlaceholderVisuals.cs.meta",
+    "Hash": "C2EB243A3A08BC842E5167A181B9DC79070E6D68DCE6FB2229F3A8C1C8E71DDA"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\UI\\SafeArea.cs",
+    "Hash": "36EDE4CB22F3B59E9AC183E9999E94C2C6F6DBF0AEDC5AB0C5B3C0C59EFDAD8F"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\UI\\SafeArea.cs.meta",
+    "Hash": "D2E15205A4C7C5104E9B03540C4725D09C6060F5B3F72E23411BD77D1FFFDD50"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Tests\\Editor.meta",
+    "Hash": "3E4DCB8D6D0BDF3D5ABF0666C902099AC1065AD86EEC490B088B7ACC1C692F9C"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Tests\\Editor\\BoardManagerTests.cs",
+    "Hash": "BC4AD1537ED8C1AF6DEC8F737AF1C468CB864E791765E28E0FAB9012ABE42635"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Tests\\Editor\\BoardManagerTests.cs.meta",
+    "Hash": "4841BCBA661863EA1803CF2A59F95460BBEF3C7DF8BB75A38FB5A9B889291F73"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Tests\\Editor\\ChapterLevelTests.cs",
+    "Hash": "32D713BE9E58589D1842279A83A5E6E91A1FE2D3468EA54F5B2ED74F43F77AC2"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Tests\\Editor\\ChapterLevelTests.cs.meta",
+    "Hash": "F28FC1C0C0249C3A31AA349BC09640269EC82F2D95AE43601C9C743195BAEFB3"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Tests\\Editor\\ProgressionPresentationTests.cs",
+    "Hash": "FD1040C97267DC067DF6165733A836AC6E6C3311EB2B45DF658F85A1E722C868"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Tests\\Editor\\ProgressionPresentationTests.cs.meta",
+    "Hash": "9BF4E233C82F7D9970EA3CAB4E912B91FC58E812DF9E32C52E0DB128FAE6ABAF"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Tests\\Editor\\ProgressionTests.cs",
+    "Hash": "741F0515D69767CF5A8564A689B1712FCAF2B6ECB34CB04D2282D8AFE3498065"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Tests\\Editor\\ProgressionTests.cs.meta",
+    "Hash": "7EA1D7D058B81B696087A3F9BB39D7C32D63F21AC01CD8EB5AA8A3691B98416B"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Tests\\Editor\\PrototypeSceneTests.cs",
+    "Hash": "1378D6766D2A31527FC5F8FBE0ED626D36379DF778DA27296DC0CE064DA711D3"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Tests\\Editor\\PrototypeSceneTests.cs.meta",
+    "Hash": "F3F04E3183C5960DE0B89E97EAAB2B8FFEDF43DCB9513A6A83EF3189E5CDBC25"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Tests\\Editor\\Shift.Tests.asmdef",
+    "Hash": "F6DFE322A37F066E6A1170F2D9E4D76D398F92A63106F166DB707577B3F0B2D1"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Tests\\Editor\\Shift.Tests.asmdef.meta",
+    "Hash": "CD4323A770AE7D4D2CD3037B5C17EB4DE8916F31957B1DD2C2DF31A52559CB0C"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Tests\\Editor\\SprintLevelTests.cs",
+    "Hash": "D8074EB694CF53312B2E27EF1680745D1DBB5D828D9BD1A0188E64AE0D661186"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Tests\\Editor\\SprintLevelTests.cs.meta",
+    "Hash": "8B7EF7CFCC9F4DDF693F9ED82909FE7DABD81E0BAB8E97FAC990B0891DD1B55F"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Tests\\Editor\\SprintPresentationTests.cs",
+    "Hash": "897C8ED95C5541E90C39A2DB81E09B1ED28D9083428FE90E992EA4696EBE28A9"
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Tests\\Editor\\SprintPresentationTests.cs.meta",
+    "Hash": "8CE0BD41D4FBB424564D1817E5D4C6220AD6BA852D7CB7E8EC9A361E96E77A50"
+  }
+]

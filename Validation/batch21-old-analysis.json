@@ -1,0 +1,407 @@
+[
+  {
+    "number": 21,
+    "name": "Level21_FirstSwitch",
+    "fingerprint": "d025db2788005f3e1d1d6015845254ebec4140841543c66b28abb7bdd838156e",
+    "analysis": {
+      "minimum": 3,
+      "states": 4,
+      "meaningfulDecisions": 0,
+      "finalDepth": 2,
+      "solutionPaths": 1,
+      "randomSolveProbability": 1.0,
+      "openings": [
+        {
+          "tap": {
+            "x": 0,
+            "y": 1
+          },
+          "winningPaths": 1,
+          "probability": 1.0,
+          "depth": 3
+        }
+      ],
+      "decisions": [
+        {
+          "step": 1,
+          "legal": 1,
+          "viable": 1,
+          "intended": {
+            "x": 0,
+            "y": 1
+          }
+        },
+        {
+          "step": 2,
+          "legal": 1,
+          "viable": 1,
+          "intended": {
+            "x": 1,
+            "y": 1
+          }
+        },
+        {
+          "step": 3,
+          "legal": 1,
+          "viable": 1,
+          "intended": {
+            "x": 2,
+            "y": 1
+          }
+        }
+      ],
+      "shortest": [
+        {
+          "x": 0,
+          "y": 1
+        },
+        {
+          "x": 1,
+          "y": 1
+        },
+        {
+          "x": 2,
+          "y": 1
+        }
+      ]
+    }
+  },
+  {
+    "number": 22,
+    "name": "Level22_OpenForRed",
+    "fingerprint": "a9eb2794a759bfece783844ed266ffa3a43c70b36126ea9caeb1b502ee4a5b35",
+    "analysis": {
+      "minimum": 3,
+      "states": 7,
+      "meaningfulDecisions": 2,
+      "finalDepth": 2,
+      "solutionPaths": 1,
+      "randomSolveProbability": 0.25,
+      "openings": [
+        {
+          "tap": {
+            "x": 0,
+            "y": 0
+          },
+          "winningPaths": 1,
+          "probability": 0.25,
+          "depth": 3
+        }
+      ],
+      "decisions": [
+        {
+          "step": 1,
+          "legal": 1,
+          "viable": 1,
+          "intended": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "step": 2,
+          "legal": 2,
+          "viable": 1,
+          "intended": {
+            "x": 1,
+            "y": 2
+          }
+        },
+        {
+          "step": 3,
+          "legal": 2,
+          "viable": 1,
+          "intended": {
+            "x": 2,
+            "y": 2
+          }
+        }
+      ],
+      "shortest": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 1,
+          "y": 2
+        },
+        {
+          "x": 2,
+          "y": 2
+        }
+      ]
+    }
+  },
+  {
+    "number": 23,
+    "name": "Level23_ToggleTwice",
+    "fingerprint": "f08ae5e80adbdc885e5c68e395e6e58c3ad51b231abc1596e4fa9131032e45b3",
+    "analysis": {
+      "minimum": 4,
+      "states": 11,
+      "meaningfulDecisions": 2,
+      "finalDepth": 2,
+      "solutionPaths": 2,
+      "randomSolveProbability": 0.1875,
+      "openings": [
+        {
+          "tap": {
+            "x": 0,
+            "y": 1
+          },
+          "winningPaths": 1,
+          "probability": 0.25,
+          "depth": 3
+        },
+        {
+          "tap": {
+            "x": 0,
+            "y": 3
+          },
+          "winningPaths": 1,
+          "probability": 0.125,
+          "depth": 3
+        }
+      ],
+      "decisions": [
+        {
+          "step": 1,
+          "legal": 2,
+          "viable": 2,
+          "intended": {
+            "x": 0,
+            "y": 1
+          }
+        },
+        {
+          "step": 2,
+          "legal": 1,
+          "viable": 1,
+          "intended": {
+            "x": 0,
+            "y": 3
+          }
+        },
+        {
+          "step": 3,
+          "legal": 2,
+          "viable": 1,
+          "intended": {
+            "x": 1,
+            "y": 1
+          }
+        },
+        {
+          "step": 4,
+          "legal": 2,
+          "viable": 1,
+          "intended": {
+            "x": 2,
+            "y": 1
+          }
+        }
+      ],
+      "shortest": [
+        {
+          "x": 0,
+          "y": 1
+        },
+        {
+          "x": 0,
+          "y": 3
+        },
+        {
+          "x": 1,
+          "y": 1
+        },
+        {
+          "x": 2,
+          "y": 1
+        }
+      ]
+    }
+  },
+  {
+    "number": 24,
+    "name": "Level24_ClosedLane",
+    "fingerprint": "f8cf0a64b4b56c2aaad457f54cbeceeefed165c3556617fb193706218b808001",
+    "analysis": {
+      "minimum": 4,
+      "states": 10,
+      "meaningfulDecisions": 3,
+      "finalDepth": 2,
+      "solutionPaths": 1,
+      "randomSolveProbability": 0.125,
+      "openings": [
+        {
+          "tap": {
+            "x": 3,
+            "y": 0
+          },
+          "winningPaths": 1,
+          "probability": 0.125,
+          "depth": 3
+        }
+      ],
+      "decisions": [
+        {
+          "step": 1,
+          "legal": 1,
+          "viable": 1,
+          "intended": {
+            "x": 3,
+            "y": 0
+          }
+        },
+        {
+          "step": 2,
+          "legal": 2,
+          "viable": 1,
+          "intended": {
+            "x": 0,
+            "y": 2
+          }
+        },
+        {
+          "step": 3,
+          "legal": 2,
+          "viable": 1,
+          "intended": {
+            "x": 1,
+            "y": 2
+          }
+        },
+        {
+          "step": 4,
+          "legal": 2,
+          "viable": 1,
+          "intended": {
+            "x": 2,
+            "y": 2
+          }
+        }
+      ],
+      "shortest": [
+        {
+          "x": 3,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 2
+        },
+        {
+          "x": 1,
+          "y": 2
+        },
+        {
+          "x": 2,
+          "y": 2
+        }
+      ]
+    }
+  },
+  {
+    "number": 25,
+    "name": "Level25_BeforeYouGo",
+    "fingerprint": "98c03d20d6f9d4feea8a30f1353671930fec5305ea43bf8c891311f3c9b78736",
+    "analysis": {
+      "minimum": 5,
+      "states": 16,
+      "meaningfulDecisions": 3,
+      "finalDepth": 2,
+      "solutionPaths": 2,
+      "randomSolveProbability": 0.09375,
+      "openings": [
+        {
+          "tap": {
+            "x": 0,
+            "y": 1
+          },
+          "winningPaths": 1,
+          "probability": 0.125,
+          "depth": 1
+        },
+        {
+          "tap": {
+            "x": 4,
+            "y": 3
+          },
+          "winningPaths": 1,
+          "probability": 0.0625,
+          "depth": 3
+        }
+      ],
+      "decisions": [
+        {
+          "step": 1,
+          "legal": 2,
+          "viable": 2,
+          "intended": {
+            "x": 0,
+            "y": 1
+          }
+        },
+        {
+          "step": 2,
+          "legal": 1,
+          "viable": 1,
+          "intended": {
+            "x": 4,
+            "y": 3
+          }
+        },
+        {
+          "step": 3,
+          "legal": 2,
+          "viable": 1,
+          "intended": {
+            "x": 1,
+            "y": 1
+          }
+        },
+        {
+          "step": 4,
+          "legal": 2,
+          "viable": 1,
+          "intended": {
+            "x": 2,
+            "y": 1
+          }
+        },
+        {
+          "step": 5,
+          "legal": 2,
+          "viable": 1,
+          "intended": {
+            "x": 3,
+            "y": 1
+          }
+        }
+      ],
+      "shortest": [
+        {
+          "x": 0,
+          "y": 1
+        },
+        {
+          "x": 4,
+          "y": 3
+        },
+        {
+          "x": 1,
+          "y": 1
+        },
+        {
+          "x": 2,
+          "y": 1
+        },
+        {
+          "x": 3,
+          "y": 1
+        }
+      ]
+    }
+  }
+]

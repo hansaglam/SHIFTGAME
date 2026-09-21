@@ -1,0 +1,160 @@
+{
+    "minimum": 7,
+    "states": 230,
+    "meaningfulDecisions": 5,
+    "efficiencyDecisions": 0,
+    "finalDepth": 6,
+    "maxDepth": 12,
+    "routeMaxDepth": 8,
+    "solutionPaths": 7,
+    "randomSolveProbability": 0.020833333333333333,
+    "optimalDiscoveryProbability": 0.020833333333333333,
+    "openings": [
+        {
+            "tap": {
+                "x": 1,
+                "y": 2
+            },
+            "winningPaths": 7,
+            "probability": 0.08333333333333333,
+            "optimalProbability": 0.08333333333333333,
+            "depth": 7,
+            "minimumRemaining": 6
+        },
+        {
+            "tap": {
+                "x": 1,
+                "y": 4
+            },
+            "winningPaths": 0,
+            "probability": 0.0,
+            "optimalProbability": 0.0,
+            "depth": 10,
+            "minimumRemaining": -1
+        },
+        {
+            "tap": {
+                "x": 4,
+                "y": 3
+            },
+            "winningPaths": 0,
+            "probability": 0.0,
+            "optimalProbability": 0.0,
+            "depth": 3,
+            "minimumRemaining": -1
+        },
+        {
+            "tap": {
+                "x": 2,
+                "y": 2
+            },
+            "winningPaths": 0,
+            "probability": 0.0,
+            "optimalProbability": 0.0,
+            "depth": 2,
+            "minimumRemaining": -1
+        }
+    ],
+    "decisions": [
+        {
+            "step": 1,
+            "legal": 4,
+            "viable": 1,
+            "optimal": 1,
+            "intended": {
+                "x": 1,
+                "y": 2
+            }
+        },
+        {
+            "step": 2,
+            "legal": 4,
+            "viable": 1,
+            "optimal": 1,
+            "intended": {
+                "x": 4,
+                "y": 3
+            }
+        },
+        {
+            "step": 3,
+            "legal": 3,
+            "viable": 2,
+            "optimal": 2,
+            "intended": {
+                "x": 1,
+                "y": 4
+            }
+        },
+        {
+            "step": 4,
+            "legal": 3,
+            "viable": 2,
+            "optimal": 2,
+            "intended": {
+                "x": 1,
+                "y": 2
+            }
+        },
+        {
+            "step": 5,
+            "legal": 2,
+            "viable": 1,
+            "optimal": 1,
+            "intended": {
+                "x": 3,
+                "y": 3
+            }
+        },
+        {
+            "step": 6,
+            "legal": 1,
+            "viable": 1,
+            "optimal": 1,
+            "intended": {
+                "x": 2,
+                "y": 2
+            }
+        },
+        {
+            "step": 7,
+            "legal": 1,
+            "viable": 1,
+            "optimal": 1,
+            "intended": {
+                "x": 3,
+                "y": 3
+            }
+        }
+    ],
+    "shortest": [
+        {
+            "x": 1,
+            "y": 2
+        },
+        {
+            "x": 4,
+            "y": 3
+        },
+        {
+            "x": 1,
+            "y": 4
+        },
+        {
+            "x": 1,
+            "y": 2
+        },
+        {
+            "x": 3,
+            "y": 3
+        },
+        {
+            "x": 2,
+            "y": 2
+        },
+        {
+            "x": 3,
+            "y": 3
+        }
+    ]
+}

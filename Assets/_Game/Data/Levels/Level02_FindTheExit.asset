@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c1f84ab736b460fa687851315dce861, type: 3}
+  m_Name: Level02_FindTheExit
+  m_EditorClassIdentifier:
+  width: 4
+  height: 4
+  moveLimit: 3
+  targetColor: 1
+  placements:
+  - type: 0
+    color: 1
+    direction: 4
+    position: {x: 0, y: 1}
+  - type: 5
+    color: 0
+    direction: 0
+    position: {x: 3, y: 1}
+  displayTitle: 02 · Find the exit
+  hint: Reach EXIT. Each tap moves one cell.
+  knownSolution:
+  - {x: 0, y: 1}
+  - {x: 1, y: 1}
+  - {x: 2, y: 1}

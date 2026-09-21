@@ -1,0 +1,6 @@
+{
+  "name": "Shift.Editor",
+  "rootNamespace": "Shift.Game.Editor",
+  "references": ["Shift.Game"],
+  "includePlatforms": ["Editor"]
+}

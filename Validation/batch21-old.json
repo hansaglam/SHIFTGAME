@@ -1,0 +1,267 @@
+[
+  {
+    "n": 21,
+    "name": "Level21_FirstSwitch",
+    "size": 4,
+    "budget": 3,
+    "pieces": [
+      {
+        "type": 0,
+        "color": 1,
+        "direction": 4,
+        "x": 0,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 6,
+        "color": 0,
+        "direction": 0,
+        "x": 1,
+        "y": 1,
+        "channel": 1,
+        "initialOpen": false
+      },
+      {
+        "type": 7,
+        "color": 0,
+        "direction": 0,
+        "x": 2,
+        "y": 1,
+        "channel": 1,
+        "initialOpen": false
+      },
+      {
+        "type": 5,
+        "color": 1,
+        "direction": 0,
+        "x": 3,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      }
+    ]
+  },
+  {
+    "n": 22,
+    "name": "Level22_OpenForRed",
+    "size": 4,
+    "budget": 3,
+    "pieces": [
+      {
+        "type": 0,
+        "color": 3,
+        "direction": 1,
+        "x": 0,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 6,
+        "color": 0,
+        "direction": 0,
+        "x": 0,
+        "y": 1,
+        "channel": 1,
+        "initialOpen": false
+      },
+      {
+        "type": 0,
+        "color": 1,
+        "direction": 4,
+        "x": 1,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 7,
+        "color": 0,
+        "direction": 0,
+        "x": 2,
+        "y": 2,
+        "channel": 1,
+        "initialOpen": false
+      },
+      {
+        "type": 5,
+        "color": 1,
+        "direction": 0,
+        "x": 3,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      }
+    ]
+  },
+  {
+    "n": 23,
+    "name": "Level23_ToggleTwice",
+    "size": 4,
+    "budget": 4,
+    "pieces": [
+      {
+        "type": 0,
+        "color": 1,
+        "direction": 4,
+        "x": 0,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 6,
+        "color": 0,
+        "direction": 0,
+        "x": 1,
+        "y": 1,
+        "channel": 1,
+        "initialOpen": false
+      },
+      {
+        "type": 7,
+        "color": 0,
+        "direction": 0,
+        "x": 2,
+        "y": 1,
+        "channel": 1,
+        "initialOpen": true
+      },
+      {
+        "type": 5,
+        "color": 1,
+        "direction": 0,
+        "x": 3,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 0,
+        "color": 3,
+        "direction": 4,
+        "x": 0,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 6,
+        "color": 0,
+        "direction": 0,
+        "x": 1,
+        "y": 3,
+        "channel": 1,
+        "initialOpen": false
+      }
+    ]
+  },
+  {
+    "n": 24,
+    "name": "Level24_ClosedLane",
+    "size": 4,
+    "budget": 4,
+    "pieces": [
+      {
+        "type": 0,
+        "color": 1,
+        "direction": 4,
+        "x": 0,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 7,
+        "color": 0,
+        "direction": 0,
+        "x": 1,
+        "y": 2,
+        "channel": 1,
+        "initialOpen": false
+      },
+      {
+        "type": 5,
+        "color": 1,
+        "direction": 0,
+        "x": 3,
+        "y": 2,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 0,
+        "color": 3,
+        "direction": 3,
+        "x": 3,
+        "y": 0,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 6,
+        "color": 0,
+        "direction": 0,
+        "x": 2,
+        "y": 0,
+        "channel": 1,
+        "initialOpen": false
+      }
+    ]
+  },
+  {
+    "n": 25,
+    "name": "Level25_BeforeYouGo",
+    "size": 5,
+    "budget": 5,
+    "pieces": [
+      {
+        "type": 0,
+        "color": 1,
+        "direction": 4,
+        "x": 0,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 7,
+        "color": 0,
+        "direction": 0,
+        "x": 2,
+        "y": 1,
+        "channel": 1,
+        "initialOpen": false
+      },
+      {
+        "type": 5,
+        "color": 1,
+        "direction": 0,
+        "x": 4,
+        "y": 1,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 0,
+        "color": 3,
+        "direction": 3,
+        "x": 4,
+        "y": 3,
+        "channel": 0,
+        "initialOpen": false
+      },
+      {
+        "type": 6,
+        "color": 0,
+        "direction": 0,
+        "x": 3,
+        "y": 3,
+        "channel": 1,
+        "initialOpen": false
+      }
+    ]
+  }
+]

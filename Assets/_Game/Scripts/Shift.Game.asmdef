@@ -1,0 +1,5 @@
+{
+  "name": "Shift.Game",
+  "rootNamespace": "Shift.Game",
+  "references": ["Unity.InputSystem", "Unity.ugui"]
+}

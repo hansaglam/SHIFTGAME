@@ -1,0 +1,19 @@
+[
+  "Assets/_Game/README.md",
+  "Assets/_Game/Data/Levels/Level31_OnePadTwoGates.asset",
+  "Assets/_Game/Data/Levels/Level32_OppositeStates.asset",
+  "Assets/_Game/Data/Levels/Level33_SharedDeliveryGate.asset",
+  "Assets/_Game/Data/Levels/Level34_ClearTheCorridor.asset",
+  "Assets/_Game/Data/Levels/Level35_TwoChannels.asset",
+  "Assets/_Game/Resources/LevelDesignCatalog.asset",
+  "Assets/_Game/Scripts/Levels/VerifiedOptimality.cs",
+  "Assets/_Game/Tests/Editor/Batch21CatalogFrozen.txt",
+  "Assets/_Game/Tests/Editor/Batch21FrozenFiles.txt",
+  "Assets/_Game/Tests/Editor/Batch26CatalogFrozen.txt",
+  "Assets/_Game/Tests/Editor/Batch26FrozenFiles.txt",
+  "Assets/_Game/Tests/Editor/BoardVisualFrozenFiles.txt",
+  "Assets/_Game/Tests/Editor/IdentityFrozenFiles.txt",
+  "Assets/_Game/Tests/Editor/LevelDesignTests.cs",
+  "Assets/_Game/Tests/Editor/Refinement26CatalogFrozen.txt",
+  "Assets/_Game/Tests/Editor/Refinement26FrozenFiles.txt"
+]

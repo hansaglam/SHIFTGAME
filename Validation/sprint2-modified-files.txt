@@ -1,0 +1,10 @@
+Assets\_Game\README.md
+Assets\_Game\Editor\LevelValidation.cs
+Assets\_Game\Editor\PrototypeGameEditor.cs
+Assets\_Game\Editor\PrototypeSetup.cs
+Assets\_Game\Scenes\Prototype.unity
+Assets\_Game\Scripts\Board\BoardView.cs
+Assets\_Game\Scripts\Pieces\Piece.cs
+Assets\_Game\Scripts\Systems\PrototypeGame.cs
+Assets\_Game\Scripts\UI\GameHud.cs
+Assets\_Game\Tests\Editor\SprintPresentationTests.cs

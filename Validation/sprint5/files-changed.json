@@ -1,0 +1,182 @@
+[
+  {
+    "Path": "Assets\\_Game\\README.md",
+    "State": "Modified",
+    "SHA256": "FD6F9CADD8C4D33A4062076B98471D55F3D65283F7F1C0CFFDB9CA1DCD339459"
+  },
+  {
+    "Path": "Assets\\_Game\\Resources.meta",
+    "State": "Created",
+    "SHA256": "C06AB09D2B82A03D3C7A0062C49D8C80A9FB3AFC6198E28C3779AE424BD13BB3"
+  },
+  {
+    "Path": "Assets\\_Game\\Data\\Levels\\Level30_ClearThenOpen.asset",
+    "State": "Modified",
+    "SHA256": "58CA41703F3A5D525F8DA759C8D5345E44803A7B4D09CACCC5DC14C02AFF6DC6"
+  },
+  {
+    "Path": "Assets\\_Game\\Data\\Levels\\Level31_OnePadTwoGates.asset",
+    "State": "Modified",
+    "SHA256": "F8252122F7EDD9402F58A637BB80905D200E83C343FF9A44F87D0D3E3D614E0B"
+  },
+  {
+    "Path": "Assets\\_Game\\Data\\Levels\\Level32_OppositeStates.asset",
+    "State": "Modified",
+    "SHA256": "134F5EC12DCC8A32174BC2AFDFD1A09E4D1E28316C4B86D3A82B8EBE6FE2E661"
+  },
+  {
+    "Path": "Assets\\_Game\\Data\\Levels\\Level33_SharedDeliveryGate.asset",
+    "State": "Modified",
+    "SHA256": "0A782E815ACB207D93F24082183227830E845B3E38CE168BCD83CE54EB2CC183"
+  },
+  {
+    "Path": "Assets\\_Game\\Data\\Levels\\Level34_ClearTheCorridor.asset",
+    "State": "Modified",
+    "SHA256": "9B1B560E4344BE2717A2FB7248CF8BD306A9A5A0D7292A1871BDE666DD870364"
+  },
+  {
+    "Path": "Assets\\_Game\\Data\\Levels\\Level35_TwoChannels.asset",
+    "State": "Modified",
+    "SHA256": "F25107BF422EF8C4A6A55CADB7311CD0DFBBC71D24B77FF8044A6D2056C7BE81"
+  },
+  {
+    "Path": "Assets\\_Game\\Data\\Levels\\Level36_CrossBeforeClosing.asset",
+    "State": "Modified",
+    "SHA256": "394F760376AF97CED248E68A451A7012446A8BE0E0C54A65E6FDF684471CF2B5"
+  },
+  {
+    "Path": "Assets\\_Game\\Data\\Levels\\Level37_OpenTheSecondPad.asset",
+    "State": "Modified",
+    "SHA256": "E1D0C578A6B253376020657500DD21D277A27DB1CB5DEDAE247EFAF1AEFC2A5B"
+  },
+  {
+    "Path": "Assets\\_Game\\Data\\Levels\\Level38_LiftAndTurn.asset",
+    "State": "Modified",
+    "SHA256": "435CC0CEFC531DC31F37E0D2E82B1A0D09DF1AB85A89246149FED2BF0148D279"
+  },
+  {
+    "Path": "Assets\\_Game\\Data\\Levels\\Level39_PrepareToggleRedirect.asset",
+    "State": "Modified",
+    "SHA256": "AE705818484E7237A96C9F7D31995025D2EC5442F291707E3DA7F9375F8D6FC5"
+  },
+  {
+    "Path": "Assets\\_Game\\Data\\Levels\\Level40_TheStateOfShift.asset",
+    "State": "Modified",
+    "SHA256": "50AAF70FE3E0EA2B6C9C7A1DEDEB2B39FDAEA20437EA81AE6FA6A7DE59796F17"
+  },
+  {
+    "Path": "Assets\\_Game\\Editor\\DesignValidation.cs",
+    "State": "Created",
+    "SHA256": "433D7094F0A6009B57D0E829A0C17E4069052B8B5C6A56137D3B046F078A5DF5"
+  },
+  {
+    "Path": "Assets\\_Game\\Editor\\DesignValidation.cs.meta",
+    "State": "Created",
+    "SHA256": "F7E9502ED3CD3A82913ED3643EB8E4D43BCD12F191C9968396FB6583153CC33C"
+  },
+  {
+    "Path": "Assets\\_Game\\Resources\\LevelDesignCatalog.asset",
+    "State": "Created",
+    "SHA256": "C588E4584E3D7B182E06BA0DB14979951CB14C2FA743B75971E85D5BCD53E461"
+  },
+  {
+    "Path": "Assets\\_Game\\Resources\\LevelDesignCatalog.asset.meta",
+    "State": "Created",
+    "SHA256": "706B526F2A7BB99B57A9C035FDF632E38EE8EC484021868F370AA889E9912187"
+  },
+  {
+    "Path": "Assets\\_Game\\Scripts\\Presentation.meta",
+    "State": "Created",
+    "SHA256": "FBBEC60BD6A246943AE82E99E07EB8C1ECC2447B2100230603EEE4A0B87267E4"
+  },
+  {
+    "Path": "Assets\\_Game\\Scripts\\Board\\BoardView.cs",
+    "State": "Modified",
+    "SHA256": "B2C151289523DA9E2AA14848E504FDAE3B7F169464BA0B8031512CDACE1B599A"
+  },
+  {
+    "Path": "Assets\\_Game\\Scripts\\Levels\\LevelData.cs",
+    "State": "Modified",
+    "SHA256": "B20005BB7E97ACAAF9134EC98EC2E9C266E61715382B8EE660CA82AF5A176250"
+  },
+  {
+    "Path": "Assets\\_Game\\Scripts\\Levels\\LevelDesignCatalog.cs",
+    "State": "Created",
+    "SHA256": "7CBED0295290A85973203761B009707DA44E6DE74EE0D51101F17E1C497BB357"
+  },
+  {
+    "Path": "Assets\\_Game\\Scripts\\Levels\\LevelDesignCatalog.cs.meta",
+    "State": "Created",
+    "SHA256": "813CF7AFECDEBBACC486672EE0FB7847398DCDF9829DD5DED7BD9113628E9793"
+  },
+  {
+    "Path": "Assets\\_Game\\Scripts\\Levels\\VerifiedOptimality.cs",
+    "State": "Modified",
+    "SHA256": "E3CBD211F03F3260470347BD5129578489315713E23003355DD38773EDC84F3F"
+  },
+  {
+    "Path": "Assets\\_Game\\Scripts\\Presentation\\ReactionPresentation.cs",
+    "State": "Created",
+    "SHA256": "077EBD6DE2FAD643C81AA9B0483FE704ED4D9FCCFF2847E780DF4E297536B82D"
+  },
+  {
+    "Path": "Assets\\_Game\\Scripts\\Presentation\\ReactionPresentation.cs.meta",
+    "State": "Created",
+    "SHA256": "B0E1BEE1C95388630737A50014C3C64D667C4918E3223F4BBAAB514FA0A3D98D"
+  },
+  {
+    "Path": "Assets\\_Game\\Scripts\\Systems\\AnalyticsService.cs",
+    "State": "Modified",
+    "SHA256": "3C0630B41748A108610047F5C342BC7D19FB5296E832BAA35B28B769106C1F7F"
+  },
+  {
+    "Path": "Assets\\_Game\\Scripts\\Systems\\PrototypeGame.cs",
+    "State": "Modified",
+    "SHA256": "222A786CD12564530314345E63FEC08D46F03DA246518E2775EAB075C10A54B6"
+  },
+  {
+    "Path": "Assets\\_Game\\Scripts\\UI\\GameHud.cs",
+    "State": "Modified",
+    "SHA256": "00893791CD282152BC4A92B31EEA0C1441DBA4415D8C75B6E981AC5535EDB466"
+  },
+  {
+    "Path": "Assets\\_Game\\Tests\\Editor\\ChapterTwoPresentationTests.cs",
+    "State": "Modified",
+    "SHA256": "26C865AE874A14B8CCDC78F28491B4F3B43E23548880290C9A0C4C00E6ACB955"
+  },
+  {
+    "Path": "Assets\\_Game\\Tests\\Editor\\ChapterTwoTests.cs",
+    "State": "Modified",
+    "SHA256": "48DC81DFD1DBFD87B0AC2E8663E71F24B3FCD5022CAA0F40F3D7E2A219DE3CAB"
+  },
+  {
+    "Path": "Assets\\_Game\\Tests\\Editor\\LevelDesignPresentationTests.cs",
+    "State": "Created",
+    "SHA256": "F0EEAE09ED5E3A53420FBA81828A584252A4FC59D2FA08EACE9F2C267195D0E4"
+  },
+  {
+    "Path": "Assets\\_Game\\Tests\\Editor\\LevelDesignPresentationTests.cs.meta",
+    "State": "Created",
+    "SHA256": "ACD244908B771C4E15C8C41C6EBC3E54B25B0886DAA1D4658BAC8CAC0ECA3254"
+  },
+  {
+    "Path": "Assets\\_Game\\Tests\\Editor\\LevelDesignTests.cs",
+    "State": "Created",
+    "SHA256": "B8C77161CDE2F5757E60A31AA2F414424E64BAA11E0921FDCDEE7792AFA4EB16"
+  },
+  {
+    "Path": "Assets\\_Game\\Tests\\Editor\\LevelDesignTests.cs.meta",
+    "State": "Created",
+    "SHA256": "3B047F3D148D28A4B2065CCEC64E8BDC37615C1A662B9DC357ACB0CEC89FABD1"
+  },
+  {
+    "Path": "Assets\\_Game\\Tests\\Editor\\Sprint5FrozenFiles.txt",
+    "State": "Created",
+    "SHA256": "5AE82028ED8A43158E1881E8236B70DCC99EEF2F464137D570988AE66CEFA1EA"
+  },
+  {
+    "Path": "Assets\\_Game\\Tests\\Editor\\Sprint5FrozenFiles.txt.meta",
+    "State": "Created",
+    "SHA256": "2D446D7EE6E30F5673A3CF316FBD393108A274F46A533027C9F78C3D1FFC193D"
+  }
+]

@@ -1,0 +1,386 @@
+[
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\FirstChain.asset",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\FirstChain.asset.meta",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level01_FirstTap.asset",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level01_FirstTap.asset.meta",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level02_FindTheExit.asset",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level02_FindTheExit.asset.meta",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level03_ClearTheBox.asset",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level03_ClearTheBox.asset.meta",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level04_FirstChain.asset",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level04_FirstChain.asset.meta",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level05_BlockedIsFree.asset",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level05_BlockedIsFree.asset.meta",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level06_TurnTheCorner.asset",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level06_TurnTheCorner.asset.meta",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level07_MakeRoom.asset",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level07_MakeRoom.asset.meta",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level08_Clockwise.asset",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level08_Clockwise.asset.meta",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level09_PushAndTurn.asset",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level09_PushAndTurn.asset.meta",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level10_SetTheChain.asset",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level10_SetTheChain.asset.meta",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level11_OpenTheLane.asset",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level11_OpenTheLane.asset.meta",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level12_CrossingOrder.asset",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level12_CrossingOrder.asset.meta",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level13_SecondAct.asset",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level13_SecondAct.asset.meta",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level14_TwoCorners.asset",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level14_TwoCorners.asset.meta",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level15_TheLongSetup.asset",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level15_TheLongSetup.asset.meta",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level16_TransformAhead.asset",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level16_TransformAhead.asset.meta",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level17_SharedCorridor.asset",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level17_SharedCorridor.asset.meta",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level18_ClearTriggerFinish.asset",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level18_ClearTriggerFinish.asset.meta",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level19_SharedDelivery.asset",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level19_SharedDelivery.asset.meta",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level20_TheFinalShift.asset",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level20_TheFinalShift.asset.meta",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level21_FirstSwitch.asset",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level21_FirstSwitch.asset.meta",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level22_OpenForRed.asset",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level22_OpenForRed.asset.meta",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level23_ToggleTwice.asset",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level23_ToggleTwice.asset.meta",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level24_ClosedLane.asset",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level24_ClosedLane.asset.meta",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level25_BeforeYouGo.asset",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level25_BeforeYouGo.asset.meta",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level26_ThreeEntries.asset",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level26_ThreeEntries.asset.meta",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level27_BoxDoesNotPress.asset",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level27_BoxDoesNotPress.asset.meta",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level28_TurnThrough.asset",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level28_TurnThrough.asset.meta",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level29_ClockworkGate.asset",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level29_ClockworkGate.asset.meta",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level30_ClearThenOpen.asset",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level30_ClearThenOpen.asset.meta",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level31_OnePadTwoGates.asset",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level31_OnePadTwoGates.asset.meta",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level32_OppositeStates.asset",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level32_OppositeStates.asset.meta",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level33_SharedDeliveryGate.asset",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level33_SharedDeliveryGate.asset.meta",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level34_ClearTheCorridor.asset",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level34_ClearTheCorridor.asset.meta",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level35_TwoChannels.asset",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level35_TwoChannels.asset.meta",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level36_CrossBeforeClosing.asset",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level36_CrossBeforeClosing.asset.meta",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level37_OpenTheSecondPad.asset",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level37_OpenTheSecondPad.asset.meta",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level38_LiftAndTurn.asset",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level38_LiftAndTurn.asset.meta",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level39_PrepareToggleRedirect.asset",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level39_PrepareToggleRedirect.asset.meta",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level40_TheStateOfShift.asset",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Data\\Levels\\Level40_TheStateOfShift.asset.meta",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\Board\\BoardManager.cs",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\Core\\DirectionUtility.cs",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\Core\\DirectionUtility.cs.meta",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\Core\\GameEnums.cs",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\Core\\GameEnums.cs.meta",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\Core\\GridPosition.cs",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\Core\\GridPosition.cs.meta",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\Systems\\GameFeelSettings.cs",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\Systems\\LevelProgression.cs",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\Systems\\PrototypeGame.cs",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\Systems\\SaveService.cs",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\Systems\\SettingsService.cs",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\UI\\GameHud.cs",
+    "Unchanged": true
+  },
+  {
+    "Path": "D:\\UnityProjects\\SHIFT\\SHIFT\\Assets\\_Game\\Scripts\\UI\\SafeArea.cs",
+    "Unchanged": true
+  }
+]

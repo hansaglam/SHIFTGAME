@@ -1,0 +1,455 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccf97fc9d493448bac5e0a5525c17ad6, type: 3}
+  m_Name: LevelDesignCatalog
+  m_EditorClassIdentifier:
+  entries:
+  - level: {fileID: 11400000, guid: 06dfe0bc952741bcae861c46d2629efc, type: 2}
+    primary: 0
+    secondary: 
+    difficultyBand: 0
+    reasoningStyle: 2
+    sculptedTopology: 0
+    hasPayoffMove: 0
+    expectedPayoffDepth: 0
+    creativeCandidate: 0
+    creativeHook: 0
+    designRationale: "First tap and directional intent. Keep tutorial unchanged."
+  - level: {fileID: 11400000, guid: 3461f945624242f9a4826b349d374168, type: 2}
+    primary: 0
+    secondary: 
+    difficultyBand: 0
+    reasoningStyle: 2
+    sculptedTopology: 0
+    hasPayoffMove: 0
+    expectedPayoffDepth: 0
+    creativeCandidate: 0
+    creativeHook: 0
+    designRationale: "One-cell movement and exit distance. Keep unchanged."
+  - level: {fileID: 11400000, guid: 8d13455e6b634e91accc55b83f4ab5aa, type: 2}
+    primary: 2
+    secondary: 00000000
+    difficultyBand: 0
+    reasoningStyle: 9
+    sculptedTopology: 0
+    hasPayoffMove: 0
+    expectedPayoffDepth: 0
+    creativeCandidate: 0
+    creativeHook: 0
+    designRationale: "Yellow clears the box before Red. Keep unchanged."
+  - level: {fileID: 11400000, guid: e8670c7c345e4bf295b3df6ee2f7918c, type: 2}
+    primary: 4
+    secondary: 
+    difficultyBand: 0
+    reasoningStyle: 16
+    sculptedTopology: 0
+    hasPayoffMove: 0
+    expectedPayoffDepth: 0
+    creativeCandidate: 0
+    creativeHook: 0
+    designRationale: "First multi-piece push. Keep unchanged."
+  - level: {fileID: 11400000, guid: 309986bb8e9449d48de201482bc5d9d8, type: 2}
+    primary: 0
+    secondary: 
+    difficultyBand: 0
+    reasoningStyle: 8
+    sculptedTopology: 0
+    hasPayoffMove: 0
+    expectedPayoffDepth: 0
+    creativeCandidate: 0
+    creativeHook: 0
+    designRationale: "Blocked attempts are free. Keep unchanged."
+  - level: {fileID: 11400000, guid: 8205f08a242e49fdbd3a6971d6477fbb, type: 2}
+    primary: 0
+    secondary: 04000000
+    difficultyBand: 1
+    reasoningStyle: 2
+    sculptedTopology: 0
+    hasPayoffMove: 0
+    expectedPayoffDepth: 0
+    creativeCandidate: 0
+    creativeHook: 0
+    designRationale: "Direction tile and corner prediction. Keep unchanged."
+  - level: {fileID: 11400000, guid: e750c8baa0034f768513470b4fb9773c, type: 2}
+    primary: 2
+    secondary: 00000000
+    difficultyBand: 1
+    reasoningStyle: 9
+    sculptedTopology: 0
+    hasPayoffMove: 0
+    expectedPayoffDepth: 0
+    creativeCandidate: 0
+    creativeHook: 0
+    designRationale: "Blue must leave the red exit lane. Keep unchanged."
+  - level: {fileID: 11400000, guid: 64c41da95c1b406ea0d008a444155e9a, type: 2}
+    primary: 4
+    secondary: 
+    difficultyBand: 1
+    reasoningStyle: 2
+    sculptedTopology: 0
+    hasPayoffMove: 0
+    expectedPayoffDepth: 0
+    creativeCandidate: 0
+    creativeHook: 0
+    designRationale: "Clockwise transformation teaching. Keep unchanged."
+  - level: {fileID: 11400000, guid: c0791af01b144a80af597ee7d3202c6d, type: 2}
+    primary: 4
+    secondary: 02000000
+    difficultyBand: 1
+    reasoningStyle: 18
+    sculptedTopology: 0
+    hasPayoffMove: 0
+    expectedPayoffDepth: 0
+    creativeCandidate: 0
+    creativeHook: 0
+    designRationale: "Predict redirected push landing. Keep unchanged."
+  - level: {fileID: 11400000, guid: 35a6c5359a274628b9cac30b26d16ce0, type: 2}
+    primary: 4
+    secondary: 02000000
+    difficultyBand: 2
+    reasoningStyle: 19
+    sculptedTopology: 0
+    hasPayoffMove: 0
+    expectedPayoffDepth: 0
+    creativeCandidate: 0
+    creativeHook: 0
+    designRationale: "Prepare space before releasing a chain. Keep unchanged."
+  - level: {fileID: 11400000, guid: da3218a0f0b24fd2b398fb76901d0ac7, type: 2}
+    primary: 0
+    secondary: 02000000
+    difficultyBand: 2
+    reasoningStyle: 9
+    sculptedTopology: 0
+    hasPayoffMove: 0
+    expectedPayoffDepth: 0
+    creativeCandidate: 0
+    creativeHook: 0
+    designRationale: "Staging before delivery. Keep unchanged."
+  - level: {fileID: 11400000, guid: 2d74e819d9794dfcb86f629e079a9c73, type: 2}
+    primary: 2
+    secondary: 00000000
+    difficultyBand: 2
+    reasoningStyle: 10
+    sculptedTopology: 0
+    hasPayoffMove: 0
+    expectedPayoffDepth: 0
+    creativeCandidate: 0
+    creativeHook: 0
+    designRationale: "Corner access order. Keep unchanged."
+  - level: {fileID: 11400000, guid: 7a408b3b61ca46b4b8bcab167347e048, type: 2}
+    primary: 4
+    secondary: 
+    difficultyBand: 2
+    reasoningStyle: 19
+    sculptedTopology: 0
+    hasPayoffMove: 0
+    expectedPayoffDepth: 0
+    creativeCandidate: 0
+    creativeHook: 0
+    designRationale: "One reaction prepares the next. Keep unchanged."
+  - level: {fileID: 11400000, guid: 219522ff71054f819f8a131edc682ccf, type: 2}
+    primary: 0
+    secondary: 04000000
+    difficultyBand: 2
+    reasoningStyle: 18
+    sculptedTopology: 0
+    hasPayoffMove: 0
+    expectedPayoffDepth: 0
+    creativeCandidate: 0
+    creativeHook: 0
+    designRationale: "Trace two corners. Keep unchanged."
+  - level: {fileID: 11400000, guid: bf7d9af56e2342a0959a805ffe39949b, type: 2}
+    primary: 4
+    secondary: 02000000
+    difficultyBand: 3
+    reasoningStyle: 9
+    sculptedTopology: 0
+    hasPayoffMove: 0
+    expectedPayoffDepth: 0
+    creativeCandidate: 0
+    creativeHook: 0
+    designRationale: "Long setup before the tempting chain. Keep unchanged."
+  - level: {fileID: 11400000, guid: f2e9c6a5154843ccbc8d92e1e7b3a1c0, type: 2}
+    primary: 4
+    secondary: 
+    difficultyBand: 3
+    reasoningStyle: 18
+    sculptedTopology: 0
+    hasPayoffMove: 0
+    expectedPayoffDepth: 0
+    creativeCandidate: 0
+    creativeHook: 0
+    designRationale: "Rotator then direction prediction. Keep unchanged."
+  - level: {fileID: 11400000, guid: 3e5deaea97294031adfc98168d70f6ff, type: 2}
+    primary: 2
+    secondary: 00000000
+    difficultyBand: 3
+    reasoningStyle: 10
+    sculptedTopology: 0
+    hasPayoffMove: 0
+    expectedPayoffDepth: 0
+    creativeCandidate: 0
+    creativeHook: 0
+    designRationale: "Shared corner timing. Keep unchanged."
+  - level: {fileID: 11400000, guid: 310025150e844272b39cb22a0c455a9e, type: 2}
+    primary: 1
+    secondary: 04000000
+    difficultyBand: 3
+    reasoningStyle: 11
+    sculptedTopology: 0
+    hasPayoffMove: 0
+    expectedPayoffDepth: 0
+    creativeCandidate: 0
+    creativeHook: 0
+    designRationale: "Parking space then trigger then delivery. Keep unchanged."
+  - level: {fileID: 11400000, guid: 3fb7f7d5ca83485387fe7904788725da, type: 2}
+    primary: 5
+    secondary: 00000000
+    difficultyBand: 3
+    reasoningStyle: 34
+    sculptedTopology: 0
+    hasPayoffMove: 0
+    expectedPayoffDepth: 0
+    creativeCandidate: 0
+    creativeHook: 0
+    designRationale: "Cooperative target delivery. Keep unchanged."
+  - level: {fileID: 11400000, guid: b36769721b0e4b3a862e446b16e3f934, type: 2}
+    primary: 4
+    secondary: 02000000
+    difficultyBand: 5
+    reasoningStyle: 27
+    sculptedTopology: 0
+    hasPayoffMove: 0
+    expectedPayoffDepth: 0
+    creativeCandidate: 0
+    creativeHook: 0
+    designRationale: "Chapter 1 combined-mechanic finale. Keep unchanged."
+  - level: {fileID: 11400000, guid: f75d89c9996d4829abd401bc7fdfed3d, type: 2}
+    primary: 3
+    secondary: 
+    difficultyBand: 1
+    reasoningStyle: 6
+    sculptedTopology: 1
+    hasPayoffMove: 1
+    expectedPayoffDepth: 4
+    creativeCandidate: 0
+    creativeHook: 0
+    designRationale: "Blue opens the route; Yellow would occupy the target-only exit approach."
+  - level: {fileID: 11400000, guid: 2f016941ef5e47de824abce9ccd398d0, type: 2}
+    primary: 2
+    secondary: 
+    difficultyBand: 2
+    reasoningStyle: 11
+    sculptedTopology: 1
+    hasPayoffMove: 0
+    expectedPayoffDepth: 0
+    creativeCandidate: 0
+    creativeHook: 0
+    designRationale: "Let the crossing occupant leave under its own direction before pushing Red."
+  - level: {fileID: 11400000, guid: a0137f4e643044c781263a9482de3546, type: 2}
+    primary: 3
+    secondary: 
+    difficultyBand: 2
+    reasoningStyle: 6
+    sculptedTopology: 1
+    hasPayoffMove: 0
+    expectedPayoffDepth: 0
+    creativeCandidate: 0
+    creativeHook: 0
+    designRationale: "Cross the first gate before the second pad reverses both gate states."
+  - level: {fileID: 11400000, guid: 94697260f0fb47e2ad630daf9fa9db9a, type: 2}
+    primary: 2
+    secondary: 0000000003000000
+    difficultyBand: 2
+    reasoningStyle: 30
+    sculptedTopology: 1
+    hasPayoffMove: 1
+    expectedPayoffDepth: 4
+    creativeCandidate: 0
+    creativeHook: 0
+    designRationale: "Blue yields the vertical throat; the rear Red shares pushes with the front Red."
+  - level: {fileID: 11400000, guid: 0e0e8411845b49a195ca9381ad0e8661, type: 2}
+    primary: 3
+    secondary: 04000000
+    difficultyBand: 3
+    reasoningStyle: 31
+    sculptedTopology: 1
+    hasPayoffMove: 1
+    expectedPayoffDepth: 4
+    creativeCandidate: 0
+    creativeHook: 0
+    designRationale: "Clear box parking, enter the first pad, redirect through both gate states, release the corner chain."
+  - level: {fileID: 11400000, guid: fd5169bc380c41e3bbde04660d2e78e1, type: 2}
+    primary: 2
+    secondary: 
+    difficultyBand: 1
+    reasoningStyle: 27
+    sculptedTopology: 1
+    hasPayoffMove: 1
+    expectedPayoffDepth: 6
+    creativeCandidate: 0
+    creativeHook: 0
+    designRationale: "Vacate the upper landing before freeing the lower lane; both premature pushes feed a wrong color into the exit approach."
+  - level: {fileID: 11400000, guid: dd52beb2527c498fbc6f3a2ac14fe35a, type: 2}
+    primary: 2
+    secondary: 
+    difficultyBand: 2
+    reasoningStyle: 11
+    sculptedTopology: 1
+    hasPayoffMove: 1
+    expectedPayoffDepth: 4
+    creativeCandidate: 0
+    creativeHook: 0
+    designRationale: "Choose the north parking pocket over the east recess, then vacate the shared crossing before using the lower return."
+  - level: {fileID: 11400000, guid: e1bc8cdfd85849b09f976362a7c83d44, type: 2}
+    primary: 4
+    secondary: 
+    difficultyBand: 3
+    reasoningStyle: 19
+    sculptedTopology: 1
+    hasPayoffMove: 1
+    expectedPayoffDepth: 8
+    creativeCandidate: 0
+    creativeHook: 0
+    designRationale: "Enter the upper turn from below; predict clockwise turns and keep the wrong color out of the final bend."
+  - level: {fileID: 11400000, guid: 082d9b82c5e84c29b8cfaf162e7369a6, type: 2}
+    primary: 5
+    secondary: 
+    difficultyBand: 3
+    reasoningStyle: 58
+    sculptedTopology: 1
+    hasPayoffMove: 1
+    expectedPayoffDepth: 4
+    creativeCandidate: 0
+    creativeHook: 0
+    designRationale: "A separate loop completes legally; shared pushes redirect and deliver the convoy more efficiently."
+  - level: {fileID: 11400000, guid: 3c88de0c6aa94f5d941a041d727f8bcf, type: 2}
+    primary: 1
+    secondary: 
+    difficultyBand: 4
+    reasoningStyle: 63
+    sculptedTopology: 1
+    hasPayoffMove: 1
+    expectedPayoffDepth: 8
+    creativeCandidate: 1
+    creativeHook: 2
+    designRationale: "Preserve the box staging and parking cells while closing and reopening the gate; premature access preparation consumes the parking bay and costs a recoverable extra move."
+  - level: {fileID: 11400000, guid: 5ec8fdc6aee34905817e29fd0697997f, type: 2}
+    primary: 0
+    secondary: 03000000
+    difficultyBand: 3
+    reasoningStyle: 6
+    sculptedTopology: 1
+    hasPayoffMove: 1
+    expectedPayoffDepth: 4
+    creativeCandidate: 0
+    creativeHook: 0
+    designRationale: "Thin lane and offset exit alcove; one pad opens two sequential gates. Spatial constraint plus state preparation."
+  - level: {fileID: 11400000, guid: 5a12cbf1556d45648c024cb63116a5c1, type: 2}
+    primary: 3
+    secondary: 01000000
+    difficultyBand: 4
+    reasoningStyle: 6
+    sculptedTopology: 1
+    hasPayoffMove: 1
+    expectedPayoffDepth: 6
+    creativeCandidate: 1
+    creativeHook: 4
+    designRationale: "Two rooms exchange opposite gate states twice. Finish the upper target before the lower pad closes its exit gate."
+  - level: {fileID: 11400000, guid: 2eaa274ce5f747479998c3ea57ff5e69, type: 2}
+    primary: 0
+    secondary: 01000000
+    difficultyBand: 3
+    reasoningStyle: 7
+    sculptedTopology: 1
+    hasPayoffMove: 1
+    expectedPayoffDepth: 4
+    creativeCandidate: 0
+    creativeHook: 0
+    designRationale: "Detached switch staging room prepares the shared two-target corridor. Cooperating Reds reduce moves."
+  - level: {fileID: 11400000, guid: cd83daebf1b341ff926fa9701abc192e, type: 2}
+    primary: 2
+    secondary: 00000000
+    difficultyBand: 3
+    reasoningStyle: 15
+    sculptedTopology: 1
+    hasPayoffMove: 1
+    expectedPayoffDepth: 4
+    creativeCandidate: 1
+    creativeHook: 1
+    designRationale: "Blue and Red compete for the central choke. Blue exits south to a pad; Red crosses east to the raised finish."
+  - level: {fileID: 11400000, guid: 48ea6ff4e88f4ce2a05a6e939db14a51, type: 2}
+    primary: 1
+    secondary: 03000000
+    difficultyBand: 4
+    reasoningStyle: 13
+    sculptedTopology: 1
+    hasPayoffMove: 0
+    expectedPayoffDepth: 0
+    creativeCandidate: 0
+    creativeHook: 0
+    designRationale: "Separate control pockets operate two consecutive channel barriers in the target lane. Topology, setup and state."
+  - level: {fileID: 11400000, guid: ae57c7fe1e124965a034f3459a6f85d8, type: 2}
+    primary: 3
+    secondary: 01000000
+    difficultyBand: 4
+    reasoningStyle: 7
+    sculptedTopology: 1
+    hasPayoffMove: 0
+    expectedPayoffDepth: 0
+    creativeCandidate: 0
+    creativeHook: 0
+    designRationale: "Open the upper approach, cross, reverse A, then activate B. Second yellow pad is a premature-close decoy."
+  - level: {fileID: 11400000, guid: ea37849c5cc64c528be6de8e74e5ddf8, type: 2}
+    primary: 1
+    secondary: 03000000
+    difficultyBand: 4
+    reasoningStyle: 7
+    sculptedTopology: 1
+    hasPayoffMove: 0
+    expectedPayoffDepth: 0
+    creativeCandidate: 0
+    creativeHook: 0
+    designRationale: "Upper staging chamber leads to channel B, lower delivery lane waits for it. Topology, setup, state and ordered phases."
+  - level: {fileID: 11400000, guid: 0fce10e5e4944513a83b0d1889ac752f, type: 2}
+    primary: 4
+    secondary: 01000000
+    difficultyBand: 4
+    reasoningStyle: 31
+    sculptedTopology: 1
+    hasPayoffMove: 1
+    expectedPayoffDepth: 6
+    creativeCandidate: 1
+    creativeHook: 2
+    designRationale: "Box parking preparation, gate activation and raised serpentine finish. The final depth-6 cascade follows several setup moves."
+  - level: {fileID: 11400000, guid: f87c8f1c30c445a0ba2fee77346d67a8, type: 2}
+    primary: 5
+    secondary: 0200000000000000
+    difficultyBand: 4
+    reasoningStyle: 42
+    sculptedTopology: 1
+    hasPayoffMove: 1
+    expectedPayoffDepth: 6
+    creativeCandidate: 1
+    creativeHook: 5
+    designRationale: "Two Reds share a single throat. Together: 4 taps; individually: 6. Both paths deliver, efficient pushing earns mastery."
+  - level: {fileID: 11400000, guid: 44f8850dbea643c7aa9674743d7927e2, type: 2}
+    primary: 1
+    secondary: 0300000004000000
+    difficultyBand: 5
+    reasoningStyle: 31
+    sculptedTopology: 1
+    hasPayoffMove: 1
+    expectedPayoffDepth: 8
+    creativeCandidate: 1
+    creativeHook: 3
+    designRationale: "Lower box staging room joins upper finish through gate A. Blue yields shared space; Yellow offers a tempting upward box push. Two channels and a depth-8 final return loop."
