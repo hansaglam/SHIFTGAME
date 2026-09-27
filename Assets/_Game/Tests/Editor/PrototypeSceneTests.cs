@@ -25,6 +25,7 @@ namespace Shift.Game.Tests
         [UnityTest] public IEnumerator ScenePlaysChainAndCanRestartDuringAnimation()
         {
             EditorSceneManager.OpenScene(PrototypeSetup.ScenePath);
+            ProgressionPresentationTests.IsolateSave("SHIFT.Tests.PrototypeScene.");
             var setup = new SerializedObject(Object.FindFirstObjectByType<PrototypeGame>());
             setup.FindProperty("useLevelSet").boolValue = false; setup.ApplyModifiedPropertiesWithoutUndo();
             yield return new EnterPlayMode();

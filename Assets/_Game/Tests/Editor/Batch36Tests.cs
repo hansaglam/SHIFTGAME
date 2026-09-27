@@ -114,7 +114,14 @@ namespace Shift.Game.Tests
             {var p=line.Split('|');Assert.That(Hash(System.Text.Encoding.UTF8.GetBytes(catalog[int.Parse(p[0])])),Is.EqualTo(p[1]),p[0]);}
             var old=File.ReadAllText(Path.Combine(Application.dataPath,"_Game/Tests/Editor/Fixtures/LegacyBoardManager.txt")).Replace("\r\n","\n");
             var expected=old.Replace("private PieceColor targetColor;","private HashSet<PieceColor> targetColors;").Replace("targetColor = level.TargetColor;","targetColors = new HashSet<PieceColor>(level.ResolvedTargetColors);").Replace("p.Color == targetColor","targetColors.Contains(p.Color)");
-            Assert.That(File.ReadAllText(Path.Combine(Application.dataPath,"_Game/Scripts/Board/BoardManager.cs")).Replace("\r\n","\n"),Is.EqualTo(expected));
+            var current=File.ReadAllText(Path.Combine(Application.dataPath,"_Game/Scripts/Board/BoardManager.cs")).Replace("\r\n","\n");
+            // Explicit Undo storage/API is additive. Retain the exact legacy simulation comparison.
+            int begin=current.IndexOf("        private Snapshot[] undoSnapshot;",StringComparison.Ordinal);
+            int end=current.IndexOf("        private bool[] moving;",StringComparison.Ordinal);
+            Assert.That(begin,Is.GreaterThan(0));Assert.That(end,Is.GreaterThan(begin));
+            current=current.Remove(begin,end-begin).Replace("            ClearUndo();\n", "");
+            current=current.Replace("            if (actions.Count > 0)\n            {\n                undoSnapshot = (Snapshot[])snapshots.Clone(); undoMoves = MovesRemaining;\n                MovesRemaining--;\n            }", "            if (actions.Count > 0) MovesRemaining--;");
+            Assert.That(current,Is.EqualTo(expected));
         }
         [UnityTest] public IEnumerator Actual35BoundaryCampaignCompletionAndPortraitCaptures()
         {

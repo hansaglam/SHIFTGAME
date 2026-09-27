@@ -10,6 +10,14 @@ namespace Shift.Game.Tests
 {
     public sealed class MultiColorObjectiveTests
     {
+        private GameLanguageService previousLanguage;
+        [SetUp] public void EnglishPresentationLocale()
+        {
+            previousLanguage = GameLanguageService.Shared;
+            const string key = "SHIFT.Tests.MultiColor.Language.v1";
+            PlayerPrefs.SetString(key, "English");
+            GameLanguageService.UseForValidation(new GameLanguageService(SystemLanguage.English, key));
+        }
         private LevelData level;
         private GameObject root;
         private GameFeelSettings feel;
@@ -25,7 +33,7 @@ namespace Shift.Game.Tests
             level.ConfigureTargetColors(targets);var b=new BoardManager();b.Load(level);return b;
         }
         private static void Tap(BoardManager b,int y) { Assert.That(b.RequestMove(new GridPosition(0,y)),Is.True);b.CompleteResolution(); }
-        [TearDown] public void Cleanup(){if(root!=null)Object.DestroyImmediate(root);if(level!=null)Object.DestroyImmediate(level);}
+        [TearDown] public void Cleanup(){if(root!=null)Object.DestroyImmediate(root);if(level!=null)Object.DestroyImmediate(level);GameLanguageService.UseForValidation(previousLanguage);}
         [Test] public void LegacyFallbackAndCompletionIgnoreNonTargets()
         {
             var b=Create();Assert.That(level.ResolvedTargetColors,Is.EqualTo(new[]{PieceColor.Red}));

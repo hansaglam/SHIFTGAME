@@ -29,11 +29,28 @@ namespace Shift.Game
             PlayerPrefs.SetInt(prefix + "Completed", data.HighestCompleted);
             PlayerPrefs.Save();
         }
+        // Additive versioned metadata: legacy progress keys and migration stay intact.
+        public bool[] LoadPerfects(int levelCount)
+        {
+            var result = new bool[levelCount];
+            string stored = PlayerPrefs.GetString(prefix + "Mastery.v1.Perfect", "");
+            for (int i = 0; i < Math.Min(levelCount, stored.Length); i++) result[i] = stored[i] == '1';
+            return result;
+        }
+        public void RecordPerfect(int index, int levelCount)
+        {
+            if (index < 0 || index >= levelCount) return;
+            string prior = PlayerPrefs.GetString(prefix + "Mastery.v1.Perfect", "");
+            var flags = new char[Math.Max(levelCount, Math.Min(prior.Length, 1024))];
+            for (int i = 0; i < flags.Length; i++) flags[i] = i < prior.Length && prior[i] == '1' ? '1' : '0';
+            flags[index] = '1'; PlayerPrefs.SetString(prefix + "Mastery.v1.Perfect", new string(flags));
+            PlayerPrefs.Save();
+        }
 #if UNITY_EDITOR
         public void Reset()
         {
             PlayerPrefs.DeleteKey(prefix + "Unlocked"); PlayerPrefs.DeleteKey(prefix + "Current");
-            PlayerPrefs.DeleteKey(prefix + "Completed"); PlayerPrefs.Save();
+            PlayerPrefs.DeleteKey(prefix + "Completed"); PlayerPrefs.DeleteKey(prefix + "Mastery.v1.Perfect"); PlayerPrefs.Save();
         }
 #endif
     }

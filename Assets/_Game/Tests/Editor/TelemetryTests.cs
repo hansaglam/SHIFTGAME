@@ -90,7 +90,7 @@ namespace Shift.Game.Tests
         }
         [Test] public void OnlySearchVerifiedUnmodifiedPuzzlesExposeOptimalMoves()
         {
-            var expected = new Dictionary<int,int> { {6,3}, {8,2}, {9,4}, {14,5}, {17,6}, {19,6} };
+            var expected = new Dictionary<int,int> { {0,1}, {1,3}, {2,3}, {3,1}, {4,2}, {5,2}, {6,3}, {7,2}, {8,2}, {9,4}, {10,4}, {11,3}, {12,2}, {13,4}, {14,5}, {15,5}, {16,5}, {17,6}, {18,4}, {19,6} };
             var levels = LevelValidation.ChapterLevels();
             for (int i=0; i<20; i++) Assert.That(levels[i].VerifiedOptimalMoveCount, Is.EqualTo(expected.TryGetValue(i,out int n) ? (int?)n : null), levels[i].name);
             var clone = UnityEngine.Object.Instantiate(level);

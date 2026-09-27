@@ -1,0 +1,5 @@
+# Preserve exact Unity project bytes across Windows/macOS.
+# Existing regression manifests verify byte-level SHA-256 hashes.
+/Assets/** -text
+/Packages/** -text
+/ProjectSettings/** -text

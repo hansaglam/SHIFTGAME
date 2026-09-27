@@ -62,11 +62,17 @@ namespace Shift.Game
             }
         }
         public void SetInput(bool enabled) { foreach (var piece in pieces) piece.SetInput(enabled); }
-        public void TapFeedback(int id, bool blocked)
+        public void RestoreFromModel()
+        {
+            shakeRemaining = successRemaining = 0; rect.anchoredPosition = Vector2.zero; rect.localScale = Vector3.one;
+            foreach (var piece in pieces)
+                if (piece.Data.Type != PieceType.Wall) piece.RestoreFromModel();
+        }
+        public void TapFeedback(int id, bool blocked, int depth = 0)
         {
             pieces[id].Feedback(feel.tapPunch, blocked);
             audioManager.Play(blocked ? AudioCue.Blocked : AudioCue.Tap);
-            if (!blocked) haptics.Light();
+            haptics.BeginReaction(blocked, depth);
         }
         public void SuccessPulse() { successRemaining = feel.successDuration; }
         private void Update()
@@ -84,7 +90,7 @@ namespace Shift.Game
                 rect.localScale = Vector3.one * (1 + (feel.reducedMotion ? 0 : feel.successScale * Mathf.Sin(t * Mathf.PI)));
             }
         }
-        public IEnumerator Play(BoardManager board, int tappedId)
+        public IEnumerator Play(BoardManager board, int tappedId, int lastDelivery = -1)
         {
             bool blocked = board.Actions.Count == 0;
             float anticipation = blocked ? feel.blockedDuration : feel.tapAnticipation;
@@ -99,17 +105,17 @@ namespace Shift.Game
                     foreach (var tile in pieces)
                         if (i > 0 && board.Actions[i-1].Type == BoardActionType.Move && board.Actions[i-1].PieceId == action.PieceId && !tile.Data.Movable && tile.Data.Position == action.To && (tile.Data.Type == PieceType.Direction || tile.Data.Type == PieceType.Rotator))
                         { tile.Feedback(feel.tapPunch); rotated = tile.Data.Type == PieceType.Rotator; }
-                    audioManager.Play(rotated ? AudioCue.Rotate : AudioCue.DirectionChange);
+                    audioManager.Reaction(rotated ? AudioCue.Rotate : AudioCue.DirectionChange, i + 1);
                 }
                 else if (action.Type == BoardActionType.SwitchActivated)
-                { piece.Feedback(feel.tapPunch); audioManager.Play(AudioCue.SwitchActivate); haptics.Impact(); }
+                { piece.Feedback(feel.tapPunch); audioManager.Reaction(AudioCue.SwitchActivate, i + 1); haptics.Interaction(); }
                 else if (action.Type == BoardActionType.GateOpened || action.Type == BoardActionType.GateClosed)
-                { piece.ShowGate(action.Type == BoardActionType.GateOpened); piece.Feedback(feel.impactPunch); audioManager.Play(action.Type == BoardActionType.GateOpened ? AudioCue.GateOpen : AudioCue.GateClose); }
+                { piece.ShowGate(action.Type == BoardActionType.GateOpened); piece.Feedback(feel.impactPunch); audioManager.Reaction(action.Type == BoardActionType.GateOpened ? AudioCue.GateOpen : AudioCue.GateClose, i + 1); haptics.Interaction(); }
                 else if (action.Type == BoardActionType.Deliver)
                 {
                     foreach (var tile in pieces)
                         if (tile.Data.Type == PieceType.Exit && tile.Data.Position == action.From) tile.Feedback(feel.tapPunch);
-                    audioManager.Play(AudioCue.Exit); haptics.Exit(); shakeRemaining = feel.shakeDuration;
+                    audioManager.Reaction(i == lastDelivery ? AudioCue.FinalExit : AudioCue.Exit, i + 1); haptics.Interaction(); shakeRemaining = feel.shakeDuration;
                     for (float elapsed = 0; elapsed < feel.exitDuration; elapsed += Time.unscaledDeltaTime)
                     { piece.SetExit(Mathf.Clamp01(elapsed / Mathf.Max(.001f, feel.exitDuration))); yield return null; }
                     piece.SetExit(1); piece.gameObject.SetActive(false);
@@ -117,7 +123,7 @@ namespace Shift.Game
                 else
                 {
                     bool pushed = action.PieceId != tappedId;
-                    audioManager.Play(pushed ? AudioCue.Push : AudioCue.Move);
+                    audioManager.Reaction(pushed ? AudioCue.Push : AudioCue.Move, i + 1);
                     if (pushed) haptics.Impact();
                     var from = new Vector2(action.From.x, action.From.y); var to = new Vector2(action.To.x, action.To.y);
                     for (float elapsed = 0; elapsed < feel.moveDuration; elapsed += Time.unscaledDeltaTime)
@@ -129,7 +135,7 @@ namespace Shift.Game
                     piece.Place(action.To); piece.MotionAccent(Vector2.zero, 0); piece.Feedback(feel.impactPunch);
                     if (pushed && board.ReactionDepth >= 3) shakeRemaining = feel.shakeDuration;
                 }
-                hud.ShowChain(i + 1);
+                hud.ShowChain(i + 1); haptics.Step(i + 1);
             }
         }
     }

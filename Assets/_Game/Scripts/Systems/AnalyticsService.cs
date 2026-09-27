@@ -12,8 +12,18 @@ namespace Shift.Game
     {
         public int schemaVersion = 3;
         public string name, reason;
+        public int pageIndex;
+        public int perfectCount;
+        public bool mastered;
+        public string language, source;
         public double sessionSeconds;
         public int sequence, reactionDepth;
+        public int hintStage, freeHintsRemaining;
+        public int chapterIndex, chapterPerfectCount, chapterTotalCount, chapterEligibleCount;
+        public bool firstTime;
+        public string dateKey, dailyObjectiveColors, dailyDifficulty;
+        public int sourceLevelIndex, dailyPoolVersion;
+        public bool isToday, completedBefore, perfectBefore;
         public string reactionClass;
         public string reactionTier;
         public AttemptMetrics attempt;
@@ -130,6 +140,20 @@ namespace Shift.Game
             session.levelsStarted++; session.highestLevel = Math.Max(session.highestLevel, index + 1);
             Emit("level_start", reason);
         }
+        public void OnboardingEvent(string name, int pageIndex)
+        {
+            var value = new AnalyticsEvent { name = name, pageIndex = pageIndex,
+                language = GameLanguageService.Shared.CurrentLanguage.ToString(), source = "first_launch",
+                sequence = ++sequence, sessionSeconds = Now };
+            try { provider.Track(value); } catch (Exception) { ProviderFailures++; }
+        }
+        public void CampaignEndingEvent(string name, int perfectCount)
+        {
+            var value = new AnalyticsEvent { name = name, perfectCount = perfectCount, mastered = perfectCount == 40,
+                language = GameLanguageService.Shared.CurrentLanguage.ToString(), source = "level40",
+                sequence = ++sequence, sessionSeconds = Now };
+            try { provider.Track(value); } catch (Exception) { ProviderFailures++; }
+        }
         public void SelectLevel() { if (running) Emit("level_select"); }
         // Call exactly once after an accepted RequestMove; ignored/locked input never reaches this method.
         public void AcceptedTap(int depth, int remaining, bool cancelled)
@@ -162,6 +186,38 @@ namespace Shift.Game
             terminal = true; finishedAt = Now; current.completed = won;
             if (won) session.levelsCompleted++;
             Result = Snapshot(); Emit(won ? "level_complete" : "level_fail", won ? "delivered" : "move_exhaustion");
+        }
+        public void UndoUsed(int remaining, int stage = 0, int hints = 0)
+        {
+            if (current == null) return;
+            // Physical state is restored; actual player effort and Perfect Shift accounting are not rewritten.
+            terminal = false; Result = null; current.completed = false; current.remainingMoves = remaining;
+            Utility("undo_used",stage,hints,remaining);
+        }
+        public void Utility(string name,int stage,int hints,int remaining)
+        {
+            if (!running || current == null) return;
+            var attempt = Snapshot(); attempt.remainingMoves = remaining;
+            var value = new AnalyticsEvent { name=name, sequence=++sequence, sessionSeconds=Now,
+                attempt=attempt, session=SessionSnapshot(), hintStage=stage, freeHintsRemaining=hints };
+            try { provider.Track(value); } catch (Exception) { ProviderFailures++; }
+        }
+        public void MasteryEvent(string name, ChapterMastery chapter, bool firstTime = false)
+        {
+            if (!running || current == null) return;
+            var value = new AnalyticsEvent { name = name, sequence = ++sequence, sessionSeconds = Now,
+                attempt = Snapshot(), session = SessionSnapshot(), chapterIndex = chapter.Chapter,
+                chapterPerfectCount = chapter.Perfect, chapterTotalCount = chapter.Total,
+                chapterEligibleCount = chapter.Eligible, firstTime = firstTime };
+            try { provider.Track(value); } catch (Exception) { ProviderFailures++; }
+        }
+        public void DailyEvent(string name,DailyPuzzle puzzle,DailyRecord before,DateTime today)
+        {
+            if(!running||puzzle==null)return;
+            var value=new AnalyticsEvent{name=name,sequence=++sequence,sessionSeconds=Now,attempt=Snapshot(),session=SessionSnapshot(),
+                dateKey=puzzle.DateKey,sourceLevelIndex=puzzle.SourceIndex,dailyPoolVersion=puzzle.PoolVersion,isToday=puzzle.Date==today.Date,
+                completedBefore=before.completed,perfectBefore=before.perfect,dailyObjectiveColors=string.Join("+",puzzle.Level.ResolvedTargetColors),dailyDifficulty=puzzle.Level.Design?.difficultyBand.ToString()};
+            try{provider.Track(value);}catch(Exception){ProviderFailures++;}
         }
         public AttemptMetrics Snapshot()
         {

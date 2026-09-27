@@ -69,6 +69,20 @@ namespace Shift.Game
                 "29c61895aac08fcea307f02395c68ad4393558710f382d2c25ff8dfbdc076b88" => 5, // Level 39; Batch36Tests exhaustive graph
                 "8e1575d58b5d5ae9925ea04bb1af60bc673acd1f4aff37db93f31b889e40ca5d" => 7, // Level 40; Batch36Tests exhaustive graph
                 "f9ee98c455ba937fba2ef1a8d1914acc8a2bfaa37e7d294c458b16876b09cb59" => 7, // Level 38; Batch36Tests exhaustive graph
+                "bf6268d7821c416f68af9762934543a17a36d09ec182f1fbc5ee3d8e148cbfd8" => 1, // Level 1; CampaignCertificationTests exhaustive proof
+                "acc4bdb364d90f586b03aa3e67d29c215544540aa8addf0886badf8475ca3e05" => 3, // Level 2; CampaignCertificationTests exhaustive proof
+                "ffb47718ee466b8a82d7bb4f87933d24c34275e75186f4af10ca2d427bf94f7a" => 3, // Level 3; CampaignCertificationTests exhaustive proof
+                "2be4e3c182901696e85365867dd603750f5bc849d02f011f24923e57566b3149" => 1, // Level 4; CampaignCertificationTests exhaustive proof
+                "19b4d2d46834393893d57b93657423f33a2b67e17ba72a1cb88fa3481998f0af" => 2, // Level 5; CampaignCertificationTests exhaustive proof
+                "247ac4f044e6809624b8ec5803ef1575ddeb6625376cc6cd7f18a5c7dc2b3f1f" => 2, // Level 6; CampaignCertificationTests exhaustive proof
+                "d04d8f4c455fe1918d862f69c614cde4135ef02ac5fcd7d1a7dc154664e3d1a5" => 2, // Level 8; CampaignCertificationTests exhaustive proof
+                "763bb645012b69660121e0332ac867ea90316865017bd0580387bd84b7e6be17" => 4, // Level 11; CampaignCertificationTests exhaustive proof
+                "89a1642cf0bebc8877e6b4180c77894e29616db06f8c86e6fa5159a27ca3d4e7" => 3, // Level 12; CampaignCertificationTests exhaustive proof
+                "22d6a9ec7c0ac43c4ead66f901a14f97deff5fd8d482c8076a8e9239f8689e0a" => 2, // Level 13; CampaignCertificationTests exhaustive proof
+                "fbaf334e1ba7a7413397540a924e887cd88367d91af6a4d821d64bd03c3fca92" => 4, // Level 14; CampaignCertificationTests exhaustive proof
+                "d97fb41ffb2a4a239f26460faafc73d8275c839f69069a0d859504fee14bdb13" => 5, // Level 16; CampaignCertificationTests exhaustive proof
+                "ecf105273e754b75d4e42ac88cfc06e7731e7fdee9d960c1a999052d243588c7" => 5, // Level 17; CampaignCertificationTests exhaustive proof
+                "cfebae29399926003b05ddc5df632d9f9eb62acc5b48ae86afd7183e527a91d8" => 4, // Level 19; CampaignCertificationTests exhaustive proof
                 _ => null
             };
     }

@@ -48,7 +48,9 @@ namespace Shift.Game.Tests
             Assert.That(game.Board.State, Is.EqualTo(GameState.Won));
             Assert.That(game.Telemetry.Result.successfulMoves, Is.EqualTo(game.CurrentLevel.MoveLimit - game.Board.MovesRemaining));
             Assert.That(game.Telemetry.Result.blockedTaps, Is.EqualTo(1));
-            Assert.That(game.Telemetry.Result.perfectShift, Is.False);
+            // Level 5 is now certified at two committed moves; blocked taps remain free.
+            Assert.That(game.CurrentLevel.VerifiedOptimalMoveCount, Is.EqualTo(2));
+            Assert.That(game.Telemetry.Result.perfectShift, Is.True);
             SprintPresentationTests.Capture("sprint3-overlay.png");
             yield return new ExitPlayMode();
         }

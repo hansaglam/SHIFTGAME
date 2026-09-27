@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 namespace Shift.Game
 {
-    public enum IdentitySymbol { Restart, Levels, Forward, Gear, Spark }
+    public enum IdentitySymbol { Restart, Levels, Forward, Gear, Spark, Undo, Hint }
     [RequireComponent(typeof(CanvasRenderer))]
     public sealed class IdentityIcon : MaskableGraphic
     {
@@ -27,7 +27,19 @@ namespace Shift.Game
             void Bar(Vector2 a, Vector2 b, float width)
             { var n = new Vector2(-(b-a).y, (b-a).x).normalized * width / 2; Quad(a-n,a+n,b+n,b-n); }
             Vector2 P(float a, float radius) => new Vector2(Mathf.Cos(a), Mathf.Sin(a)) * radius;
-            if (Symbol == IdentitySymbol.Forward)
+            if (Symbol == IdentitySymbol.Hint)
+            {
+                for(int i=0;i<40;i++) Tri(new Vector2(0,.12f),new Vector2(0,.12f)+P(i*Mathf.PI/20,.28f),new Vector2(0,.12f)+P((i+1)*Mathf.PI/20,.28f));
+                Bar(new Vector2(-.13f,-.17f),new Vector2(.13f,-.17f),.15f);
+                Bar(new Vector2(-.11f,-.32f),new Vector2(.11f,-.32f),.08f);
+            }
+            else if (Symbol == IdentitySymbol.Undo)
+            {
+                for(int i=0;i<32;i++) {float a=Mathf.Lerp(-110,100,i/32f)*Mathf.Deg2Rad,b=Mathf.Lerp(-110,100,(i+1)/32f)*Mathf.Deg2Rad;Quad(P(a,.20f),P(a,.34f),P(b,.34f),P(b,.20f));}
+                Bar(new Vector2(0,.28f),new Vector2(-.29f,.28f),.13f);
+                Tri(new Vector2(-.42f,.28f),new Vector2(-.18f,.47f),new Vector2(-.18f,.09f));
+            }
+            else if (Symbol == IdentitySymbol.Forward)
             {
                 for (int i = 0; i < 2; i++)
                 { float x = -.32f + i * .35f; Bar(new Vector2(x,.28f),new Vector2(x+.24f,0),.12f); Bar(new Vector2(x+.24f,0),new Vector2(x,-.28f),.12f); }

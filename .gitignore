@@ -34,3 +34,19 @@ sysinfo.txt
 # Crash / dump
 crashlytics-build.properties
 *.stackdump
+
+# Local validation output and scratch copies (existing tracked evidence is retained)
+/Validation/
+/ValidationProject/
+
+# Local secrets and signing material
+.env
+.env.*
+*.p12
+*.pfx
+*.pem
+*.key
+*.keystore
+*.jks
+*.mobileprovision
+*.provisionprofile

@@ -59,6 +59,12 @@ namespace Shift.Game
             if (Data.Type != PieceType.Gate) return;
             appearance.ShowGate(open);
         }
+        public void RestoreFromModel()
+        {
+            pulsing = false; pulseTime = 0; exitScale = 1;
+            gameObject.SetActive(Data.Active); Place(Data.Position); ShowDirection(Data.Direction); ShowGate(Data.GateOpen);
+            opacity.alpha = 1; body.anchoredPosition = Vector2.zero; appearance.Highlight(0); body.localScale = Vector3.one; trail.color = Color.clear; image.color = Color.white;
+        }
         public void Feedback(float strength, bool isBlocked = false)
         {
             pulseTime = 0; pulseStrength = strength; blocked = isBlocked; pulsing = true;

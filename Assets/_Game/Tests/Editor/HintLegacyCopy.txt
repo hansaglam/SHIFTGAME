@@ -1,0 +1,27 @@
+Level01_FirstTap|1|Follow the arrow on the colored piece.
+Level01_FirstTap|2|The exit must accept the piece's color.
+Level01_FirstTap|3|A tap moves the piece in the direction it faces.
+Level10_SetTheChain|1|Look for a useful push, not just a clear step.
+Level10_SetTheChain|2|Trace what the next piece will do when pushed.
+Level10_SetTheChain|3|Prepare the line before starting the reaction.
+Level21_FirstSwitch|1|A closed gate does not stay closed forever.
+Level21_FirstSwitch|2|Match the symbols on the switch and gate.
+Level21_FirstSwitch|3|Prepare access before committing the target.
+Level25_BeforeYouGo|1|The most direct target move may be too early.
+Level25_BeforeYouGo|2|A route can be open and still be occupied.
+Level25_BeforeYouGo|3|Consider the landing spaces before releasing the target.
+Level30_ClearThenOpen|1|A useful opening can also consume important space.
+Level30_ClearThenOpen|2|Think about what must remain reachable after preparation.
+Level30_ClearThenOpen|3|Check both occupancy and gate state before committing.
+Level35_TwoChannels|1|The pieces do not begin as a working chain.
+Level35_TwoChannels|2|Look for the row where separated pieces can cooperate.
+Level35_TwoChannels|3|Align the supporting piece before releasing the assembled row.
+Level36_CrossBeforeClosing|1|Both colors need the same turning point.
+Level36_CrossBeforeClosing|2|The receiving space must be clear before the turn is useful.
+Level36_CrossBeforeClosing|3|A pushed target may end up facing an exit of the wrong color.
+Level38_LiftAndTurn|1|A target can help before it leaves.
+Level38_LiftAndTurn|2|Watch how a landing changes access for the other color.
+Level38_LiftAndTurn|3|Delivering a helper too early can remove the push you still need.
+Level40_TheStateOfShift|1|One shared system needs two different endings.
+Level40_TheStateOfShift|2|Preserve access to the second operation while preparing the first.
+Level40_TheStateOfShift|3|After one color leaves, the waiting target still needs its own accepting route.

@@ -57,7 +57,7 @@ namespace Shift.Game.Tests
                 Assert.That(GameObject.Find("Status").GetComponent<Text>().text,Is.EqualTo(game.CurrentLevel.Hint));
                 Assert.That(GameObject.Find("Alpine Lake").GetComponent<ScenicBackdrop>().texture,Is.Not.Null);
                 foreach(var icon in Object.FindObjectsByType<IdentityIcon>(FindObjectsSortMode.None)) Assert.That(icon.raycastTarget,Is.False);
-                Assert.That(GameObject.Find("Hint"),Is.Null);Assert.That(GameObject.Find("Undo"),Is.Null);
+                Assert.That(GameObject.Find("Hint"),Is.Not.Null);Assert.That(GameObject.Find("Undo"),Is.Not.Null);
                 SprintPresentationTests.Capture($"identity-level{index+1}.png");
             }
             var restart=GameObject.Find("Restart").GetComponent<Button>();

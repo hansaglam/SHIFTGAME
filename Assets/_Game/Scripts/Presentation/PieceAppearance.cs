@@ -55,7 +55,7 @@ namespace Shift.Game
                 Surface("Exit Inner Light",body,Color.Lerp(tint,Color.white,.5f),new Vector2(.06f,.06f),new Vector2(.94f,.94f));
                 Surface("Exit Well",body,Color.Lerp(tint,new Color32(12,23,36,255),.78f),new Vector2(.115f,.115f),new Vector2(.885f,.885f),BoardSurface.Well);
                 var label=PlaceholderVisuals.Label("Symbol",body,font,"EXIT",34,new Color32(255,248,244,255),new Vector2(.13f,.20f),new Vector2(.87f,.80f));
-                label.fontStyle=FontStyle.Bold;
+                LocalizedLabel.Bind(label, "tile.exit"); label.fontStyle=FontStyle.Bold;
                 VisualTheme.Surface("Exit Threshold",body,rounded,Color.Lerp(tint,Color.white,.38f),new Vector2(.27f,.14f),new Vector2(.73f,.17f));
             }
             else if(data.Type==PieceType.Switch)

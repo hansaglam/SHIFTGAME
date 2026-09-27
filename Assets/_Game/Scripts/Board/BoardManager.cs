@@ -15,6 +15,24 @@ namespace Shift.Game
         private BoardPiece[,] occupants;
         private BoardPiece[,] terrain;
         private Snapshot[] snapshots;
+        private Snapshot[] undoSnapshot;
+        private int undoMoves;
+        public bool CanUndo => undoSnapshot != null && (State == GameState.Playing || State == GameState.Lost);
+        public void ClearUndo() => undoSnapshot = null;
+        public bool Undo()
+        {
+            if (!CanUndo) return false;
+            Array.Clear(occupants, 0, occupants.Length);
+            for (int i = 0; i < pieces.Length; i++)
+            {
+                var p = pieces[i]; var saved = undoSnapshot[i];
+                p.Position = saved.Position; p.Direction = saved.Direction; p.Active = saved.Active; p.GateOpen = saved.GateOpen;
+                if (p.Active && p.Movable) occupants[p.Position.x, p.Position.y] = p;
+            }
+            MovesRemaining = undoMoves; State = GameState.Playing;
+            actions.Clear(); LastReactionWasCancelled = false; overflow = false; operations = 0;
+            Array.Clear(moving, 0, moving.Length); ClearUndo(); return true;
+        }
         private bool[] moving;
         private HashSet<PieceColor> targetColors;
         private bool overflow;
@@ -37,6 +55,7 @@ namespace Shift.Game
             if (level == null) throw new ArgumentNullException(nameof(level));
             if (!level.Validate(out string error)) throw new ArgumentException(error, nameof(level));
             State = GameState.Loading;
+            ClearUndo();
             Width = level.Width; Height = level.Height; MovesRemaining = level.MoveLimit; targetColors = new HashSet<PieceColor>(level.ResolvedTargetColors);
             occupants = new BoardPiece[Width, Height]; terrain = new BoardPiece[Width, Height];
             pieces = new BoardPiece[level.Placements.Count]; snapshots = new Snapshot[pieces.Length];
@@ -77,7 +96,11 @@ namespace Shift.Game
                 actions.Clear(); LastReactionWasCancelled = true;
             }
             // Accepted taps stay Resolving for feedback, but only committed reactions spend a move.
-            if (actions.Count > 0) MovesRemaining--;
+            if (actions.Count > 0)
+            {
+                undoSnapshot = (Snapshot[])snapshots.Clone(); undoMoves = MovesRemaining;
+                MovesRemaining--;
+            }
             return true;
         }
 

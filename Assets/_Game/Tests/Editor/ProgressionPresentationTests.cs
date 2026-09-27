@@ -15,8 +15,15 @@ namespace Shift.Game.Tests
         private const string Prefix="SHIFT.Tests.ProgressionPresentation.";
         internal static void IsolateSave(string prefix)
         {
+            PlayerPrefs.SetString(prefix + "Language.v1", "English");
+            // Existing gameplay fixtures model returning players; onboarding has separate fresh-install fixtures.
+            PlayerPrefs.SetString(prefix + "Onboarding.v1", "Completed");
+            // Existing gameplay fixtures model players past the one-time ending; dedicated ending fixtures clear this key.
+            PlayerPrefs.SetInt(prefix + "CampaignEnding.Seen.v1", 1);
             new SaveService(prefix).Reset();
+            PlayerPrefs.DeleteKey(prefix + "DailyAllowance.v1");
             var serialized=new SerializedObject(Object.FindFirstObjectByType<PrototypeGame>());
+            PrototypeGame.SetDirectGameplayForValidation(prefix, true);
             serialized.FindProperty("settingsKeyPrefix").stringValue=prefix + "Settings.";
             new SettingsService(prefix + "Settings.").Reset();
             serialized.FindProperty("saveKeyPrefix").stringValue=prefix; serialized.ApplyModifiedPropertiesWithoutUndo();
@@ -62,8 +69,9 @@ namespace Shift.Game.Tests
             Assert.That(game.Board.State,Is.EqualTo(GameState.Won)); Assert.That(game.Progress.IsChapterComplete(0),Is.True);
             Assert.That(cues, Does.Contain(AudioCue.Rotate));
             Assert.That(cues, Does.Contain(AudioCue.DirectionChange));
-            Assert.That(cues, Does.Contain(AudioCue.Exit));
-            Assert.That(cues, Does.Contain(AudioCue.ChapterComplete));
+            Assert.That(cues, Does.Contain(AudioCue.FinalExit));
+            yield return new WaitForSecondsRealtime(.12f);
+            Assert.That(cues, Does.Contain(AudioCue.FirstPerfect));
             Assert.That(GameObject.Find("Status").GetComponent<Text>().text,Does.StartWith("CHAPTER COMPLETE!"));
             yield return new WaitForSecondsRealtime(.2f); SprintPresentationTests.Capture("chapter-complete.png");
             Assert.That(GameObject.Find("Next Level"),Is.Not.Null); Assert.That(game.NextLevel(),Is.True);

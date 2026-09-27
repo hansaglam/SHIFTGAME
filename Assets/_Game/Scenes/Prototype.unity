@@ -249,6 +249,19 @@ MonoBehaviour:
     switchActivate: {fileID: 0}
     gateOpen: {fileID: 0}
     gateClose: {fileID: 0}
+    finalExit: {fileID: 0}
+    chainStep: {fileID: 0}
+    chainEscalation: {fileID: 0}
+    bigShift: {fileID: 0}
+    megaShift: {fileID: 0}
+    undo: {fileID: 0}
+    hint: {fileID: 0}
+    restart: {fileID: 0}
+    perfect: {fileID: 0}
+    firstPerfect: {fileID: 0}
+    dailyComplete: {fileID: 0}
+    dailyPerfect: {fileID: 0}
+    chapterMastered: {fileID: 0}
     volume: 0.65
     sfxVolume: 1
   analyticsEnabled: 1
