@@ -1,30 +1,30 @@
-# SHIFT SFX delivery manifest — assets NOT finalized
+# SHIFT production SFX
 
-No production SFX or music files are installed. Existing scene references remain null. The semantic system is wired, but release audio sign-off is blocked on creation/licensing, import, assignment and listening review of the final sound set.
+17 supplied WAV assets, unchanged. PCM, native sample rate, stereo retained, Decompress On Load, preload, no background loading or ambisonics.
 
-Only the editor test creates a 100 ms mono procedural validation tone in memory, then destroys it. It is not a production sound, is not persisted, is not enabled by a runtime fallback, and is not shipped. No third-party audio downloaded. No music added.
+- tap: shift_tap_move.wav
+- move: shift_tap_move.wav
+- push: shift_push.wav
+- directionChange: shift_direction.wav
+- exit: shift_exit.wav
+- blocked: shift_blocked.wav
+- win: shift_win.wav
+- rotate: shift_rotator.wav
+- switchActivate: shift_switch.wav
+- gateOpen: shift_gate_open.wav
+- gateClose: shift_gate_close.wav
+- finalExit: shift_exit.wav
+- chainStep: shift_chain_pulse.wav
+- chainEscalation: shift_chain_pulse.wav
+- bigShift: shift_big_shift.wav
+- megaShift: shift_mega_shift.wav
+- undo: shift_undo.wav
+- hint: shift_hint.wav
+- perfect: shift_perfect.wav
+- firstPerfect: shift_perfect.wav
+- dailyComplete: shift_win.wav
+- dailyPerfect: shift_perfect.wav
+- chapterMastered: shift_perfect.wav
+- campaignComplete: shift_campaign_complete.wav
 
-| Suggested original WAV | Duration target | Character | AudioClips slots / reuse |
-|---|---|---|---|
-| input_tap.wav | 35–70 ms | soft dry tactile tap | tap; uiButton quieter |
-| blocked_tick.wav | 25–50 ms | muted, low-energy tick | blocked |
-| move_slide.wav | 60–120 ms | light mechanical slide | move; chainStep is primary voice metadata |
-| push_snap.wav | 60–130 ms | compact weight/contact | push |
-| route_click.wav | 40–90 ms | restrained directional click | directionChange; rotate with subtle variation |
-| switch_toggle.wav | 50–100 ms | tactile toggle | switchActivate |
-| gate_latch.wav | 60–140 ms | soft latch | gateOpen, gateClose distinct variants |
-| exit_release.wav | 80–160 ms | clean release | exit; finalExit slightly fuller |
-| chain_accent.wav | 60–150 ms | low-volume harmonic body | chainEscalation, bigShift, megaShift; no aggressive brightness |
-| undo_snap.wav | 60–130 ms | short reverse/snap | undo |
-| hint_reveal.wav | 100–200 ms | soft reveal, no victory jingle | hint |
-| complete.wav | 150–300 ms | restrained resolution | win, dailyComplete |
-| perfect.wav | 180–400 ms | clean premium accent | perfect, firstPerfect, dailyPerfect, chapterMastered; restrained richer variants |
-| fail.wav | 80–160 ms | subdued negative tick | lose |
-
-PanelOpen/PanelClose/Restart may reuse a quiet input variant; ChapterComplete is retained for compatibility but current outcome routing chooses one Win/Perfect/Daily/Mastered cue. Explicit slot fallbacks are in AudioClips.Get. Unassigned clips are silent, never synthesized automatically.
-
-Deliver mono 44.1/48 kHz WAV source, minimal leading silence, short fades/tails, no clipping, conservative peak headroom (e.g. ≤ -3 dBFS), no heavy limiting. Small short clips: Unity Force To Mono, 2D, Decompress On Load, Preload Audio Data; evaluate PCM versus ADPCM per asset and device. Do not stream these tiny effects. Verify final waveforms/import settings after assets exist. These are delivery targets, not claims of already configured importers.
-
-Assign clips in PrototypeGame → Audio Clips on Prototype.unity. Master .65 / SFX 1 preserved. Cue hierarchy and four-voice headroom live in AudioManager. Each active voice is at most master × SFX × .2 × cue gain; pitch stays 1.00–1.21 for chains. A repeat of the same audible cue within 45 ms is suppressed. Chain step metadata does not layer another click.
-
-Listening approval needed on headphones and phone speaker: softness of repeated taps, audibility at low volume, gate/route differentiation, large-chain mix, muted blocked taps, and Perfect/Mastered payoff. Screenshots and semantic logs cannot establish audio quality.
+Tap is a semantic marker only; committed Move/Push supplies audible movement. UI/panel/restart/lose/chapterComplete legacy slots intentionally remain silent. No music or generated production sounds.

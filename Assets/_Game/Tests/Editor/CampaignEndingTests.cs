@@ -122,7 +122,7 @@ namespace Shift.Game.Tests
             Game.GetComponent<AudioManager>().CuePlayed+=soundEvents.Add;
             ((HapticService)typeof(PrototypeGame).GetField("haptics",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(Game)).PulseSent+=pulses.Add;
             GameObject.Find("Campaign Continue").GetComponent<Button>().onClick.Invoke();yield return Ready();
-            Assert.That(soundEvents.Count(x=>x==AudioCue.Win),Is.EqualTo(1));Assert.That(pulses.Count,Is.EqualTo(1));
+            Assert.That(soundEvents.Count(x=>x==AudioCue.CampaignComplete),Is.EqualTo(1));Assert.That(pulses.Count,Is.EqualTo(1));
             Assert.That(Panel.IsOpen,Is.True);Assert.That(Panel.Mastered,Is.False);Assert.That(Game.Board,Is.SameAs(board));
             Assert.That(new CampaignEndingState(Key).Seen,Is.True);Capture("03-ending-incomplete-mastery");Capture("05-English");
             GameLanguageService.Shared.Select(GameLanguage.Turkish);yield return null;Assert.That(TextOf("Ending Title"),Is.EqualTo("KAMPANYA TAMAMLANDI"));Capture("06-Turkish");

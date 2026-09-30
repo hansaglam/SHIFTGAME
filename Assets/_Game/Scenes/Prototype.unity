@@ -233,35 +233,36 @@ MonoBehaviour:
     hapticsEnabled: 0
     hapticCooldown: 0.25
   audioClips:
-    tap: {fileID: 0}
-    move: {fileID: 0}
-    push: {fileID: 0}
-    directionChange: {fileID: 0}
-    exit: {fileID: 0}
-    blocked: {fileID: 0}
-    win: {fileID: 0}
+    tap: {fileID: 8300000, guid: 9fa1a070a4714cc0b6e6c3204503448b, type: 3}
+    move: {fileID: 8300000, guid: 9fa1a070a4714cc0b6e6c3204503448b, type: 3}
+    push: {fileID: 8300000, guid: 7c7d62d0dfad43c08ab617249ca625a8, type: 3}
+    directionChange: {fileID: 8300000, guid: 65ebf992a7f8416d996fb15687bac3ec, type: 3}
+    exit: {fileID: 8300000, guid: d90be082f5cb46c5a27dc97ff23ce7dd, type: 3}
+    blocked: {fileID: 8300000, guid: f513fee4726c40b881029a6cd0c4c8ac, type: 3}
+    win: {fileID: 8300000, guid: 6f755ff51b5e486aa24e18ac35f514a8, type: 3}
     lose: {fileID: 0}
-    rotate: {fileID: 0}
+    rotate: {fileID: 8300000, guid: d09c9ba0984348e58f504d823a40ebf1, type: 3}
     chapterComplete: {fileID: 0}
     uiButton: {fileID: 0}
     panelOpen: {fileID: 0}
     panelClose: {fileID: 0}
-    switchActivate: {fileID: 0}
-    gateOpen: {fileID: 0}
-    gateClose: {fileID: 0}
-    finalExit: {fileID: 0}
-    chainStep: {fileID: 0}
-    chainEscalation: {fileID: 0}
-    bigShift: {fileID: 0}
-    megaShift: {fileID: 0}
-    undo: {fileID: 0}
-    hint: {fileID: 0}
+    switchActivate: {fileID: 8300000, guid: 1df1bc5c771a483d9e605ac852308162, type: 3}
+    gateOpen: {fileID: 8300000, guid: 609a1aa9385341829d7ed697acf7756d, type: 3}
+    gateClose: {fileID: 8300000, guid: 9acfeb9167834d5f8ea41751f4783679, type: 3}
+    campaignComplete: {fileID: 8300000, guid: 5aad9b23603641cdba27b9148dfa35bc, type: 3}
+    finalExit: {fileID: 8300000, guid: d90be082f5cb46c5a27dc97ff23ce7dd, type: 3}
+    chainStep: {fileID: 8300000, guid: da2e56dd8d4847439049768e840bfbd2, type: 3}
+    chainEscalation: {fileID: 8300000, guid: da2e56dd8d4847439049768e840bfbd2, type: 3}
+    bigShift: {fileID: 8300000, guid: cb3e9f35547d4970a27de09278c64fa0, type: 3}
+    megaShift: {fileID: 8300000, guid: 6ff2efd56d06456fafe30cdd47c0a14a, type: 3}
+    undo: {fileID: 8300000, guid: 8d9abd12fe634676ab1ae9bc36d85a99, type: 3}
+    hint: {fileID: 8300000, guid: 40ab04d4850e4b9e8425f1fee3d4283d, type: 3}
     restart: {fileID: 0}
-    perfect: {fileID: 0}
-    firstPerfect: {fileID: 0}
-    dailyComplete: {fileID: 0}
-    dailyPerfect: {fileID: 0}
-    chapterMastered: {fileID: 0}
+    perfect: {fileID: 8300000, guid: ccf55962551944cb93da3cc9b1485751, type: 3}
+    firstPerfect: {fileID: 8300000, guid: ccf55962551944cb93da3cc9b1485751, type: 3}
+    dailyComplete: {fileID: 8300000, guid: 6f755ff51b5e486aa24e18ac35f514a8, type: 3}
+    dailyPerfect: {fileID: 8300000, guid: ccf55962551944cb93da3cc9b1485751, type: 3}
+    chapterMastered: {fileID: 8300000, guid: ccf55962551944cb93da3cc9b1485751, type: 3}
     volume: 0.65
     sfxVolume: 1
   analyticsEnabled: 1

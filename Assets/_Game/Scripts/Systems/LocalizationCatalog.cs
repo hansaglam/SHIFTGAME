@@ -7,6 +7,7 @@ namespace Shift.Game
     {
         private static readonly Dictionary<string, string[]> entries = new Dictionary<string, string[]>
         {
+            { "hud.level_badge", new[] { "LEVEL {0}", "BÖLÜM {0}" } },
             { "ending.complete", new[] { "CAMPAIGN COMPLETE", "KAMPANYA TAMAMLANDI" } },
             { "ending.complete_body", new[] { "40 puzzles solved.\nEvery system connected.", "40 bulmaca tamamlandı.\nTüm sistem birbirine bağlandı." } },
             { "ending.perfect_final", new[] { "PERFECT FINAL SHIFT", "KUSURSUZ SON SHIFT" } },

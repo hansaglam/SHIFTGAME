@@ -5,17 +5,19 @@ using UnityEngine;
 
 namespace Shift.Game
 {
-    public enum AudioCue { Tap, Move, Push, DirectionChange, Exit, Blocked, Win, Lose, Rotate, ChapterComplete, UIButton, PanelOpen, PanelClose, SwitchActivate, GateOpen, GateClose, FinalExit, ChainStep, ChainEscalation, BigShift, MegaShift, Undo, Hint, Restart, Perfect, FirstPerfect, DailyComplete, DailyPerfect, ChapterMastered }
+    public enum AudioCue { Tap, Move, Push, DirectionChange, Exit, Blocked, Win, Lose, Rotate, ChapterComplete, UIButton, PanelOpen, PanelClose, SwitchActivate, GateOpen, GateClose, FinalExit, ChainStep, ChainEscalation, BigShift, MegaShift, Undo, Hint, Restart, Perfect, FirstPerfect, DailyComplete, DailyPerfect, ChapterMastered, CampaignComplete }
 
     [Serializable]
     public sealed class AudioClips
     {
         public AudioClip tap, move, push, directionChange, exit, blocked, win, lose, rotate, chapterComplete, uiButton, panelOpen, panelClose, switchActivate, gateOpen, gateClose;
+        public AudioClip campaignComplete;
         public AudioClip finalExit, chainStep, chainEscalation, bigShift, megaShift, undo, hint, restart, perfect, firstPerfect, dailyComplete, dailyPerfect, chapterMastered;
         [Range(0, 1)] public float volume = .65f;
         [Range(0, 1)] public float sfxVolume = 1;
         public AudioClip Get(AudioCue cue) => cue switch
         {
+            AudioCue.CampaignComplete => campaignComplete,
             AudioCue.FinalExit => finalExit ?? exit, AudioCue.ChainStep => chainStep ?? move,
             AudioCue.ChainEscalation => chainEscalation ?? directionChange, AudioCue.BigShift => bigShift ?? push,
             AudioCue.MegaShift => megaShift ?? bigShift ?? push, AudioCue.Undo => undo, AudioCue.Hint => hint,
@@ -38,8 +40,9 @@ namespace Shift.Game
         private readonly AudioSource[] voices = new AudioSource[VoiceCount];
         private AudioClips clips;
         private int nextVoice;
+        private readonly int[] voicePriority = new int[VoiceCount];
         private bool muted, paused, unfocused, outcomePlayed;
-        private readonly float[] voiceGain = { 1, 1, 1, 1 };
+        private readonly float[] voiceGain = new float[VoiceCount];
         private readonly Dictionary<AudioCue, float> last = new Dictionary<AudioCue, float>();
         public event Action<AudioCue, float, float> VoiceStarted;
         public int StartedVoices { get; private set; }
@@ -48,12 +51,16 @@ namespace Shift.Game
         public static float CueGain(AudioCue cue) => cue switch
         {
             AudioCue.UIButton or AudioCue.PanelOpen or AudioCue.PanelClose or AudioCue.Restart => .28f,
-            AudioCue.Blocked => .22f, AudioCue.Tap => .34f,
-            AudioCue.Move or AudioCue.ChainStep => .42f,
-            AudioCue.Hint or AudioCue.Undo => .45f,
-            AudioCue.ChainEscalation => .25f,
-            AudioCue.BigShift => .65f, AudioCue.MegaShift => .75f,
-            AudioCue.Perfect or AudioCue.FirstPerfect or AudioCue.DailyPerfect or AudioCue.ChapterMastered => .85f,
+            AudioCue.Blocked => .35f, AudioCue.Tap => .50f,
+            AudioCue.Move => .50f, AudioCue.Push => .48f,
+            AudioCue.DirectionChange or AudioCue.Rotate => .55f,
+            AudioCue.SwitchActivate => .55f, AudioCue.GateOpen => .45f, AudioCue.GateClose => .60f,
+            AudioCue.Exit or AudioCue.FinalExit => .50f,
+            AudioCue.ChainStep or AudioCue.ChainEscalation => .28f,
+            AudioCue.Hint => .60f, AudioCue.Undo => .40f,
+            AudioCue.BigShift => .70f, AudioCue.MegaShift => .60f,
+            AudioCue.Perfect or AudioCue.FirstPerfect or AudioCue.DailyPerfect or AudioCue.ChapterMastered => .65f,
+            AudioCue.CampaignComplete => .65f, AudioCue.Win or AudioCue.DailyComplete => .75f,
             AudioCue.Lose => .38f, _ => .55f
         };
         public static AudioCue Outcome(bool won, bool perfect, bool first, bool daily, bool mastered) =>
@@ -80,9 +87,9 @@ namespace Shift.Game
         {
             if (Suspended) return;
             Play(cue, ReactionPitch(step));
-            // ChainStep describes the pitched primary voice; it is not a second stacked sound.
-            if (step >= 2) CuePlayed?.Invoke(AudioCue.ChainStep);
-            if (step == 4) Play(AudioCue.ChainEscalation, 1.08f);
+            // One restrained pulse per eligible step; shared-clip cooldown prevents milestone duplication.
+            if (step >= 2) Play(AudioCue.ChainStep, ReactionPitch(step));
+            if (step == 4) CuePlayed?.Invoke(AudioCue.ChainEscalation);
         }
         public void ChainPayoff(int depth)
         {
@@ -101,7 +108,7 @@ namespace Shift.Game
             for (int i = 0; i < voices.Length; i++)
             {
                 if (voices[i] == null) voices[i] = gameObject.AddComponent<AudioSource>();
-                voices[i].playOnAwake = false; voices[i].spatialBlend = 0; voices[i].loop = false;
+                voices[i].volume = Gain * voiceGain[i]; voices[i].playOnAwake = false; voices[i].spatialBlend = 0; voices[i].loop = false;
             }
         }
         public void Play(AudioCue cue) => Play(cue, 1);
@@ -111,16 +118,37 @@ namespace Shift.Game
             CuePlayed?.Invoke(cue); // Semantic request, including missing assets/mute; not proof of audible output.
             var clip = clips?.Get(cue);
             if (clip == null || Muted || Gain <= 0) return;
+            if (cue == AudioCue.Tap) return; // Committed Move/Push supplies the audible input body.
             float now = Time.realtimeSinceStartup;
-            if (last.TryGetValue(cue, out float previous) && now - previous < .045f) return;
+            if (last.TryGetValue(cue, out float previous) && now - previous < (cue == AudioCue.ChainStep ? .10f : .045f)) return;
+            foreach (var pair in last)
+                if (pair.Key != cue && clips.Get(pair.Key) == clip && now - pair.Value < .10f) return;
+            int priority = Priority(cue);
+            if (priority == 5) StopVoices();
+            int index = -1;
+            for (int i = 0; i < VoiceCount; i++)
+            {
+                int candidate = (nextVoice + i) % VoiceCount;
+                if (!voices[candidate].isPlaying) { index = candidate; break; }
+                if (voicePriority[candidate] <= priority && (index < 0 || voicePriority[candidate] < voicePriority[index])) index = candidate;
+            }
+            if (index < 0) return;
             last[cue] = now;
-            int index = nextVoice; nextVoice = (nextVoice + 1) % VoiceCount;
+            nextVoice = (index + 1) % VoiceCount; voicePriority[index] = priority;
             var voice = voices[index]; if (voice == null) return;
             // At most four voices × .2 gain: conservative peak headroom even for full-scale source assets.
             voiceGain[index] = .2f * CueGain(cue);
             voice.Stop(); voice.clip = clip; voice.pitch = Mathf.Clamp(pitch, .9f, 1.21f); voice.volume = Gain * voiceGain[index]; voice.Play();
             StartedVoices++; VoiceStarted?.Invoke(cue, voice.pitch, voice.volume);
         }
+        private static int Priority(AudioCue cue) => cue switch
+        {
+            AudioCue.CampaignComplete or AudioCue.Win or AudioCue.Perfect or AudioCue.FirstPerfect or AudioCue.DailyComplete or AudioCue.DailyPerfect or AudioCue.ChapterMastered => 5,
+            AudioCue.BigShift or AudioCue.MegaShift => 4,
+            AudioCue.Exit or AudioCue.FinalExit or AudioCue.GateOpen or AudioCue.GateClose or AudioCue.SwitchActivate or AudioCue.Rotate or AudioCue.Push => 3,
+            AudioCue.ChainStep or AudioCue.ChainEscalation => 1,
+            AudioCue.Blocked => 0, _ => 2
+        };
         private void StopVoices() { foreach (var voice in voices) if (voice != null) voice.Stop(); }
         public void StopAll() { StopAllCoroutines(); StopVoices(); }
         private void OnDisable() => StopAll();

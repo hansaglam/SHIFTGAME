@@ -7,6 +7,7 @@ namespace Shift.Game
     public sealed class GameHud : MonoBehaviour
     {
         private Text moves, status, chain, restartLabel;
+        private bool finaleTitle;
         private CanvasGroup chainGroup, resultGroup;
         private RectTransform resultPanel;
         private Image resultBackground;
@@ -90,11 +91,22 @@ namespace Shift.Game
         public void Build(Font font, LevelData level, Sprite rounded, GameFeelSettings settings, Action restart, Sprite circle = null)
         {
             feel = settings; hint = () => LocalizationCatalog.Instruction(level);
+            finaleTitle = level.Design?.difficultyBand == DifficultyBand.Finale;
             Wordmark.Build(transform, font);
-            var subtitle = PlaceholderVisuals.Label("Level Title", transform, font, level.DisplayTitle, 28, new Color32(231,245,251,255), new Vector2(.1f, .875f), new Vector2(.9f, .901f));
-            LocalizedLabel.Bind(subtitle, () => LocalizationCatalog.Title(level));
-            if (level.Design?.difficultyBand == DifficultyBand.Finale)
-            { subtitle.color = new Color32(255,233,177,255); subtitle.fontStyle = FontStyle.Bold; }
+            var header = PlaceholderVisuals.Rect("Level Header", transform, new Vector2(.13f,.873f), new Vector2(.87f,.913f));
+            var badge = VisualTheme.Surface("Level Badge", header, rounded, new Color32(34,61,88,255), new Vector2(.38f,.64f), new Vector2(.62f,.96f));
+            badge.raycastTarget = false;
+            var number = PlaceholderVisuals.Label("Level Number", badge.transform, font, "", 21, new Color32(190,236,246,255), new Vector2(.05f,0), new Vector2(.95f,1));
+            number.fontStyle = FontStyle.Bold;
+            LocalizedLabel.Bind(number, () => GameLanguageService.Shared.Text("hud.level_badge", HeaderNumber(LocalizationCatalog.Title(level))));
+            var subtitle = PlaceholderVisuals.Label("Level Title", transform, font, "", 34, Color.white, new Vector2(.16f,.875f), new Vector2(.84f,.898f));
+            subtitle.fontStyle = FontStyle.Bold;
+            var titleShadow = subtitle.gameObject.AddComponent<Shadow>();
+            titleShadow.effectColor = new Color(.04f,.15f,.25f,.55f);
+            titleShadow.effectDistance = new Vector2(0,-2);
+            subtitle.resizeTextMinSize = 20;
+            subtitle.horizontalOverflow = HorizontalWrapMode.Overflow;
+            LocalizedLabel.Bind(subtitle, () => HeaderName(LocalizationCatalog.Title(level)));
             var panel = VisualTheme.Surface("Goal Moves Panel", transform, rounded, new Color32(48,72,104,255), new Vector2(.13f,.805f), new Vector2(.87f,.868f));
             IdentityStyle.Material(panel);
             VisualTheme.Shadow(panel);
@@ -231,10 +243,34 @@ namespace Shift.Game
             status.fontSize = 30; status.rectTransform.anchorMin = new Vector2(.065f,.12f); status.rectTransform.anchorMax = new Vector2(.935f,.88f);
             SetCompletion(true,true,false,2);ShowChapterMastery(summary);
         }
+        // Split the catalog's existing numbered display copy only; level data stays unchanged.
+        public static string HeaderName(string title)
+        {
+            int end = 0;
+            while (end < title.Length && char.IsDigit(title[end])) end++;
+            if (end == 0) return title;
+            return title.Substring(end).TrimStart(' ', '·', '-', '–', '—');
+        }
+        private static string HeaderNumber(string title)
+        {
+            int end = 0;
+            while (end < title.Length && char.IsDigit(title[end])) end++;
+            return int.TryParse(title.Substring(0,end), out int number) ? number.ToString() : "";
+        }
         private GameObject backToDaily;
         public void BuildDaily(Font font,Sprite rounded,DailyPuzzle puzzle,HintLanguage language,Action back)
         {
-            LocalizedLabel.Bind(transform.Find("Level Title").GetComponent<Text>(), () => DailyText.Title(Language)+" · "+DailyText.Date(puzzle.Date,Language));
+            transform.Find("Level Header").gameObject.SetActive(false);
+            var dailyTitle = transform.Find("Level Title").GetComponent<Text>();
+            dailyTitle.GetComponent<Shadow>().enabled = false;
+            dailyTitle.rectTransform.anchorMin = new Vector2(.1f,.875f);
+            dailyTitle.rectTransform.anchorMax = new Vector2(.9f,.901f);
+            dailyTitle.fontSize = dailyTitle.resizeTextMaxSize = 28;
+            dailyTitle.resizeTextMinSize = 12;
+            dailyTitle.horizontalOverflow = HorizontalWrapMode.Wrap;
+            dailyTitle.color = finaleTitle ? new Color32(255,233,177,255) : new Color32(231,245,251,255);
+            dailyTitle.fontStyle = finaleTitle ? FontStyle.Bold : FontStyle.Normal;
+            LocalizedLabel.Bind(dailyTitle, () => DailyText.Title(Language)+" · "+DailyText.Date(puzzle.Date,Language));
             backToDaily=ChapterSelect.CreateButton("Back to Daily",font,rounded,transform,new Vector2(.43f,.077f),new Vector2(.88f,.133f),back,out var label).gameObject;
             LocalizedLabel.Bind(label, () => DailyText.Back(Language));label.fontSize=30;backToDaily.GetComponent<Image>().color=IdentityStyle.Teal;
             backToDaily.GetComponent<PresentationMotion>().Settings=feel;backToDaily.SetActive(false);

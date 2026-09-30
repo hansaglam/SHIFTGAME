@@ -76,14 +76,52 @@ namespace Shift.Game.Tests
         private sealed class Unsupported : IHapticOutput { public void Pulse(HapticCue cue,Func<bool> valid) => throw new NotSupportedException(); }
         [Test] public void UnsupportedHapticsFailSilently()
         { var h=new HapticService(new GameFeelSettings{hapticsEnabled=true},new Unsupported(),()=>0);Assert.DoesNotThrow(h.Medium); }
-        [Test] public void AudioAssetsRemainExplicitlyMissingInProductionScene()
+        [Test] public void ProductionAssetsAndSceneMappingAreComplete()
         {
             var bank=new AudioClips();foreach(AudioCue cue in Enum.GetValues(typeof(AudioCue)))Assert.That(bank.Get(cue),Is.Null);
-            Assert.That(Directory.GetFiles(Path.Combine(Application.dataPath,"_Game/Audio"),"*.wav",SearchOption.AllDirectories),Is.Empty);
+            Assert.That(Directory.GetFiles(Path.Combine(Application.dataPath,"_Game/Audio/SFX"),"*.wav"),Has.Length.EqualTo(17));
+            EditorSceneManager.OpenScene(PrototypeSetup.ScenePath);
+            var serialized = new UnityEditor.SerializedObject(Object.FindFirstObjectByType<PrototypeGame>());
+            Assert.That(((AudioClip)serialized.FindProperty("audioClips.tap").objectReferenceValue).name,Is.EqualTo("shift_tap_move"));
+            Assert.That(((AudioClip)serialized.FindProperty("audioClips.move").objectReferenceValue).name,Is.EqualTo("shift_tap_move"));
+            Assert.That(((AudioClip)serialized.FindProperty("audioClips.push").objectReferenceValue).name,Is.EqualTo("shift_push"));
+            Assert.That(((AudioClip)serialized.FindProperty("audioClips.directionChange").objectReferenceValue).name,Is.EqualTo("shift_direction"));
+            Assert.That(((AudioClip)serialized.FindProperty("audioClips.exit").objectReferenceValue).name,Is.EqualTo("shift_exit"));
+            Assert.That(((AudioClip)serialized.FindProperty("audioClips.blocked").objectReferenceValue).name,Is.EqualTo("shift_blocked"));
+            Assert.That(((AudioClip)serialized.FindProperty("audioClips.win").objectReferenceValue).name,Is.EqualTo("shift_win"));
+            Assert.That(((AudioClip)serialized.FindProperty("audioClips.rotate").objectReferenceValue).name,Is.EqualTo("shift_rotator"));
+            Assert.That(((AudioClip)serialized.FindProperty("audioClips.switchActivate").objectReferenceValue).name,Is.EqualTo("shift_switch"));
+            Assert.That(((AudioClip)serialized.FindProperty("audioClips.gateOpen").objectReferenceValue).name,Is.EqualTo("shift_gate_open"));
+            Assert.That(((AudioClip)serialized.FindProperty("audioClips.gateClose").objectReferenceValue).name,Is.EqualTo("shift_gate_close"));
+            Assert.That(((AudioClip)serialized.FindProperty("audioClips.finalExit").objectReferenceValue).name,Is.EqualTo("shift_exit"));
+            Assert.That(((AudioClip)serialized.FindProperty("audioClips.chainStep").objectReferenceValue).name,Is.EqualTo("shift_chain_pulse"));
+            Assert.That(((AudioClip)serialized.FindProperty("audioClips.chainEscalation").objectReferenceValue).name,Is.EqualTo("shift_chain_pulse"));
+            Assert.That(((AudioClip)serialized.FindProperty("audioClips.bigShift").objectReferenceValue).name,Is.EqualTo("shift_big_shift"));
+            Assert.That(((AudioClip)serialized.FindProperty("audioClips.megaShift").objectReferenceValue).name,Is.EqualTo("shift_mega_shift"));
+            Assert.That(((AudioClip)serialized.FindProperty("audioClips.undo").objectReferenceValue).name,Is.EqualTo("shift_undo"));
+            Assert.That(((AudioClip)serialized.FindProperty("audioClips.hint").objectReferenceValue).name,Is.EqualTo("shift_hint"));
+            Assert.That(((AudioClip)serialized.FindProperty("audioClips.perfect").objectReferenceValue).name,Is.EqualTo("shift_perfect"));
+            Assert.That(((AudioClip)serialized.FindProperty("audioClips.firstPerfect").objectReferenceValue).name,Is.EqualTo("shift_perfect"));
+            Assert.That(((AudioClip)serialized.FindProperty("audioClips.dailyComplete").objectReferenceValue).name,Is.EqualTo("shift_win"));
+            Assert.That(((AudioClip)serialized.FindProperty("audioClips.dailyPerfect").objectReferenceValue).name,Is.EqualTo("shift_perfect"));
+            Assert.That(((AudioClip)serialized.FindProperty("audioClips.chapterMastered").objectReferenceValue).name,Is.EqualTo("shift_perfect"));
+            Assert.That(((AudioClip)serialized.FindProperty("audioClips.campaignComplete").objectReferenceValue).name,Is.EqualTo("shift_campaign_complete"));
+            foreach (var path in Directory.GetFiles(Path.Combine(Application.dataPath,"_Game/Audio/SFX"),"*.wav"))
+            {
+                var importer=(UnityEditor.AudioImporter)UnityEditor.AssetImporter.GetAtPath("Assets/_Game/Audio/SFX/"+Path.GetFileName(path));
+                Assert.That(importer.defaultSampleSettings.loadType,Is.EqualTo(AudioClipLoadType.DecompressOnLoad));
+                Assert.That(importer.defaultSampleSettings.compressionFormat,Is.EqualTo(AudioCompressionFormat.PCM));
+                Assert.That(importer.loadInBackground,Is.False);Assert.That(importer.ambisonic,Is.False);
+            }
         }
-        [Test] public void SceneOnlyAddsUnassignedAudioSlots()
+        [Test] public void SceneOnlyChangesAudioReferences()
         {
             string text=File.ReadAllText(Path.Combine(Application.dataPath,"_Game/Scenes/Prototype.unity"));
+            int start=text.IndexOf("  audioClips:",StringComparison.Ordinal);
+            int end=text.IndexOf("  analyticsEnabled:",start,StringComparison.Ordinal);
+            string bank=System.Text.RegularExpressions.Regex.Replace(text.Substring(start,end-start),@"\{fileID: 8300000, guid: [0-9a-f]+, type: 3\}","{fileID: 0}");
+            bank=bank.Replace("    campaignComplete: {fileID: 0}\n","");
+            text=text.Substring(0,start)+bank+text.Substring(end);
             foreach(string field in new[]{"finalExit","chainStep","chainEscalation","bigShift","megaShift","undo","hint","restart","perfect","firstPerfect","dailyComplete","dailyPerfect","chapterMastered"})
                 text=text.Replace("    "+field+": {fileID: 0}\n","");
             using var sha=System.Security.Cryptography.SHA256.Create();
@@ -224,7 +262,7 @@ namespace Shift.Game.Tests
             game.SelectLevel(39);yield return Ready();
             // Overlay exists only in this editor test; not in runtime code/scenes/builds.
             var safe=GameObject.Find("Safe Area").transform;
-            var overlay=PlaceholderVisuals.Label("VALIDATION ONLY semantic overlay",safe,Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf"),"VALIDATION ONLY · semantic routing\n4 voices · pitch ≤ 1.21 · ≤ 3 chain pulses\nFinal audio assets NOT installed",23,VisualTheme.Ink,new Vector2(.1f,.735f),new Vector2(.9f,.795f));
+            var overlay=PlaceholderVisuals.Label("VALIDATION ONLY semantic overlay",safe,Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf"),"VALIDATION ONLY · semantic routing\n4 voices · pitch ≤ 1.21 · pulse cooldown 100 ms\n17 production SFX assets installed",23,VisualTheme.Ink,new Vector2(.1f,.735f),new Vector2(.9f,.795f));
             overlay.raycastTarget=false;yield return Ready();Capture("01-semantic-overlay");Object.Destroy(overlay.gameObject);
             Directory.CreateDirectory(Path.Combine(Application.dataPath,"../Validation/audio"));File.WriteAllLines(Path.Combine(Application.dataPath,"../Validation/audio/semantic-events.csv"),rows);
             yield return new ExitPlayMode();

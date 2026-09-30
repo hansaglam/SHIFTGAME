@@ -403,7 +403,7 @@ namespace Shift.Game
             endingPanel.Open();
             campaignEnding.MarkSeen();
             Telemetry.CampaignEndingEvent("campaign_ending_viewed",CampaignPerfectCount);
-            audioManager.Play(AudioCue.Win);haptics.Success();RefreshControls();
+            audioManager.Play(AudioCue.CampaignComplete);haptics.Success();RefreshControls();
         }
         private void EndingDestination(string destination)
         {

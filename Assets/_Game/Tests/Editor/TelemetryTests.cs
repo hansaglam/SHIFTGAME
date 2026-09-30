@@ -124,7 +124,9 @@ namespace Shift.Game.Tests
                 var audio = go.AddComponent<AudioManager>(); audio.Initialize(new AudioClips()); audio.Initialize(new AudioClips());
                 audio.MasterVolume = .5f; audio.SfxVolume = .4f;
                 Assert.That(go.GetComponents<AudioSource>().Length, Is.EqualTo(4));
-                Assert.That(go.GetComponent<AudioSource>().volume, Is.EqualTo(.2f).Within(.001f));
+                Assert.That(audio.MasterVolume, Is.EqualTo(.5f));
+                Assert.That(audio.SfxVolume, Is.EqualTo(.4f));
+                foreach (var source in go.GetComponents<AudioSource>()) Assert.That(source.volume, Is.Zero, "Unused pooled voices stay silent");
                 settings.Save(false,true,true); var feel = new GameFeelSettings(); settings.Apply(feel,audio);
                 Assert.That(audio.Muted, Is.True); Assert.That(feel.hapticsEnabled, Is.True); Assert.That(feel.reducedMotion, Is.True);
                 foreach (AudioCue cue in Enum.GetValues(typeof(AudioCue))) Assert.DoesNotThrow(() => audio.Play(cue));

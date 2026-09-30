@@ -16,6 +16,12 @@ namespace Shift.Game.Tests
     {
         private const string Prefix="SHIFT.Tests.FinalIdentity.";
         [TearDown] public void Cleanup() { new SaveService(Prefix).Reset(); new SettingsService(Prefix+"Settings.").Reset(); }
+        [TestCase("01 · First tap", "First tap")]
+        [TestCase("36 - İki Geçiş Yolu", "İki Geçiş Yolu")]
+        [TestCase("22 - Prepare Before Advancing", "Prepare Before Advancing")]
+        [TestCase("SHIFT", "SHIFT")]
+        public void HeaderSeparatesNumberWithoutChangingLocalizedName(string title, string expected)
+        { Assert.That(GameHud.HeaderName(title), Is.EqualTo(expected)); }
         [Test] public void GameplayBoardArtScenesLevelsSavesAndTelemetryRemainByteIdentical()
         {
             foreach(var line in File.ReadAllLines(Path.Combine(Application.dataPath,"_Game/Tests/Editor/IdentityFrozenFiles.txt")))
@@ -49,17 +55,33 @@ namespace Shift.Game.Tests
             EditorSceneManager.OpenScene(PrototypeSetup.ScenePath);ProgressionPresentationTests.IsolateSave(Prefix);
             yield return new EnterPlayMode();yield return null;
             var game=Object.FindFirstObjectByType<PrototypeGame>();game.UnlockAllLevels();
-            foreach(int index in new[]{9,31,39})
+            foreach(int index in new[]{0,9,21,31,35,39})
             {
                 Assert.That(game.SelectLevel(index),Is.True);yield return new WaitForSecondsRealtime(.3f);
                 Assert.That(GameObject.Find("Title").GetComponent<Text>().text,Is.EqualTo("SHIFT"));
-                Assert.That(GameObject.Find("Level Title").GetComponent<Text>().text,Is.EqualTo(game.CurrentLevel.DisplayTitle));
+                Assert.That(GameObject.Find("Level Title").GetComponent<Text>().text,Is.EqualTo(GameHud.HeaderName(game.CurrentLevel.DisplayTitle)));
                 Assert.That(GameObject.Find("Status").GetComponent<Text>().text,Is.EqualTo(game.CurrentLevel.Hint));
                 Assert.That(GameObject.Find("Alpine Lake").GetComponent<ScenicBackdrop>().texture,Is.Not.Null);
                 foreach(var icon in Object.FindObjectsByType<IdentityIcon>(FindObjectsSortMode.None)) Assert.That(icon.raycastTarget,Is.False);
                 Assert.That(GameObject.Find("Hint"),Is.Not.Null);Assert.That(GameObject.Find("Undo"),Is.Not.Null);
                 SprintPresentationTests.Capture($"identity-level{index+1}.png");
+                Assert.That(GameObject.Find("Level Number").GetComponent<Text>().text, Is.EqualTo("LEVEL " + (index+1)));
+                if (index == 35)
+                {
+                    GameLanguageService.Shared.Select(GameLanguage.Turkish);yield return null;
+                    Assert.That(GameObject.Find("Level Number").GetComponent<Text>().text, Is.EqualTo("BÖLÜM 36"));
+                    Assert.That(GameObject.Find("Level Title").GetComponent<Text>().text, Is.EqualTo("İki Geçiş Yolu"));
+                    SprintPresentationTests.Capture("header-level36-tr.png");
+                    // Reuse the existing portrait renderer with synthetic safe-area insets.
+                    var capture = typeof(OnboardingTests).GetMethod("Capture", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic);
+                    capture.Invoke(null, new object[] { "header-tall.png", 1080, 2400, true });
+                    capture.Invoke(null, new object[] { "header-short.png", 1080, 1600, false });
+                    GameLanguageService.Shared.Select(GameLanguage.English);yield return null;
+                }
             }
+            GameLanguageService.Shared.Select(GameLanguage.Turkish);yield return null;
+            SprintPresentationTests.Capture("header-level40-tr.png");
+            GameLanguageService.Shared.Select(GameLanguage.English);yield return null;
             var restart=GameObject.Find("Restart").GetComponent<Button>();
             var motion=restart.GetComponent<PresentationMotion>();var pointer=new PointerEventData(EventSystem.current);
             motion.OnPointerDown(pointer);yield return new WaitForSecondsRealtime(.12f);
