@@ -56,6 +56,7 @@ namespace Shift.Game
         public bool IsCampaignEndingPending => endingPending;
         private int CampaignPerfectCount => progress == null ? 0 : progress.ChapterSummary(0).Perfect + progress.ChapterSummary(1).Perfect;
 
+        private HintVisualOverlay hintVisual;
         private HintSession hints;
         private DailyAllowanceService allowances;
         public DailyAllowanceService Allowances => allowances ??= new DailyAllowanceService(
@@ -247,6 +248,7 @@ namespace Shift.Game
         public void Restart() { if (IsStartupWaiting || IsOnboardingActive || hud == null) return; Rebuild("restart", true); audioManager.Play(AudioCue.Restart); }
         private void Rebuild(string reason, bool restart)
         {
+            hintVisual?.Clear();
             endingPending = endingRequested = false;
             rewardGeneration++; rewardPending = false;
             StopAllCoroutines();
@@ -281,6 +283,8 @@ namespace Shift.Game
             var grid = PlaceholderVisuals.Rect("Board", area, Vector2.zero, Vector2.one);
             grid.gameObject.AddComponent<PanelArrival>().Initialize(gameFeel);
             view = grid.gameObject.AddComponent<BoardView>(); view.Build(board, font, circle, rounded, gameFeel, audioManager, haptics, hud, OnTap, activeLevel.Design?.sculptedTopology ?? false);
+            hintVisual = PlaceholderVisuals.Rect("Hint Visual Overlay", grid, Vector2.zero, Vector2.one).gameObject.AddComponent<HintVisualOverlay>();
+            hintVisual.Initialize(board, activeLevel, gameFeel);
             // Compensate for the smaller board presentation without changing piece visuals or callbacks.
             foreach (var piece in grid.GetComponentsInChildren<Piece>())
             {
@@ -303,7 +307,7 @@ namespace Shift.Game
             }
             var settingsRect = PlaceholderVisuals.Rect("Settings Panel", safe, Vector2.zero, Vector2.one);
             settingsPanel = settingsRect.gameObject.AddComponent<SettingsPanel>();
-            settingsPanel.Build(font, rounded, Settings, gameFeel, audioManager, CloseSettings);
+            settingsPanel.Build(font, rounded, Settings, gameFeel, audioManager, CloseSettings, () => RewardedAds as IPrivacyChoices);
             var hintRect = PlaceholderVisuals.Rect("Rewarded Hint Panel", safe, Vector2.zero, Vector2.one);
             hintPanel = hintRect.gameObject.AddComponent<RewardedHintPanel>();
             hintPanel.Build(font, rounded, gameFeel, RequestRewardedHint, CloseHint);
@@ -326,6 +330,7 @@ namespace Shift.Game
             if (InputModalOpen) return;
             var tapped = board.GetOccupant(position);
             if (!board.RequestMove(position)) return;
+            hintVisual?.Clear();
             Telemetry.StateActions(board.Actions);
             Telemetry.AcceptedTap(board.ReactionDepth, board.MovesRemaining, board.LastReactionWasCancelled);
             view.SetInput(false); hud.BeginReaction(); hud.Refresh(board); RefreshControls();
@@ -454,6 +459,7 @@ namespace Shift.Game
             if (InputModalOpen || !board.CanUndo) { RefreshControls(); return false; }
             if (Allowances.UndosRemaining == 0) { OpenRecovery(RewardReason.Undo); return false; }
             if (!Allowances.TryUndo(board.Undo)) { RefreshControls(); return false; }
+            hintVisual?.Clear();
             audioManager.RearmOutcome(); audioManager.Play(AudioCue.Undo); haptics.Medium();
             view.RestoreFromModel(); view.SetInput(true); hud.BeginReaction(); hud.Refresh(board);
             hud.SetCompletion(false, false, false); Telemetry.UndoUsed(board.MovesRemaining, Hints.Stage(CurrentLevel), Hints.Remaining); RefreshControls();
@@ -472,6 +478,7 @@ namespace Shift.Game
         {
             if (!Hints.TryUse(CurrentLevel, out string text)) return;
             audioManager.Play(AudioCue.Hint); haptics.Light();
+            hintVisual?.Show(Hints.Stage(CurrentLevel));
             hud.ShowHint(text, Hints.Stage(CurrentLevel), CurrentLevel); HintEvent("hint_used"); RefreshControls();
         }
         public void CloseHint()
@@ -520,6 +527,7 @@ namespace Shift.Game
         public void OpenChapter()
         {
             if (chapter == null || rewardPending) return;
+            hintVisual?.Clear();
             if (hintPanel != null && hintPanel.IsOpen) CloseHint();
             dailyPanel?.Close(); settingsPanel?.Close(); view.SetInput(false); chapter.Open(progress);
             RefreshChapterDaily(); audioManager.Play(AudioCue.PanelOpen); RefreshControls();
@@ -545,6 +553,7 @@ namespace Shift.Game
         public void OpenDaily()
         {
             if(IsStartupWaiting||IsOnboardingActive||!TryDailyDate(out var date)||rewardPending||board.State==GameState.Resolving)return;
+            hintVisual?.Clear();
             chapter?.Close();settingsPanel?.Close();if(hintPanel!=null&&hintPanel.IsOpen)CloseHint();
             bool wasOpen=dailyPanel.IsOpen;
             panelDate=date;dailyPanel.Open(DailyPool,DailySaves,panelDate,DailyLanguage);

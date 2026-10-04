@@ -255,13 +255,14 @@ namespace Shift.Game.Tests
             game.OpenHint(); game.RequestRewardedHint(); game.RequestRewardedHint(); Assert.That(ad.Shows, Is.EqualTo(1));
             ad.Earn(); ad.Earn(); ad.Close(); Assert.That(game.Hints.Remaining, Is.Zero); Assert.That(game.Hints.Stage(game.CurrentLevel), Is.EqualTo(1)); Capture("03-earned-hint");
             game.OpenSettings(); yield return new WaitForSecondsRealtime(.1f);
-            AssertNoPrivacyControls(); Capture("04-settings-no-privacy-button");
-            // Privacy options remain an internal capability, with no player-facing hook.
-            session.ShowPrivacyOptions(_ => { }); ump.CanRequestAds = false; ump.Privacy(true); session.Tick(); game.CloseSettings();
+            AssertPrivacyControls(true); Capture("04-settings-required-en");
+            // The conditional Settings action reuses the existing privacy-options capability.
+            GameObject.Find("Privacy Choices").GetComponent<Button>().onClick.Invoke();
+            Assert.That(ump.PrivacyShows, Is.EqualTo(1)); ump.CanRequestAds = false; ump.Privacy(true); session.Tick(); game.CloseSettings();
             game.DailyLanguage = HintLanguage.Turkish; game.OpenHint(); yield return new WaitForSecondsRealtime(.1f);
             Assert.That(GameObject.Find("Hint Availability").GetComponent<Text>().text, Is.EqualTo("Reklam henüz hazır değil.")); Capture("05-unavailable-tr");
             game.CloseHint(); game.OpenSettings(); yield return new WaitForSecondsRealtime(.1f);
-            AssertNoPrivacyControls(); Capture("08-settings-tr-no-privacy-button");
+            AssertPrivacyControls(true); Capture("08-settings-required-tr");
             session.ShowPrivacyOptions(_ => { }); ump.CanRequestAds = true; ump.Privacy(true); session.Tick();
             ad = new Ad(); ads.Loaded(ad); game.CloseSettings(); game.DailyLanguage = HintLanguage.English;
             game.LocalNow = () => new DateTime(2026, 10, 5); game.StartDaily(game.LocalNow()); yield return new WaitForSecondsRealtime(.35f);
@@ -269,20 +270,14 @@ namespace Shift.Game.Tests
             game.RequestRewardedHint(); ad.Earn(); ad.Close(); Assert.That(game.Hints.Stage(game.CurrentLevel), Is.EqualTo(1));
             Assert.That(ads.Initializations, Is.EqualTo(1));
             game.OpenSettings(); ump.IsPrivacyOptionsRequired = false; yield return new WaitForSecondsRealtime(.1f);
-            AssertNoPrivacyControls();
+            AssertPrivacyControls(false);
             yield return new ExitPlayMode();
         }
-        private static void AssertNoPrivacyControls()
+        private static void AssertPrivacyControls(bool required)
         {
-            foreach (var text in Object.FindObjectsByType<Text>(FindObjectsInactive.Include, FindObjectsSortMode.None))
-            {
-                Assert.That(text.text, Does.Not.Contain("Privacy choices"));
-                Assert.That(text.text, Does.Not.Contain("Gizlilik tercihleri"));
-            }
-            foreach (var button in Object.FindObjectsByType<Button>(FindObjectsInactive.Include, FindObjectsSortMode.None))
-                Assert.That(button.name, Is.Not.EqualTo("Privacy Choices"));
             var settings = Object.FindFirstObjectByType<SettingsPanel>();
-            Assert.That(settings.GetComponentsInChildren<Button>(true).Length, Is.EqualTo(5));
+            Assert.That(settings.transform.Find("Privacy Choices").gameObject.activeSelf, Is.EqualTo(required));
+            Assert.That(settings.GetComponentsInChildren<Button>().Length, Is.EqualTo(required ? 6 : 5));
         }
         private static void Capture(string name)
         {

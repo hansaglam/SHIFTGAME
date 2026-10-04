@@ -6,9 +6,14 @@ namespace Shift.Game
 {
     public sealed class SettingsPanel : MonoBehaviour
     {
+        private Func<IPrivacyChoices> privacyProvider;
+        private Button privacy;
+        private RectTransform[] rows;
+        private bool requesting;
         public bool IsOpen => gameObject.activeSelf;
-        public void Build(Font font, Sprite rounded, SettingsService settings, GameFeelSettings feel, AudioManager audio, Action close)
+        public void Build(Font font, Sprite rounded, SettingsService settings, GameFeelSettings feel, AudioManager audio, Action close, Func<IPrivacyChoices> privacyProvider = null)
         {
+            this.privacyProvider = privacyProvider;
             gameObject.AddComponent<Image>().color = new Color(.055f,.13f,.23f,.88f);
             IdentityStyle.Modal(transform, rounded, "Settings Card");
             var title = PlaceholderVisuals.Label("Settings Title", transform, font, "SETTINGS", 64, VisualTheme.Ink, new Vector2(.1f,.78f), new Vector2(.9f,.9f));
@@ -21,6 +26,13 @@ namespace Shift.Game
             ChapterSelect.CreateButton("Language Setting", font, rounded, transform, new Vector2(.12f,.24f), new Vector2(.88f,.34f), () =>
                 GameLanguageService.Shared.Select(GameLanguageService.Shared.CurrentLanguage == GameLanguage.English ? GameLanguage.Turkish : GameLanguage.English), out var language);
             LocalizedLabel.Bind(language, "settings.language");
+            privacy = ChapterSelect.CreateButton("Privacy Choices", font, rounded, transform,
+                new Vector2(.12f,.23f), new Vector2(.88f,.315f), OpenPrivacyOptions, out var privacyLabel);
+            LocalizedLabel.Bind(privacyLabel, "settings.privacy_choices");
+            rows = new[] { (RectTransform)transform.Find("Sound Setting"), (RectTransform)transform.Find("Haptics Setting"),
+                (RectTransform)transform.Find("Reduced Motion Setting"), (RectTransform)transform.Find("Language Setting") };
+            privacy.gameObject.SetActive(false);
+            RefreshPrivacyOptions();
             foreach (var motion in GetComponentsInChildren<PresentationMotion>()) motion.Settings = feel;
             gameObject.SetActive(false);
             void Add(string name, string key, float y, Func<bool> read, Action toggle)
@@ -31,7 +43,50 @@ namespace Shift.Game
                 LocalizedLabel.Bind(label, () => GameLanguageService.Shared.Text("settings." + key + (read() ? "_on" : "_off")));
             }
         }
-        public void Open() { transform.SetAsLastSibling(); gameObject.SetActive(true); }
+        private void Update() => RefreshPrivacyOptions();
+        public void RefreshPrivacyOptions()
+        {
+            if (privacy == null) return;
+            bool required = false, busy = false;
+            try
+            {
+                var provider = privacyProvider?.Invoke();
+                required = provider != null && provider.IsPrivacyOptionsRequired;
+                busy = provider != null && provider.IsBusy;
+            }
+            catch (Exception) { required = false; }
+            if (privacy.gameObject.activeSelf != required)
+            {
+                privacy.gameObject.SetActive(required);
+                for (int i = 0; i < rows.Length; i++)
+                {
+                    float y = required ? .65f - i * .105f : .63f - i * .13f;
+                    rows[i].anchorMin = new Vector2(.12f, y);
+                    rows[i].anchorMax = new Vector2(.88f, y + (required ? .085f : .1f));
+                }
+            }
+            privacy.interactable = required && !busy && !requesting;
+        }
+        private void OpenPrivacyOptions()
+        {
+            RefreshPrivacyOptions();
+            if (!privacy.gameObject.activeSelf || !privacy.interactable) return;
+            requesting = true; privacy.interactable = false;
+            try
+            {
+                var provider = privacyProvider?.Invoke();
+                if (provider == null) { requesting = false; RefreshPrivacyOptions(); return; }
+                provider.ShowPrivacyOptions(_ =>
+                {
+                    requesting = false;
+                    // The existing consent gate refreshes live UMP permission and invalidates ads.
+                    // Read the current SDK-backed requirement; never set consent or request a reward here.
+                    if (this != null) RefreshPrivacyOptions();
+                });
+            }
+            catch (Exception) { requesting = false; RefreshPrivacyOptions(); }
+        }
+        public void Open() { transform.SetAsLastSibling(); gameObject.SetActive(true); RefreshPrivacyOptions(); }
         public void Close() => gameObject.SetActive(false);
     }
 }
