@@ -45,12 +45,12 @@ namespace Shift.Game.Tests
             var provider = state == "Unavailable" ? null : new Privacy { Required = state == "Required", ThrowRead = state == "Error" };
             var panel = Build(provider);
             Assert.That(panel.transform.Find("Privacy Choices").gameObject.activeSelf, Is.EqualTo(visible));
-            Assert.That(panel.GetComponentsInChildren<Button>().Length, Is.EqualTo(visible ? 6 : 5));
+            Assert.That(panel.GetComponentsInChildren<Button>().Length, Is.EqualTo(visible ? 7 : 6));
             if (!visible)
             {
                 var language = (RectTransform)panel.transform.Find("Language Setting");
-                Assert.That(language.anchorMin.y, Is.EqualTo(.24f).Within(.00001f));
-                Assert.That(language.anchorMax.y, Is.EqualTo(.34f).Within(.00001f));
+                Assert.That(language.anchorMin.y, Is.EqualTo(.335f).Within(.00001f));
+                Assert.That(language.anchorMax.y, Is.EqualTo(.42f).Within(.00001f));
             }
             var back = (RectTransform)panel.transform.Find("Close Settings");
             Assert.That(back.anchorMin.y, Is.EqualTo(.12f)); Assert.That(back.anchorMax.y, Is.EqualTo(.21f));
@@ -85,7 +85,7 @@ namespace Shift.Game.Tests
             SprintPresentationTests.Capture("privacy-options/02-settings-required-tr.png");
             button.onClick.Invoke(); provider.Required = false; provider.Finish(true); yield return null;
             Assert.That(button.gameObject.activeSelf, Is.False);
-            Assert.That(panel.GetComponentsInChildren<Button>().Length, Is.EqualTo(5));
+            Assert.That(panel.GetComponentsInChildren<Button>().Length, Is.EqualTo(6));
             Assert.That(provider.Ads, Is.Zero); Assert.That(game.Allowances.HintsRemaining, Is.EqualTo(hints));
             Assert.That(game.Allowances.UndosRemaining, Is.EqualTo(undos));
             SprintPresentationTests.Capture("privacy-options/03-settings-not-required.png");

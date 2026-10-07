@@ -144,7 +144,7 @@ namespace Shift.Game.Tests
             Switch(game,GameLanguage.Turkish);Assert.That(Text("Goal").text,Is.EqualTo("Kırmızıyı temizle"));Assert.That(Text("Moves Label").text,Is.EqualTo("Hamle:"));Capture("02-tr-gameplay");
             Assert.That(GameObject.Find("Undo").GetComponentInChildren<Text>().text,Is.EqualTo("Geri Al"));
             game.OpenSettings();yield return Ready();Assert.That(Text("Settings Title").text,Is.EqualTo("AYARLAR"));Capture("04-tr-settings");
-            var panel=Object.FindFirstObjectByType<SettingsPanel>();Assert.That(panel.GetComponentsInChildren<Button>().Select(b=>b.name),Is.EquivalentTo(new[]{"Sound Setting","Haptics Setting","Reduced Motion Setting","Language Setting","Close Settings"}));
+            var panel=Object.FindFirstObjectByType<SettingsPanel>();Assert.That(panel.GetComponentsInChildren<Button>().Select(b=>b.name),Is.EquivalentTo(new[]{"Sound Setting","Haptics Setting","Reduced Motion Setting","Language Setting","Privacy Policy","Close Settings"}));
             bool sound=game.Settings.Sound,haptics=game.Settings.Haptics,motion=game.Settings.ReducedMotion;
             GameObject.Find("Language Setting").GetComponent<Button>().onClick.Invoke();Assert.That(language.CurrentLanguage,Is.EqualTo(GameLanguage.English));Assert.That(Text("Settings Title").text,Is.EqualTo("SETTINGS"));Capture("03-en-settings");
             Assert.That(game.Settings.Sound,Is.EqualTo(sound));Assert.That(game.Settings.Haptics,Is.EqualTo(haptics));Assert.That(game.Settings.ReducedMotion,Is.EqualTo(motion));game.CloseSettings();yield return Ready();

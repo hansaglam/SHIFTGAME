@@ -6,8 +6,12 @@ namespace Shift.Game
 {
     public sealed class GoogleRewardedAdClient : IRewardedAdClient
     {
+        public static RequestConfiguration CreateRequestConfiguration() => new RequestConfiguration
+        { MaxAdContentRating = MaxAdContentRating.T };
+
         public void Initialize(Action<bool> completed)
         {
+            MobileAds.SetRequestConfiguration(CreateRequestConfiguration());
             MobileAds.Initialize(status => MobileAdsEventExecutor.ExecuteInUpdate(() => completed(status != null)));
         }
         public void Load(string unitId, Action<IRewardedAdHandle> completed)

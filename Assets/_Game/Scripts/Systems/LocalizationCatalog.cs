@@ -51,6 +51,7 @@ namespace Shift.Game
             { "onboarding.continue", new[] { "CONTINUE", "DEVAM" } },
             { "onboarding.start", new[] { "LET'S START", "BAŞLAYALIM" } },
             { "onboarding.play", new[] { "PLAY NOW", "OYUNA BAŞLA" } },
+            { "settings.privacy_policy", new[] { "Privacy Policy", "Gizlilik Politikası" } },
             { "settings.privacy_choices", new[] { "Privacy Choices", "Gizlilik Tercihleri" } },
             { "settings.title", new[] { "SETTINGS", "AYARLAR" } },
             { "settings.sound_on", new[] { "SOUND: ON", "SES: AÇIK" } },

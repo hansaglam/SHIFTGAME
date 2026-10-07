@@ -277,7 +277,7 @@ namespace Shift.Game.Tests
         {
             var settings = Object.FindFirstObjectByType<SettingsPanel>();
             Assert.That(settings.transform.Find("Privacy Choices").gameObject.activeSelf, Is.EqualTo(required));
-            Assert.That(settings.GetComponentsInChildren<Button>().Length, Is.EqualTo(required ? 6 : 5));
+            Assert.That(settings.GetComponentsInChildren<Button>().Length, Is.EqualTo(required ? 7 : 6));
         }
         private static void Capture(string name)
         {

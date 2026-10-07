@@ -9,11 +9,14 @@ namespace Shift.Game
         private Func<IPrivacyChoices> privacyProvider;
         private Button privacy;
         private RectTransform[] rows;
-        private bool requesting;
+        private bool requesting, layoutReady;
+        private Action<string> openExternalUrl;
+        public const string PrivacyPolicyUrl = "https://hansaglam.github.io/shift-legal/privacy-policy/";
         public bool IsOpen => gameObject.activeSelf;
-        public void Build(Font font, Sprite rounded, SettingsService settings, GameFeelSettings feel, AudioManager audio, Action close, Func<IPrivacyChoices> privacyProvider = null)
+        public void Build(Font font, Sprite rounded, SettingsService settings, GameFeelSettings feel, AudioManager audio, Action close, Func<IPrivacyChoices> privacyProvider = null, Action<string> openUrl = null)
         {
             this.privacyProvider = privacyProvider;
+            openExternalUrl = openUrl ?? Application.OpenURL;
             gameObject.AddComponent<Image>().color = new Color(.055f,.13f,.23f,.88f);
             IdentityStyle.Modal(transform, rounded, "Settings Card");
             var title = PlaceholderVisuals.Label("Settings Title", transform, font, "SETTINGS", 64, VisualTheme.Ink, new Vector2(.1f,.78f), new Vector2(.9f,.9f));
@@ -26,11 +29,14 @@ namespace Shift.Game
             ChapterSelect.CreateButton("Language Setting", font, rounded, transform, new Vector2(.12f,.24f), new Vector2(.88f,.34f), () =>
                 GameLanguageService.Shared.Select(GameLanguageService.Shared.CurrentLanguage == GameLanguage.English ? GameLanguage.Turkish : GameLanguage.English), out var language);
             LocalizedLabel.Bind(language, "settings.language");
+            ChapterSelect.CreateButton("Privacy Policy", font, rounded, transform,
+                new Vector2(.12f,.23f), new Vector2(.88f,.315f), () => openExternalUrl(PrivacyPolicyUrl), out var policyLabel);
+            LocalizedLabel.Bind(policyLabel, "settings.privacy_policy");
             privacy = ChapterSelect.CreateButton("Privacy Choices", font, rounded, transform,
                 new Vector2(.12f,.23f), new Vector2(.88f,.315f), OpenPrivacyOptions, out var privacyLabel);
             LocalizedLabel.Bind(privacyLabel, "settings.privacy_choices");
             rows = new[] { (RectTransform)transform.Find("Sound Setting"), (RectTransform)transform.Find("Haptics Setting"),
-                (RectTransform)transform.Find("Reduced Motion Setting"), (RectTransform)transform.Find("Language Setting") };
+                (RectTransform)transform.Find("Reduced Motion Setting"), (RectTransform)transform.Find("Language Setting"), (RectTransform)transform.Find("Privacy Policy") };
             privacy.gameObject.SetActive(false);
             RefreshPrivacyOptions();
             foreach (var motion in GetComponentsInChildren<PresentationMotion>()) motion.Settings = feel;
@@ -55,14 +61,18 @@ namespace Shift.Game
                 busy = provider != null && provider.IsBusy;
             }
             catch (Exception) { required = false; }
-            if (privacy.gameObject.activeSelf != required)
+            if (!layoutReady || privacy.gameObject.activeSelf != required)
             {
+                layoutReady = true;
                 privacy.gameObject.SetActive(required);
+                var privacyRect = (RectTransform)privacy.transform;
+                privacyRect.anchorMin = new Vector2(.12f, .22f);
+                privacyRect.anchorMax = new Vector2(.88f, .295f);
                 for (int i = 0; i < rows.Length; i++)
                 {
-                    float y = required ? .65f - i * .105f : .63f - i * .13f;
+                    float y = required ? .68f - i * .092f : .65f - i * .105f;
                     rows[i].anchorMin = new Vector2(.12f, y);
-                    rows[i].anchorMax = new Vector2(.88f, y + (required ? .085f : .1f));
+                    rows[i].anchorMax = new Vector2(.88f, y + (required ? .075f : .085f));
                 }
             }
             privacy.interactable = required && !busy && !requesting;
