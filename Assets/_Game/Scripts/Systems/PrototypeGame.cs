@@ -26,6 +26,21 @@ namespace Shift.Game
         public TelemetryTracker Telemetry { get; private set; }
         public SettingsService Settings { get; private set; }
         private SettingsPanel settingsPanel;
+        private MechanicGuideState guideState;
+        private MechanicGuidePanel guidePanel;
+        private MechanicNotice guideNotice;
+        private System.Collections.Generic.List<MechanicTopic> guideTopics;
+        private bool guideEncounterChecked;
+        private string GuideKey
+        {
+            get
+            {
+#if UNITY_EDITOR
+                if(saveKeyPrefix != "SHIFT.Progress.v1.") return saveKeyPrefix + "MechanicGuide.v1";
+#endif
+                return MechanicGuideState.SaveKey;
+            }
+        }
         private FirstLaunchOnboardingService onboarding;
         public bool IsOnboardingActive { get; private set; }
         public bool IsStartupWaiting { get; private set; }
@@ -86,7 +101,7 @@ namespace Shift.Game
         public bool IsDaily => ActiveDaily != null;
         private DailyShiftPanel dailyPanel;
         private System.DateTime panelDate;
-        private bool InputModalOpen => endingRequested || (endingPanel != null && endingPanel.IsOpen) || IsStartupWaiting || IsOnboardingActive || (dailyPanel != null && dailyPanel.IsOpen) || (hintPanel != null && hintPanel.IsOpen) || (chapter != null && chapter.IsOpen) || (settingsPanel != null && settingsPanel.IsOpen);
+        private bool InputModalOpen => (guidePanel != null && guidePanel.IsOpen) || endingRequested || (endingPanel != null && endingPanel.IsOpen) || IsStartupWaiting || IsOnboardingActive || (dailyPanel != null && dailyPanel.IsOpen) || (hintPanel != null && hintPanel.IsOpen) || (chapter != null && chapter.IsOpen) || (settingsPanel != null && settingsPanel.IsOpen);
         private readonly BoardManager board = new BoardManager();
         private BoardView view;
         private GameHud hud;
@@ -160,6 +175,7 @@ namespace Shift.Game
                 eventSystemObject = new GameObject("SHIFT Input", typeof(EventSystem));
                 eventSystemObject.AddComponent<InputSystemUIInputModule>();
             }
+            guideState = new MechanicGuideState(GuideKey, levels, progress?.HighestCompleted ?? -1);
             campaignEnding = new CampaignEndingState(EndingKey);
             onboarding = new FirstLaunchOnboardingService(OnboardingKey, Telemetry.OnboardingEvent);
             if (!onboarding.Completed && progress != null) ShowOnboarding();
@@ -177,7 +193,7 @@ namespace Shift.Game
         private IEnumerator ReturningStartup()
         {
             // Cold launch only. Foreground/ad callbacks never enter this path.
-            while ((RewardedAds as IPrivacyChoices)?.IsBusy ?? false) yield return null;
+            // Local navigation does not wait for UMP preparation. The consent gate alone permits ads.
             IsStartupWaiting = false;
             if (progress != null)
                 activeLevelIndex = selectedLevel = ContinueLevelIndex >= 0 ? ContinueLevelIndex : progress.Current;
@@ -240,12 +256,11 @@ namespace Shift.Game
             safe.gameObject.AddComponent<SafeArea>();
             var panel = safe.gameObject.AddComponent<FirstLaunchOnboardingPanel>();
             panel.Build(onboarding, Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf"), circle, rounded, levels, gameFeel,
-                () => (RewardedAds as IPrivacyChoices)?.IsBusy ?? false,
                 () => { IsOnboardingActive = false; Rebuild("session_start", false); },
                 () => audioManager.Play(AudioCue.UIButton));
         }
 
-        public void Restart() { if (IsStartupWaiting || IsOnboardingActive || hud == null) return; Rebuild("restart", true); audioManager.Play(AudioCue.Restart); }
+        public void Restart() { if ((guidePanel != null && guidePanel.IsOpen) || IsStartupWaiting || IsOnboardingActive || hud == null) return; Rebuild("restart", true); audioManager.Play(AudioCue.Restart); }
         private void Rebuild(string reason, bool restart)
         {
             hintVisual?.Clear();
@@ -307,7 +322,13 @@ namespace Shift.Game
             }
             var settingsRect = PlaceholderVisuals.Rect("Settings Panel", safe, Vector2.zero, Vector2.one);
             settingsPanel = settingsRect.gameObject.AddComponent<SettingsPanel>();
-            settingsPanel.Build(font, rounded, Settings, gameFeel, audioManager, CloseSettings, () => RewardedAds as IPrivacyChoices);
+            settingsPanel.Build(font, rounded, Settings, gameFeel, audioManager, CloseSettings, () => RewardedAds as IPrivacyChoices, openGuide: OpenGuideIndex);
+            guideEncounterChecked=false;
+            guideTopics=null;
+            guideNotice=PlaceholderVisuals.Rect("Mechanic Notice",safe,new Vector2(.12f,.155f),new Vector2(.88f,.244f)).gameObject.AddComponent<MechanicNotice>();
+            guideNotice.Build(font,rounded,gameFeel,OpenEncounterGuide);
+            guidePanel=PlaceholderVisuals.Rect("Mechanic Guide",safe,Vector2.zero,Vector2.one).gameObject.AddComponent<MechanicGuidePanel>();
+            guidePanel.Build(font,circle,rounded,gameFeel,guideState,CloseGuide);
             var hintRect = PlaceholderVisuals.Rect("Rewarded Hint Panel", safe, Vector2.zero, Vector2.one);
             hintPanel = hintRect.gameObject.AddComponent<RewardedHintPanel>();
             hintPanel.Build(font, rounded, gameFeel, RequestRewardedHint, CloseHint);
@@ -328,6 +349,7 @@ namespace Shift.Game
         private void OnTap(GridPosition position)
         {
             if (InputModalOpen) return;
+            guideEncounterChecked=true;guideNotice?.Dismiss();
             var tapped = board.GetOccupant(position);
             if (!board.RequestMove(position)) return;
             hintVisual?.Clear();
@@ -370,7 +392,7 @@ namespace Shift.Game
             hud.FinishChain(); audioManager.ChainPayoff(board.Actions.Count); view.SetInput(board.State == GameState.Playing && !InputModalOpen);
             if (board.State == GameState.Won && progress != null && !debugLevel && !IsDaily && CampaignChapters.IsLast(activeLevelIndex, levels.Length))
                 hud.ShowChapterMastery(progress.ChapterSummary(chapterIndex));
-            if(IsDaily)hud.ShowDailyCompletion(board.State==GameState.Won,Telemetry.Result?.perfectShift ?? false,DailyLanguage);
+            if(IsDaily)hud.ShowDailyCompletion(board.State==GameState.Won,Telemetry.Result?.perfectShift ?? false,DailyLanguage,Telemetry.Result);
             else hud.ShowMastery(Telemetry.Result, firstPerfect);
             if (board.State == GameState.Won || board.State == GameState.Lost)
             {
@@ -468,6 +490,7 @@ namespace Shift.Game
         private void HintEvent(string name) => Telemetry.Utility(name, Hints.Stage(CurrentLevel), Hints.Remaining, board.MovesRemaining);
         public void OpenHint()
         {
+            guideNotice?.Dismiss();
             if (InputModalOpen || board.State != GameState.Playing) return;
             HintEvent("hint_opened");
             if (!Hints.HasNext(CurrentLevel)) { hud.NoMoreHints(DailyLanguage); RefreshControls(); return; }
@@ -526,6 +549,8 @@ namespace Shift.Game
         }
         public void OpenChapter()
         {
+            if(guidePanel != null && guidePanel.IsOpen) return;
+            guideNotice?.Dismiss();
             if (chapter == null || rewardPending) return;
             hintVisual?.Clear();
             if (hintPanel != null && hintPanel.IsOpen) CloseHint();
@@ -542,6 +567,8 @@ namespace Shift.Game
 
         public void OpenSettings()
         {
+            if(guidePanel != null && guidePanel.IsOpen) return;
+            guideNotice?.Dismiss();
             if (IsStartupWaiting || IsOnboardingActive || settingsPanel == null || rewardPending) return;
             if (hintPanel != null && hintPanel.IsOpen) CloseHint();
             dailyPanel?.Close(); chapter?.Close(); view.SetInput(false); settingsPanel.Open(); audioManager.Play(AudioCue.PanelOpen); RefreshControls();
@@ -552,6 +579,8 @@ namespace Shift.Game
         }
         public void OpenDaily()
         {
+            if(guidePanel != null && guidePanel.IsOpen) return;
+            guideNotice?.Dismiss();
             if(IsStartupWaiting||IsOnboardingActive||!TryDailyDate(out var date)||rewardPending||board.State==GameState.Resolving)return;
             hintVisual?.Clear();
             chapter?.Close();settingsPanel?.Close();if(hintPanel!=null&&hintPanel.IsOpen)CloseHint();
@@ -575,8 +604,37 @@ namespace Shift.Game
             if(before.completed)Telemetry.DailyEvent("daily_shift_replayed",puzzle,before,today);
             ActiveDaily=puzzle;Rebuild("daily_select",false);return true;
         }
+        private void UpdateGuideNotice()
+        {
+            if(guideNotice==null) return;
+            if(InputModalOpen || board.State!=GameState.Playing || rewardPending)
+            { guideNotice.Dismiss(); return; }
+            if(guideEncounterChecked) return;
+            guideEncounterChecked=true;
+            // Daily remains uninterrupted; all rules remain available from Settings.
+            if(IsDaily) return;
+            guideTopics=guideState.Pending(CurrentLevel);
+            if(guideTopics.Count==0) return;
+            guideState.Present(guideTopics);
+            guideNotice.Show(guideTopics[0]);
+        }
+        private void OpenEncounterGuide()
+        {
+            if(InputModalOpen || rewardPending || board.State!=GameState.Playing || guideTopics==null || guideTopics.Count==0) return;
+            guideNotice.Dismiss();view.SetInput(false);guidePanel.OpenTopic(guideTopics[0]);RefreshControls();
+        }
+        private void OpenGuideIndex()
+        {
+            if(settingsPanel==null || !settingsPanel.IsOpen || rewardPending) return;
+            guideNotice?.Dismiss();view.SetInput(false);guidePanel.OpenIndex();RefreshControls();
+        }
+        private void CloseGuide()
+        {
+            guidePanel.Close();view.SetInput(board.State==GameState.Playing && !InputModalOpen);RefreshControls();
+        }
         private void Update()
         {
+            UpdateGuideNotice();
             if (endingRequested) TryRevealEnding();
             if (hintPanel != null && hintPanel.IsOpen && !rewardPending)
                 hintPanel.RefreshAvailability(Allowances.RecoveryEnabled(recoveryReason) && RewardedAds.IsRewardedAdAvailable, DailyLanguage);

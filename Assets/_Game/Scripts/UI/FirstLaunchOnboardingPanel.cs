@@ -12,19 +12,17 @@ namespace Shift.Game
         private LevelData[] levels;
         private GameFeelSettings feel;
         private Action done, feedback;
-        private Func<bool> nativeBusy;
         private RectTransform card, content;
         private CanvasGroup visibility, pageOpacity;
         private Text primaryLabel, secondaryLabel;
         private readonly Image[] dots = new Image[4];
         private float fade;
         public int PageIndex => service.PageIndex;
-        public bool WaitingForNative => nativeBusy?.Invoke() ?? false;
         public void Build(FirstLaunchOnboardingService state, Font font, Sprite circle, Sprite rounded,
-            LevelData[] levels, GameFeelSettings feel, Func<bool> nativeBusy, Action done, Action feedback)
+            LevelData[] levels, GameFeelSettings feel, Action done, Action feedback)
         {
             service=state; this.font=font; this.circle=circle; this.rounded=rounded;
-            this.levels=levels; this.feel=feel; this.nativeBusy=nativeBusy; this.done=done; this.feedback=feedback;
+            this.levels=levels; this.feel=feel; this.done=done; this.feedback=feedback;
             visibility=gameObject.AddComponent<CanvasGroup>();
             Wordmark.Build(transform,font);
             var surface=VisualTheme.Surface("Onboarding Card",transform,rounded,IdentityStyle.Cream,new Vector2(.07f,.055f),new Vector2(.93f,.885f));
@@ -48,25 +46,24 @@ namespace Shift.Game
         }
         private void Present()
         {
-            if(WaitingForNative) { visibility.alpha=0; visibility.interactable=false; visibility.blocksRaycasts=false; return; }
+            // Local onboarding is independent of asynchronous consent preparation.
             if(service.Begin()) RenderPage();
             visibility.alpha=1; visibility.interactable=true; visibility.blocksRaycasts=true;
         }
         private void Update()
         {
             if(service==null || service.Completed) return;
-            Present();
             if(pageOpacity!=null) { fade=Mathf.Min(1,fade+Time.unscaledDeltaTime/.14f); pageOpacity.alpha=feel.reducedMotion?1:Mathf.Lerp(.65f,1,fade); }
         }
         public void Primary()
         {
-            if(WaitingForNative || service.Completed) return;
+            if(service.Completed) return;
             if(PageIndex==3) { service.Finish(false,done); feedback?.Invoke(); return; }
             if(service.Next()) { feedback?.Invoke(); RenderPage(); }
         }
         public void Secondary()
         {
-            if(WaitingForNative || service.Completed) return;
+            if(service.Completed) return;
             if(PageIndex==0) { service.Finish(true,done); feedback?.Invoke(); return; }
             if(service.Back()) { feedback?.Invoke(); RenderPage(); }
         }

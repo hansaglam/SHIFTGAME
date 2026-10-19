@@ -10,7 +10,7 @@ namespace Shift.Game
         private PieceAppearance appearance;
         public bool GateShownOpen => appearance != null && appearance.GateShownOpen;
         private Button button;
-        private Image image, trail, exitGlow;
+        private Image image, trail, exitGlow, channelFeedback;
         private CanvasGroup opacity;
         private Color baseColor;
         private GameFeelSettings feel;
@@ -54,6 +54,19 @@ namespace Shift.Game
             }
         }
 
+        // Overlay belongs to this tile, but renders above occupants without intercepting input.
+        public void BindChannelFeedback(Image overlay) { channelFeedback = overlay; appearance.UseExternalChannelBadge(); }
+        private bool IsMechanism => Data != null && (Data.Type == PieceType.Gate || Data.Type == PieceType.Switch);
+        private void CancelMechanismFeedback()
+        {
+            if (!IsMechanism || appearance == null) return;
+            pulsing = false; pulseTime = 0; appearance.Highlight(0);
+            body.localScale = Vector3.one; body.anchoredPosition = Vector2.zero;
+            if (channelFeedback != null) channelFeedback.color = Color.clear;
+        }
+        private void OnDisable() => CancelMechanismFeedback();
+        private void OnApplicationPause(bool paused) { if (paused) CancelMechanismFeedback(); }
+        private void OnApplicationFocus(bool focused) { if (!focused) CancelMechanismFeedback(); }
         public void ShowGate(bool open)
         {
             if (Data.Type != PieceType.Gate) return;
@@ -62,12 +75,14 @@ namespace Shift.Game
         public void RestoreFromModel()
         {
             pulsing = false; pulseTime = 0; exitScale = 1;
+            if (channelFeedback != null) channelFeedback.color = Color.clear;
             gameObject.SetActive(Data.Active); Place(Data.Position); ShowDirection(Data.Direction); ShowGate(Data.GateOpen);
             opacity.alpha = 1; body.anchoredPosition = Vector2.zero; appearance.Highlight(0); body.localScale = Vector3.one; trail.color = Color.clear; image.color = Color.white;
         }
         public void Feedback(float strength, bool isBlocked = false)
         {
-            pulseTime = 0; pulseStrength = strength; blocked = isBlocked; pulsing = true;
+            if (IsMechanism && feel.reducedMotion) { CancelMechanismFeedback(); return; }
+            pulseTime = 0; pulseStrength = IsMechanism ? 0 : strength; blocked = isBlocked; pulsing = true;
             UpdateFeedback(0);
         }
         private void Update()
@@ -78,9 +93,10 @@ namespace Shift.Game
                 tint.a = feel.reducedMotion ? .2f : .2f + .07f * Mathf.Sin(Time.unscaledTime * Mathf.PI) + (pulsing ? .3f * (1 - Mathf.Clamp01(pulseTime / Mathf.Max(.001f, feel.piecePulseDuration))) : 0);
                 exitGlow.color = tint;
             }
+            if (IsMechanism && feel.reducedMotion) CancelMechanismFeedback();
             if (!pulsing) return;
             pulseTime += Time.unscaledDeltaTime;
-            float duration = blocked ? feel.blockedDuration : feel.piecePulseDuration;
+            float duration = IsMechanism ? .2f : blocked ? feel.blockedDuration : feel.piecePulseDuration;
             float t = Mathf.Clamp01(pulseTime / Mathf.Max(.001f, duration));
             UpdateFeedback(t);
             if (t >= 1) pulsing = false;
@@ -93,6 +109,7 @@ namespace Shift.Game
             body.anchoredPosition = blocked && !feel.reducedMotion
                 ? new Vector2(Mathf.Sin(t * Mathf.PI * 4) * feel.blockedPixels * envelope, 0) : Vector2.zero;
             appearance.Highlight(envelope * feel.highlightStrength);
+            if (channelFeedback != null) channelFeedback.color = new Color(1,1,1,envelope * feel.highlightStrength);
         }
         public void MotionAccent(Vector2 direction, float progress)
         {

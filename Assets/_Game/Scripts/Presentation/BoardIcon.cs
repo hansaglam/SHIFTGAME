@@ -39,7 +39,7 @@ namespace Shift.Game
             void Diamond(float x,float scale)
             {
                 Vector2 a=new Vector2(x,scale), b=new Vector2(x+scale*.72f,0), c=new Vector2(x,-scale), d=new Vector2(x-scale*.72f,0);
-                Bar(a,b,.055f); Bar(b,c,.055f); Bar(c,d,.055f); Bar(d,a,.055f);
+                Bar(a,b,.085f); Bar(b,c,.085f); Bar(c,d,.085f); Bar(d,a,.085f);
             }
             if(Shape==BoardIconShape.Arrow)
             {
@@ -49,8 +49,10 @@ namespace Shift.Game
             }
             else if(Shape==BoardIconShape.Clockwise)
             {
-                const int segments=44; const float start=140, end=-130, outer=.40f, inner=.25f;
-                Vector2 P(float degrees,float radius) { float a=degrees*Mathf.Deg2Rad;return new Vector2(Mathf.Cos(a),Mathf.Sin(a))*radius; }
+                // Decreasing angles sweep clockwise in UI coordinates (positive Y is up).
+                // Open upper arc + square hub distinguishes rotation from circular Restart/Undo.
+                const int segments=32; const float start=180, end=0, outer=.40f, inner=.25f;
+                Vector2 P(float degrees,float radius) { float a=degrees*Mathf.Deg2Rad;return new Vector2(Mathf.Cos(a),Mathf.Sin(a))*radius+new Vector2(0,-.06f); }
                 for(int i=0;i<segments;i++)
                 {
                     float a=Mathf.Lerp(start,end,(float)i/segments), b=Mathf.Lerp(start,end,(float)(i+1)/segments);
@@ -58,10 +60,12 @@ namespace Shift.Game
                 }
                 float angle=end*Mathf.Deg2Rad; var tangent=new Vector2(Mathf.Sin(angle),-Mathf.Cos(angle));
                 var normal=new Vector2(-tangent.y,tangent.x); var endpoint=P(end,.325f);
-                Tri(endpoint+normal*.17f-tangent*.04f,endpoint+tangent*.20f,endpoint-normal*.17f-tangent*.04f);
+                // The right-hand tangent is (0,-1): the prominent arrow points DOWN, never left/back.
+                Tri(endpoint+normal*.14f-tangent*.04f,endpoint+tangent*.22f,endpoint-normal*.14f-tangent*.04f);
+                Quad(new Vector2(-.12f,-.32f),new Vector2(-.12f,-.08f),new Vector2(.12f,-.08f),new Vector2(.12f,-.32f));
             }
             else if(Shape==BoardIconShape.Diamond) Diamond(0,.34f);
-            else if(Shape==BoardIconShape.DoubleDiamond) { Diamond(-.24f,.27f); Diamond(.24f,.27f); }
+            else if(Shape==BoardIconShape.DoubleDiamond) { Diamond(-.26f,.25f); Diamond(.26f,.25f); }
             else
             {
                 Bar(new Vector2(-.33f,-.33f),new Vector2(.33f,.33f),.13f);

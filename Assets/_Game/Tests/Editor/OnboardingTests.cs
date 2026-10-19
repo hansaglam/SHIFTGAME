@@ -82,27 +82,27 @@ namespace Shift.Game.Tests
         }
         private sealed class NativeBusyAds : IRewardedAdService,IPrivacyChoices
         {
-            public bool Busy=true; public int Requests;
+            public int Requests;
             public bool IsRewardedAdAvailable=>false;
             public bool IsPrivacyOptionsRequired=>false;
-            public bool IsBusy=>Busy;
+            public bool IsBusy=>true;
             public void ShowPrivacyOptions(Action<bool> done){Requests++;done(false);}
             public void ShowRewardedAd(RewardReason reason,Action<bool> done){Requests++;done(false);}
         }
-        [UnityTest] public IEnumerator NativeConsentAtStartupDefersFirstPageAndAnalytics()
+        [UnityTest] public IEnumerator LocalPresentationBeginsOnceWithoutConsentDependency()
         {
             var root=new GameObject("Onboarding native wait test",typeof(RectTransform));
             var panel=root.AddComponent<FirstLaunchOnboardingPanel>();
             var events=new List<string>();var state=new FirstLaunchOnboardingService(Key,(n,p)=>events.Add(n));
-            var circle=PlaceholderVisuals.CreateCircle();var rounded=PlaceholderVisuals.CreateRounded();bool busy=true;
-            panel.Build(state,Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf"),circle,rounded,LevelValidation.AllLevels(),new GameFeelSettings(),()=>busy,()=>{},()=>{});
-            Assert.That(panel.GetComponent<CanvasGroup>().alpha,Is.Zero);Assert.That(events,Is.Empty);
-            Assert.That(root.GetComponentsInChildren<OnboardingBoardPreview>().Length,Is.Zero);
-            panel.Primary();Assert.That(state.PageIndex,Is.Zero);
-            busy=false;
+            var circle=PlaceholderVisuals.CreateCircle();var rounded=PlaceholderVisuals.CreateRounded();
+            panel.Build(state,Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf"),circle,rounded,LevelValidation.AllLevels(),new GameFeelSettings(),()=>{},()=>{});
+            Assert.That(panel.GetComponent<CanvasGroup>().alpha,Is.EqualTo(1));Assert.That(panel.GetComponent<CanvasGroup>().interactable,Is.True);
+            Assert.That(root.GetComponentsInChildren<OnboardingBoardPreview>().Length,Is.EqualTo(1));
             typeof(FirstLaunchOnboardingPanel).GetMethod("Update",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).Invoke(panel,null);
             Assert.That(events,Is.EqualTo(new[]{"onboarding_started","onboarding_page_viewed"}));
             Assert.That(root.GetComponentsInChildren<OnboardingBoardPreview>().Length,Is.EqualTo(1));
+            Assert.That(events.Count(x=>x=="onboarding_started"),Is.EqualTo(1));
+            Assert.That(events.Count(x=>x=="onboarding_page_viewed"),Is.EqualTo(1));
             Object.DestroyImmediate(root);Object.DestroyImmediate(circle.texture);Object.DestroyImmediate(circle);Object.DestroyImmediate(rounded.texture);Object.DestroyImmediate(rounded);
             yield return null;
         }
@@ -111,20 +111,101 @@ namespace Shift.Game.Tests
             EditorSceneManager.OpenScene(PrototypeSetup.ScenePath);ProgressionPresentationTests.IsolateSave(Prefix);
             FirstLaunchOnboardingService.ResetForTesting(Key);
         }
-        [UnityTest] public IEnumerator FourPagesBothLanguagesNativeWaitIsolationAndRealCaptures()
+        private sealed class PendingUmp : IUmpConsentClient
+        {
+            public bool CanRequestAds { get; set; } = true;
+            public bool IsPrivacyOptionsRequired => false;
+            public Action<bool> Updated, Form;
+            public int Forms;
+            public void Update(Action<bool> completed) => Updated = completed;
+            public void LoadAndShowIfRequired(Action<bool> completed) { Forms++; Form = completed; }
+            public void ShowPrivacyOptions(Action<bool> completed) => completed(false);
+        }
+        private sealed class PendingAds : IRewardedAdClient
+        {
+            public int Initializes, Loads;
+            public void Initialize(Action<bool> completed) { Initializes++; completed(true); }
+            public void Load(string unit, Action<IRewardedAdHandle> completed) { Loads++; completed(null); }
+        }
+        private static LocalAnalyticsService Analytics(PrototypeGame game) =>
+            (LocalAnalyticsService)typeof(TelemetryTracker).GetField("provider",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).GetValue(game.Telemetry);
+        private static string SaveSnapshot() => string.Join("|",new[]{"Unlocked","Current","Completed"}.Select(k=>PlayerPrefs.GetInt(Prefix+k,-1).ToString()))+
+            ":"+string.Join("|",new[]{"Onboarding.v1","Daily.v1.History","Mastery.v1.Perfect","DailyAllowance.v1"}.Select(k=>PlayerPrefs.GetString(Prefix+k,"missing")));
+        [UnityTest] public IEnumerator PendingUpdateAndLateFormDoNotBlockFourPageCompletion() => ConsentStartup(0);
+        [UnityTest] public IEnumerator FailedUpdateDoesNotBlockSkipOrMutateCompletedNavigation() => ConsentStartup(1);
+        [UnityTest] public IEnumerator UpdateTimeoutAndLateCallbackDoNotRepeatOnboardingOrReward() => ConsentStartup(2);
+        private static IEnumerator ConsentStartup(int outcome)
+        {
+            FreshScene(); Object.FindFirstObjectByType<PrototypeGame>().enabled=false;
+            yield return new EnterPlayMode();
+            var game=Object.FindFirstObjectByType<PrototypeGame>();
+            var ump=new PendingUmp();var ads=new PendingAds();double now=0;
+            var gate=new GoogleUmpConsentGate(ump,()=>now);
+            using var consent=new ConsentedRewardedAds(gate,ads,"mock-unit",()=>now);
+            consent.Start();game.RewardedAds=consent;game.enabled=true;
+            yield return null;yield return new WaitForSecondsRealtime(.2f);
+            var panel=Object.FindFirstObjectByType<FirstLaunchOnboardingPanel>();
+            Assert.That(panel,Is.Not.Null);Assert.That(panel.PageIndex,Is.Zero);
+            var visibility=panel.GetComponent<CanvasGroup>();
+            Assert.That(visibility.alpha,Is.EqualTo(1));Assert.That(visibility.interactable,Is.True);Assert.That(visibility.blocksRaycasts,Is.True);
+            Assert.That(GameObject.Find("Onboarding Primary").GetComponent<Button>().IsInteractable(),Is.True);
+            Assert.That(GameObject.Find("Onboarding Secondary").GetComponent<Button>().IsInteractable(),Is.True);
+            var events=Analytics(game);string saves=SaveSnapshot();
+            yield return null;yield return null;
+            Assert.That(events.Events.Count(e=>e.name=="onboarding_started"),Is.EqualTo(1));
+            Assert.That(events.Events.Count(e=>e.name=="onboarding_page_viewed"),Is.EqualTo(1));
+            Assert.That(SaveSnapshot(),Is.EqualTo(saves));Assert.That(PlayerPrefs.HasKey(Key),Is.False);
+            game.Restart();game.RequestRewardedHint();Assert.That(game.SelectLevel(1),Is.False);
+            Assert.That(game.StartDaily(DateTime.Now),Is.False);Assert.That(game.Board.Pieces,Is.Null);
+            consent.Tick();Assert.That(ads.Initializes,Is.Zero);Assert.That(ads.Loads,Is.Zero);
+            if(outcome==1)ump.Updated(false);
+            if(outcome==2){now=31;consent.Tick();ump.Updated(true);Assert.That(ump.Forms,Is.Zero);}
+            Assert.That(Object.FindFirstObjectByType<FirstLaunchOnboardingPanel>(),Is.SameAs(panel));
+            Assert.That(SaveSnapshot(),Is.EqualTo(saves));
+            if(outcome==0)
+            {
+                for(int i=0;i<3;i++){GameObject.Find("Onboarding Primary").GetComponent<Button>().onClick.Invoke();yield return null;}
+                Assert.That(panel.PageIndex,Is.EqualTo(3));Assert.That(gate.IsBusy,Is.True);
+                GameObject.Find("Onboarding Primary").GetComponent<Button>().onClick.Invoke();
+            }
+            else GameObject.Find("Onboarding Secondary").GetComponent<Button>().onClick.Invoke();
+            yield return null;yield return new WaitForSecondsRealtime(.2f);
+            Assert.That(game.IsOnboardingActive,Is.False);Assert.That(new FirstLaunchOnboardingService(Key).Completed,Is.True);
+            Assert.That(game.CurrentLevel.name,Does.StartWith("Level01"));
+            Assert.That(events.Events.Count(e=>e.name=="onboarding_page_viewed"),Is.EqualTo(outcome==0?4:1));
+            Assert.That(events.Events.Count(e=>e.name==(outcome==0?"onboarding_completed":"onboarding_skipped")),Is.EqualTo(1));
+            var pieces=game.Board.Pieces;var canvas=GameObject.Find("SHIFT UI");saves=SaveSnapshot();int eventCount=events.Events.Count();
+            if(outcome==0)
+            {
+                ump.Updated(true);now=10000;consent.Tick();
+                Assert.That(gate.IsBusy,Is.True);Assert.That(ads.Initializes,Is.Zero);Assert.That(ads.Loads,Is.Zero);
+                // Combined native load/show does not expose visibility; input ownership requires device QA.
+                ump.Form(true);consent.Tick();Assert.That(ads.Initializes,Is.EqualTo(1));Assert.That(ads.Loads,Is.EqualTo(1));
+                ump.Updated(true);ump.Form(true);
+            }
+            else {ump.Updated(true);consent.Tick();Assert.That(ads.Initializes,Is.Zero);Assert.That(ads.Loads,Is.Zero);}
+            bool? reward=null;consent.ShowRewardedAd(RewardReason.Hint,value=>reward=value);Assert.That(reward,Is.False);
+            yield return null;yield return null;
+            Assert.That(GameObject.Find("SHIFT UI"),Is.SameAs(canvas));Assert.That(game.Board.Pieces,Is.SameAs(pieces));
+            Assert.That(SaveSnapshot(),Is.EqualTo(saves));Assert.That(events.Events.Count(),Is.EqualTo(eventCount));
+            Assert.That(Object.FindFirstObjectByType<FirstLaunchOnboardingPanel>(),Is.Null);
+            Assert.That(Object.FindFirstObjectByType<ChapterSelect>(FindObjectsInactive.Include).IsOpen,Is.False);
+            yield return new ExitPlayMode();
+        }
+        [UnityTest] public IEnumerator FourPagesBothLanguagesPendingConsentIsolationAndRealCaptures()
         {
             FreshScene();yield return new EnterPlayMode();yield return null;
             var game=Object.FindFirstObjectByType<PrototypeGame>();var panel=Object.FindFirstObjectByType<FirstLaunchOnboardingPanel>();
             Assert.That(game.IsOnboardingActive,Is.True);Assert.That(panel,Is.Not.Null);Assert.That(game.Board.Pieces,Is.Null);
             var ad=new NativeBusyAds();game.RewardedAds=ad;yield return new WaitForSecondsRealtime(.1f);
-            Assert.That(panel.GetComponent<CanvasGroup>().alpha,Is.Zero);panel.Primary();Assert.That(panel.PageIndex,Is.Zero);
+            Assert.That(panel.GetComponent<CanvasGroup>().alpha,Is.EqualTo(1));Assert.That(panel.PageIndex,Is.Zero);
             game.Restart();Assert.That(game.SelectLevel(1),Is.False);Assert.That(game.StartDaily(DateTime.Now),Is.False);
             Assert.That(game.Board.Pieces,Is.Null);Assert.That(Object.FindObjectsByType<FirstLaunchOnboardingPanel>(FindObjectsSortMode.None).Length,Is.EqualTo(1));
             int hints=game.Allowances.HintsRemaining,undos=game.Allowances.UndosRemaining;
             int current=game.Progress.Current,complete=game.Progress.HighestCompleted;
             string daily=PlayerPrefs.GetString(Prefix+"Daily.v1.History","missing");
             bool sound=game.Settings.Sound,haptic=game.Settings.Haptics,motion=game.Settings.ReducedMotion;
-            ad.Busy=false;yield return null;
+            Assert.That(ad.IsBusy,Is.True);yield return null;
             Directory.CreateDirectory(Path.Combine(Application.dataPath,"../Validation/onboarding-polish"));
             for(int page=0;page<4;page++)
             {

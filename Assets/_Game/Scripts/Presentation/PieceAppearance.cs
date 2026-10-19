@@ -7,7 +7,7 @@ namespace Shift.Game
     public sealed class PieceAppearance
     {
         private BoardIcon arrow, arrowShadow;
-        private GameObject barrier;
+        private GameObject barrier, channelHeader;
         private Image threshold, flash;
         public bool GateShownOpen { get; private set; }
         public static Color PieceTint(PieceColor color) => color switch
@@ -62,7 +62,7 @@ namespace Shift.Game
             {
                 Surface("Pad Recess",body,new Color32(55,47,37,255),new Vector2(.07f,.07f),new Vector2(.93f,.93f),BoardSurface.Well);
                 var pad=Surface("Raised Pad",body,new Color32(228,174,77,255),new Vector2(.16f,.19f),new Vector2(.84f,.84f));
-                Channel(pad.transform,data.Channel,new Color32(255,245,202,255),new Vector2(.06f,.08f),new Vector2(.94f,.92f));
+                Channel(pad.transform,data.Channel,new Color32(25,42,62,255),new Vector2(.06f,.08f),new Vector2(.94f,.92f));
             }
             else if(data.Type==PieceType.Gate)
             {
@@ -71,11 +71,13 @@ namespace Shift.Game
                 Surface("Gate Left Post",body,metal,new Vector2(.04f,.08f),new Vector2(.16f,.78f));
                 Surface("Gate Right Post",body,metal,new Vector2(.84f,.08f),new Vector2(.96f,.78f));
                 var header=Surface("Gate Channel Header",body,new Color32(196,157,90,255),new Vector2(.08f,.76f),new Vector2(.92f,.97f));
-                Channel(header.transform,data.Channel,new Color32(255,248,214,255),new Vector2(.10f,.04f),new Vector2(.90f,.96f));
+                channelHeader=header.gameObject;
+                Channel(header.transform,data.Channel,new Color32(25,42,62,255),new Vector2(.10f,.04f),new Vector2(.90f,.96f));
                 var bars=PlaceholderVisuals.Rect("Closed Barrier",body,new Vector2(.17f,.15f),new Vector2(.83f,.73f)); barrier=bars.gameObject;
-                for(int i=0;i<3;i++) Surface("Barrier Slat",bars,metal,new Vector2(.05f+i*.34f,0),new Vector2(.22f+i*.34f,1));
-                Surface("Barrier Crossbar",bars,new Color32(202,174,120,255),new Vector2(0,.39f),new Vector2(1,.55f));
-                threshold=VisualTheme.Surface("Open Passage",body,rounded,new Color32(118,188,163,255),new Vector2(.25f,.10f),new Vector2(.75f,.14f));
+                for(int i=0;i<3;i++) Surface("Barrier Slat",bars,metal,new Vector2(.05f+i*.34f,0),new Vector2(.27f+i*.34f,1));
+                Surface("Barrier Crossbar",bars,new Color32(202,174,120,255),new Vector2(0,.34f),new Vector2(1,.58f));
+                threshold=Surface("Open Passage",body,new Color32(228,187,105,255),new Vector2(.18f,.10f),new Vector2(.82f,.24f));
+                VisualTheme.Surface("Threshold Inlay",threshold.transform,rounded,new Color32(25,42,62,255),new Vector2(.08f,.36f),new Vector2(.92f,.64f));
                 ShowGate(data.GateOpen);
             }
             flash=VisualTheme.Surface("Surface Feedback",body,data.Type==PieceType.Normal?circle:rounded,Color.clear,Vector2.zero,Vector2.one);
@@ -83,6 +85,7 @@ namespace Shift.Game
         }
         public static BoardIcon Channel(Transform parent,int channel,Color color,Vector2 min,Vector2 max)
             => BoardIcon.Create("Channel Symbol",parent,channel==1?BoardIconShape.Diamond:BoardIconShape.DoubleDiamond,color,min,max);
+        public void UseExternalChannelBadge() { if(channelHeader!=null) channelHeader.SetActive(false); }
         public void Direction(Direction value)
         { if(arrow!=null) { arrow.Configure(BoardIconShape.Arrow,value); arrowShadow.Configure(BoardIconShape.Arrow,value); } }
         public void ShowGate(bool open)

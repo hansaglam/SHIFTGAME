@@ -17,6 +17,14 @@ namespace Shift.Game
             IdentityIcon.Create("Right Spark",root,IdentitySymbol.Spark,new Color32(174,126,44,255),new Vector2(.948f,.36f),new Vector2(.984f,.64f));
         }
         public void Reveal() { remaining=.6f; group.alpha=1; }
+        public void Cancel()
+        {
+            remaining = 0;
+            if (group == null) return;
+            group.alpha = 0;
+            foreach (Transform child in group.transform) child.localScale = Vector3.one;
+        }
+        private void OnDisable() => Cancel();
         private void Update()
         {
             if(group==null || remaining<=0) return;

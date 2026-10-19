@@ -9,6 +9,12 @@ namespace Shift.Game
         private Text moves, status, chain, restartLabel;
         private bool finaleTitle;
         private CanvasGroup chainGroup, resultGroup;
+        private PerfectStatusFade perfectFade;
+        private CanvasGroup finalPerfectGroup;
+        private bool successPresented, perfectAccented;
+        private float completionElapsed = -1;
+        private const float CompletionDuration = .26f;
+        private Vector2 resultRestPosition;
         private RectTransform resultPanel;
         private Image resultBackground;
         private RewardGleam rewardGleam;
@@ -83,31 +89,38 @@ namespace Shift.Game
         }
         private RectTransform restartRect;
         private int reactionDepth;
-        private float masteryRemaining;
-        private Func<string> completionText;
-        private Color completionColor;
-        public bool MasteryVisible => masteryRemaining > 0;
+        private bool masteryVisible;
+        private Text completionMoves;
+        private Image completionAccent;
+        private Func<string> completionText, completionHeading;
+        public bool MasteryVisible => masteryVisible;
         public ReactionTier CurrentReactionTier => ReactionPresentation.Classify(reactionDepth);
         public void Build(Font font, LevelData level, Sprite rounded, GameFeelSettings settings, Action restart, Sprite circle = null)
         {
             feel = settings; hint = () => LocalizationCatalog.Instruction(level);
+            completionHeading = () =>
+            {
+                string number = HeaderNumber(LocalizationCatalog.Title(level));
+                return GameLanguageService.Shared.Text(string.IsNullOrEmpty(number) ? "results.complete_generic" : "results.complete", number);
+            };
             finaleTitle = level.Design?.difficultyBand == DifficultyBand.Finale;
             Wordmark.Build(transform, font);
-            var header = PlaceholderVisuals.Rect("Level Header", transform, new Vector2(.13f,.873f), new Vector2(.87f,.913f));
-            var badge = VisualTheme.Surface("Level Badge", header, rounded, new Color32(34,61,88,255), new Vector2(.38f,.64f), new Vector2(.62f,.96f));
+            var header = PlaceholderVisuals.Rect("Level Header", transform, new Vector2(.13f,.866f), new Vector2(.87f,.908f));
+            var badge = VisualTheme.Surface("Level Badge", header, rounded, new Color32(34,61,88,255), new Vector2(.34f,.64f), new Vector2(.66f,1));
             badge.raycastTarget = false;
-            var number = PlaceholderVisuals.Label("Level Number", badge.transform, font, "", 21, new Color32(190,236,246,255), new Vector2(.05f,0), new Vector2(.95f,1));
+            var number = PlaceholderVisuals.Label("Level Number", badge.transform, font, "", 28, new Color32(205,245,252,255), new Vector2(.05f,0), new Vector2(.95f,1));
             number.fontStyle = FontStyle.Bold;
+            number.resizeTextMinSize = 18;
             LocalizedLabel.Bind(number, () => GameLanguageService.Shared.Text("hud.level_badge", HeaderNumber(LocalizationCatalog.Title(level))));
-            var subtitle = PlaceholderVisuals.Label("Level Title", transform, font, "", 34, Color.white, new Vector2(.16f,.875f), new Vector2(.84f,.898f));
+            var subtitle = PlaceholderVisuals.Label("Level Title", transform, font, "", 38, Color.white, new Vector2(.13f,.866f), new Vector2(.87f,.889f));
             subtitle.fontStyle = FontStyle.Bold;
             var titleShadow = subtitle.gameObject.AddComponent<Shadow>();
             titleShadow.effectColor = new Color(.04f,.15f,.25f,.55f);
             titleShadow.effectDistance = new Vector2(0,-2);
-            subtitle.resizeTextMinSize = 20;
-            subtitle.horizontalOverflow = HorizontalWrapMode.Overflow;
+            subtitle.resizeTextMinSize = 24;
+            subtitle.horizontalOverflow = HorizontalWrapMode.Wrap;
             LocalizedLabel.Bind(subtitle, () => HeaderName(LocalizationCatalog.Title(level)));
-            var panel = VisualTheme.Surface("Goal Moves Panel", transform, rounded, new Color32(48,72,104,255), new Vector2(.13f,.805f), new Vector2(.87f,.868f));
+            var panel = VisualTheme.Surface("Goal Moves Panel", transform, rounded, new Color32(48,72,104,255), new Vector2(.13f,.799f), new Vector2(.87f,.862f));
             IdentityStyle.Material(panel);
             VisualTheme.Shadow(panel);
             var target = VisualTheme.Surface("Target Color", panel.transform, circle ?? rounded, PlaceholderVisuals.ColorFor(level.TargetColor), new Vector2(.035f,.14f), new Vector2(.15f,.86f));
@@ -149,7 +162,7 @@ namespace Shift.Game
             LocalizedLabel.Bind(movesLabel, "hud.moves");
             moves = PlaceholderVisuals.Label("Moves", panel.transform, font, "", 58, new Color32(255,213,95,255), new Vector2(.81f,.08f), new Vector2(.96f,.92f));
             moves.fontStyle = FontStyle.Bold;
-            chain = PlaceholderVisuals.Label("Chain", transform, font, "", 34, Color.white, new Vector2(.18f,.774f), new Vector2(.82f,.799f));
+            chain = PlaceholderVisuals.Label("Chain", transform, font, "", 34, Color.white, new Vector2(.18f,.774f), new Vector2(.82f,.797f));
             chain.fontStyle = FontStyle.Bold;
             VisualTheme.Shadow(chain, 2);
             chainGroup = chain.gameObject.AddComponent<CanvasGroup>(); chainGroup.alpha = 0; chainGroup.blocksRaycasts = false;
@@ -159,10 +172,16 @@ namespace Shift.Game
             IdentityStyle.Material(resultBackground);
             VisualTheme.Shadow(resultBackground,4);
             resultGroup = resultPanel.gameObject.AddComponent<CanvasGroup>(); resultGroup.blocksRaycasts = false;
+            resultRestPosition = resultPanel.anchoredPosition;
             status = PlaceholderVisuals.Label("Status", resultPanel, font, "", 30, VisualTheme.Ink, new Vector2(.065f, .12f), new Vector2(.935f, .88f));
             status.resizeTextMinSize = 26; status.horizontalOverflow = HorizontalWrapMode.Wrap;
+            perfectFade = status.gameObject.AddComponent<PerfectStatusFade>();
+            completionAccent = VisualTheme.Surface("Completion Accent", resultPanel, rounded, IdentityStyle.Teal, new Vector2(.34f,.94f), new Vector2(.66f,.958f));
+            completionMoves = PlaceholderVisuals.Label("Completion Moves", resultPanel, font, "", 23, VisualTheme.Muted, new Vector2(.08f,.04f), new Vector2(.92f,.27f));
+            completionMoves.resizeTextMinSize = 16;
+            completionAccent.gameObject.SetActive(false); completionMoves.gameObject.SetActive(false);
             rewardGleam = resultPanel.gameObject.AddComponent<RewardGleam>(); rewardGleam.Initialize(feel);
-            var button = ChapterSelect.CreateButton("Restart", font, rounded, transform, new Vector2(.32f,.077f), new Vector2(.68f,.133f), restart, out restartLabel);
+            var button = ChapterSelect.CreateButton("Restart", font, rounded, transform, new Vector2(.32f,.077f), new Vector2(.68f,.133f), () => { if (isActiveAndEnabled) restart(); }, out restartLabel);
             restartRect = (RectTransform)button.transform;
             button.GetComponent<PresentationMotion>().Settings = feel;
             LocalizedLabel.Bind(restartLabel, "controls.restart"); restartLabel.fontStyle = FontStyle.Bold;
@@ -172,7 +191,7 @@ namespace Shift.Game
         {
             if (!enabled) return;
             nextButton = ChapterSelect.CreateButton("Next Level", font, rounded, transform,
-                new Vector2(.43f,.077f), new Vector2(.88f,.133f), next, out var nextLabel).gameObject;
+                new Vector2(.43f,.077f), new Vector2(.88f,.133f), () => { if (isActiveAndEnabled) next(); }, out var nextLabel).gameObject;
             LocalizedLabel.Bind(nextLabel, "results.next"); nextLabel.fontStyle = FontStyle.Bold;
             IdentityStyle.Action(nextButton.GetComponent<Button>(), nextLabel, IdentitySymbol.Forward, true);
             nextButton.SetActive(false);
@@ -184,6 +203,8 @@ namespace Shift.Game
         public void SetCompletion(bool won, bool final, bool canNext, int chapterNumber = 1)
         {
             if (nextButton != null) nextButton.SetActive(won && canNext);
+            CompletionPresentation(won);
+            if (!won) { masteryVisible = false; if (successPresented) ResetCompletionEntrance(); }
             if(backToDaily!=null)backToDaily.SetActive(false);
             if (undoButton != null && transform.Find("Open Chapter") is RectTransform levels)
             {
@@ -192,7 +213,7 @@ namespace Shift.Game
             }
             restartRect.GetComponent<Image>().color = won && canNext ? IdentityStyle.Navy : IdentityStyle.Teal;
             if (won && final) { LocalizedLabel.Bind(status, chapterNumber == 1 ? "results.chapter1" : "results.chapter2"); resultBackground.color = new Color32(255,234,171,255); }
-            else if (won && canNext) LocalizedLabel.Bind(status, "results.ready");
+            else if (won && canNext) LocalizedLabel.Bind(status, completionHeading);
             restartRect.anchorMin = won && canNext ? new Vector2(.12f,.077f) : new Vector2(.32f,.077f);
             restartRect.anchorMax = won && canNext ? new Vector2(.38f,.133f) : new Vector2(.68f,.133f);
             if (undoButton != null)
@@ -216,7 +237,7 @@ namespace Shift.Game
         public void ShowCampaignComplete(Font font, Sprite rounded, bool perfect, Action proceed)
         {
             // Final presentation supersedes the temporary Perfect/Chapter result, without changing it for replays.
-            masteryRemaining = 0; resultPulse = 0; resultGroup.alpha = 1; resultPanel.localScale = Vector3.one;
+            masteryVisible = false; completionMoves.gameObject.SetActive(false); resultPulse = 0;
             resultBackground.color = IdentityStyle.Cream;
             if (nextButton != null) nextButton.SetActive(false);
             status.fontSize = 27;
@@ -227,6 +248,9 @@ namespace Shift.Game
             {
                 var line = PlaceholderVisuals.Label("Perfect Final Shift",resultPanel,font,"",22,new Color32(139,100,24,255),new Vector2(.04f,.035f),new Vector2(.96f,.235f));
                 LocalizedLabel.Bind(line,"ending.perfect_final");
+                finalPerfectGroup = line.gameObject.AddComponent<CanvasGroup>();
+                finalPerfectGroup.blocksRaycasts = false;
+                finalPerfectGroup.alpha = PerfectOpacity;
             }
             restartRect.anchorMin = new Vector2(.12f,.077f); restartRect.anchorMax = new Vector2(.38f,.133f);
             restartRect.GetComponent<Image>().color = IdentityStyle.Navy;
@@ -261,6 +285,9 @@ namespace Shift.Game
         public void BuildDaily(Font font,Sprite rounded,DailyPuzzle puzzle,HintLanguage language,Action back)
         {
             transform.Find("Level Header").gameObject.SetActive(false);
+            var dailyPanel = (RectTransform)transform.Find("Goal Moves Panel");
+            dailyPanel.anchorMin = new Vector2(.13f,.805f); dailyPanel.anchorMax = new Vector2(.87f,.868f);
+            chain.rectTransform.anchorMax = new Vector2(.82f,.799f);
             var dailyTitle = transform.Find("Level Title").GetComponent<Text>();
             dailyTitle.GetComponent<Shadow>().enabled = false;
             dailyTitle.rectTransform.anchorMin = new Vector2(.1f,.875f);
@@ -275,27 +302,33 @@ namespace Shift.Game
             LocalizedLabel.Bind(label, () => DailyText.Back(Language));label.fontSize=30;backToDaily.GetComponent<Image>().color=IdentityStyle.Teal;
             backToDaily.GetComponent<PresentationMotion>().Settings=feel;backToDaily.SetActive(false);
         }
-        public void ShowDailyCompletion(bool won,bool perfect,HintLanguage language)
+        public void ShowDailyCompletion(bool won,bool perfect,HintLanguage language,AttemptMetrics result = null)
         {
             SetCompletion(won,false,won);
             if(nextButton!=null)nextButton.SetActive(false);
             if(backToDaily!=null)backToDaily.SetActive(won);
             if(!won)return;
-            masteryRemaining=0;LocalizedLabel.Bind(status, () => DailyText.Complete(perfect,Language));
+            ShowCompletionDetail(result);
+            masteryVisible=perfect;LocalizedLabel.Bind(status, () => DailyText.Complete(perfect,Language));
+            completionAccent.color = perfect ? new Color32(190,143,48,255) : IdentityStyle.Teal;
             resultBackground.color=perfect?new Color32(255,234,171,255):new Color32(215,244,225,255);
+            if (perfect) AccentPerfect();
         }
         public void ShowChapterMastery(ChapterMastery summary, HintLanguage language = HintLanguage.English)
         {
+            masteryVisible = false;
             LocalizedLabel.Bind(status, () => (summary.Mastered ? MasteryText.Mastered(Language) : GameLanguageService.Shared.Text(summary.Chapter == 0 ? "results.chapter_title1" : "results.chapter_title2")) + "\n" + MasteryText.Summary(summary, Language));
         }
         public void ShowMastery(AttemptMetrics result, bool firstPerfect = false, HintLanguage language = HintLanguage.English)
         {
+            ShowCompletionDetail(result);
             if (result == null || !result.completed || !result.hasOptimal || !result.perfectShift) return;
-            completionText = LocalizedLabel.Recipe(status); completionColor = resultBackground.color;
-            LocalizedLabel.Bind(status, () => completionText().Split('\n')[0] + "\n" + (firstPerfect ? MasteryText.FirstPerfect(Language) : GameLanguageService.Shared.Text("mastery.perfect")));
-            resultBackground.color = new Color32(194, 239, 224, 255);
-            resultPulse = feel.successDuration; masteryRemaining = 1.6f;
-            rewardGleam.Reveal();
+            if (!masteryVisible) completionText = LocalizedLabel.Recipe(status);
+            LocalizedLabel.Bind(status, () => completionText() + "\n<size=23><color=#906414>" + (firstPerfect ? MasteryText.FirstPerfect(Language) : GameLanguageService.Shared.Text("mastery.perfect")) + "</color></size>");
+            resultBackground.color = new Color32(255,240,198,255);
+            completionAccent.color = new Color32(190,143,48,255);
+            masteryVisible = true;
+            AccentPerfect();
         }
         public void Refresh(BoardManager board)
         {
@@ -304,6 +337,9 @@ namespace Shift.Game
             moves.text = board.MovesRemaining.ToString();
             moves.color = board.MovesRemaining <= feel.lowMovesThreshold ? new Color32(255,167,132,255) : new Color32(255,213,95,255);
             bool won = board.State == GameState.Won, lost = board.State == GameState.Lost;
+            // Preserve specialized completion copy and its one-shot entrance on ordinary HUD refreshes.
+            if (won && successPresented) return;
+            if (!won && successPresented) ResetCompletionEntrance();
             string stateKey = board.State switch
             {
                 GameState.Won => "results.goal",
@@ -317,8 +353,67 @@ namespace Shift.Game
             resultBackground.color = won ? new Color32(215, 244, 225, 255) : lost ? new Color32(250, 222, 211, 255) : IdentityStyle.Cream;
             status.fontStyle = won || lost ? FontStyle.Bold : FontStyle.Normal;
             resultGroup.alpha = 1;
-            if (won || lost) resultPulse = feel.successDuration;
-            if (won) rewardGleam.Reveal();
+            if (lost) resultPulse = feel.successDuration;
+            if (won)
+            {
+                LocalizedLabel.Bind(status, completionHeading);
+                BeginCompletionEntrance();
+            }
+        }
+        private float PerfectOpacity => feel.reducedMotion || completionElapsed < 0 ? 1 :
+            Mathf.SmoothStep(0, 1, Mathf.Clamp01((completionElapsed - .07f) / .16f));
+        private void BeginCompletionEntrance()
+        {
+            successPresented = true; resultPulse = 0; completionElapsed = 0;
+            AdvanceCompletion(0);
+        }
+        private void AccentPerfect()
+        {
+            if (!successPresented || perfectAccented) return;
+            perfectAccented = true;
+            perfectFade.Opacity = PerfectOpacity;
+            if (!feel.reducedMotion) rewardGleam.Reveal();
+        }
+        private void AdvanceCompletion(float delta)
+        {
+            if (completionElapsed < 0) return;
+            completionElapsed = feel.reducedMotion ? CompletionDuration : Mathf.Min(CompletionDuration, completionElapsed + delta);
+            float t = completionElapsed / CompletionDuration;
+            float ease = 1 - Mathf.Pow(1 - t, 3);
+            resultPanel.anchoredPosition = resultRestPosition + Vector2.down * (16 * (1 - ease));
+            resultPanel.localScale = Vector3.one * Mathf.Lerp(.98f, 1, ease);
+            resultGroup.alpha = ease;
+            perfectFade.Opacity = PerfectOpacity;
+            if (finalPerfectGroup != null) finalPerfectGroup.alpha = PerfectOpacity;
+            if (t >= 1) completionElapsed = -1;
+        }
+        private void ResetCompletionEntrance()
+        {
+            successPresented = perfectAccented = false; completionElapsed = -1; resultPulse = 0;
+            if (resultPanel != null) { resultPanel.anchoredPosition = resultRestPosition; resultPanel.localScale = Vector3.one; }
+            if (resultGroup != null) resultGroup.alpha = 1;
+            if (perfectFade != null) perfectFade.Opacity = 1;
+            if (finalPerfectGroup != null) finalPerfectGroup.alpha = 1;
+            if (rewardGleam != null) rewardGleam.Cancel();
+        }
+        private void OnDisable() => ResetCompletionEntrance();
+        private void ShowCompletionDetail(AttemptMetrics result)
+        {
+            bool available = result != null && result.completed && result.successfulMoves > 0;
+            completionMoves.gameObject.SetActive(available);
+            if (!available) return;
+            int count = result.successfulMoves;
+            LocalizedLabel.Bind(completionMoves, () => GameLanguageService.Shared.Text(count == 1 ? "results.completed_move" : "results.completed_moves", count));
+        }
+        private void CompletionPresentation(bool won)
+        {
+            completionAccent.gameObject.SetActive(won); completionMoves.gameObject.SetActive(false);
+            completionAccent.color = IdentityStyle.Teal;
+            status.rectTransform.anchorMin = won ? new Vector2(.06f,.29f) : new Vector2(.065f,.12f);
+            status.rectTransform.anchorMax = won ? new Vector2(.94f,.91f) : new Vector2(.935f,.88f);
+            status.fontSize = status.resizeTextMaxSize = won ? 32 : 30;
+            status.resizeTextMinSize = won ? 18 : 26;
+            if (won) resultBackground.color = IdentityStyle.Cream;
         }
         public void BeginReaction()
         {
@@ -342,11 +437,7 @@ namespace Shift.Game
         }
         private void Update()
         {
-            if (masteryRemaining > 0)
-            {
-                masteryRemaining = Mathf.Max(0, masteryRemaining - Time.unscaledDeltaTime);
-                if (masteryRemaining == 0) { LocalizedLabel.Bind(status, completionText); resultBackground.color = completionColor; }
-            }
+            AdvanceCompletion(Time.unscaledDeltaTime);
             if (chainPop > 0)
             {
                 chainPop = Mathf.Max(0, chainPop - Time.unscaledDeltaTime);

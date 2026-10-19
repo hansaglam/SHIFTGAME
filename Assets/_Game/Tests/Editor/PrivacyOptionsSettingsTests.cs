@@ -85,7 +85,7 @@ namespace Shift.Game.Tests
             SprintPresentationTests.Capture("privacy-options/02-settings-required-tr.png");
             button.onClick.Invoke(); provider.Required = false; provider.Finish(true); yield return null;
             Assert.That(button.gameObject.activeSelf, Is.False);
-            Assert.That(panel.GetComponentsInChildren<Button>().Length, Is.EqualTo(6));
+            Assert.That(panel.GetComponentsInChildren<Button>().Length, Is.EqualTo(7)); // Includes the free How to Play action.
             Assert.That(provider.Ads, Is.Zero); Assert.That(game.Allowances.HintsRemaining, Is.EqualTo(hints));
             Assert.That(game.Allowances.UndosRemaining, Is.EqualTo(undos));
             SprintPresentationTests.Capture("privacy-options/03-settings-not-required.png");

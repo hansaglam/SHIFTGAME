@@ -84,7 +84,7 @@ namespace Shift.Game.Tests
    foreach(var language in new[]{HintLanguage.English,HintLanguage.Turkish})foreach(bool required in new[]{false,true})
    {
     provider.Required=required;game.DailyLanguage=language;game.OpenSettings();yield return new WaitForSecondsRealtime(.15f);Canvas.ForceUpdateCanvases();
-    var panel=Object.FindFirstObjectByType<SettingsPanel>();var buttons=panel.GetComponentsInChildren<Button>();Assert.That(buttons.Length,Is.EqualTo(required?7:6));
+    var panel=Object.FindFirstObjectByType<SettingsPanel>();var buttons=panel.GetComponentsInChildren<Button>();Assert.That(buttons.Length,Is.EqualTo(required?8:7));
     Assert.That(panel.transform.Find("Privacy Policy").GetComponentInChildren<Text>().text,Is.EqualTo(language==HintLanguage.English?"Privacy Policy":"Gizlilik Politikası"));
     var rects=buttons.Select(b=>(RectTransform)b.transform).OrderBy(r=>r.anchorMin.y).ToArray();
     for(int i=0;i<rects.Length;i++)

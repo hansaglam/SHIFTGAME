@@ -13,7 +13,7 @@ namespace Shift.Game
         private Action<string> openExternalUrl;
         public const string PrivacyPolicyUrl = "https://hansaglam.github.io/shift-legal/privacy-policy/";
         public bool IsOpen => gameObject.activeSelf;
-        public void Build(Font font, Sprite rounded, SettingsService settings, GameFeelSettings feel, AudioManager audio, Action close, Func<IPrivacyChoices> privacyProvider = null, Action<string> openUrl = null)
+        public void Build(Font font, Sprite rounded, SettingsService settings, GameFeelSettings feel, AudioManager audio, Action close, Func<IPrivacyChoices> privacyProvider = null, Action<string> openUrl = null, Action openGuide = null)
         {
             this.privacyProvider = privacyProvider;
             openExternalUrl = openUrl ?? Application.OpenURL;
@@ -37,6 +37,12 @@ namespace Shift.Game
             LocalizedLabel.Bind(privacyLabel, "settings.privacy_choices");
             rows = new[] { (RectTransform)transform.Find("Sound Setting"), (RectTransform)transform.Find("Haptics Setting"),
                 (RectTransform)transform.Find("Reduced Motion Setting"), (RectTransform)transform.Find("Language Setting"), (RectTransform)transform.Find("Privacy Policy") };
+            if(openGuide != null)
+            {
+                var guide=ChapterSelect.CreateButton("How to Play",font,rounded,transform,Vector2.zero,Vector2.one,openGuide,out var guideLabel);
+                LocalizedLabel.Bind(guideLabel,"guide.title");
+                Array.Resize(ref rows,rows.Length+1);rows[rows.Length-1]=(RectTransform)guide.transform;
+            }
             privacy.gameObject.SetActive(false);
             RefreshPrivacyOptions();
             foreach (var motion in GetComponentsInChildren<PresentationMotion>()) motion.Settings = feel;
@@ -70,9 +76,10 @@ namespace Shift.Game
                 privacyRect.anchorMax = new Vector2(.88f, .295f);
                 for (int i = 0; i < rows.Length; i++)
                 {
-                    float y = required ? .68f - i * .092f : .65f - i * .105f;
+                    float step = rows.Length > 5 ? (required ? .077f : .089f) : (required ? .092f : .105f);
+                    float y = (rows.Length > 5 ? .69f : required ? .68f : .65f) - i * step;
                     rows[i].anchorMin = new Vector2(.12f, y);
-                    rows[i].anchorMax = new Vector2(.88f, y + (required ? .075f : .085f));
+                    rows[i].anchorMax = new Vector2(.88f, y + (rows.Length > 5 ? .063f : required ? .075f : .085f));
                 }
             }
             privacy.interactable = required && !busy && !requesting;

@@ -74,7 +74,7 @@ namespace Shift.Game.Tests
                 { piece.GetComponentInChildren<Button>().onClick.Invoke(); return; }
             Assert.Fail($"Missing tappable piece at {position}.");
         }
-        internal static void Capture(string name)
+        internal static void Capture(string name, int width = 1080, int height = 1920, System.Action validate = null)
         {
             if (SystemInfo.graphicsDeviceType == UnityEngine.Rendering.GraphicsDeviceType.Null) return;
             string directory = Path.GetFullPath(Path.Combine(Application.dataPath, "../Validation"));
@@ -87,17 +87,18 @@ namespace Shift.Game.Tests
             float previousScale = canvas.scaleFactor, previousPlane = canvas.planeDistance;
             int previousMask = camera.cullingMask;
             var previousTarget = camera.targetTexture; var previousActive = RenderTexture.active;
-            var target = RenderTexture.GetTemporary(1080, 1920, 24, RenderTextureFormat.ARGB32);
-            var image = new Texture2D(1080, 1920, TextureFormat.RGB24, false);
+            var target = RenderTexture.GetTemporary(width, height, 24, RenderTextureFormat.ARGB32);
+            var image = new Texture2D(width, height, TextureFormat.RGB24, false);
             try
             {
                 camera.targetTexture = target; camera.cullingMask = -1;
                 canvas.renderMode = RenderMode.ScreenSpaceCamera; canvas.worldCamera = camera; canvas.planeDistance = 1;
-                scaler.enabled = false; canvas.scaleFactor = 1; Canvas.ForceUpdateCanvases();
+                scaler.enabled = false; canvas.scaleFactor = width / 1080f; Canvas.ForceUpdateCanvases();
+                validate?.Invoke();
                 UnityEngine.Rendering.RenderPipeline.SubmitRenderRequest(camera,
                     new UnityEngine.Rendering.RenderPipeline.StandardRequest { destination = target });
                 RenderTexture.active = target;
-                image.ReadPixels(new Rect(0, 0, 1080, 1920), 0, 0); image.Apply();
+                image.ReadPixels(new Rect(0, 0, width, height), 0, 0); image.Apply();
                 File.WriteAllBytes(Path.Combine(directory, name), image.EncodeToPNG());
             }
             finally

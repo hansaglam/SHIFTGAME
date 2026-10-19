@@ -133,11 +133,11 @@ namespace Shift.Game.Tests
             Assert.That(GameObject.Find("Level Title").GetComponent<Text>().text,Does.StartWith("DAILY SHIFT").And.Not.Contain("40"));yield return new WaitForSecondsRealtime(.35f);Capture("03-gameplay");
             int allowance=game.Hints.Remaining;game.OpenHint();Assert.That(game.Hints.Remaining,Is.EqualTo(allowance-1));Assert.That(GameObject.Find("Status").GetComponent<Text>().text,Does.Contain(HintCatalog.Get(game.CurrentLevel,1)));
             Tap(game.CurrentLevel.KnownSolution[0]);yield return Settled(game);Assert.That(game.Undo(),Is.True);yield return Solve(game);
-            Assert.That(game.Telemetry.Result.perfectShift,Is.False);Assert.That(GameObject.Find("Status").GetComponent<Text>().text,Is.EqualTo("DAILY SHIFT COMPLETE"));Capture("04-complete");
+            Assert.That(game.Telemetry.Result.perfectShift,Is.False);Assert.That(GameObject.Find("Status").GetComponent<Text>().text,Is.EqualTo("DAILY SHIFT COMPLETE"));Capture("04-complete-entry");yield return new WaitForSecondsRealtime(.3f);Capture("04-complete");
             Assert.That(GameObject.Find("Next Level"),Is.Null);Assert.That(game.NextLevel(),Is.False);Assert.That(GameObject.Find("Back to Daily"),Is.Not.Null);
             Assert.That(game.DailySaves.Get(game.ActiveDaily).completed,Is.True);Assert.That(game.DailySaves.Get(game.ActiveDaily).perfect,Is.False);
             game.Restart();yield return null;Assert.That(game.Hints.Remaining,Is.EqualTo(allowance-1));yield return Solve(game);
-            Assert.That(GameObject.Find("Status").GetComponent<Text>().text,Is.EqualTo("DAILY PERFECT SHIFT"));Capture("05-perfect");
+            Assert.That(GameObject.Find("Status").GetComponent<Text>().text,Is.EqualTo("DAILY PERFECT SHIFT"));Capture("05-perfect-entry");yield return new WaitForSecondsRealtime(.3f);Capture("05-perfect");
             Assert.That(provider.Events.Count(e=>e.name=="daily_shift_completed"),Is.EqualTo(1));Assert.That(provider.Events.Count(e=>e.name=="daily_shift_perfect"),Is.EqualTo(1));
             Assert.That(provider.Events.Count(e=>e.name=="daily_shift_replayed"),Is.EqualTo(1));Assert.That(provider.Events.Count(e=>e.name=="daily_shift_started"),Is.EqualTo(2));
             Assert.That(provider.Events.Single(e=>e.name=="daily_shift_completed").completedBefore,Is.False);

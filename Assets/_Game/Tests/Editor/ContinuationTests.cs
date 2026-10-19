@@ -151,22 +151,143 @@ namespace Shift.Game.Tests
             Game.ContinueCampaign();Assert.That(Chapter.IsOpen,Is.True);Assert.That(Game.ContinueLevelIndex,Is.EqualTo(-1));
             yield return new ExitPlayMode();
         }
-        private sealed class BusyAds : IRewardedAdService,IPrivacyChoices
+        private sealed class StartupUmp : IUmpConsentClient
         {
-            public bool Busy=true;public bool IsBusy=>Busy;public bool IsPrivacyOptionsRequired=>false;public bool IsRewardedAdAvailable=>false;
-            public void ShowPrivacyOptions(Action<bool> done)=>done(false);
-            public void ShowRewardedAd(RewardReason reason,Action<bool> done)=>done(false);
+            public bool CanRequestAds { get; set; } = true; // Previous eligibility must not bypass this launch.
+            public bool IsPrivacyOptionsRequired => false;
+            public Action<bool> Updated, Form;
+            public int Forms;
+            public void Update(Action<bool> done) => Updated = done;
+            public void LoadAndShowIfRequired(Action<bool> done) { Forms++; Form = done; }
+            public void ShowPrivacyOptions(Action<bool> done) => done(false);
         }
-        [UnityTest] public IEnumerator NativeConsentWaitsOnceAndAdReturnDoesNotReopenNavigation()
+        private sealed class StartupAds : IRewardedAdClient
         {
-            Scene(11,4,deferred:true);yield return new EnterPlayMode();
-            var ads=new BusyAds();Game.RewardedAds=ads;Game.enabled=true;yield return Ready();
-            Assert.That(Game.IsStartupWaiting,Is.True);Assert.That(Chapter,Is.Null);Assert.That(Game.Board.Pieces,Is.Null);
-            Assert.That(Game.SelectLevel(0),Is.False);Game.ContinueCampaign();Game.Restart();
-            ads.Busy=false;yield return Ready();Assert.That(Chapter.IsOpen,Is.True);Assert.That(ContinueText,Is.EqualTo("Continue Level 13"));
-            Game.CloseChapter();yield return Ready();Assert.That(Game.Progress.Current,Is.EqualTo(12));
-            var board=Game.Board;ads.Busy=true;Lifecycle(true);ads.Busy=false;Lifecycle(false);yield return Ready();
-            Assert.That(Chapter.IsOpen,Is.False);Assert.That(Game.Board,Is.SameAs(board));Assert.That(Game.IsStartupWaiting,Is.False);
+            public int Initializations, Loads;
+            public Action<bool> Initialized;
+            public Action<IRewardedAdHandle> Loaded;
+            public void Initialize(Action<bool> done) { Initializations++; Initialized = done; }
+            public void Load(string unit, Action<IRewardedAdHandle> done) { Loads++; Loaded = done; }
+        }
+        private sealed class StartupAd : IRewardedAdHandle
+        {
+            public bool CanShow => true;
+            public int Shows;
+            public Action Earn, Close;
+            public void Show(Action earned, Action closed, Action failed) { Shows++; Earn = earned; Close = closed; }
+            public void Dispose() { }
+        }
+        private sealed class StartupConsent : IDisposable
+        {
+            public double Now;
+            public readonly StartupUmp Ump = new StartupUmp();
+            public readonly StartupAds Ads = new StartupAds();
+            public readonly GoogleUmpConsentGate Gate;
+            public readonly ConsentedRewardedAds Service;
+            public StartupConsent()
+            {
+                Gate = new GoogleUmpConsentGate(Ump, () => Now);
+                Service = new ConsentedRewardedAds(Gate, Ads, "mock-unit", () => Now);
+                Service.Start(); Game.RewardedAds = Service; Game.enabled = true;
+            }
+            public void AssertBlocked()
+            {
+                Service.Tick();
+                Assert.That(Ads.Initializations, Is.Zero); Assert.That(Ads.Loads, Is.Zero);
+                bool? rewarded = null;
+                Service.ShowRewardedAd(RewardReason.Hint, result => rewarded = result);
+                Assert.That(rewarded, Is.False); Assert.That(Service.IsRewardedAdAvailable, Is.False);
+            }
+            public void Dispose() => Service.Dispose();
+        }
+        private static string PersistedStartupState()
+        {
+            return string.Join("|", new[] { "Unlocked", "Current", "Completed", "CampaignEnding.Seen.v1" }
+                .Select(key => PlayerPrefs.GetInt(Prefix + key, -99).ToString())) + ":" +
+                string.Join("|", new[] { "Mastery.v1.Perfect", "Onboarding.v1", "Daily.v1.History", "Language.v1" }
+                .Select(key => PlayerPrefs.GetString(Prefix + key, "missing")));
+        }
+        private static void AssertReturningReady()
+        {
+            Assert.That(Game.IsStartupWaiting, Is.False); Assert.That(Chapter.IsOpen, Is.True);
+            Assert.That(ContinueText, Is.EqualTo("Continue Level 13"));
+            Assert.That(Game.CurrentLevel.name, Does.StartWith("Level13"));
+            Assert.That(Game.Progress.Current, Is.EqualTo(4)); Assert.That(Game.ContinueLevelIndex, Is.EqualTo(12));
+            Assert.That(Game.Board.Pieces, Is.Not.Null);
+            Assert.That(Object.FindObjectsByType<ChapterSelect>(FindObjectsInactive.Include, FindObjectsSortMode.None).Length, Is.EqualTo(1));
+        }
+        [UnityTest] public IEnumerator ReturningMenuIsReadyDuringUpdateAndFormAndCompletionDoesNotRebuild()
+        {
+            Scene(11,4,deferred:true); yield return new EnterPlayMode();
+            string saves = PersistedStartupState();
+            using var consent = new StartupConsent(); yield return Ready();
+            AssertReturningReady(); consent.AssertBlocked(); Assert.That(PersistedStartupState(), Is.EqualTo(saves));
+            var chapter = Chapter; var canvas = GameObject.Find("SHIFT UI"); var pieces = Game.Board.Pieces;
+            int moves = Game.Board.MovesRemaining, hints = Game.Allowances.HintsRemaining, undos = Game.Allowances.UndosRemaining;
+            consent.Ump.Updated(true); consent.Now = 10000; consent.Service.Tick(); yield return Ready();
+            Assert.That(consent.Gate.IsBusy, Is.True, "No synthetic timeout for native forms");
+            AssertReturningReady(); consent.AssertBlocked();
+            consent.Ump.Form(true); consent.Ads.Initialized(true); consent.Service.Tick();
+            var ad = new StartupAd(); consent.Ads.Loaded(ad);
+            consent.Ump.Updated(true); consent.Ump.Form(true); consent.Service.Tick(); yield return Ready();
+            Assert.That(consent.Ads.Initializations, Is.EqualTo(1)); Assert.That(consent.Ads.Loads, Is.EqualTo(1));
+            Assert.That(ad.Shows, Is.Zero, "Consent completion must never show an ad");
+            Assert.That(Chapter, Is.SameAs(chapter)); Assert.That(GameObject.Find("SHIFT UI"), Is.SameAs(canvas));
+            Assert.That(Game.Board.Pieces, Is.SameAs(pieces)); Assert.That(Game.Board.MovesRemaining, Is.EqualTo(moves));
+            Assert.That(Game.Allowances.HintsRemaining, Is.EqualTo(hints)); Assert.That(Game.Allowances.UndosRemaining, Is.EqualTo(undos));
+            Assert.That(PersistedStartupState(), Is.EqualTo(saves)); AssertReturningReady();
+            Game.CloseChapter(); yield return Ready(); saves = PersistedStartupState();
+            // Explicit Continue/Back navigation may rebuild; warm resume must preserve that resulting board.
+            chapter = Chapter; pieces = Game.Board.Pieces;
+            Lifecycle(true); consent.Service.Pause(true); consent.Service.Pause(false); Lifecycle(false); yield return Ready();
+            Assert.That(Chapter.IsOpen, Is.False); Assert.That(Chapter, Is.SameAs(chapter));
+            Assert.That(Game.Board.Pieces, Is.SameAs(pieces)); Assert.That(PersistedStartupState(), Is.EqualTo(saves));
+            // A real native form's input ownership cannot be simulated by this client; device QA is required.
+            yield return new ExitPlayMode();
+        }
+        [UnityTest] public IEnumerator FailedConsentUpdateKeepsLocalContinuationUsable()
+        {
+            Scene(11,4,deferred:true); yield return new EnterPlayMode();
+            using var consent = new StartupConsent(); yield return Ready();
+            var chapter = Chapter; var pieces = Game.Board.Pieces; string saves = PersistedStartupState();
+            consent.Ump.Updated(false); yield return Ready();
+            Assert.That(consent.Gate.Status, Is.EqualTo("update_failed")); AssertReturningReady(); consent.AssertBlocked();
+            Assert.That(Chapter, Is.SameAs(chapter)); Assert.That(Game.Board.Pieces, Is.SameAs(pieces));
+            Assert.That(PersistedStartupState(), Is.EqualTo(saves));
+            GameObject.Find("Play Current").GetComponent<Button>().onClick.Invoke(); yield return Ready();
+            Assert.That(Chapter.IsOpen, Is.False); Assert.That(Game.Progress.Current, Is.EqualTo(12));
+            Assert.That(Game.Board.MovesRemaining, Is.EqualTo(Game.CurrentLevel.MoveLimit));
+            yield return new ExitPlayMode();
+        }
+        [UnityTest] public IEnumerator ConsentTimeoutAndLateCallbackCannotDuplicateNavigationOrReward()
+        {
+            Scene(11,4,deferred:true); yield return new EnterPlayMode();
+            using var consent = new StartupConsent(); yield return Ready();
+            var chapter = Chapter; var canvas = GameObject.Find("SHIFT UI"); var pieces = Game.Board.Pieces;
+            string saves = PersistedStartupState(); int hints = Game.Allowances.HintsRemaining, undos = Game.Allowances.UndosRemaining;
+            var late = consent.Ump.Updated; consent.Now = 31; consent.Service.Tick(); late(true); yield return Ready();
+            Assert.That(consent.Gate.Status, Is.EqualTo("update_timeout")); Assert.That(consent.Ump.Forms, Is.Zero);
+            AssertReturningReady(); consent.AssertBlocked();
+            Assert.That(Chapter, Is.SameAs(chapter)); Assert.That(GameObject.Find("SHIFT UI"), Is.SameAs(canvas));
+            Assert.That(Game.Board.Pieces, Is.SameAs(pieces)); Assert.That(PersistedStartupState(), Is.EqualTo(saves));
+            Assert.That(Game.Allowances.HintsRemaining, Is.EqualTo(hints)); Assert.That(Game.Allowances.UndosRemaining, Is.EqualTo(undos));
+            yield return new ExitPlayMode();
+        }
+        [UnityTest] public IEnumerator IneligibleConsentDoesNotBlockMenuAndLateAdRewardIsRejected()
+        {
+            Scene(11,4,deferred:true); yield return new EnterPlayMode();
+            using var consent = new StartupConsent(); yield return Ready();
+            var chapter = Chapter; var pieces = Game.Board.Pieces; string saves = PersistedStartupState();
+            consent.Ump.CanRequestAds = false; consent.Ump.Updated(true); consent.Ump.Form(true); yield return Ready();
+            AssertReturningReady(); consent.AssertBlocked();
+            consent.Gate.Prepare(_ => { }); consent.Ump.Updated(true); consent.Ump.CanRequestAds = true; consent.Ump.Form(true);
+            consent.Ads.Initialized(true); consent.Service.Tick(); var ad = new StartupAd(); consent.Ads.Loaded(ad);
+            int callbacks = 0; bool? rewarded = null;
+            consent.Service.ShowRewardedAd(RewardReason.Undo, value => { callbacks++; rewarded = value; });
+            consent.Ump.CanRequestAds = false; consent.Service.Tick(); ad.Earn(); ad.Close(); yield return Ready();
+            Assert.That(callbacks, Is.EqualTo(1)); Assert.That(rewarded, Is.False);
+            Assert.That(Chapter, Is.SameAs(chapter)); Assert.That(Game.Board.Pieces, Is.SameAs(pieces));
+            Assert.That(PersistedStartupState(), Is.EqualTo(saves)); AssertReturningReady();
             yield return new ExitPlayMode();
         }
         [UnityTest] public IEnumerator FreshInstallStillOnboardsDirectlyIntoLevelOne()
