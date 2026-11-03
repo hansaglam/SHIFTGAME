@@ -19,6 +19,8 @@ namespace Shift.Game
         [SerializeField] private GameFeelSettings gameFeel = new GameFeelSettings();
         [SerializeField] private AudioClips audioClips = new AudioClips();
         [SerializeField] private bool analyticsEnabled = true;
+        // Off by default: visual-only experiment in a separate development branch.
+        [SerializeField] private bool enableMoraPilot;
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
         [SerializeField] private bool verboseTelemetry;
         [SerializeField] private bool showTelemetryOverlay;
@@ -105,6 +107,7 @@ namespace Shift.Game
         private readonly BoardManager board = new BoardManager();
         private BoardView view;
         private GameHud hud;
+        private MoraCompanionPilot moraPilot;
         private GameObject canvasObject;
         private GameObject eventSystemObject;
         private Sprite circle;
@@ -291,6 +294,7 @@ namespace Shift.Game
             var safe = PlaceholderVisuals.Rect("Safe Area", canvasObject.transform, Vector2.zero, Vector2.one);
             safe.gameObject.AddComponent<SafeArea>();
             var font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            moraPilot = enableMoraPilot ? MoraCompanionPilot.TryCreate(safe, gameFeel) : null;
             hud = safe.gameObject.AddComponent<GameHud>(); hud.Build(font, activeLevel, rounded, gameFeel, Replay, circle);
             hud.BuildNavigation(font, rounded, () => NextLevel(), OpenChapter, progress != null);
             hud.BuildUtilities(font, rounded, () => Undo(), OpenHint);
@@ -357,6 +361,7 @@ namespace Shift.Game
             Telemetry.AcceptedTap(board.ReactionDepth, board.MovesRemaining, board.LastReactionWasCancelled);
             view.SetInput(false); hud.BeginReaction(); hud.Refresh(board); RefreshControls();
             view.TapFeedback(tapped.Id, board.Actions.Count == 0, board.Actions.Count);
+            moraPilot?.React(MoraReactionPolicy.OnMove(board.Actions.Count, board.ReactionDepth));
             StartCoroutine(Resolve(tapped.Id));
         }
 
@@ -394,6 +399,8 @@ namespace Shift.Game
                 hud.ShowChapterMastery(progress.ChapterSummary(chapterIndex));
             if(IsDaily)hud.ShowDailyCompletion(board.State==GameState.Won,Telemetry.Result?.perfectShift ?? false,DailyLanguage,Telemetry.Result);
             else hud.ShowMastery(Telemetry.Result, firstPerfect);
+            moraPilot?.React(MoraReactionPolicy.OnResult(board.State == GameState.Won,
+                Telemetry.Result?.perfectShift ?? false));
             if (board.State == GameState.Won || board.State == GameState.Lost)
             {
                 if (board.State == GameState.Won) view.SuccessPulse();
