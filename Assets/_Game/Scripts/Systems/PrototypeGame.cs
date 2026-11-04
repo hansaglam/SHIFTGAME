@@ -294,7 +294,7 @@ namespace Shift.Game
             var safe = PlaceholderVisuals.Rect("Safe Area", canvasObject.transform, Vector2.zero, Vector2.one);
             safe.gameObject.AddComponent<SafeArea>();
             var font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-            moraPilot = enableMoraPilot ? MoraCompanionPilot.TryCreate(safe, gameFeel) : null;
+            moraPilot = null;
             hud = safe.gameObject.AddComponent<GameHud>(); hud.Build(font, activeLevel, rounded, gameFeel, Replay, circle);
             hud.BuildNavigation(font, rounded, () => NextLevel(), OpenChapter, progress != null);
             hud.BuildUtilities(font, rounded, () => Undo(), OpenHint);
@@ -304,6 +304,8 @@ namespace Shift.Game
             view = grid.gameObject.AddComponent<BoardView>(); view.Build(board, font, circle, rounded, gameFeel, audioManager, haptics, hud, OnTap, activeLevel.Design?.sculptedTopology ?? false);
             hintVisual = PlaceholderVisuals.Rect("Hint Visual Overlay", grid, Vector2.zero, Vector2.one).gameObject.AddComponent<HintVisualOverlay>();
             hintVisual.Initialize(board, activeLevel, gameFeel);
+            // Visual pilot sits above board/HUD and under later modal panels.
+            if (enableMoraPilot) moraPilot = MoraCompanionPilot.TryCreate(safe, gameFeel);
             // Compensate for the smaller board presentation without changing piece visuals or callbacks.
             foreach (var piece in grid.GetComponentsInChildren<Piece>())
             {
