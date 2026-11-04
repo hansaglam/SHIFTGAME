@@ -1,25 +1,29 @@
-# SHIFT × MORA visual pilot (v0.1)
+# SHIFT × MORA — Visual pilot v0.2
 
-This branch is an **opt-in presentation experiment**, not a finished companion system.
+This branch provides a **feature-flagged, presentation-only test**. The current `Enable Mora Pilot` setting remains OFF by default.
 
-## Asset preparation
-- Import a *transparent, original* MORA front portrait at `Assets/_Game/Resources/Mora/Mora_Idle.png`.
-- Set **Texture Type: Sprite (2D and UI)** and Sprite Mode: Single.
-- The sprite is intentionally *not bundled* in this PR; the draft extract supplied separately is only for testing and needs a production-quality replacement.
-- Without this sprite the preview component does not appear.
+## Observed v0.1 issue
+The first device/Editor observation was that MORA appeared briefly for **every** accepted tap and remained longer only after completion. This was functional, but distracting.
 
-## Enable
-In the existing gameplay scene, select the `PrototypeGame` component and enable **Enable Mora Pilot** (default: OFF).
-Play a puzzle, trigger a chain, complete a level, and compare Perfect Shift / ordinary success. The MORA portrait appears briefly, without receiving input.
-Reduced Motion disables the bounce.
+## v0.2 response
+- Ordinary moves with fewer than three actions and reaction depth under two **do not** trigger MORA.
+- Significant chains (3+ actions or depth 2+) trigger a cyan-tinted 1.3 s cue.
+- Level wins trigger 1.9 s; confirmed Perfect Shift gets a warmer 2.4 s cue.
+- These are still temporary single-sprite effects, **not** true facial or skeletal animation.
+- Reduced Motion keeps the reaction static. The overlay remains non-interactive.
+- Position remains provisional: the lower-right area can conflict with the hint/status panel. This must be redesigned before production.
 
-## Regression gates before any merge
-- Open with the flag OFF: no UX changes.
-- Play standard and Daily puzzle; verify win/lose, Undo, Restart, Hint and input lock.
-- Test portrait HUD and Safe Area on narrow screens; the provisional anchor may need tuning.
-- Confirm Level 40 finale, its Seen save flag, 40 existing certified levels and consent / ads are unchanged.
-- Run editor tests including `MoraReactionPolicyTests`; run full Unity regression and Android/iOS device checks.
-- **No Unity or device compilation was performed by this change.**
+## Artwork and Editor setup
+Import the separately supplied transparent MORA preview as `Assets/_Game/Resources/Mora/Mora_Idle.png`, Sprite (2D and UI), Single. Without that file, no overlay is shown.
 
-## Future (not in this PR)
-MORA home / Living World, character interactions, multi-frame animations, persistence, Flow Energy, cosmetics, chapter 41 and economy.
+Open the existing `Prototype` scene. On the `PrototypeGame` component, turn on `Enable Mora Pilot`. It is only enabled in this local test scene; do not enable it for a production release.
+
+## Check
+1. Make single ordinary moves: **no MORA pop-up**.
+2. Trigger a real multi-action chain: MORA shows momentarily.
+3. Win a level: MORA reacts even if the last move has no large chain.
+4. Earn verified Perfect Shift: the reaction is warmer/longer.
+5. Verify no hint, Undo, Restart, board tap, Safe Area, Daily Shift or Level 40 finale regression.
+6. Run `MoraReactionPolicyTests` and then the existing complete Unity tests.
+
+Not included: Living World, player progression, multiple character frames or animations, new levels, purchases. **Unity compilation and device tests are not run from this connector. Do not merge without those checks.**

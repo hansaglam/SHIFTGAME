@@ -17,7 +17,7 @@ namespace Shift.Game
         public static MoraCompanionPilot TryCreate(RectTransform safeArea, GameFeelSettings settings)
         {
             var sprite = Resources.Load<Sprite>("Mora/Mora_Idle");
-            if (sprite == null) return null; // Missing art means zero changes to current UI.
+            if (sprite == null) return null;
             var area = PlaceholderVisuals.Rect("MORA Pilot", safeArea,
                 new Vector2(.815f, .171f), new Vector2(.955f, .255f));
             var pilot = area.gameObject.AddComponent<MoraCompanionPilot>();
@@ -44,11 +44,13 @@ namespace Shift.Game
 
         private IEnumerator Present(MoraMoment moment)
         {
-            float duration = moment == MoraMoment.Perfect ? 2.1f
-                : moment == MoraMoment.Complete ? 1.65f : 1.05f;
+            // No recurring normal-tap animation; meaningful moments get breathing room.
+            float duration = moment == MoraMoment.Perfect ? 2.4f
+                : moment == MoraMoment.Complete ? 1.9f : 1.3f;
             bool reduced = feel != null && feel.reducedMotion;
             image.color = moment == MoraMoment.Perfect
-                ? new Color(1f, .96f, .82f, 1f) : Color.white;
+                ? new Color(1f, .96f, .82f, 1f)
+                : moment == MoraMoment.Chain ? new Color(.87f, 1f, .96f, 1f) : Color.white;
             if (reduced)
             {
                 rect.localScale = Vector3.one;
@@ -60,9 +62,13 @@ namespace Shift.Game
                 for (float elapsed = 0f; elapsed < duration; elapsed += Time.unscaledDeltaTime)
                 {
                     float t = Mathf.Clamp01(elapsed / duration);
-                    opacity.alpha = Mathf.Min(Mathf.Clamp01(t * 7f), Mathf.Clamp01((1f - t) * 6f));
-                    float bump = moment == MoraMoment.Perfect ? .085f : .042f;
-                    rect.localScale = Vector3.one * (1f + Mathf.Sin(t * Mathf.PI * 4f) * bump * (1f - t));
+                    float fadeIn = Mathf.Clamp01(t * 6f);
+                    float fadeOut = Mathf.Clamp01((1f - t) * 6f);
+                    opacity.alpha = Mathf.Min(fadeIn, fadeOut);
+                    float bump = moment == MoraMoment.Perfect ? .09f
+                        : moment == MoraMoment.Chain ? .075f : .035f;
+                    rect.localScale = Vector3.one *
+                        (1f + Mathf.Sin(t * Mathf.PI * 4f) * bump * (1f - t));
                     yield return null;
                 }
             }
