@@ -20,6 +20,17 @@ namespace Shift.Game.Tests
             finally { Object.DestroyImmediate(safe.gameObject); }
         }
 
+        [TestCase(true, 0, "MORA'ya dokun, seni selamlasın.")]
+        [TestCase(true, 1, "MORA seni gördüğüne sevindi!")]
+        [TestCase(true, 2, "MORA seni merakla izliyor.")]
+        [TestCase(false, 0, "Tap MORA to say hello.")]
+        [TestCase(false, 1, "MORA is happy to see you!")]
+        [TestCase(false, 2, "MORA looks at you curiously.")]
+        public void GreetingStateStaysLocalizedAndDeterministic(bool turkish, int touches, string expected)
+        {
+            Assert.That(MoraHomePanel.GreetingText(turkish, touches), Is.EqualTo(expected));
+        }
+
         [Test]
         public void ExistingMoraReactionPolicyRemainsUnchanged()
         {

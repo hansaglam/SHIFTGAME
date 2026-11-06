@@ -26,3 +26,14 @@ No new mechanics, growth, Flow Energy, saved pet state, garden upgrades, market,
 
 ## Safety and scope
 The pilot uses local in-memory UI state only and creates no PlayerPrefs keys. The first 40 levels and their saved progress, Perfect Shift, BoardManager, CampaignEnding and AdMob logic are unchanged. Unity compilation and device tests are **not performed** by the connector. Keep this draft PR unmerged pending validation.
+
+
+## v0.6.1 — visual feedback after the first home screenshot
+The user supplied screenshots proving the initial home and tap-to-happy reaction render on the scene. The screen still showed a distracting pale circular halo and tiny supporting type. Minor opt-in home-only polish:
+- Subtle golden halo at 9% opacity instead of a large opaque disc.
+- Soft oval base shadow, drawn behind the character, so it feels more grounded against the lake.
+- Larger subtitle, greeting, supporting note and chapter-return button typography.
+- Alternate cheerful and curious local reactions after taps, with matching Turkish and English messages; no new assets needed.
+- Remains in-memory: no level progress manipulation, growth, currency, PlayerPrefs, store or new companion requirements.
+
+**Local test:** pull into SHIFT-MORA after closing Unity. With the pilot enabled, open Chapters > MORA, look for softer glow and shadow, verify first and second taps produce Happy/Curious messages and sprite poses, then return to Chapters. Check narrow phone, Reduced Motion, Unity Console. Existing MORA and broader regressions should still pass. No remote Unity compile/device verification has occurred.

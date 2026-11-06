@@ -50,13 +50,22 @@ namespace Shift.Game
             var title = PlaceholderVisuals.Label("MORA Home Title", root, font, "MORA", 78,
                 Color.white, new Vector2(.12f, .88f), new Vector2(.88f, .955f));
             title.fontStyle = FontStyle.Bold;
-            var subtitle = PlaceholderVisuals.Label("MORA Home Subtitle", root, font, "", 31,
+            var subtitle = PlaceholderVisuals.Label("MORA Home Subtitle", root, font, "", 36,
                 new Color32(242, 253, 255, 255), new Vector2(.07f, .824f), new Vector2(.93f, .874f));
             LocalizedLabel.Bind(subtitle, () => Turkish ? "MORA'NIN YAŞAM ALANI" : "MORA'S LITTLE HOME");
 
+            // Subtle illumination behind the sprout, without a distracting large flat disc.
             var glow = VisualTheme.Surface("Warm Halo", root, circle,
-                new Color(1f, .83f, .44f, .27f), new Vector2(.20f, .38f), new Vector2(.80f, .72f));
+                new Color(1f, .83f, .44f, .09f), new Vector2(.24f, .425f), new Vector2(.76f, .69f));
             glow.type = Image.Type.Simple;
+
+            // A small oval grounds MORA visually without adding an extra world-building system.
+            var ground = PlaceholderVisuals.Rect("MORA Ground Shadow", root,
+                new Vector2(.31f, .335f), new Vector2(.69f, .365f)).gameObject.AddComponent<Image>();
+            ground.sprite = circle;
+            ground.type = Image.Type.Simple;
+            ground.color = new Color(.035f, .18f, .23f, .32f);
+            ground.raycastTarget = false;
 
             var portrait = PlaceholderVisuals.Rect("MORA Character", root,
                 new Vector2(.12f, .325f), new Vector2(.88f, .79f));
@@ -75,11 +84,11 @@ namespace Shift.Game
                 new Color32(255, 244, 218, 250), new Vector2(.08f, .205f), new Vector2(.92f, .318f));
             IdentityStyle.Material(card);
             VisualTheme.Shadow(card);
-            panel.response = PlaceholderVisuals.Label("MORA Greeting", card.transform, font, "", 34,
+            panel.response = PlaceholderVisuals.Label("MORA Greeting", card.transform, font, "", 40,
                 VisualTheme.Ink, new Vector2(.065f, .08f), new Vector2(.935f, .93f));
-            panel.ShowGreeting(false);
+            panel.ShowGreeting();
 
-            var note = PlaceholderVisuals.Label("MORA Preview Note", root, font, "", 26,
+            var note = PlaceholderVisuals.Label("MORA Preview Note", root, font, "", 30,
                 Color.white, new Vector2(.09f, .132f), new Vector2(.91f, .191f));
             LocalizedLabel.Bind(note, () => Turkish
                 ? "İlk deneme: büyüme ve ödüller henüz etkin değil."
@@ -88,6 +97,8 @@ namespace Shift.Game
             var exit = ChapterSelect.CreateButton("Return to Chapters", font, rounded, root,
                 new Vector2(.23f, .045f), new Vector2(.77f, .115f), onClose, out var exitLabel);
             exit.targetGraphic.color = IdentityStyle.Navy;
+            exitLabel.fontSize = 38;
+            exitLabel.resizeTextMaxSize = 38;
             LocalizedLabel.Bind(exitLabel, () => Turkish ? "Bölümlere Dön" : "Back to Chapters");
             exit.GetComponent<PresentationMotion>().Settings = feel;
 
@@ -95,11 +106,22 @@ namespace Shift.Game
             return panel;
         }
 
-        private void ShowGreeting(bool touched)
+        // A few small reactions make the home feel interactive without currencies or timers.
+        // Keep message selection deterministic and in-memory only.
+        public static string GreetingText(bool turkish, int touchCount)
         {
-            LocalizedLabel.Bind(response, () => Turkish
-                ? (touched ? "MORA seni gördüğüne sevindi!" : "MORA'ya dokun, seni selamlasın.")
-                : (touched ? "MORA is happy to see you!" : "Tap MORA to say hello."));
+            if (touchCount <= 0) return turkish
+                ? "MORA'ya dokun, seni selamlasın."
+                : "Tap MORA to say hello.";
+            if (touchCount % 2 == 1) return turkish
+                ? "MORA seni gördüğüne sevindi!"
+                : "MORA is happy to see you!";
+            return turkish ? "MORA seni merakla izliyor." : "MORA looks at you curiously.";
+        }
+
+        private void ShowGreeting()
+        {
+            LocalizedLabel.Bind(response, () => GreetingText(Turkish, interactions));
         }
 
         public void Open()
@@ -110,7 +132,7 @@ namespace Shift.Game
             gameObject.SetActive(true);
             transform.SetAsLastSibling();
             ResetMora();
-            ShowGreeting(false);
+            ShowGreeting();
         }
 
         public void Close()
@@ -126,14 +148,17 @@ namespace Shift.Game
         {
             if (!isOpen) return;
             interactions++;
-            ShowGreeting(true);
+            ShowGreeting();
             if (touchRoutine != null) StopCoroutine(touchRoutine);
             touchRoutine = StartCoroutine(TouchReaction());
         }
 
         private IEnumerator TouchReaction()
         {
-            mora.sprite = happy != null ? happy : curious != null ? curious : idle;
+            bool curiousTurn = interactions % 2 == 0;
+            mora.sprite = curiousTurn && curious != null ? curious
+                : !curiousTurn && happy != null ? happy
+                : happy != null ? happy : curious != null ? curious : idle;
             const float duration = 1.05f;
             for (float elapsed = 0f; elapsed < duration; elapsed += Time.unscaledDeltaTime)
             {
