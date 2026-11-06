@@ -108,7 +108,7 @@ namespace Shift.Game
         private BoardView view;
         private GameHud hud;
         private MoraCompanionPilot moraPilot;
-        private MoraHomePanel moraHome;
+        private MoraCompanionHub moraHome;
         private GameObject canvasObject;
         private GameObject eventSystemObject;
         private Sprite circle;
@@ -346,7 +346,7 @@ namespace Shift.Game
             // old teal cameo sprite used during early visual prototyping.
             if (enableMoraPilot && chapter != null)
             {
-                moraHome = MoraHomePanel.TryCreate(safe, font, rounded, circle, gameFeel, CloseMoraHome);
+                moraHome = MoraCompanionHub.TryCreate(safe, font, rounded, circle, gameFeel, CloseMoraHome);
                 if (moraHome != null) chapter.BuildMoraEntry(font, rounded, OpenMoraHome);
             }
             foreach (var button in canvasObject.GetComponentsInChildren<Button>(true))
@@ -593,6 +593,9 @@ namespace Shift.Game
             hintVisual?.Clear();
             chapter.Close();
             view.SetInput(false);
+            moraHome.SetGrowth(MoraGrowthPolicy.FromCampaign(
+                progress != null ? progress.HighestCompleted : -1,
+                progress != null ? progress.LevelCount : 0));
             moraHome.Open();
             audioManager.Play(AudioCue.PanelOpen);
             RefreshControls();
