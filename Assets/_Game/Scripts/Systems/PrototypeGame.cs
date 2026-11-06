@@ -19,6 +19,8 @@ namespace Shift.Game
         [SerializeField] private GameFeelSettings gameFeel = new GameFeelSettings();
         [SerializeField] private AudioClips audioClips = new AudioClips();
         [SerializeField] private bool analyticsEnabled = true;
+        // Off by default: visual-only experiment in a separate development branch.
+        [SerializeField] private bool enableMoraPilot;
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
         [SerializeField] private bool verboseTelemetry;
         [SerializeField] private bool showTelemetryOverlay;
@@ -101,10 +103,12 @@ namespace Shift.Game
         public bool IsDaily => ActiveDaily != null;
         private DailyShiftPanel dailyPanel;
         private System.DateTime panelDate;
-        private bool InputModalOpen => (guidePanel != null && guidePanel.IsOpen) || endingRequested || (endingPanel != null && endingPanel.IsOpen) || IsStartupWaiting || IsOnboardingActive || (dailyPanel != null && dailyPanel.IsOpen) || (hintPanel != null && hintPanel.IsOpen) || (chapter != null && chapter.IsOpen) || (settingsPanel != null && settingsPanel.IsOpen);
+        private bool InputModalOpen => (guidePanel != null && guidePanel.IsOpen) || endingRequested || (endingPanel != null && endingPanel.IsOpen) || IsStartupWaiting || IsOnboardingActive || (dailyPanel != null && dailyPanel.IsOpen) || (hintPanel != null && hintPanel.IsOpen) || (chapter != null && chapter.IsOpen) || (settingsPanel != null && settingsPanel.IsOpen) || (moraHome != null && moraHome.IsOpen);
         private readonly BoardManager board = new BoardManager();
         private BoardView view;
         private GameHud hud;
+        private MoraCompanionPilot moraPilot;
+        private MoraCompanionHub moraHome;
         private GameObject canvasObject;
         private GameObject eventSystemObject;
         private Sprite circle;
@@ -291,6 +295,8 @@ namespace Shift.Game
             var safe = PlaceholderVisuals.Rect("Safe Area", canvasObject.transform, Vector2.zero, Vector2.one);
             safe.gameObject.AddComponent<SafeArea>();
             var font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            moraPilot = null;
+            moraHome = null;
             hud = safe.gameObject.AddComponent<GameHud>(); hud.Build(font, activeLevel, rounded, gameFeel, Replay, circle);
             hud.BuildNavigation(font, rounded, () => NextLevel(), OpenChapter, progress != null);
             hud.BuildUtilities(font, rounded, () => Undo(), OpenHint);
@@ -300,6 +306,9 @@ namespace Shift.Game
             view = grid.gameObject.AddComponent<BoardView>(); view.Build(board, font, circle, rounded, gameFeel, audioManager, haptics, hud, OnTap, activeLevel.Design?.sculptedTopology ?? false);
             hintVisual = PlaceholderVisuals.Rect("Hint Visual Overlay", grid, Vector2.zero, Vector2.one).gameObject.AddComponent<HintVisualOverlay>();
             hintVisual.Initialize(board, activeLevel, gameFeel);
+            // Visual pilot sits above board/HUD and under later modal panels.
+            if (enableMoraPilot)
+                moraPilot = MoraCompanionPilot.TryCreate(safe, gameFeel, primaryOnly: true);
             // Compensate for the smaller board presentation without changing piece visuals or callbacks.
             foreach (var piece in grid.GetComponentsInChildren<Piece>())
             {
@@ -333,8 +342,16 @@ namespace Shift.Game
             hintPanel = hintRect.gameObject.AddComponent<RewardedHintPanel>();
             hintPanel.Build(font, rounded, gameFeel, RequestRewardedHint, CloseHint);
             LayoutControls.Settings(safe, circle, gameFeel, OpenSettings);
+            // Pilot-only chapter entry. No puzzle HUD button or changes to shipped menus.
+            // MORA Home can exist with only the primary seed art, independent of the
+            // old teal cameo sprite used during early visual prototyping.
+            if (enableMoraPilot && chapter != null)
+            {
+                moraHome = MoraCompanionHub.TryCreate(safe, font, rounded, circle, gameFeel, CloseMoraHome);
+                if (moraHome != null) chapter.BuildMoraEntry(font, rounded, OpenMoraHome);
+            }
             foreach (var button in canvasObject.GetComponentsInChildren<Button>(true))
-                if (button.GetComponentInParent<Piece>() == null && button.name != "Undo" && button.name != "Hint" && button.name != "Restart" && button.name != "Replay" && button.name != "Open Chapter" && button.name != "Open Settings" && button.name != "Close Settings" && button.name != "Close Chapter")
+                if (button.GetComponentInParent<Piece>() == null && button.name != "Undo" && button.name != "Hint" && button.name != "Restart" && button.name != "Replay" && button.name != "Open Chapter" && button.name != "Open Settings" && button.name != "Close Settings" && button.name != "Close Chapter" && button.name != "MORA Entry" && button.name != "Return to Chapters")
                     button.onClick.AddListener(() => audioManager.Play(AudioCue.UIButton));
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
             if (showTelemetryOverlay)
@@ -357,6 +374,7 @@ namespace Shift.Game
             Telemetry.AcceptedTap(board.ReactionDepth, board.MovesRemaining, board.LastReactionWasCancelled);
             view.SetInput(false); hud.BeginReaction(); hud.Refresh(board); RefreshControls();
             view.TapFeedback(tapped.Id, board.Actions.Count == 0, board.Actions.Count);
+            moraPilot?.React(MoraReactionPolicy.OnMove(board.Actions.Count, board.ReactionDepth));
             StartCoroutine(Resolve(tapped.Id));
         }
 
@@ -394,6 +412,8 @@ namespace Shift.Game
                 hud.ShowChapterMastery(progress.ChapterSummary(chapterIndex));
             if(IsDaily)hud.ShowDailyCompletion(board.State==GameState.Won,Telemetry.Result?.perfectShift ?? false,DailyLanguage,Telemetry.Result);
             else hud.ShowMastery(Telemetry.Result, firstPerfect);
+            moraPilot?.React(MoraReactionPolicy.OnResult(board.State == GameState.Won,
+                Telemetry.Result?.perfectShift ?? false));
             if (board.State == GameState.Won || board.State == GameState.Lost)
             {
                 if (board.State == GameState.Won) view.SuccessPulse();
@@ -563,6 +583,30 @@ namespace Shift.Game
             if (returningContext && ContinueLevelIndex >= 0) { ContinueCampaign(); return; }
             returningContext = false;
             chapter.Close(); view.SetInput(board.State == GameState.Playing && !InputModalOpen); audioManager.Play(AudioCue.PanelClose); RefreshControls();
+        }
+
+        // Small opt-in companion home. Only reachable from the chapter selector.
+        public void OpenMoraHome()
+        {
+            if (moraHome == null || chapter == null || !chapter.IsOpen || rewardPending
+                || IsStartupWaiting || IsOnboardingActive || (guidePanel != null && guidePanel.IsOpen))
+                return;
+            hintVisual?.Clear();
+            chapter.Close();
+            view.SetInput(false);
+            moraHome.SetGrowth(MoraGrowthPolicy.FromCampaign(
+                progress != null ? progress.HighestCompleted : -1,
+                progress != null ? progress.LevelCount : 0));
+            moraHome.Open();
+            audioManager.Play(AudioCue.PanelOpen);
+            RefreshControls();
+        }
+
+        public void CloseMoraHome()
+        {
+            if (moraHome == null || !moraHome.IsOpen) return;
+            moraHome.Close();
+            OpenChapter();
         }
 
         public void OpenSettings()
