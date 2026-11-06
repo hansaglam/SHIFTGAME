@@ -14,9 +14,11 @@ namespace Shift.Game
         private Coroutine reaction;
         private Sprite idle, chain, happy, perfect;
         private Vector2 dockPosition;
-        // Left of the text on the result card, clear of the Hint control.
-        public static readonly Vector2 DockMin = new Vector2(.012f, .158f);
-        public static readonly Vector2 DockMax = new Vector2(.168f, .258f);
+        // Screen-space cameo on the outer left edge of the instruction/result card.
+        // The larger dock is designed around uniformly framed MORA sprite PNGs.
+        // It remains clear of Undo/Restart/Hint and the readable center of the card.
+        public static readonly Vector2 DockMin = new Vector2(0f, .135f);
+        public static readonly Vector2 DockMax = new Vector2(.22f, .277f);
         public static string OptionalSpriteResource(MoraMoment moment)
         {
             switch (moment)

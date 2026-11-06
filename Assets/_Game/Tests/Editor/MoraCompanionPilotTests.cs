@@ -14,12 +14,15 @@ namespace Shift.Game.Tests
             Assert.That(MoraCompanionPilot.OptionalSpriteResource(moment), Is.EqualTo(path));
         }
 
-        [Test] public void DockDoesNotCoverBottomControls()
+        [Test]
+        public void EnlargedDockStaysLeftOfInstructionTextAndOutsideControlRow()
         {
             Assert.That(MoraCompanionPilot.DockMin.x, Is.GreaterThanOrEqualTo(0f));
-            Assert.That(MoraCompanionPilot.DockMax.x, Is.LessThanOrEqualTo(.168f));
+            Assert.That(MoraCompanionPilot.DockMax.x, Is.LessThanOrEqualTo(.22f));
             Assert.That(MoraCompanionPilot.DockMin.y, Is.GreaterThan(.133f));
-            Assert.That(MoraCompanionPilot.DockMax.y, Is.LessThanOrEqualTo(.258f));
+            Assert.That(MoraCompanionPilot.DockMax.y, Is.LessThanOrEqualTo(.28f));
+            Assert.That(MoraCompanionPilot.DockMax.y - MoraCompanionPilot.DockMin.y,
+                Is.GreaterThan(.13f));
         }
     }
 }
