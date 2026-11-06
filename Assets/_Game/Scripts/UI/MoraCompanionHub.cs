@@ -28,6 +28,9 @@ namespace Shift.Game
         private Text greeting, growthSummary;
         private Text feedMessage, playMessage, growthMessage;
         private Image growthThumbnail;
+        private RectTransform feedToken, playToken;
+        private float feedMotion, playMotion;
+        private int growthInfoStage = 1;
         private GameObject overlay;
         private GameObject[] pages;
         private int stage = 1, feedTaps, playTaps, touches;
@@ -295,8 +298,9 @@ namespace Shift.Game
                 new Vector2(.10f, .745f), new Vector2(.90f, .84f),
                 () => Turkish ? "MORA'ya küçük bir hediye sun."
                               : "Give MORA a little treat.");
-            Surface("Golden Berry", parent, Gold, new Vector2(.36f, .51f),
+            var fruit = Surface("Golden Berry", parent, Gold, new Vector2(.36f, .51f),
                 new Vector2(.64f, .69f));
+            feedToken = fruit.rectTransform;
             Label("Berry Mark", parent, "●", 90, Ocean, new Vector2(.37f, .53f),
                 new Vector2(.63f, .68f));
             feedMessage = Label("Feed Result", parent, "", 30, DeepTeal,
@@ -317,8 +321,9 @@ namespace Shift.Game
                 new Vector2(.09f, .755f), new Vector2(.91f, .835f),
                 () => Turkish ? "MORA ile kısa bir oyun oyna."
                               : "Enjoy a quick moment with MORA.");
-            Surface("Play Ball", parent, SeaGlass,
+            var ball = Surface("Play Ball", parent, SeaGlass,
                 new Vector2(.355f, .505f), new Vector2(.645f, .70f));
+            playToken = ball.rectTransform;
             Label("Ball Mark", parent, "★", 78, DeepTeal,
                 new Vector2(.37f, .53f), new Vector2(.63f, .665f));
             playMessage = Label("Play Result", parent, "", 29, DeepTeal,
@@ -477,6 +482,10 @@ namespace Shift.Game
             if (isOpen) return;
             isOpen = true;
             feedTaps = playTaps = touches = 0;
+            growthInfoStage = 1;
+            feedMotion = playMotion = 0f;
+            if (feedToken != null) feedToken.localScale = Vector3.one;
+            if (playToken != null) playToken.localScale = Vector3.one;
             nextTapTime = float.NegativeInfinity;
             fadeTime = reactionTime = 0f;
             gameObject.SetActive(true);
@@ -519,6 +528,7 @@ namespace Shift.Game
         {
             feedTaps++;
             reactionTime = .56f;
+            feedMotion = .48f;
             RefreshFeedMessage();
         }
 
@@ -526,6 +536,7 @@ namespace Shift.Game
         {
             playTaps++;
             reactionTime = .56f;
+            playMotion = .48f;
             RefreshPlayMessage();
         }
 
@@ -564,6 +575,9 @@ namespace Shift.Game
                     ? "Görsel test · Gerçek oyuncu gelişimi değişmez"
                     : "Art preview · Player progress is unchanged";
 #endif
+                if (growthInfoStage > 1) return Turkish
+                    ? "Evre " + growthInfoStage + " henüz kilitli · Yeni bölümler gerekli"
+                    : "Stage " + growthInfoStage + " is locked · More chapters required";
                 return snapshot.HasPostFortyLevels
                     ? (Turkish ? "Yeni evreler ileri bölümlerle açılacak"
                                : "Later chapters will unlock new forms")
@@ -574,14 +588,13 @@ namespace Shift.Game
 
         private void PreviewStage(int nextStage)
         {
+            growthInfoStage = Mathf.Clamp(nextStage, 1, 4);
 #if UNITY_EDITOR
-            if (!Application.isEditor) return;
-            if (stageArt[nextStage - 1] != null)
-            {
-                SetStage(nextStage);
-                RefreshGrowthMessage();
-            }
+            if (Application.isEditor && stageArt[growthInfoStage - 1] != null)
+                SetStage(growthInfoStage); // Art inspection, never gameplay unlocking.
 #endif
+            // In non-editor builds the selection still explains the locked stage.
+            RefreshGrowthMessage();
         }
 
         private void SetStage(int nextStage)
@@ -639,6 +652,20 @@ namespace Shift.Game
                 }
             }
             reactionTime = Mathf.Max(0f, reactionTime - dt);
+            feedMotion = Mathf.Max(0f, feedMotion - dt);
+            playMotion = Mathf.Max(0f, playMotion - dt);
+            if (feedToken != null)
+            {
+                float amount = reduced ? 0f : .10f * Mathf.Sin(Mathf.PI *
+                    (1f - feedMotion / .48f)) * (feedMotion > 0f ? 1f : 0f);
+                feedToken.localScale = Vector3.one * (1f + amount);
+            }
+            if (playToken != null)
+            {
+                float amount = reduced ? 0f : .10f * Mathf.Sin(Mathf.PI *
+                    (1f - playMotion / .48f)) * (playMotion > 0f ? 1f : 0f);
+                playToken.localScale = Vector3.one * (1f + amount);
+            }
             float reaction = reduced || reactionTime <= 0f ? 0f
                 : .045f * Mathf.Sin(Mathf.PI * (1f - reactionTime / .56f));
             float breathing = reduced ? 0f : .008f * Mathf.Sin(Time.unscaledTime * 1.4f);
@@ -649,6 +676,8 @@ namespace Shift.Game
         {
             reactionTime = 0f;
             if (portraitRect != null) portraitRect.localScale = Vector3.one;
+            if (feedToken != null) feedToken.localScale = Vector3.one;
+            if (playToken != null) playToken.localScale = Vector3.one;
             if (inTransition) FinishBlend();
         }
     }
