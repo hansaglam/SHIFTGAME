@@ -1,26 +1,29 @@
-# SHIFT × MORA visual pilot — v0.4.1 (visibility test)
+# MORA v0.5 — Animation & Personality (opt-in pilot)
 
-## Observed issue
-The player imported the five high-res expression PNGs and confirmed the MORA character appeared **very small** next to the instruction card. In v0.3, the MORA dock was only 15.6% of screen width. The large transparent border around the 1254 px PNGs compounded the problem.
+## Status
+The player confirmed v0.3/v0.4.1 visual positions and events in Unity. This change is an untested **code iteration** on the development branch, NOT a release.
 
-## Safe changes in this branch
-- The opt-in preview dock now occupies x: **0–22%**, y: **13.5–27.7%** of the safe area.
-- This increases the effective sprite display without changing gameplay board or HUD text layout.
-- Use the supplied `SHIFT_MORA_v04_Framed_Sprites.zip` containing five **individually rendered** expressions, trimmed to the same 972 × 1150 frame, preserving pixel resolution and transparency. This only removes external transparent padding, not body details.
-- `Mora_Idle.png`, `Mora_Curious.png`, `Mora_Chain.png`, `Mora_Happy.png`, `Mora_Perfect.png`. The current pilot does not invoke Curious yet.
-- These image files remain **local assets**; they are not committed to this branch. Missing optional sprites still fall back to Idle.
-- Normal taps remain silent. Chain, Complete and verified Perfect keep the previous triggers and durations.
-- The pilot remains **OFF by default** and does not modify BoardManager, saves, 40 levels, chapter ending, ads or economy.
+## Changed
+- Preserves the *user-verified* MORA dock (x 0–.22, y .135–.277) and optional imported sprites.
+- Differentiates procedural animation timing/poses by reaction:
+  - `Chain`: single short bounce, 1.3 s
+  - `Complete`: gentle double bounce, 1.9 s
+  - `Perfect`: stronger double bounce, 2.4 s
+- Existing per-event sprite selection and fallback (Mora_Idle, Mora_Chain, Mora_Happy, Mora_Perfect) remain.
+- `MoraMotionProfile.Sample` is a deterministic, frame-rate independent pose sampler with bounded translation/tilt/scale.
+- Respect Reduced Motion *at every frame*, so toggling it during playback instantly stops movement.
+- `MoraReactionPolicy` unchanged: **no** responses to routine moves; success reactions stay opt-in.
 
-## Local test (Unity)
-1. Close Unity. In `D:\UnityProjects\SHIFT\SHIFT-MORA`, run `git status` then `git pull --ff-only`. Do NOT reset or delete the local modified `Prototype.unity` and `PackageManagerSettings.asset`.
-2. **Replace** local five MORA sprite PNGs with the framed versions from the supplied ZIP under `Assets/_Game/Resources/Mora/`. Back up the previous set first.
-3. Unity: Texture Type `Sprite (2D and UI)`, Sprite Mode `Single`, Preserve Aspect enabled through UI Image, Max Size **1024** for first quality inspection; disable compression if color/alpha edges show artifacts.
-4. Reopen Prototype, confirm `Enable Mora Pilot`, enter Play mode, test a strong chain and a normal/Perfect completion.
-5. On 9:16 and taller portrait test aspect ratios, check legibility of instructions, no occlusion of pieces/controls, and menu/modal stacking. Reduced Motion should remain static.
-6. Run `MoraCompanionPilotTests`, `MoraReactionPolicyTests` and existing regression tests.
+## Important limitation
+This is high-quality *procedural body motion on existing sprite art*, NOT actual eye-blink, head bone rig, sprout rig, facial skeletal animation, or isolated chest-core glow. Those need additional separated layers/sprites or a 2D rig. Do not misrepresent this version as containing them. No paid features or companion progression.
 
-## Exit criteria
-MORA's face and flow core should be readable without hiding the board or text. If the overlay still competes with gameplay, stop enlarging it and relocate larger interactions to a dedicated Living World view.
+## Test in Unity
+1. Close Unity Editor.
+2. In `D:\UnityProjects\SHIFT\SHIFT-MORA` run `git status` and `git pull --ff-only`; stop on merge conflicts and never reset user's local `Prototype.unity`, Project Settings or MORA PNGs.
+3. Open `Prototype`, check `Enable Mora Pilot`; the existing 5 locally imported sprites still work. There are no new PNGs.
+4. Trigger a normal action: no MORA cameo. Trigger a 3+ action/depth2+ chain: one short bounce. Win: gentler double bounce. Perfect: more prominent double bounce.
+5. Verify completion text, board/hint/undo/restart, modal panels, daily shift, narrow 9:16/tall portrait screen, Reduced Motion and zero Console red errors.
+6. Run `MoraCompanionPilotTests`, `MoraReactionPolicyTests` and complete regression suite. Test on Android/iOS before merge.
 
-This is a **visual pilot, not production-ready**. Remote GitHub edits were not Unity-compiled or device-tested. Do not merge until local tests pass.
+## No edits
+No changes to BoardManager, puzzles, chapter data, saves, rewards, ad logic, Level 40 finale or main branch.

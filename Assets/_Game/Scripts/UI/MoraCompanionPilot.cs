@@ -4,7 +4,9 @@ using UnityEngine.UI;
 
 namespace Shift.Game
 {
-    /// <summary>Opt-in visual-only MORA pilot. Never changes board state, saves, or scores.</summary>
+    /// <summary>
+    /// Non-interactive MORA cameo. Opt-in pilot; never mutates puzzle logic or player saves.
+    /// </summary>
     public sealed class MoraCompanionPilot : MonoBehaviour
     {
         private CanvasGroup opacity;
@@ -14,11 +16,13 @@ namespace Shift.Game
         private Coroutine reaction;
         private Sprite idle, chain, happy, perfect;
         private Vector2 dockPosition;
-        // Screen-space cameo on the outer left edge of the instruction/result card.
-        // The larger dock is designed around uniformly framed MORA sprite PNGs.
-        // It remains clear of Undo/Restart/Hint and the readable center of the card.
+
+        // Preserve the user-tested v0.4.1 HUD placement.
         public static readonly Vector2 DockMin = new Vector2(0f, .135f);
         public static readonly Vector2 DockMax = new Vector2(.22f, .277f);
+
+        public MoraMoment LastMoment { get; private set; }
+
         public static string OptionalSpriteResource(MoraMoment moment)
         {
             switch (moment)
@@ -29,14 +33,12 @@ namespace Shift.Game
                 default: return "Mora/Mora_Idle";
             }
         }
-        public MoraMoment LastMoment { get; private set; }
 
         public static MoraCompanionPilot TryCreate(RectTransform safeArea, GameFeelSettings settings)
         {
             var sprite = Resources.Load<Sprite>("Mora/Mora_Idle");
             if (sprite == null) return null;
-            var area = PlaceholderVisuals.Rect("MORA Pilot", safeArea,
-                DockMin, DockMax);
+            var area = PlaceholderVisuals.Rect("MORA Pilot", safeArea, DockMin, DockMax);
             var pilot = area.gameObject.AddComponent<MoraCompanionPilot>();
             pilot.rect = area;
             pilot.feel = settings;
@@ -48,6 +50,7 @@ namespace Shift.Game
             pilot.image.sprite = sprite;
             pilot.image.preserveAspect = true;
             pilot.image.raycastTarget = false;
+
             pilot.opacity = area.gameObject.AddComponent<CanvasGroup>();
             pilot.opacity.alpha = 0f;
             pilot.opacity.blocksRaycasts = false;
@@ -58,7 +61,8 @@ namespace Shift.Game
 
         public void React(MoraMoment moment)
         {
-            if (moment == MoraMoment.None || image == null) return;
+            if (MoraMotionProfile.Duration(moment) <= 0f || image == null || !isActiveAndEnabled)
+                return;
             LastMoment = moment;
             if (reaction != null) StopCoroutine(reaction);
             reaction = StartCoroutine(Present(moment));
@@ -66,10 +70,6 @@ namespace Shift.Game
 
         private IEnumerator Present(MoraMoment moment)
         {
-            // No recurring normal-tap animation; meaningful moments get breathing room.
-            float duration = moment == MoraMoment.Perfect ? 2.4f
-                : moment == MoraMoment.Complete ? 1.9f : 1.3f;
-            bool reduced = feel != null && feel.reducedMotion;
             Sprite expression = moment == MoraMoment.Chain ? chain
                 : moment == MoraMoment.Perfect ? perfect
                 : moment == MoraMoment.Complete ? happy : null;
@@ -77,37 +77,28 @@ namespace Shift.Game
             image.color = expression != null ? Color.white
                 : moment == MoraMoment.Perfect ? new Color(1f, .96f, .82f)
                 : moment == MoraMoment.Chain ? new Color(.87f, 1f, .96f) : Color.white;
-            rect.anchoredPosition = dockPosition;
-            rect.localRotation = Quaternion.identity;
-            rect.localScale = Vector3.one;
-            if (reduced)
+
+            float duration = MoraMotionProfile.Duration(moment);
+            float elapsed = 0f;
+            // Use the user's accessibility setting and unscaled time for visual-only effects.
+            while (elapsed < duration)
             {
-                rect.localScale = Vector3.one;
-                opacity.alpha = 1f;
-                yield return new WaitForSecondsRealtime(duration);
-            }
-            else
-            {
-                for (float elapsed = 0f; elapsed < duration; elapsed += Time.unscaledDeltaTime)
-                {
-                    float t = Mathf.Clamp01(elapsed / duration);
-                    float fadeIn = Mathf.Clamp01(t * 6f);
-                    float fadeOut = Mathf.Clamp01((1f - t) * 6f);
-                    opacity.alpha = Mathf.Min(fadeIn, fadeOut);
-                    // One soft rise + squash and tilt; avoid loops that distract from puzzles.
-                    float impulse = Mathf.Sin(Mathf.PI * Mathf.Clamp01(t * 2.2f));
-                    float settle = Mathf.Exp(-4f * t);
-                    float lift = moment == MoraMoment.Perfect ? 11f : moment == MoraMoment.Chain ? 7f : 5f;
-                    rect.anchoredPosition = dockPosition + Vector2.up * (impulse * lift);
-                    float stretch = (moment == MoraMoment.Perfect ? .09f : .055f) * impulse * settle;
-                    rect.localScale = new Vector3(1f - stretch * .35f, 1f + stretch, 1f);
-                    float tilt = moment == MoraMoment.Chain ? 7f : 4f;
-                    rect.localRotation = Quaternion.Euler(0, 0, Mathf.Sin(t * Mathf.PI * 3f) * tilt * settle);
-                    yield return null;
-                }
+                bool reducedMotion = feel != null && feel.reducedMotion;
+                var pose = MoraMotionProfile.Sample(moment, elapsed / duration, reducedMotion);
+                ApplyPose(pose);
+                elapsed += Time.unscaledDeltaTime;
+                yield return null;
             }
             ResetVisual();
             reaction = null;
+        }
+
+        private void ApplyPose(MoraMotionFrame pose)
+        {
+            opacity.alpha = pose.Opacity;
+            rect.anchoredPosition = dockPosition + Vector2.up * pose.VerticalOffset;
+            rect.localRotation = Quaternion.Euler(0f, 0f, pose.TiltDegrees);
+            rect.localScale = new Vector3(pose.ScaleX, pose.ScaleY, 1f);
         }
 
         private void ResetVisual()
@@ -121,10 +112,84 @@ namespace Shift.Game
             }
             if (image != null) { image.sprite = idle; image.color = Color.white; }
         }
+
         private void OnDisable()
         {
             if (reaction != null) { StopCoroutine(reaction); reaction = null; }
             ResetVisual();
+        }
+    }
+
+    /// <summary>Simple deterministic output pose, independent of frame rate and board state.</summary>
+    public readonly struct MoraMotionFrame
+    {
+        public readonly float Opacity;
+        public readonly float VerticalOffset;
+        public readonly float TiltDegrees;
+        public readonly float ScaleX;
+        public readonly float ScaleY;
+
+        public MoraMotionFrame(float opacity, float verticalOffset, float tiltDegrees,
+            float scaleX, float scaleY)
+        {
+            Opacity = opacity;
+            VerticalOffset = verticalOffset;
+            TiltDegrees = tiltDegrees;
+            ScaleX = scaleX;
+            ScaleY = scaleY;
+        }
+    }
+
+    /// <summary>
+    /// v0.5 personality motion: one bounce for Chain, gentle double bounce for Complete,
+    /// and an emphasized double bounce for Perfect. Reduced Motion is static.
+    /// </summary>
+    public static class MoraMotionProfile
+    {
+        public static float Duration(MoraMoment moment)
+        {
+            switch (moment)
+            {
+                case MoraMoment.Chain: return 1.3f;
+                case MoraMoment.Complete: return 1.9f;
+                case MoraMoment.Perfect: return 2.4f;
+                default: return 0f;
+            }
+        }
+
+        private static float Pulse(float time, float start, float length)
+        {
+            float phase = (time - start) / length;
+            if (phase <= 0f || phase >= 1f) return 0f;
+            return Mathf.Sin(Mathf.PI * phase);
+        }
+
+        public static MoraMotionFrame Sample(MoraMoment moment, float normalizedTime, bool reducedMotion)
+        {
+            if (Duration(moment) <= 0f) return new MoraMotionFrame(0f, 0f, 0f, 1f, 1f);
+
+            float t = Mathf.Clamp01(normalizedTime);
+            if (reducedMotion) return new MoraMotionFrame(1f, 0f, 0f, 1f, 1f);
+
+            float enter = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(t / .12f));
+            float leave = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01((1f - t) / .17f));
+            float opacity = Mathf.Min(enter, leave);
+            float anticipation = Pulse(t, 0f, .17f);
+            float first = Pulse(t, .10f, moment == MoraMoment.Chain ? .32f : .28f);
+            float second = moment == MoraMoment.Chain ? 0f : Pulse(t, .37f, .24f);
+
+            float height = moment == MoraMoment.Perfect ? 36f
+                : moment == MoraMoment.Complete ? 28f : 25f;
+            float lift = height * first + height * .38f * second;
+            float sway = Mathf.Sin(t * Mathf.PI * 3f) * Mathf.Pow(1f - t, 2f);
+            float tilt = (moment == MoraMoment.Chain ? 7f : 5f) * sway;
+            float strength = moment == MoraMoment.Perfect ? .11f
+                : moment == MoraMoment.Complete ? .085f : .07f;
+            float jump = first + second * .58f;
+            float scaleX = 1f + strength * .55f * anticipation - strength * .35f * jump;
+            float scaleY = 1f - strength * .65f * anticipation + strength * jump;
+
+            return new MoraMotionFrame(opacity, lift, tilt, scaleX, scaleY);
         }
     }
 }
