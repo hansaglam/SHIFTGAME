@@ -149,14 +149,14 @@ namespace Shift.Game
                 new Vector2(.05f, .05f), new Vector2(.95f, .95f));
             RefreshGreeting();
 
-            BuildGrowthRibbon();
-            BuildActionNavigation(returnToChapters);
-            BuildSections();
-
             roomName = Label("Selected Companion", transform, "", 25, SeaGlass,
                 new Vector2(.12f, .764f), new Vector2(.88f, .790f));
             LocalizedLabel.Bind(roomName, () => Turkish
-                ? "Yaşayan Tohum · Companion" : "Living Seed · Companion");
+                ? "Yaşayan Tohum · Yol Arkadaşı" : "Living Seed · Companion");
+            BuildGrowthRibbon();
+            BuildActionNavigation(returnToChapters);
+            // Modal must be built last to cover the complete home screen.
+            BuildSections();
         }
 
         private void BuildCharacterRail()
@@ -184,11 +184,11 @@ namespace Shift.Game
             selectedLabel.rectTransform.anchorMax = new Vector2(.98f, .92f);
             Button("Future Companion 1", rail.transform,
                 new Vector2(.365f, .09f), new Vector2(.585f, .91f),
-                new Color(.18f, .45f, .51f, .95f), "", "KİLİTLİ", "LOCKED",
+                new Color(.18f, .45f, .51f, .95f), "", "?", "?",
                 () => ShowPage(MoraHubPage.Collection));
             Button("Future Companion 2", rail.transform,
                 new Vector2(.60f, .09f), new Vector2(.82f, .91f),
-                new Color(.18f, .45f, .51f, .95f), "", "KİLİTLİ", "LOCKED",
+                new Color(.18f, .45f, .51f, .95f), "", "?", "?",
                 () => ShowPage(MoraHubPage.Collection));
             Button("Future Companion Add", rail.transform,
                 new Vector2(.835f, .09f), new Vector2(.985f, .91f),
@@ -423,6 +423,7 @@ namespace Shift.Game
             var image = PlaceholderVisuals.Rect(name, parent, min, max)
                 .gameObject.AddComponent<Image>();
             image.sprite = sprite;
+            image.enabled = sprite != null;
             image.preserveAspect = true;
             image.raycastTarget = false;
             return image;
