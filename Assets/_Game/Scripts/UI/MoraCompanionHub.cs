@@ -25,7 +25,7 @@ namespace Shift.Game
         private Image portrait, transition;
         private Sprite[] stageArt;
         private Sprite baseSeed;
-        private Text greeting, roomName, growthSummary;
+        private Text greeting, growthSummary;
         private Text feedMessage, playMessage, growthMessage;
         private Image growthThumbnail;
         private GameObject overlay;
@@ -149,10 +149,8 @@ namespace Shift.Game
                 new Vector2(.05f, .05f), new Vector2(.95f, .95f));
             RefreshGreeting();
 
-            roomName = Label("Selected Companion", transform, "", 25, SeaGlass,
-                new Vector2(.12f, .764f), new Vector2(.88f, .790f));
-            LocalizedLabel.Bind(roomName, () => Turkish
-                ? "Yaşayan Tohum · Yol Arkadaşı" : "Living Seed · Companion");
+            // The living-seed artwork extends high above the island. Keep this area
+            // free of decorative copy so Stage 4 leaves cannot overlap another label.
             BuildGrowthRibbon();
             BuildActionNavigation(returnToChapters);
             // Modal must be built last to cover the complete home screen.
