@@ -591,6 +591,11 @@ namespace Shift.Game
             hintVisual?.Clear();
             chapter.Close();
             view.SetInput(false);
+            // Use existing persistent campaign progress as the single source of truth.
+            // With 40 shipped levels this remains Stage 1, until new content exists.
+            moraHome.SetGrowth(MoraGrowthPolicy.FromCampaign(
+                progress != null ? progress.HighestCompleted : -1,
+                progress != null ? progress.LevelCount : 0));
             moraHome.Open();
             audioManager.Play(AudioCue.PanelOpen);
             RefreshControls();

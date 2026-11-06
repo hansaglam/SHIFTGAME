@@ -54,6 +54,14 @@ namespace Shift.Game
         private RectTransform moraRect;
         private Sprite idle, curious, happy;
         private Text response;
+        private Text growthTitle;
+        private Text growthProgressText;
+        private Image growthProgressFill;
+        private MoraGrowthVisuals growthVisuals;
+        private MoraGrowthSnapshot currentGrowth;
+#if UNITY_EDITOR
+        private int editorPreviewStage;
+#endif
         private Vector3 restScale = Vector3.one;
         private float currentScale = 1f;
         private float scaleVelocity;
@@ -101,6 +109,23 @@ namespace Shift.Game
                 new Color32(242, 253, 255, 255), new Vector2(.08f, .855f), new Vector2(.92f, .898f));
             LocalizedLabel.Bind(subtitle, () => Turkish ? "MORA'NIN YAŞAM ALANI" : "MORA'S LITTLE HABITAT");
 
+            // Sparse growth indicator above the avatar; not a second game HUD.
+            panel.growthTitle = PlaceholderVisuals.Label("MORA Growth Stage", root, font, "", 30,
+                Color.white, new Vector2(.20f, .808f), new Vector2(.80f, .845f));
+            var track = VisualTheme.Surface("Growth Track", root, circle,
+                new Color(.08f, .26f, .31f, .52f),
+                new Vector2(.25f, .798f), new Vector2(.75f, .805f));
+            track.type = Image.Type.Simple;
+            var progress = PlaceholderVisuals.Rect("Growth Progress Fill", root,
+                new Vector2(.25f, .798f), new Vector2(.75f, .805f));
+            panel.growthProgressFill = progress.gameObject.AddComponent<Image>();
+            panel.growthProgressFill.sprite = circle;
+            panel.growthProgressFill.type = Image.Type.Filled;
+            panel.growthProgressFill.fillMethod = Image.FillMethod.Horizontal;
+            panel.growthProgressFill.fillOrigin = (int)Image.OriginHorizontal.Left;
+            panel.growthProgressFill.raycastTarget = false;
+            panel.growthProgressFill.color = new Color32(247, 217, 129, 230);
+
             // A genuine transparent island PNG is loaded if installed. Without it,
             // a subdued procedural ground preserves the UI/test flow.
             var island = Resources.Load<Sprite>("Mora/Mora_Habitat");
@@ -128,6 +153,10 @@ namespace Shift.Game
             var ambient = PlaceholderVisuals.Rect("Habitat Ambient Life", root, Vector2.zero, Vector2.one)
                 .gameObject.AddComponent<MoraHabitatAmbient>();
             ambient.Initialize(circle, feel);
+            var growthArt = PlaceholderVisuals.Rect("Habitat Growth Decor", root,
+                Vector2.zero, Vector2.one).gameObject.AddComponent<MoraGrowthVisuals>();
+            growthArt.Initialize(circle);
+            panel.growthVisuals = growthArt;
 
             // Tiny natural contact shadow. Never a large flat light disc.
             var contact = VisualTheme.Surface("MORA Contact Shadow", root, circle,
@@ -175,12 +204,22 @@ namespace Shift.Game
                 font, "", 36, VisualTheme.Ink, new Vector2(.055f, .10f), new Vector2(.945f, .90f));
             panel.ShowGreeting();
 
-            var preview = PlaceholderVisuals.Label("Habitat Preview Notice", root, font, "", 24,
-                new Color32(238, 249, 249, 235),
+            panel.growthProgressText = PlaceholderVisuals.Label("Habitat Growth Milestone", root,
+                font, "", 25, new Color32(238, 249, 249, 240),
                 new Vector2(.10f, .131f), new Vector2(.90f, .164f));
-            LocalizedLabel.Bind(preview, () => Turkish
-                ? "Ön izleme · Gelişim sistemi henüz etkin değil"
-                : "Preview · Growth is not active yet");
+
+#if UNITY_EDITOR
+            // Editor-only demonstration: cycles four stages without writing saves.
+            var stageTest = ChapterSelect.CreateButton("Preview MORA Growth", font, rounded, root,
+                new Vector2(.77f, .795f), new Vector2(.96f, .835f),
+                panel.CycleEditorPreview, out var stageTestLabel);
+            stageTestLabel.fontSize = 23;
+            stageTestLabel.resizeTextMaxSize = 23;
+            stageTestLabel.text = "TEST +";
+            stageTest.GetComponent<PresentationMotion>().Settings = feel;
+#endif
+            panel.currentGrowth = MoraGrowthPolicy.FromCampaign(-1, 40);
+            panel.RefreshGrowthView();
 
             var exit = ChapterSelect.CreateButton("Return to Chapters", font, rounded, root,
                 new Vector2(.24f, .045f), new Vector2(.76f, .112f), onClose, out var exitLabel);
@@ -201,11 +240,74 @@ namespace Shift.Game
         private void ShowGreeting()
             => LocalizedLabel.Bind(response, () => GreetingText(Turkish, acceptedTouches));
 
+        public void SetGrowth(MoraGrowthSnapshot snapshot)
+        {
+            currentGrowth = snapshot;
+            RefreshGrowthView();
+        }
+
+        private MoraGrowthSnapshot EffectiveGrowth()
+        {
+#if UNITY_EDITOR
+            if (editorPreviewStage > 0)
+                return MoraGrowthPolicy.PreviewStage(editorPreviewStage);
+#endif
+            return currentGrowth;
+        }
+
+        private void RefreshGrowthView()
+        {
+            var snapshot = EffectiveGrowth();
+            growthVisuals?.SetStage(snapshot.Stage);
+            if (growthProgressFill != null) growthProgressFill.fillAmount = snapshot.Progress01;
+            if (growthTitle != null)
+                LocalizedLabel.Bind(growthTitle, () =>
+                    (Turkish ? "EVRE " : "STAGE ") + snapshot.Stage + " · " +
+                    MoraGrowthPolicy.StageName(snapshot.Stage, Turkish)
+#if UNITY_EDITOR
+                    + (editorPreviewStage > 0 ? " · TEST" : "")
+#endif
+                );
+            if (growthProgressText != null)
+                LocalizedLabel.Bind(growthProgressText, () =>
+                {
+#if UNITY_EDITOR
+                    if (editorPreviewStage > 0) return Turkish
+                        ? "ÖN İZLEME · Oyuncu ilerlemesi değişmez"
+                        : "PREVIEW · Player progress is unchanged";
+#endif
+                    if (!snapshot.HasPostFortyLevels) return Turkish
+                        ? "MORA gelişimi 41. bölümle başlayacak"
+                        : "MORA growth will begin with Level 41";
+                    if (snapshot.IsMaxStage) return Turkish
+                        ? "MORA en yüksek gelişim evresinde!"
+                        : "MORA has reached the final growth stage!";
+                    return Turkish
+                        ? "Akış: " + snapshot.CompletedBeyondForty + "/" + snapshot.NextThreshold
+                            + " · Hedef: Bölüm " + snapshot.NextMilestoneLevel
+                        : "Flow: " + snapshot.CompletedBeyondForty + "/" + snapshot.NextThreshold
+                            + " · Goal: Level " + snapshot.NextMilestoneLevel;
+                });
+        }
+
+#if UNITY_EDITOR
+        private void CycleEditorPreview()
+        {
+            if (!isOpen) return;
+            editorPreviewStage = editorPreviewStage >= 4 ? 1 : editorPreviewStage + 1;
+            RefreshGrowthView();
+        }
+#endif
+
         public void Open()
         {
             if (isOpen) return;
             isOpen = true;
             acceptedTouches = 0;
+#if UNITY_EDITOR
+            editorPreviewStage = 0;
+#endif
+            RefreshGrowthView();
             nextAllowedTouchAt = float.NegativeInfinity;
             expressionUntil = float.NegativeInfinity;
             bounceEnergy = 0f;
