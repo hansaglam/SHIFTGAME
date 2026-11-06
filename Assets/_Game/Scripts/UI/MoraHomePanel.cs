@@ -329,6 +329,7 @@ namespace Shift.Game
             gameObject.SetActive(true);
             transform.SetAsLastSibling();
 #if UNITY_EDITOR
+            if (approvedPreview != null) approvedPreview.ResetStage();
             if (editorStageLabel != null) SetEditorArtStage(1);
 #endif
             RestoreImmediately();

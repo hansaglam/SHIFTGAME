@@ -68,6 +68,17 @@ namespace Shift.Game
             if (feel != null && feel.reducedMotion) FinishBlend();
         }
 
+        public void ResetStage()
+        {
+            Stage = 1;
+            current.sprite = stages[0];
+            incoming.sprite = stages[0];
+            incoming.color = new Color(1f, 1f, 1f, 0f);
+            transitioning = false;
+            blendTimer = reactionTimer = 0f;
+            if (rect != null) rect.localScale = Vector3.one;
+        }
+
         public void React() => reactionTimer = .5f;
 
         private void FinishBlend()
@@ -103,8 +114,7 @@ namespace Shift.Game
         private void OnDisable()
         {
             if (rect != null) rect.localScale = Vector3.one;
-            reactionTimer = 0f;
-            if (transitioning) FinishBlend();
+            ResetStage();
         }
     }
 }
