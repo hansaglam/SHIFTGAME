@@ -53,6 +53,7 @@ namespace Shift.Game
 #if UNITY_EDITOR
         private int editorArtStage = 1;
         private Text editorStageLabel;
+        private MoraApprovedPreview approvedPreview;
 #endif
         private float outgoingAlpha;
         private Sprite incomingExpression;
@@ -195,6 +196,14 @@ namespace Shift.Game
             touch.targetGraphic = panel.moraBase;
             touch.transition = Selectable.Transition.None;
             touch.onClick.AddListener(panel.OnMoraTouched);
+#if UNITY_EDITOR
+            panel.approvedPreview = MoraApprovedPreview.TryCreate(root, feel, panel.OnMoraTouched);
+            if (panel.approvedPreview != null)
+            {
+                portrait.gameObject.SetActive(false);
+                if (panel.islandArtwork != null) panel.islandArtwork.gameObject.SetActive(false);
+            }
+#endif
 
             // A slim warm caption rather than a large rectangular HUD card.
             var note = VisualTheme.Surface("MORA Speech Ribbon", root, rounded,
@@ -224,8 +233,8 @@ namespace Shift.Game
             exit.GetComponent<PresentationMotion>().Settings = feel;
 
 #if UNITY_EDITOR
-            bool hasAllArt = primary && panel.islandArtwork != null;
-            for (int stage = 1; stage <= 4 && hasAllArt; stage++)
+            bool hasAllArt = panel.approvedPreview != null || (primary && panel.islandArtwork != null);
+            for (int stage = 1; stage <= 4 && hasAllArt && panel.approvedPreview == null; stage++)
                 hasAllArt = Resources.Load<Sprite>(PreviewStageSpriteResource(stage)) != null
                     && Resources.Load<Sprite>(PreviewStageHabitatResource(stage)) != null;
             if (hasAllArt)
@@ -271,13 +280,24 @@ namespace Shift.Game
 
         private void NextEditorArtStage()
         {
-            if (!isOpen || editorStageLabel == null || !usesPrimarySeedArt) return;
+            if (!isOpen || editorStageLabel == null || (!usesPrimarySeedArt && approvedPreview == null)) return;
             SetEditorArtStage(editorArtStage == 4 ? 1 : editorArtStage + 1);
         }
 
         private void SetEditorArtStage(int stage)
         {
-            if (editorStageLabel == null || islandArtwork == null) return;
+            if (editorStageLabel == null) return;
+            if (approvedPreview != null)
+            {
+                editorArtStage = Mathf.Clamp(stage, 1, 4);
+                approvedPreview.ShowStage(editorArtStage);
+                acceptedTouches = 0;
+                expressionUntil = float.NegativeInfinity;
+                ShowGreeting();
+                RefreshEditorStageLabel();
+                return;
+            }
+            if (islandArtwork == null) return;
             var stageSprite = Resources.Load<Sprite>(PreviewStageSpriteResource(stage));
             var stageIsland = Resources.Load<Sprite>(PreviewStageHabitatResource(stage));
             if (stageSprite == null || stageIsland == null) return;
@@ -337,7 +357,11 @@ namespace Shift.Game
             Sprite selected = mood == MoraHomeMood.Happy
                 ? (happy != null ? happy : idle)
                 : (curious != null ? curious : idle);
-            TransitionTo(selected);
+#if UNITY_EDITOR
+            if (approvedPreview != null) approvedPreview.React();
+            else
+#endif
+                TransitionTo(selected);
             bounceEnergy = Mathf.Min(1.35f, bounceEnergy + .82f);
             ShowGreeting();
         }

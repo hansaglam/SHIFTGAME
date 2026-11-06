@@ -26,6 +26,19 @@ namespace Shift.Game.Tests
             Assert.That(MoraHomePanel.PreviewStageHabitatResource(stage), Is.EqualTo(habitat));
         }
 
+        [TestCase(1, "Mora/MoraScene_S1")]
+        [TestCase(2, "Mora/MoraScene_S2")]
+        [TestCase(3, "Mora/MoraScene_S3")]
+        [TestCase(4, "Mora/MoraScene_S4")]
+        public void ApprovedArtSceneResourcesHaveSeparateNames(int stage, string expected)
+        {
+#if UNITY_EDITOR
+            Assert.That(MoraApprovedPreview.ResourcePath(stage), Is.EqualTo(expected));
+#else
+            Assert.Ignore("The art preview is Editor-only.");
+#endif
+        }
+
         [Test]
         public void PrototypeDoesNotCountLegacyLevelCompletionsTowardSeedGrowth()
         {
