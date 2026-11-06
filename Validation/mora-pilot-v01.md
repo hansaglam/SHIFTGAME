@@ -29,3 +29,11 @@ Set Texture Type **Sprite (2D and UI)**, Sprite Mode **Single**, Alpha Is Transp
 
 No LevelData, BoardManager, progress/save, consent/ads, campaign 40 or monetization code was changed.
 This is an editor/device **untested remote commit**, not a production merge.
+
+
+## v0.6.2a — Curious-visibility hotfix (screenshot feedback)
+The user supplied three screenshots: Idle visible, Curious message with the entire MORA portrait missing, and Happy visible again. The distributed high-resolution `Mora_Curious.png` in the v0.4 framed-sprite package was checked: it contains opaque pixels. Screenshots alone cannot distinguish a local Unity import problem from a rendering/transition problem.
+
+Fix: **never replace the base portrait with an expression sprite**. The Idle image stays full opacity; two raycast-disabled expression overlays blend above it. A problematic optional expression can now fail visually without the whole character vanishing. The .28 second cooldown, messages, idle motion, backdrop, island, ambient, Reduced Motion, and gameplay hook are preserved.
+
+**Focused test after pulling**: Chapters > MORA; tap in sequence to show Happy, Curious, Happy, Curious; hold on Curious for 2 seconds and check that MORA stays on screen throughout. Also rapidly tap 10+ times and verify no blank frames. If the Curious face is not visible but the Idle avatar remains, inspect the local `Mora_Curious.png` import (Sprite/Single/Alpha Is Transparency) and compare to the packaged file. Run MoraHomePanelTests and review Unity Console. This remote change has not been compiled in Unity or tested on-device.

@@ -53,6 +53,24 @@ namespace Shift.Game.Tests
         }
 
         [Test]
+        public void ExpressionBlendingIsClampedAndMonotonic()
+        {
+            Assert.That(MoraHabitatInteractionPolicy.FaceBlendWeight(-1f), Is.Zero);
+            Assert.That(MoraHabitatInteractionPolicy.FaceBlendWeight(0f), Is.Zero);
+            Assert.That(MoraHabitatInteractionPolicy.FaceBlendWeight(
+                MoraHabitatInteractionPolicy.FaceBlendSeconds), Is.EqualTo(1f));
+            Assert.That(MoraHabitatInteractionPolicy.FaceBlendWeight(4f), Is.EqualTo(1f));
+            float previous = 0f;
+            for (int i = 1; i <= 30; i++)
+            {
+                float weight = MoraHabitatInteractionPolicy.FaceBlendWeight(
+                    i * MoraHabitatInteractionPolicy.FaceBlendSeconds / 30f);
+                Assert.That(weight, Is.InRange(previous, 1f));
+                previous = weight;
+            }
+        }
+
+        [Test]
         public void ExistingMoraReactionPolicyRemainsUnchanged()
         {
             Assert.That(MoraReactionPolicy.OnMove(1, 0), Is.EqualTo(MoraMoment.None));

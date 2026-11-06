@@ -16,6 +16,10 @@ namespace Shift.Game
         public static bool CanAcceptTap(float now, float nextAllowedAt)
             => now >= nextAllowedAt;
 
+        // Fixed-duration, clamped visual blend; the opaque Idle image underneath never fades.
+        public static float FaceBlendWeight(float elapsed)
+            => Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(elapsed / FaceBlendSeconds));
+
         public static MoraHomeMood MoodForTouch(int acceptedTouches)
             => acceptedTouches <= 0 ? MoraHomeMood.Idle
                 : acceptedTouches % 2 == 1 ? MoraHomeMood.Happy : MoraHomeMood.Curious;
@@ -44,6 +48,9 @@ namespace Shift.Game
         private GameFeelSettings feel;
         private Image moraBase;
         private Image moraBlend;
+        private Image moraIncoming;
+        private float outgoingAlpha;
+        private Sprite incomingExpression;
         private RectTransform moraRect;
         private Sprite idle, curious, happy;
         private Text response;
@@ -143,6 +150,15 @@ namespace Shift.Game
             panel.moraBlend.preserveAspect = true;
             panel.moraBlend.color = new Color(1f, 1f, 1f, 0f);
             panel.moraBlend.raycastTarget = false;
+            // Two expression overlays cross-fade over a permanently visible Idle portrait.
+            // Even if an optional expression PNG has bad alpha, MORA does not disappear.
+            var incomingRect = PlaceholderVisuals.Rect("MORA Incoming Expression",
+                portrait, Vector2.zero, Vector2.one);
+            panel.moraIncoming = incomingRect.gameObject.AddComponent<Image>();
+            panel.moraIncoming.sprite = sprite;
+            panel.moraIncoming.preserveAspect = true;
+            panel.moraIncoming.color = new Color(1f, 1f, 1f, 0f);
+            panel.moraIncoming.raycastTarget = false;
 
             var touch = portrait.gameObject.AddComponent<Button>();
             touch.targetGraphic = panel.moraBase;
@@ -231,18 +247,22 @@ namespace Shift.Game
 
         private void TransitionTo(Sprite selected)
         {
-            if (selected == null || moraBase == null || moraBlend == null) return;
-            // A second tap starts from the currently dominant face, not an empty frame.
-            if (isFaceBlending && moraBlend.color.a > .5f && moraBlend.sprite != null)
-                moraBase.sprite = moraBlend.sprite;
-
-            moraBlend.color = new Color(1f, 1f, 1f, 0f);
-            if (moraBase.sprite == selected)
-            {
-                isFaceBlending = false;
+            if (moraBase == null || moraBlend == null || moraIncoming == null) return;
+            Sprite target = selected != null ? selected : idle;
+            if (!isFaceBlending && moraBlend.sprite == target)
                 return;
+
+            // A tap during a transition keeps whichever overlay is most visible.
+            // The bottom image is always Idle, full opacity. Never change it for reactions.
+            if (isFaceBlending && moraIncoming.color.a > moraBlend.color.a)
+            {
+                moraBlend.sprite = moraIncoming.sprite;
+                moraBlend.color = new Color(1f, 1f, 1f, moraIncoming.color.a);
             }
-            moraBlend.sprite = selected;
+            outgoingAlpha = moraBlend.color.a;
+            incomingExpression = target;
+            moraIncoming.sprite = target;
+            moraIncoming.color = new Color(1f, 1f, 1f, 0f);
             faceBlendElapsed = 0f;
             isFaceBlending = true;
         }
@@ -255,12 +275,17 @@ namespace Shift.Game
             if (isFaceBlending)
             {
                 faceBlendElapsed += dt;
-                float t = Mathf.Clamp01(faceBlendElapsed / MoraHabitatInteractionPolicy.FaceBlendSeconds);
-                moraBlend.color = new Color(1f, 1f, 1f, Mathf.SmoothStep(0f, 1f, t));
-                if (t >= 1f)
+                float amount = MoraHabitatInteractionPolicy.FaceBlendWeight(faceBlendElapsed);
+                moraBlend.color = new Color(1f, 1f, 1f, outgoingAlpha * (1f - amount));
+                float targetOpacity = incomingExpression == idle ? 0f : amount;
+                moraIncoming.color = new Color(1f, 1f, 1f, targetOpacity);
+                if (amount >= 1f)
                 {
-                    moraBase.sprite = moraBlend.sprite;
-                    moraBlend.color = new Color(1f, 1f, 1f, 0f);
+                    // Commit only the overlay, never replace the guaranteed-visible Idle base.
+                    moraBlend.sprite = incomingExpression;
+                    moraBlend.color = new Color(1f, 1f, 1f,
+                        incomingExpression == idle ? 0f : 1f);
+                    moraIncoming.color = new Color(1f, 1f, 1f, 0f);
                     isFaceBlending = false;
                 }
             }
@@ -300,6 +325,9 @@ namespace Shift.Game
             if (moraRect != null) moraRect.localScale = restScale;
             if (moraBase != null) { moraBase.sprite = idle; moraBase.color = Color.white; }
             if (moraBlend != null) { moraBlend.sprite = idle; moraBlend.color = new Color(1f, 1f, 1f, 0f); }
+            if (moraIncoming != null) { moraIncoming.sprite = idle; moraIncoming.color = new Color(1f, 1f, 1f, 0f); }
+            incomingExpression = idle;
+            outgoingAlpha = 0f;
         }
 
         private void OnDisable()
