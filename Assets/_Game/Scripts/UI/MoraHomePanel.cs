@@ -53,15 +53,17 @@ namespace Shift.Game
         private Sprite incomingExpression;
         private RectTransform moraRect;
         private Sprite idle, curious, happy;
+        private bool usesPrimarySeedArt;
+
+        // The reference-board seed creature is MORA. The tested teal creature is a
+        // separate special-companion prototype until its unlock design is approved.
+        public static string CharacterSpritePath(bool primary, MoraHomeMood mood)
+        {
+            string stem = primary ? "Mora/MoraSeed_" : "Mora/Mora_";
+            return stem + (mood == MoraHomeMood.Happy ? "Happy"
+                : mood == MoraHomeMood.Curious ? "Curious" : "Idle");
+        }
         private Text response;
-        private Text growthTitle;
-        private Text growthProgressText;
-        private Image growthProgressFill;
-        private MoraGrowthVisuals growthVisuals;
-        private MoraGrowthSnapshot currentGrowth;
-#if UNITY_EDITOR
-        private int editorPreviewStage;
-#endif
         private Vector3 restScale = Vector3.one;
         private float currentScale = 1f;
         private float scaleVelocity;
@@ -82,15 +84,19 @@ namespace Shift.Game
         public static MoraHomePanel TryCreate(RectTransform safeArea, Font font, Sprite rounded,
             Sprite circle, GameFeelSettings feel, Action onClose)
         {
-            var sprite = Resources.Load<Sprite>("Mora/Mora_Idle");
+            Sprite seed = Resources.Load<Sprite>(CharacterSpritePath(true, MoraHomeMood.Idle));
+            Sprite sprite = seed != null ? seed
+                : Resources.Load<Sprite>(CharacterSpritePath(false, MoraHomeMood.Idle));
             if (sprite == null) return null;
+            bool primary = seed != null;
 
             var root = PlaceholderVisuals.Rect("MORA Habitat", safeArea, Vector2.zero, Vector2.one);
             var panel = root.gameObject.AddComponent<MoraHomePanel>();
             panel.feel = feel;
+            panel.usesPrimarySeedArt = primary;
             panel.idle = sprite;
-            panel.curious = Resources.Load<Sprite>("Mora/Mora_Curious");
-            panel.happy = Resources.Load<Sprite>("Mora/Mora_Happy");
+            panel.curious = Resources.Load<Sprite>(CharacterSpritePath(primary, MoraHomeMood.Curious));
+            panel.happy = Resources.Load<Sprite>(CharacterSpritePath(primary, MoraHomeMood.Happy));
 
             // Full-screen scenic setting, not a card overlay on the puzzle.
             var blocking = root.gameObject.AddComponent<Image>();
@@ -102,29 +108,16 @@ namespace Shift.Game
             veil.color = new Color(.035f, .12f, .16f, .16f);
             veil.raycastTarget = false;
 
-            var title = PlaceholderVisuals.Label("Habitat Title", root, font, "MORA", 66,
-                Color.white, new Vector2(.12f, .898f), new Vector2(.88f, .958f));
+            var title = PlaceholderVisuals.Label("Habitat Title", root, font, "", 58,
+                Color.white, new Vector2(.09f, .898f), new Vector2(.91f, .958f));
             title.fontStyle = FontStyle.Bold;
+            LocalizedLabel.Bind(title, () => primary ? "MORA"
+                : Turkish ? "ÖZEL KARAKTER" : "SPECIAL COMPANION");
             var subtitle = PlaceholderVisuals.Label("Habitat Subtitle", root, font, "", 31,
                 new Color32(242, 253, 255, 255), new Vector2(.08f, .855f), new Vector2(.92f, .898f));
-            LocalizedLabel.Bind(subtitle, () => Turkish ? "MORA'NIN YAŞAM ALANI" : "MORA'S LITTLE HABITAT");
-
-            // Sparse growth indicator above the avatar; not a second game HUD.
-            panel.growthTitle = PlaceholderVisuals.Label("MORA Growth Stage", root, font, "", 30,
-                Color.white, new Vector2(.20f, .808f), new Vector2(.80f, .845f));
-            var track = VisualTheme.Surface("Growth Track", root, circle,
-                new Color(.08f, .26f, .31f, .52f),
-                new Vector2(.25f, .798f), new Vector2(.75f, .805f));
-            track.type = Image.Type.Simple;
-            var progress = PlaceholderVisuals.Rect("Growth Progress Fill", root,
-                new Vector2(.25f, .798f), new Vector2(.75f, .805f));
-            panel.growthProgressFill = progress.gameObject.AddComponent<Image>();
-            panel.growthProgressFill.sprite = circle;
-            panel.growthProgressFill.type = Image.Type.Filled;
-            panel.growthProgressFill.fillMethod = Image.FillMethod.Horizontal;
-            panel.growthProgressFill.fillOrigin = (int)Image.OriginHorizontal.Left;
-            panel.growthProgressFill.raycastTarget = false;
-            panel.growthProgressFill.color = new Color32(247, 217, 129, 230);
+            LocalizedLabel.Bind(subtitle, () => primary
+                ? (Turkish ? "MORA'NIN YAŞAM ALANI" : "MORA'S LITTLE HABITAT")
+                : (Turkish ? "KOLEKSİYON KARAKTERİ · TEST" : "COLLECTIBLE CHARACTER · TEST"));
 
             // A genuine transparent island PNG is loaded if installed. Without it,
             // a subdued procedural ground preserves the UI/test flow.
@@ -153,10 +146,6 @@ namespace Shift.Game
             var ambient = PlaceholderVisuals.Rect("Habitat Ambient Life", root, Vector2.zero, Vector2.one)
                 .gameObject.AddComponent<MoraHabitatAmbient>();
             ambient.Initialize(circle, feel);
-            var growthArt = PlaceholderVisuals.Rect("Habitat Growth Decor", root,
-                Vector2.zero, Vector2.one).gameObject.AddComponent<MoraGrowthVisuals>();
-            growthArt.Initialize(circle);
-            panel.growthVisuals = growthArt;
 
             // Tiny natural contact shadow. Never a large flat light disc.
             var contact = VisualTheme.Surface("MORA Contact Shadow", root, circle,
@@ -204,22 +193,14 @@ namespace Shift.Game
                 font, "", 36, VisualTheme.Ink, new Vector2(.055f, .10f), new Vector2(.945f, .90f));
             panel.ShowGreeting();
 
-            panel.growthProgressText = PlaceholderVisuals.Label("Habitat Growth Milestone", root,
-                font, "", 25, new Color32(238, 249, 249, 240),
+            var preview = PlaceholderVisuals.Label("Habitat Preview Notice", root, font, "", 24,
+                new Color32(238, 249, 249, 235),
                 new Vector2(.10f, .131f), new Vector2(.90f, .164f));
-
-#if UNITY_EDITOR
-            // Editor-only demonstration: cycles four stages without writing saves.
-            var stageTest = ChapterSelect.CreateButton("Preview MORA Growth", font, rounded, root,
-                new Vector2(.77f, .795f), new Vector2(.96f, .835f),
-                panel.CycleEditorPreview, out var stageTestLabel);
-            stageTestLabel.fontSize = 23;
-            stageTestLabel.resizeTextMaxSize = 23;
-            stageTestLabel.text = "TEST +";
-            stageTest.GetComponent<PresentationMotion>().Settings = feel;
-#endif
-            panel.currentGrowth = MoraGrowthPolicy.FromCampaign(-1, 40);
-            panel.RefreshGrowthView();
+            LocalizedLabel.Bind(preview, () => primary
+                ? (Turkish ? "Ön izleme · Gelişim sistemi henüz etkin değil"
+                    : "Preview · Growth is not active yet")
+                : (Turkish ? "Ön izleme · Ödül sistemi henüz etkin değil"
+                    : "Preview · Reward unlock is not active yet"));
 
             var exit = ChapterSelect.CreateButton("Return to Chapters", font, rounded, root,
                 new Vector2(.24f, .045f), new Vector2(.76f, .112f), onClose, out var exitLabel);
@@ -238,76 +219,21 @@ namespace Shift.Game
             => MoraHabitatInteractionPolicy.Greeting(turkish, touches);
 
         private void ShowGreeting()
-            => LocalizedLabel.Bind(response, () => GreetingText(Turkish, acceptedTouches));
-
-        public void SetGrowth(MoraGrowthSnapshot snapshot)
-        {
-            currentGrowth = snapshot;
-            RefreshGrowthView();
-        }
-
-        private MoraGrowthSnapshot EffectiveGrowth()
-        {
-#if UNITY_EDITOR
-            if (editorPreviewStage > 0)
-                return MoraGrowthPolicy.PreviewStage(editorPreviewStage);
-#endif
-            return currentGrowth;
-        }
-
-        private void RefreshGrowthView()
-        {
-            var snapshot = EffectiveGrowth();
-            growthVisuals?.SetStage(snapshot.Stage);
-            if (growthProgressFill != null) growthProgressFill.fillAmount = snapshot.Progress01;
-            if (growthTitle != null)
-                LocalizedLabel.Bind(growthTitle, () =>
-                    (Turkish ? "EVRE " : "STAGE ") + snapshot.Stage + " · " +
-                    MoraGrowthPolicy.StageName(snapshot.Stage, Turkish)
-#if UNITY_EDITOR
-                    + (editorPreviewStage > 0 ? " · TEST" : "")
-#endif
-                );
-            if (growthProgressText != null)
-                LocalizedLabel.Bind(growthProgressText, () =>
-                {
-#if UNITY_EDITOR
-                    if (editorPreviewStage > 0) return Turkish
-                        ? "ÖN İZLEME · Oyuncu ilerlemesi değişmez"
-                        : "PREVIEW · Player progress is unchanged";
-#endif
-                    if (!snapshot.HasPostFortyLevels) return Turkish
-                        ? "MORA gelişimi 41. bölümle başlayacak"
-                        : "MORA growth will begin with Level 41";
-                    if (snapshot.IsMaxStage) return Turkish
-                        ? "MORA en yüksek gelişim evresinde!"
-                        : "MORA has reached the final growth stage!";
-                    return Turkish
-                        ? "Akış: " + snapshot.CompletedBeyondForty + "/" + snapshot.NextThreshold
-                            + " · Hedef: Bölüm " + snapshot.NextMilestoneLevel
-                        : "Flow: " + snapshot.CompletedBeyondForty + "/" + snapshot.NextThreshold
-                            + " · Goal: Level " + snapshot.NextMilestoneLevel;
-                });
-        }
-
-#if UNITY_EDITOR
-        private void CycleEditorPreview()
-        {
-            if (!isOpen) return;
-            editorPreviewStage = editorPreviewStage >= 4 ? 1 : editorPreviewStage + 1;
-            RefreshGrowthView();
-        }
-#endif
+            => LocalizedLabel.Bind(response, () => usesPrimarySeedArt
+                ? GreetingText(Turkish, acceptedTouches)
+                : (Turkish
+                    ? (acceptedTouches == 0 ? "Karaktere dokun, seni selamlasın."
+                       : acceptedTouches % 2 == 1 ? "Özel karakter sana sevindi!"
+                       : "Özel karakter seni merakla izliyor.")
+                    : (acceptedTouches == 0 ? "Tap the companion to say hello."
+                       : acceptedTouches % 2 == 1 ? "The companion is happy to see you!"
+                       : "The companion looks at you curiously.")));
 
         public void Open()
         {
             if (isOpen) return;
             isOpen = true;
             acceptedTouches = 0;
-#if UNITY_EDITOR
-            editorPreviewStage = 0;
-#endif
-            RefreshGrowthView();
             nextAllowedTouchAt = float.NegativeInfinity;
             expressionUntil = float.NegativeInfinity;
             bounceEnergy = 0f;

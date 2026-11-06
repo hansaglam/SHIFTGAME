@@ -342,7 +342,9 @@ namespace Shift.Game
             hintPanel.Build(font, rounded, gameFeel, RequestRewardedHint, CloseHint);
             LayoutControls.Settings(safe, circle, gameFeel, OpenSettings);
             // Pilot-only chapter entry. No puzzle HUD button or changes to shipped menus.
-            if (enableMoraPilot && moraPilot != null && chapter != null)
+            // MORA Home can exist with only the primary seed art, independent of the
+            // old teal cameo sprite used during early visual prototyping.
+            if (enableMoraPilot && chapter != null)
             {
                 moraHome = MoraHomePanel.TryCreate(safe, font, rounded, circle, gameFeel, CloseMoraHome);
                 if (moraHome != null) chapter.BuildMoraEntry(font, rounded, OpenMoraHome);
@@ -591,11 +593,6 @@ namespace Shift.Game
             hintVisual?.Clear();
             chapter.Close();
             view.SetInput(false);
-            // Use existing persistent campaign progress as the single source of truth.
-            // With 40 shipped levels this remains Stage 1, until new content exists.
-            moraHome.SetGrowth(MoraGrowthPolicy.FromCampaign(
-                progress != null ? progress.HighestCompleted : -1,
-                progress != null ? progress.LevelCount : 0));
             moraHome.Open();
             audioManager.Play(AudioCue.PanelOpen);
             RefreshControls();

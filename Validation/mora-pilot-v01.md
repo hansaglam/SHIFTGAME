@@ -48,3 +48,9 @@ The player confirmed that the Curious/Happy character never disappears with the 
 **Testing now**: In the Unity Editor only, **TEST +** cycles 1→2→3→4→1 while in the MORA habitat. It is only visual; pressing the button does not modify chapter records, any save, Perfect Shift or the 40 levels; leaving and reopening the habitat resets preview to the actual Stage 1. This Editor button is excluded from non-editor builds. A real 41+ campaign will need level content, chapter UI scalability and regression testing before this v0.7 progression can be earned by play.
 
 **Validation**: Pull the branch with Unity closed; preserve local Prototype scene settings and sprite PNGs. Test TEST + through four stages, EN/TR milestone strings, dark/light layout, avatar stays visible, tap facial responses, Reduced Motion and Back to Chapters. Run MoraGrowthPolicyTests and the existing MORA/editor regression tests. No remote Unity compilation or device tests were run. Keep PR draft and unmerged.
+
+
+## CORRECTION — MORA identity reset
+The player rejected v0.7's cosmetic-only four-stage prototype as misleading. The home was restored to its last verified v0.6.2a layout (no growth TEST+). The previous teal sprite is now explicitly labeled a **special-companion test**, while the leaf-seed character from the original fifth concept board will be the true evolving MORA. Main character art is still outstanding. See `Validation/mora-companion-identity-v1.md`.
+
+Keep the draft PR unmerged. On local SHIFT-MORA worktree, `git pull --ff-only` after checking `git status`; preserve existing local teal sprites and Unity scene. Verify chapter entry, expression reactions, absence of four fake stages, and transparent MORA title switching once the new main art is imported.
