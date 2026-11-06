@@ -100,15 +100,15 @@ namespace Shift.Game.Editor
             }
 
             string summary = "MORA art preflight: " + ready + "/12 source sprites present; "
-                + errors + " errors; " + warnings + " warnings/pending.\\n"
-                + "This is not a visual approval and does not verify expressions or silhouettes.\\n\\n"
+                + errors + " errors; " + warnings + " warnings/pending.\n"
+                + "This is not a visual approval and does not verify expressions or silhouettes.\n\n"
                 + details.ToString();
             if (errors > 0) Debug.LogError(summary);
             else if (warnings > 0) Debug.LogWarning(summary);
             else Debug.Log(summary);
             EditorUtility.DisplayDialog("MORA Living Seed Asset Preflight",
-                "Present: " + ready + "/12\\nErrors: " + errors + "\\nPending/warnings: " + warnings +
-                "\\nFull details are in the Console. No files were modified.", "OK");
+                "Present: " + ready + "/12\nErrors: " + errors + "\nPending/warnings: " + warnings +
+                "\nFull details are in the Console. No files were modified.", "OK");
         }
     }
 }
