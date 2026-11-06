@@ -26,3 +26,17 @@ The earlier preview runtime path `MoraSeed_Idle.png` is a temporary compatibilit
 Image generation attempts in this session returned illustrated *presentation boards* rather than standalone isolated master character assets. Those outputs are **rejected as production sprites**. No unverified generated art was committed to GitHub or installed into SHIFT.
 
 The new validator is committed only to `feature/mora-visual-pilot-v01`; Editor compilation, scanning and device tests still need to be performed in Unity. Keep the PR unmerged.
+
+
+## v0.1 — actual art stage preview (Editor only, no rewards)
+A curated 1024x1024 RGBA package was prepared from the generated standalone PNGs, with original 1254x1254 originals preserved:
+- Stage I: Idle, Curious, Happy.
+- Stage II: leaf crown, one Idle candidate (no reaction expressions yet).
+- Stage III: added bud, one Idle candidate.
+- Stage IV: flowering crown, one Idle candidate.
+- Habitats I–IV: separate candidate island illustrations.
+- Compatibility aliases MoraSeed_Idle/Curious/Happy for first runtime import.
+
+On the `feature/mora-visual-pilot-v01` branch, MORA Home now loads `MoraHabitat_S1` when available. With all 4 stage Idle sprites and habitats installed, Unity Editor displays **ART FORM 1/4 · TEST** and **TEST +**. Pressing it swaps BOTH real sprite assets, not just a label. The character object remains persistent; closing/reopening resets to Stage I. The stage button cannot appear on an iOS/Android production build. It does not write any save/reward/progression state. Later-stage reactions fall back to that stage's Idle sprite until authored expression art is delivered.
+
+Asset package name: `SHIFT_MORA_LivingSeed_VerticalSlice_v0_1.zip`; it must be imported manually because the connector cannot safely upload binary sprites. See README inside. This is not a production acceptance or four-stage progression release. Verify in Unity and profile before merging.

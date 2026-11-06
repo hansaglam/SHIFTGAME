@@ -49,6 +49,11 @@ namespace Shift.Game
         private Image moraBase;
         private Image moraBlend;
         private Image moraIncoming;
+        private Image islandArtwork;
+#if UNITY_EDITOR
+        private int editorArtStage = 1;
+        private Text editorStageLabel;
+#endif
         private float outgoingAlpha;
         private Sprite incomingExpression;
         private RectTransform moraRect;
@@ -63,6 +68,12 @@ namespace Shift.Game
             return stem + (mood == MoraHomeMood.Happy ? "Happy"
                 : mood == MoraHomeMood.Curious ? "Curious" : "Idle");
         }
+
+        public static string PreviewStageSpriteResource(int stage)
+            => "Mora/MoraSeed_S" + Mathf.Clamp(stage, 1, 4) + "_Idle";
+
+        public static string PreviewStageHabitatResource(int stage)
+            => "Mora/MoraHabitat_S" + Mathf.Clamp(stage, 1, 4);
         private Text response;
         private Vector3 restScale = Vector3.one;
         private float currentScale = 1f;
@@ -121,13 +132,15 @@ namespace Shift.Game
 
             // A genuine transparent island PNG is loaded if installed. Without it,
             // a subdued procedural ground preserves the UI/test flow.
-            var island = Resources.Load<Sprite>("Mora/Mora_Habitat");
+            var island = primary ? Resources.Load<Sprite>(PreviewStageHabitatResource(1)) : null;
+            if (island == null) island = Resources.Load<Sprite>("Mora/Mora_Habitat");
             if (island != null)
             {
                 var stage = PlaceholderVisuals.Rect("MORA Island Artwork", root,
                     new Vector2(.015f, .275f), new Vector2(.985f, .575f));
                 var art = stage.gameObject.AddComponent<Image>();
                 art.sprite = island;
+                panel.islandArtwork = art;
                 art.preserveAspect = true;
                 art.raycastTarget = false;
             }
@@ -210,6 +223,25 @@ namespace Shift.Game
             LocalizedLabel.Bind(exitLabel, () => Turkish ? "Bölümlere Dön" : "Back to Chapters");
             exit.GetComponent<PresentationMotion>().Settings = feel;
 
+#if UNITY_EDITOR
+            bool hasAllArt = primary && panel.islandArtwork != null;
+            for (int stage = 1; stage <= 4 && hasAllArt; stage++)
+                hasAllArt = Resources.Load<Sprite>(PreviewStageSpriteResource(stage)) != null
+                    && Resources.Load<Sprite>(PreviewStageHabitatResource(stage)) != null;
+            if (hasAllArt)
+            {
+                panel.editorStageLabel = PlaceholderVisuals.Label("MORA Art Stage Label", root, font,
+                    "", 25, Color.white, new Vector2(.17f, .790f), new Vector2(.68f, .834f));
+                var previewButton = ChapterSelect.CreateButton("MORA Art Stage Preview", font, rounded,
+                    root, new Vector2(.715f, .792f), new Vector2(.93f, .833f),
+                    panel.NextEditorArtStage, out var previewButtonText);
+                previewButtonText.text = "TEST +";
+                previewButtonText.fontSize = 25;
+                previewButtonText.resizeTextMaxSize = 25;
+                previewButton.GetComponent<PresentationMotion>().Settings = feel;
+                panel.RefreshEditorStageLabel();
+            }
+#endif
             panel.gameObject.SetActive(false);
             return panel;
         }
@@ -229,6 +261,40 @@ namespace Shift.Game
                        : acceptedTouches % 2 == 1 ? "The companion is happy to see you!"
                        : "The companion looks at you curiously.")));
 
+#if UNITY_EDITOR
+        private void RefreshEditorStageLabel()
+        {
+            if (editorStageLabel == null) return;
+            editorStageLabel.text = (Turkish ? "GERÇEK FORM " : "ART FORM ")
+                + editorArtStage + "/4 · TEST";
+        }
+
+        private void NextEditorArtStage()
+        {
+            if (!isOpen || editorStageLabel == null || !usesPrimarySeedArt) return;
+            SetEditorArtStage(editorArtStage == 4 ? 1 : editorArtStage + 1);
+        }
+
+        private void SetEditorArtStage(int stage)
+        {
+            if (editorStageLabel == null || islandArtwork == null) return;
+            var stageSprite = Resources.Load<Sprite>(PreviewStageSpriteResource(stage));
+            var stageIsland = Resources.Load<Sprite>(PreviewStageHabitatResource(stage));
+            if (stageSprite == null || stageIsland == null) return;
+            editorArtStage = stage;
+            idle = stageSprite;
+            // Later stages have no aligned expression art yet; never mix forms.
+            curious = stage == 1 ? Resources.Load<Sprite>("Mora/MoraSeed_S1_Curious") : null;
+            happy = stage == 1 ? Resources.Load<Sprite>("Mora/MoraSeed_S1_Happy") : null;
+            islandArtwork.sprite = stageIsland;
+            acceptedTouches = 0;
+            expressionUntil = float.NegativeInfinity;
+            RestoreImmediately();
+            ShowGreeting();
+            RefreshEditorStageLabel();
+        }
+#endif
+
         public void Open()
         {
             if (isOpen) return;
@@ -242,6 +308,9 @@ namespace Shift.Game
             mood = MoraHomeMood.Idle;
             gameObject.SetActive(true);
             transform.SetAsLastSibling();
+#if UNITY_EDITOR
+            if (editorStageLabel != null) SetEditorArtStage(1);
+#endif
             RestoreImmediately();
             ShowGreeting();
         }
