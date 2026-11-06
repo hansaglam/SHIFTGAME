@@ -1,27 +1,67 @@
 using System;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Shift.Game
 {
+    public enum MoraHomeMood { Idle, Happy, Curious }
+
+    /// <summary>Pure interaction rules. No currency, save data, gameplay actions or timers.</summary>
+    public static class MoraHabitatInteractionPolicy
+    {
+        public const float TapCooldownSeconds = .28f;
+        public const float ExpressionHoldSeconds = 1.55f;
+        public const float FaceBlendSeconds = .22f;
+
+        public static bool CanAcceptTap(float now, float nextAllowedAt)
+            => now >= nextAllowedAt;
+
+        public static MoraHomeMood MoodForTouch(int acceptedTouches)
+            => acceptedTouches <= 0 ? MoraHomeMood.Idle
+                : acceptedTouches % 2 == 1 ? MoraHomeMood.Happy : MoraHomeMood.Curious;
+
+        public static string Greeting(bool turkish, int acceptedTouches)
+        {
+            switch (MoodForTouch(acceptedTouches))
+            {
+                case MoraHomeMood.Happy:
+                    return turkish ? "MORA seni gördüğüne sevindi!" : "MORA is happy to see you!";
+                case MoraHomeMood.Curious:
+                    return turkish ? "MORA seni merakla izliyor." : "MORA looks at you curiously.";
+                default:
+                    return turkish ? "MORA'ya dokun, seni selamlasın." : "Tap MORA to say hello.";
+            }
+        }
+    }
+
     /// <summary>
-    /// An opt-in, non-persistent Living World preview. It never grants rewards or saves
-    /// companion state; puzzle simulation stays entirely separate.
+    /// Opt-in, non-persistent habitat preview. Only the character state changes on tap;
+    /// the character GameObject is never hidden, recreated, or disabled by interactions.
+    /// The entire panel is closed only with Back to Chapters.
     /// </summary>
     public sealed class MoraHomePanel : MonoBehaviour
     {
         private GameFeelSettings feel;
-        private Image mora;
+        private Image moraBase;
+        private Image moraBlend;
         private RectTransform moraRect;
         private Sprite idle, curious, happy;
         private Text response;
-        private Coroutine touchRoutine;
-        private Vector3 restScale;
-        private int interactions;
+        private Vector3 restScale = Vector3.one;
+        private float currentScale = 1f;
+        private float scaleVelocity;
+        private float bounceEnergy;
+        private float nextAllowedTouchAt;
+        private float expressionUntil;
+        private float faceBlendElapsed;
+        private bool isFaceBlending;
+        private int acceptedTouches;
         private bool isOpen;
+        private MoraHomeMood mood;
 
         public bool IsOpen => isOpen;
+        public int AcceptedTouches => acceptedTouches;
+        public MoraHomeMood Mood => mood;
         private static bool Turkish => GameLanguageService.Shared.CurrentLanguage == GameLanguage.Turkish;
 
         public static MoraHomePanel TryCreate(RectTransform safeArea, Font font, Sprite rounded,
@@ -30,75 +70,107 @@ namespace Shift.Game
             var sprite = Resources.Load<Sprite>("Mora/Mora_Idle");
             if (sprite == null) return null;
 
-            var root = PlaceholderVisuals.Rect("MORA Home", safeArea, Vector2.zero, Vector2.one);
+            var root = PlaceholderVisuals.Rect("MORA Habitat", safeArea, Vector2.zero, Vector2.one);
             var panel = root.gameObject.AddComponent<MoraHomePanel>();
             panel.feel = feel;
             panel.idle = sprite;
             panel.curious = Resources.Load<Sprite>("Mora/Mora_Curious");
             panel.happy = Resources.Load<Sprite>("Mora/Mora_Happy");
 
-            // Shared visual language: alpine lake, translucent overlay, ivory content.
+            // Full-screen scenic setting, not a card overlay on the puzzle.
             var blocking = root.gameObject.AddComponent<Image>();
-            blocking.color = new Color(.04f, .13f, .19f, 1f);
+            blocking.color = new Color(.035f, .12f, .16f, 1f);
             blocking.raycastTarget = true;
             VisualTheme.Background(root, circle);
-            var veil = PlaceholderVisuals.Rect("MORA Home Veil", root, Vector2.zero, Vector2.one)
+            var veil = PlaceholderVisuals.Rect("Habitat Soft Veil", root, Vector2.zero, Vector2.one)
                 .gameObject.AddComponent<Image>();
-            veil.color = new Color(.045f, .14f, .20f, .37f);
+            veil.color = new Color(.035f, .12f, .16f, .16f);
             veil.raycastTarget = false;
 
-            var title = PlaceholderVisuals.Label("MORA Home Title", root, font, "MORA", 78,
-                Color.white, new Vector2(.12f, .88f), new Vector2(.88f, .955f));
+            var title = PlaceholderVisuals.Label("Habitat Title", root, font, "MORA", 66,
+                Color.white, new Vector2(.12f, .898f), new Vector2(.88f, .958f));
             title.fontStyle = FontStyle.Bold;
-            var subtitle = PlaceholderVisuals.Label("MORA Home Subtitle", root, font, "", 36,
-                new Color32(242, 253, 255, 255), new Vector2(.07f, .824f), new Vector2(.93f, .874f));
-            LocalizedLabel.Bind(subtitle, () => Turkish ? "MORA'NIN YAŞAM ALANI" : "MORA'S LITTLE HOME");
+            var subtitle = PlaceholderVisuals.Label("Habitat Subtitle", root, font, "", 31,
+                new Color32(242, 253, 255, 255), new Vector2(.08f, .855f), new Vector2(.92f, .898f));
+            LocalizedLabel.Bind(subtitle, () => Turkish ? "MORA'NIN YAŞAM ALANI" : "MORA'S LITTLE HABITAT");
 
-            // Subtle illumination behind the sprout, without a distracting large flat disc.
-            var glow = VisualTheme.Surface("Warm Halo", root, circle,
-                new Color(1f, .83f, .44f, .09f), new Vector2(.24f, .425f), new Vector2(.76f, .69f));
-            glow.type = Image.Type.Simple;
+            // A genuine transparent island PNG is loaded if installed. Without it,
+            // a subdued procedural ground preserves the UI/test flow.
+            var island = Resources.Load<Sprite>("Mora/Mora_Habitat");
+            if (island != null)
+            {
+                var stage = PlaceholderVisuals.Rect("MORA Island Artwork", root,
+                    new Vector2(.015f, .275f), new Vector2(.985f, .575f));
+                var art = stage.gameObject.AddComponent<Image>();
+                art.sprite = island;
+                art.preserveAspect = true;
+                art.raycastTarget = false;
+            }
+            else
+            {
+                var moss = VisualTheme.Surface("Fallback Moss Island", root, circle,
+                    new Color(.19f, .39f, .30f, .90f),
+                    new Vector2(.08f, .30f), new Vector2(.92f, .42f));
+                moss.type = Image.Type.Simple;
+                var stone = VisualTheme.Surface("Fallback Stone Base", root, circle,
+                    new Color(.27f, .42f, .45f, .83f),
+                    new Vector2(.12f, .282f), new Vector2(.88f, .359f));
+                stone.type = Image.Type.Simple;
+            }
 
-            // A small oval grounds MORA visually without adding an extra world-building system.
-            var ground = PlaceholderVisuals.Rect("MORA Ground Shadow", root,
-                new Vector2(.31f, .335f), new Vector2(.69f, .365f)).gameObject.AddComponent<Image>();
-            ground.sprite = circle;
-            ground.type = Image.Type.Simple;
-            ground.color = new Color(.035f, .18f, .23f, .32f);
-            ground.raycastTarget = false;
+            var ambient = PlaceholderVisuals.Rect("Habitat Ambient Life", root, Vector2.zero, Vector2.one)
+                .gameObject.AddComponent<MoraHabitatAmbient>();
+            ambient.Initialize(circle, feel);
+
+            // Tiny natural contact shadow. Never a large flat light disc.
+            var contact = VisualTheme.Surface("MORA Contact Shadow", root, circle,
+                new Color(.035f, .16f, .19f, .24f),
+                new Vector2(.34f, .321f), new Vector2(.66f, .348f));
+            contact.type = Image.Type.Simple;
 
             var portrait = PlaceholderVisuals.Rect("MORA Character", root,
-                new Vector2(.12f, .325f), new Vector2(.88f, .79f));
+                new Vector2(.12f, .327f), new Vector2(.88f, .79f));
             panel.moraRect = portrait;
-            panel.restScale = Vector3.one;
-            panel.mora = portrait.gameObject.AddComponent<Image>();
-            panel.mora.sprite = sprite;
-            panel.mora.preserveAspect = true;
-            panel.mora.raycastTarget = true;
+            panel.moraBase = portrait.gameObject.AddComponent<Image>();
+            panel.moraBase.sprite = sprite;
+            panel.moraBase.preserveAspect = true;
+            panel.moraBase.raycastTarget = true;
+
+            // Cross-fade to the next face instead of blanking or recreating the image.
+            var blendRect = PlaceholderVisuals.Rect("MORA Expression Blend", portrait, Vector2.zero, Vector2.one);
+            panel.moraBlend = blendRect.gameObject.AddComponent<Image>();
+            panel.moraBlend.sprite = sprite;
+            panel.moraBlend.preserveAspect = true;
+            panel.moraBlend.color = new Color(1f, 1f, 1f, 0f);
+            panel.moraBlend.raycastTarget = false;
+
             var touch = portrait.gameObject.AddComponent<Button>();
-            touch.targetGraphic = panel.mora;
+            touch.targetGraphic = panel.moraBase;
             touch.transition = Selectable.Transition.None;
             touch.onClick.AddListener(panel.OnMoraTouched);
 
-            var card = VisualTheme.Surface("MORA Greeting Card", root, rounded,
-                new Color32(255, 244, 218, 250), new Vector2(.08f, .205f), new Vector2(.92f, .318f));
-            IdentityStyle.Material(card);
-            VisualTheme.Shadow(card);
-            panel.response = PlaceholderVisuals.Label("MORA Greeting", card.transform, font, "", 40,
-                VisualTheme.Ink, new Vector2(.065f, .08f), new Vector2(.935f, .93f));
+            // A slim warm caption rather than a large rectangular HUD card.
+            var note = VisualTheme.Surface("MORA Speech Ribbon", root, rounded,
+                new Color(.96f, .94f, .84f, .91f), new Vector2(.15f, .178f),
+                new Vector2(.85f, .242f));
+            IdentityStyle.Material(note);
+            note.color = new Color(.96f, .94f, .84f, .91f);
+            panel.response = PlaceholderVisuals.Label("MORA Greeting", note.transform,
+                font, "", 36, VisualTheme.Ink, new Vector2(.055f, .10f), new Vector2(.945f, .90f));
             panel.ShowGreeting();
 
-            var note = PlaceholderVisuals.Label("MORA Preview Note", root, font, "", 30,
-                Color.white, new Vector2(.09f, .132f), new Vector2(.91f, .191f));
-            LocalizedLabel.Bind(note, () => Turkish
-                ? "İlk deneme: büyüme ve ödüller henüz etkin değil."
-                : "Early preview: growth and rewards aren't active yet.");
+            var preview = PlaceholderVisuals.Label("Habitat Preview Notice", root, font, "", 24,
+                new Color32(238, 249, 249, 235),
+                new Vector2(.10f, .131f), new Vector2(.90f, .164f));
+            LocalizedLabel.Bind(preview, () => Turkish
+                ? "Ön izleme · Gelişim sistemi henüz etkin değil"
+                : "Preview · Growth is not active yet");
 
             var exit = ChapterSelect.CreateButton("Return to Chapters", font, rounded, root,
-                new Vector2(.23f, .045f), new Vector2(.77f, .115f), onClose, out var exitLabel);
+                new Vector2(.24f, .045f), new Vector2(.76f, .112f), onClose, out var exitLabel);
             exit.targetGraphic.color = IdentityStyle.Navy;
-            exitLabel.fontSize = 38;
-            exitLabel.resizeTextMaxSize = 38;
+            exitLabel.fontSize = 36;
+            exitLabel.resizeTextMaxSize = 36;
             LocalizedLabel.Bind(exitLabel, () => Turkish ? "Bölümlere Dön" : "Back to Chapters");
             exit.GetComponent<PresentationMotion>().Settings = feel;
 
@@ -106,32 +178,27 @@ namespace Shift.Game
             return panel;
         }
 
-        // A few small reactions make the home feel interactive without currencies or timers.
-        // Keep message selection deterministic and in-memory only.
-        public static string GreetingText(bool turkish, int touchCount)
-        {
-            if (touchCount <= 0) return turkish
-                ? "MORA'ya dokun, seni selamlasın."
-                : "Tap MORA to say hello.";
-            if (touchCount % 2 == 1) return turkish
-                ? "MORA seni gördüğüne sevindi!"
-                : "MORA is happy to see you!";
-            return turkish ? "MORA seni merakla izliyor." : "MORA looks at you curiously.";
-        }
+        // Retains the v0.6.1 API for local language/interaction regression tests.
+        public static string GreetingText(bool turkish, int touches)
+            => MoraHabitatInteractionPolicy.Greeting(turkish, touches);
 
         private void ShowGreeting()
-        {
-            LocalizedLabel.Bind(response, () => GreetingText(Turkish, interactions));
-        }
+            => LocalizedLabel.Bind(response, () => GreetingText(Turkish, acceptedTouches));
 
         public void Open()
         {
             if (isOpen) return;
-            interactions = 0;
             isOpen = true;
+            acceptedTouches = 0;
+            nextAllowedTouchAt = float.NegativeInfinity;
+            expressionUntil = float.NegativeInfinity;
+            bounceEnergy = 0f;
+            currentScale = 1f;
+            scaleVelocity = 0f;
+            mood = MoraHomeMood.Idle;
             gameObject.SetActive(true);
             transform.SetAsLastSibling();
-            ResetMora();
+            RestoreImmediately();
             ShowGreeting();
         }
 
@@ -139,63 +206,175 @@ namespace Shift.Game
         {
             if (!isOpen) return;
             isOpen = false;
-            if (touchRoutine != null) { StopCoroutine(touchRoutine); touchRoutine = null; }
-            ResetMora();
+            RestoreImmediately();
             gameObject.SetActive(false);
         }
 
         private void OnMoraTouched()
         {
             if (!isOpen) return;
-            interactions++;
+            float now = Time.unscaledTime;
+            if (!MoraHabitatInteractionPolicy.CanAcceptTap(now, nextAllowedTouchAt))
+                return; // Ignore rapid repeat, keep existing pose and sprite visible.
+
+            nextAllowedTouchAt = now + MoraHabitatInteractionPolicy.TapCooldownSeconds;
+            acceptedTouches++;
+            mood = MoraHabitatInteractionPolicy.MoodForTouch(acceptedTouches);
+            expressionUntil = now + MoraHabitatInteractionPolicy.ExpressionHoldSeconds;
+            Sprite selected = mood == MoraHomeMood.Happy
+                ? (happy != null ? happy : idle)
+                : (curious != null ? curious : idle);
+            TransitionTo(selected);
+            bounceEnergy = Mathf.Min(1.35f, bounceEnergy + .82f);
             ShowGreeting();
-            if (touchRoutine != null) StopCoroutine(touchRoutine);
-            touchRoutine = StartCoroutine(TouchReaction());
         }
 
-        private IEnumerator TouchReaction()
+        private void TransitionTo(Sprite selected)
         {
-            bool curiousTurn = interactions % 2 == 0;
-            mora.sprite = curiousTurn && curious != null ? curious
-                : !curiousTurn && happy != null ? happy
-                : happy != null ? happy : curious != null ? curious : idle;
-            const float duration = 1.05f;
-            for (float elapsed = 0f; elapsed < duration; elapsed += Time.unscaledDeltaTime)
+            if (selected == null || moraBase == null || moraBlend == null) return;
+            // A second tap starts from the currently dominant face, not an empty frame.
+            if (isFaceBlending && moraBlend.color.a > .5f && moraBlend.sprite != null)
+                moraBase.sprite = moraBlend.sprite;
+
+            moraBlend.color = new Color(1f, 1f, 1f, 0f);
+            if (moraBase.sprite == selected)
             {
-                bool reduced = feel != null && feel.reducedMotion;
-                if (reduced) moraRect.localScale = restScale;
-                else
-                {
-                    float t = Mathf.Clamp01(elapsed / duration);
-                    float bounce = Mathf.Sin(Mathf.PI * t);
-                    moraRect.localScale = restScale * (1f + .085f * bounce);
-                }
-                yield return null;
+                isFaceBlending = false;
+                return;
             }
-            moraRect.localScale = restScale;
-            mora.sprite = idle;
-            touchRoutine = null;
+            moraBlend.sprite = selected;
+            faceBlendElapsed = 0f;
+            isFaceBlending = true;
         }
 
         private void Update()
         {
-            if (!isOpen || touchRoutine != null || moraRect == null) return;
-            if (feel != null && feel.reducedMotion) { moraRect.localScale = restScale; return; }
-            // Calm breathing only inside MORA's dedicated home, never on the puzzle HUD.
-            float breath = .012f * Mathf.Sin(Time.unscaledTime * 1.6f);
-            moraRect.localScale = restScale * (1f + breath);
+            if (!isOpen || moraRect == null) return;
+            float dt = Time.unscaledDeltaTime;
+
+            if (isFaceBlending)
+            {
+                faceBlendElapsed += dt;
+                float t = Mathf.Clamp01(faceBlendElapsed / MoraHabitatInteractionPolicy.FaceBlendSeconds);
+                moraBlend.color = new Color(1f, 1f, 1f, Mathf.SmoothStep(0f, 1f, t));
+                if (t >= 1f)
+                {
+                    moraBase.sprite = moraBlend.sprite;
+                    moraBlend.color = new Color(1f, 1f, 1f, 0f);
+                    isFaceBlending = false;
+                }
+            }
+
+            if (mood != MoraHomeMood.Idle && Time.unscaledTime >= expressionUntil)
+            {
+                mood = MoraHomeMood.Idle;
+                TransitionTo(idle);
+            }
+
+            bool reducedMotion = feel != null && feel.reducedMotion;
+            if (reducedMotion)
+            {
+                currentScale = 1f;
+                scaleVelocity = 0f;
+                bounceEnergy = 0f;
+            }
+            else
+            {
+                bounceEnergy = Mathf.MoveTowards(bounceEnergy, 0f, 1.65f * dt);
+                float breathing = .009f * Mathf.Sin(Time.unscaledTime * 1.55f);
+                float desired = 1f + breathing + bounceEnergy * .075f;
+                currentScale = Mathf.SmoothDamp(currentScale, desired, ref scaleVelocity,
+                    .14f, Mathf.Infinity, dt);
+            }
+            moraRect.localScale = restScale * currentScale;
         }
 
-        private void ResetMora()
+        private void RestoreImmediately()
         {
+            mood = MoraHomeMood.Idle;
+            isFaceBlending = false;
+            faceBlendElapsed = 0f;
+            currentScale = 1f;
+            bounceEnergy = 0f;
+            scaleVelocity = 0f;
             if (moraRect != null) moraRect.localScale = restScale;
-            if (mora != null) mora.sprite = idle;
+            if (moraBase != null) { moraBase.sprite = idle; moraBase.color = Color.white; }
+            if (moraBlend != null) { moraBlend.sprite = idle; moraBlend.color = new Color(1f, 1f, 1f, 0f); }
         }
 
         private void OnDisable()
         {
-            if (touchRoutine != null) { StopCoroutine(touchRoutine); touchRoutine = null; }
-            ResetMora();
+            // Only executes when leaving the habitat, never when tapping the character.
+            RestoreImmediately();
+        }
+    }
+
+    /// <summary>
+    /// Very light, deterministic environmental motion. Does not allocate every frame,
+    /// use particle systems, create progress, or react to gameplay.
+    /// </summary>
+    public sealed class MoraHabitatAmbient : MonoBehaviour
+    {
+        private struct LightDot
+        {
+            public RectTransform Rect;
+            public Image Image;
+            public float Phase;
+            public bool Water;
+        }
+
+        private LightDot[] dots;
+        private GameFeelSettings feel;
+
+        public void Initialize(Sprite circle, GameFeelSettings settings)
+        {
+            feel = settings;
+            if (circle == null) return;
+            // Sparse points near the island, rather than noisy particles all over the display.
+            var positions = new[]
+            {
+                new Vector2(.16f,.47f), new Vector2(.25f,.525f),
+                new Vector2(.79f,.50f), new Vector2(.86f,.42f),
+                new Vector2(.34f,.58f), new Vector2(.68f,.59f),
+                new Vector2(.19f,.312f), new Vector2(.81f,.316f)
+            };
+            dots = new LightDot[positions.Length];
+            for (int i = 0; i < positions.Length; i++)
+            {
+                bool water = i >= 6;
+                float width = water ? .028f : .010f;
+                float height = water ? .003f : .005f;
+                var pos = positions[i];
+                var rect = PlaceholderVisuals.Rect(water ? "Water Shimmer" : "Glow Motif",
+                    transform, pos - new Vector2(width, height),
+                    pos + new Vector2(width, height));
+                var image = rect.gameObject.AddComponent<Image>();
+                image.sprite = circle;
+                image.type = Image.Type.Simple;
+                image.raycastTarget = false;
+                dots[i] = new LightDot { Rect = rect, Image = image, Phase = i * 1.13f, Water = water };
+            }
+            Apply(true);
+        }
+
+        private void Update() => Apply(feel != null && feel.reducedMotion);
+
+        private void Apply(bool still)
+        {
+            if (dots == null) return;
+            float time = Time.unscaledTime;
+            for (int i = 0; i < dots.Length; i++)
+            {
+                var dot = dots[i];
+                if (dot.Rect == null || dot.Image == null) continue;
+                float wave = still ? 0f : Mathf.Sin(time * (dot.Water ? .85f : .56f) + dot.Phase);
+                dot.Rect.anchoredPosition = still ? Vector2.zero
+                    : new Vector2(dot.Water ? wave * 1.5f : wave * 3f,
+                        dot.Water ? 0f : wave * 4f);
+                float alpha = dot.Water ? .20f + .08f * wave : .38f + .16f * wave;
+                dot.Image.color = new Color(dot.Water ? .46f : 1f, .95f, dot.Water ? 1f : .65f,
+                    Mathf.Clamp01(alpha));
+            }
         }
     }
 }

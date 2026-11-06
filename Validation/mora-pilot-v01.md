@@ -1,39 +1,31 @@
-# SHIFT × MORA v0.6 — Living World Preview
+# SHIFT × MORA Habitat v0.6.2 — Complete single-sprint implementation
 
-## Context
-The player verified v0.5 in Unity (chain/completion/Perfect body reactions), and approved continuing to a MORA home experience. This pilot remains on `feature/mora-visual-pilot-v01`, feature flag OFF by default. No changes are made to the retail `main` branch.
+Player request: perform all six changes before asking for one combined Unity test.
+Development branch: `feature/mora-visual-pilot-v01`. Flag **Enable Mora Pilot** remains off by default. Do not merge to main before Unity/device validation.
 
-## What is included
-- A **MORA** entry on the Chapter Select screen, enabled only if `Enable Mora Pilot` is on and `Mora_Idle` exists.
-- It shares the existing Continue button row (does not add a button over puzzle pieces or the HUD).
-- A full-screen, Alpine Lake-themed companion home with a larger MORA sprite, soft idle breathing, tap reaction and EN/TR text.
-- A **Back to Chapters** button restores the Chapter Select screen.
-- Existing MORA expression images are loaded from local `Resources/Mora`; no additional art import is required.
-- Reduced Motion disables idle breathing and touch enlargement.
-- Board input is modal-locked while the MORA Home is open.
+## Six changes implemented
+1. **Rapid taps:** a .28s short cooldown prevents restart/flash; a .22s crossfade moves between facial sprites. The base image always stays visible; no hide/show on tap.
+2. **Persistent presence:** MORA stays instantiated and visible in the habitat; Idle/Happy/Curious states, gentle scale response. Only Back to Chapters closes the habitat.
+3. **Natural layout:** smaller title and subtitles, larger character, a slimmer speech ribbon, simplified footer. Puzzle HUD is not modified.
+4. **Habitat framing:** loads optional original `Resources/Mora/Mora_Habitat.png` transparent moss-and-stone island under the character, with the existing AlpineLake environment behind it. Falls back to tinted natural shapes when art is absent. No other dependency.
+5. **Dialogue:** short localized greeting text, alternating happy/curious states, smaller non-blocking ribbon and a small honest preview note.
+6. **Quiet ambient life:** few fixed-location fireflies plus two water glints, low-amplitude movement only in habitat. Reduced Motion makes both MORA and ambient static.
 
-## Explicitly not included
-No new mechanics, growth, Flow Energy, saved pet state, garden upgrades, market, coins, monetization, daily pressure, or chapter 41. The home is an interaction test only, and tells the player in both languages that growth/rewards aren't active.
+## Asset delivery (one-time manual import)
+Copy the supplied transparent `Mora_Habitat.png` to
+`D:\UnityProjects\SHIFT\SHIFT-MORA\Assets\_Game\Resources\Mora\Mora_Habitat.png`
+Set Texture Type **Sprite (2D and UI)**, Sprite Mode **Single**, Alpha Is Transparency **On**. Set max size 2048 and compression off for quality inspection. Do not replace the five already imported expressions. No sprite binaries are committed to the repo.
 
-## Test
-1. Close Unity. In `D:\UnityProjects\SHIFT\SHIFT-MORA`, run `git status` then `git pull --ff-only`. Do not discard the locally modified `Prototype.unity`, `PackageManagerSettings.asset` or the untracked MORA PNGs.
-2. Open the `Prototype` scene, confirm `Enable Mora Pilot` is still checked.
-3. Open **Bölümler / Chapters**, then tap the new **MORA** button beside Continue.
-4. Verify MORA appears large, breathes subtly, responds to touch, and the greeting shows in TR/EN.
-5. Press **Bölümlere Dön / Back to Chapters**, then choose a level and solve it.
-6. Test narrow and tall portrait, Reduced Motion, menu transitions, no board taps through the panel, absence of sprite fallback, and no red Console errors.
-7. Run `MoraReactionPolicyTests`, `MoraCompanionPilotTests`, `MoraHomePanelTests` and the project regression suite.
+## One combined Unity test after all six tasks
+- Close Unity; `git status`, `git pull --ff-only` in the SHIFT-MORA worktree. Preserve locally changed `Prototype.unity`, `PackageManagerSettings.asset` and untracked MORA sprite files.
+- Open Prototype with Enable Mora Pilot ON; open Chapters > MORA.
+- Check the new mossy island scenery and avatar at standard 9:16 and tall aspect ratio.
+- Tap quickly 10+ times: MORA must stay visible continuously, only accepted taps should alternate Happy/Curious, and messages should be stable.
+- Leave idle for several seconds: sprite returns to Idle, gently breathes; ambient glints move subtly.
+- Toggle Reduced Motion: no breathing/bouncing/ambient drift, facial changes and taps still work.
+- Return to Chapters, reopen MORA, verify clean reset. Then play a level with chain, normal complete and Perfect to confirm v0.5 didn't regress.
+- Open Settings/Chapter/guide panels; confirm no input leaks or red Console errors; run MoraHomePanelTests, MoraCompanionPilotTests, MoraReactionPolicyTests and standard regression suite.
+- Device test portrait Android/iOS before any merge.
 
-## Safety and scope
-The pilot uses local in-memory UI state only and creates no PlayerPrefs keys. The first 40 levels and their saved progress, Perfect Shift, BoardManager, CampaignEnding and AdMob logic are unchanged. Unity compilation and device tests are **not performed** by the connector. Keep this draft PR unmerged pending validation.
-
-
-## v0.6.1 — visual feedback after the first home screenshot
-The user supplied screenshots proving the initial home and tap-to-happy reaction render on the scene. The screen still showed a distracting pale circular halo and tiny supporting type. Minor opt-in home-only polish:
-- Subtle golden halo at 9% opacity instead of a large opaque disc.
-- Soft oval base shadow, drawn behind the character, so it feels more grounded against the lake.
-- Larger subtitle, greeting, supporting note and chapter-return button typography.
-- Alternate cheerful and curious local reactions after taps, with matching Turkish and English messages; no new assets needed.
-- Remains in-memory: no level progress manipulation, growth, currency, PlayerPrefs, store or new companion requirements.
-
-**Local test:** pull into SHIFT-MORA after closing Unity. With the pilot enabled, open Chapters > MORA, look for softer glow and shadow, verify first and second taps produce Happy/Curious messages and sprite poses, then return to Chapters. Check narrow phone, Reduced Motion, Unity Console. Existing MORA and broader regressions should still pass. No remote Unity compile/device verification has occurred.
+No LevelData, BoardManager, progress/save, consent/ads, campaign 40 or monetization code was changed.
+This is an editor/device **untested remote commit**, not a production merge.

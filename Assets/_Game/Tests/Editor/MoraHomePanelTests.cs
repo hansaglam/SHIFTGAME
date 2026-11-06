@@ -10,7 +10,7 @@ namespace Shift.Game.Tests
         public void LivingWorldPreviewDoesNotCreateAnObjectWithoutTheRequiredPortrait()
         {
             if (Resources.Load<Sprite>("Mora/Mora_Idle") != null)
-                Assert.Ignore("Local test art exists; this fallback is verified in clean content builds.");
+                Assert.Ignore("Local MORA art exists; missing-art fallback requires a clean fixture.");
             var safe = new GameObject("Safe Area", typeof(RectTransform)).GetComponent<RectTransform>();
             try
             {
@@ -29,6 +29,27 @@ namespace Shift.Game.Tests
         public void GreetingStateStaysLocalizedAndDeterministic(bool turkish, int touches, string expected)
         {
             Assert.That(MoraHomePanel.GreetingText(turkish, touches), Is.EqualTo(expected));
+        }
+
+        [TestCase(0, MoraHomeMood.Idle)]
+        [TestCase(1, MoraHomeMood.Happy)]
+        [TestCase(2, MoraHomeMood.Curious)]
+        [TestCase(3, MoraHomeMood.Happy)]
+        [TestCase(4, MoraHomeMood.Curious)]
+        public void FaceStateDependsOnlyOnAcceptedTouches(int touches, MoraHomeMood expected)
+        {
+            Assert.That(MoraHabitatInteractionPolicy.MoodForTouch(touches), Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void RapidTapsUseShortCooldownWithoutHidingCharacter()
+        {
+            float first = 14f, next = first + MoraHabitatInteractionPolicy.TapCooldownSeconds;
+            Assert.That(MoraHabitatInteractionPolicy.CanAcceptTap(first, float.NegativeInfinity), Is.True);
+            Assert.That(MoraHabitatInteractionPolicy.CanAcceptTap(first + .1f, next), Is.False);
+            Assert.That(MoraHabitatInteractionPolicy.CanAcceptTap(next, next), Is.True);
+            Assert.That(MoraHabitatInteractionPolicy.FaceBlendSeconds, Is.LessThan(MoraHabitatInteractionPolicy.TapCooldownSeconds));
+            Assert.That(MoraHabitatInteractionPolicy.ExpressionHoldSeconds, Is.GreaterThan(.8f));
         }
 
         [Test]
