@@ -14,6 +14,16 @@ namespace Shift.Game.Tests
             Assert.That(MoraCompanionPilot.OptionalSpriteResource(moment), Is.EqualTo(path));
         }
 
+        [TestCase(MoraMoment.None, "Mora/MoraSeed_Idle")]
+        [TestCase(MoraMoment.Curious, "Mora/MoraSeed_Idle")]
+        [TestCase(MoraMoment.Chain, "Mora/MoraSeed_Chain")]
+        [TestCase(MoraMoment.Complete, "Mora/MoraSeed_Happy")]
+        [TestCase(MoraMoment.Perfect, "Mora/MoraSeed_Perfect")]
+        public void DefaultPlayerCompanionUsesThePrimarySeedNotTheTealPrototype(MoraMoment moment, string expected)
+        {
+            Assert.That(MoraCompanionPilot.PrimarySpriteResource(moment), Is.EqualTo(expected));
+        }
+
         [Test]
         public void UserTestedDockPlacementRemainsUnchanged()
         {

@@ -307,7 +307,8 @@ namespace Shift.Game
             hintVisual = PlaceholderVisuals.Rect("Hint Visual Overlay", grid, Vector2.zero, Vector2.one).gameObject.AddComponent<HintVisualOverlay>();
             hintVisual.Initialize(board, activeLevel, gameFeel);
             // Visual pilot sits above board/HUD and under later modal panels.
-            if (enableMoraPilot) moraPilot = MoraCompanionPilot.TryCreate(safe, gameFeel);
+            if (enableMoraPilot)
+                moraPilot = MoraCompanionPilot.TryCreate(safe, gameFeel, primaryOnly: true);
             // Compensate for the smaller board presentation without changing piece visuals or callbacks.
             foreach (var piece in grid.GetComponentsInChildren<Piece>())
             {

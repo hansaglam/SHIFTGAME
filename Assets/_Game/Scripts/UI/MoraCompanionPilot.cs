@@ -34,18 +34,37 @@ namespace Shift.Game
             }
         }
 
-        public static MoraCompanionPilot TryCreate(RectTransform safeArea, GameFeelSettings settings)
+        // The teal prototype must not be shown as an unearned default companion.
+        // Primary seed art is opt-in and may be absent until its HUD expression pack ships.
+        public static string PrimarySpriteResource(MoraMoment moment)
         {
-            var sprite = Resources.Load<Sprite>("Mora/Mora_Idle");
+            switch (moment)
+            {
+                case MoraMoment.Chain: return "Mora/MoraSeed_Chain";
+                case MoraMoment.Complete: return "Mora/MoraSeed_Happy";
+                case MoraMoment.Perfect: return "Mora/MoraSeed_Perfect";
+                default: return "Mora/MoraSeed_Idle";
+            }
+        }
+
+        public static MoraCompanionPilot TryCreate(RectTransform safeArea, GameFeelSettings settings,
+            bool primaryOnly = false)
+        {
+            var sprite = Resources.Load<Sprite>(primaryOnly
+                ? PrimarySpriteResource(MoraMoment.None)
+                : OptionalSpriteResource(MoraMoment.None));
             if (sprite == null) return null;
             var area = PlaceholderVisuals.Rect("MORA Pilot", safeArea, DockMin, DockMax);
             var pilot = area.gameObject.AddComponent<MoraCompanionPilot>();
             pilot.rect = area;
             pilot.feel = settings;
             pilot.idle = sprite;
-            pilot.chain = Resources.Load<Sprite>("Mora/Mora_Chain");
-            pilot.happy = Resources.Load<Sprite>("Mora/Mora_Happy");
-            pilot.perfect = Resources.Load<Sprite>("Mora/Mora_Perfect");
+            pilot.chain = Resources.Load<Sprite>(primaryOnly
+                ? PrimarySpriteResource(MoraMoment.Chain) : OptionalSpriteResource(MoraMoment.Chain));
+            pilot.happy = Resources.Load<Sprite>(primaryOnly
+                ? PrimarySpriteResource(MoraMoment.Complete) : OptionalSpriteResource(MoraMoment.Complete));
+            pilot.perfect = Resources.Load<Sprite>(primaryOnly
+                ? PrimarySpriteResource(MoraMoment.Perfect) : OptionalSpriteResource(MoraMoment.Perfect));
             pilot.image = area.gameObject.AddComponent<Image>();
             pilot.image.sprite = sprite;
             pilot.image.preserveAspect = true;
