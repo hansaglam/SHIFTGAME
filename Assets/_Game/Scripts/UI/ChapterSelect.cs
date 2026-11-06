@@ -16,6 +16,7 @@ namespace Shift.Game
         public HintLanguage Language { get => GameLanguageService.Shared.HintLanguage; set => GameLanguageService.Shared.Select(value == HintLanguage.Turkish ? GameLanguage.Turkish : GameLanguage.English); }
         public Action<ChapterMastery> MasteryViewed { get; set; }
         private Button secondTab;
+        private Button moraEntry;
         private Text continueLabel;
         private LevelProgression progressState;
         private int page;
@@ -56,6 +57,25 @@ namespace Shift.Game
             foreach (var motion in GetComponentsInChildren<PresentationMotion>()) motion.Settings = Settings;
             gameObject.SetActive(false);
         }
+        // Explicitly opt-in, only installed when the MORA home portrait exists.
+        // Shares Continue row rather than adding another control to the puzzle HUD.
+        public void BuildMoraEntry(Font font, Sprite rounded, Action open)
+        {
+            if (moraEntry != null || open == null) return;
+            var content = transform.Find("Chapter Content");
+            var play = content?.Find("Play Current") as RectTransform;
+            if (play == null) return;
+            play.anchorMin = new Vector2(.12f, .135f);
+            play.anchorMax = new Vector2(.60f, .21f);
+            moraEntry = CreateButton("MORA Entry", font, rounded, content,
+                new Vector2(.62f, .135f), new Vector2(.88f, .21f), open, out var label);
+            moraEntry.targetGraphic.color = IdentityStyle.Navy;
+            label.text = "MORA";
+            label.fontStyle = FontStyle.Bold;
+            label.fontSize = 28;
+            moraEntry.GetComponent<PresentationMotion>().Settings = Settings;
+        }
+
         private Text dailyLabel;
         private Button dailyEntry;
         public void BuildDailyEntry(Font font,Sprite rounded,Action open)

@@ -103,11 +103,12 @@ namespace Shift.Game
         public bool IsDaily => ActiveDaily != null;
         private DailyShiftPanel dailyPanel;
         private System.DateTime panelDate;
-        private bool InputModalOpen => (guidePanel != null && guidePanel.IsOpen) || endingRequested || (endingPanel != null && endingPanel.IsOpen) || IsStartupWaiting || IsOnboardingActive || (dailyPanel != null && dailyPanel.IsOpen) || (hintPanel != null && hintPanel.IsOpen) || (chapter != null && chapter.IsOpen) || (settingsPanel != null && settingsPanel.IsOpen);
+        private bool InputModalOpen => (guidePanel != null && guidePanel.IsOpen) || endingRequested || (endingPanel != null && endingPanel.IsOpen) || IsStartupWaiting || IsOnboardingActive || (dailyPanel != null && dailyPanel.IsOpen) || (hintPanel != null && hintPanel.IsOpen) || (chapter != null && chapter.IsOpen) || (settingsPanel != null && settingsPanel.IsOpen) || (moraHome != null && moraHome.IsOpen);
         private readonly BoardManager board = new BoardManager();
         private BoardView view;
         private GameHud hud;
         private MoraCompanionPilot moraPilot;
+        private MoraHomePanel moraHome;
         private GameObject canvasObject;
         private GameObject eventSystemObject;
         private Sprite circle;
@@ -295,6 +296,7 @@ namespace Shift.Game
             safe.gameObject.AddComponent<SafeArea>();
             var font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
             moraPilot = null;
+            moraHome = null;
             hud = safe.gameObject.AddComponent<GameHud>(); hud.Build(font, activeLevel, rounded, gameFeel, Replay, circle);
             hud.BuildNavigation(font, rounded, () => NextLevel(), OpenChapter, progress != null);
             hud.BuildUtilities(font, rounded, () => Undo(), OpenHint);
@@ -339,8 +341,14 @@ namespace Shift.Game
             hintPanel = hintRect.gameObject.AddComponent<RewardedHintPanel>();
             hintPanel.Build(font, rounded, gameFeel, RequestRewardedHint, CloseHint);
             LayoutControls.Settings(safe, circle, gameFeel, OpenSettings);
+            // Pilot-only chapter entry. No puzzle HUD button or changes to shipped menus.
+            if (enableMoraPilot && moraPilot != null && chapter != null)
+            {
+                moraHome = MoraHomePanel.TryCreate(safe, font, rounded, circle, gameFeel, CloseMoraHome);
+                if (moraHome != null) chapter.BuildMoraEntry(font, rounded, OpenMoraHome);
+            }
             foreach (var button in canvasObject.GetComponentsInChildren<Button>(true))
-                if (button.GetComponentInParent<Piece>() == null && button.name != "Undo" && button.name != "Hint" && button.name != "Restart" && button.name != "Replay" && button.name != "Open Chapter" && button.name != "Open Settings" && button.name != "Close Settings" && button.name != "Close Chapter")
+                if (button.GetComponentInParent<Piece>() == null && button.name != "Undo" && button.name != "Hint" && button.name != "Restart" && button.name != "Replay" && button.name != "Open Chapter" && button.name != "Open Settings" && button.name != "Close Settings" && button.name != "Close Chapter" && button.name != "MORA Entry" && button.name != "Return to Chapters")
                     button.onClick.AddListener(() => audioManager.Play(AudioCue.UIButton));
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
             if (showTelemetryOverlay)
@@ -572,6 +580,27 @@ namespace Shift.Game
             if (returningContext && ContinueLevelIndex >= 0) { ContinueCampaign(); return; }
             returningContext = false;
             chapter.Close(); view.SetInput(board.State == GameState.Playing && !InputModalOpen); audioManager.Play(AudioCue.PanelClose); RefreshControls();
+        }
+
+        // Small opt-in companion home. Only reachable from the chapter selector.
+        public void OpenMoraHome()
+        {
+            if (moraHome == null || chapter == null || !chapter.IsOpen || rewardPending
+                || IsStartupWaiting || IsOnboardingActive || (guidePanel != null && guidePanel.IsOpen))
+                return;
+            hintVisual?.Clear();
+            chapter.Close();
+            view.SetInput(false);
+            moraHome.Open();
+            audioManager.Play(AudioCue.PanelOpen);
+            RefreshControls();
+        }
+
+        public void CloseMoraHome()
+        {
+            if (moraHome == null || !moraHome.IsOpen) return;
+            moraHome.Close();
+            OpenChapter();
         }
 
         public void OpenSettings()
