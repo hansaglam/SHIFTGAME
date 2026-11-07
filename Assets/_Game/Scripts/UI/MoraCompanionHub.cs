@@ -250,7 +250,7 @@ namespace Shift.Game
                 image.color = Color.white;
             }
 
-            Sprite avatar = baseSeed ?? stageArt[0];
+            Sprite avatar = premiumLayered ? stageArt[0] : baseSeed ?? stageArt[0];
             if (avatar != null)
             {
                 var icon = PlaceholderVisuals.Rect("MORA Face Thumbnail", select.transform,
@@ -577,7 +577,8 @@ namespace Shift.Game
                 name == "Return to Chapters" ? 38 : 30, DeepTeal,
                 new Vector2(.045f, .05f), new Vector2(.955f, .95f),
                 () => Turkish ? tr : en);
-            if (color == DeepTeal || color == Ocean) title.color = Ivory;
+            if (color == DeepTeal || color == Ocean || color == SeaGlass)
+                title.color = Ivory;
             title.fontStyle = FontStyle.Bold;
             var press = rect.gameObject.AddComponent<PresentationMotion>();
             press.Settings = feel;
