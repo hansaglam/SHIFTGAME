@@ -19,21 +19,31 @@ namespace Shift.Game.Editor
             "Level47_ClosingWindow",
             "Level48_ResonantCrossing",
             "Level49_SecondPath",
-            "Level50_WakeTheValley"
+            "Level50_WakeTheValley",
+            "Level51_DelayedEcho",
+            "Level52_DoubleThreshold",
+            "Level53_BorrowedRoute",
+            "Level54_TheQuietFork",
+            "Level55_MirroredChain",
+            "Level56_HiddenHandOff",
+            "Level57_FalseShortcut",
+            "Level58_ClosedCircuit",
+            "Level59_ReverseReaction",
+            "Level60_FinalThreshold"
         };
 
         public static LevelData Get(int levelNumber)
         {
-            if (levelNumber < 41 || levelNumber > 50) return null;
+            if (levelNumber < 41 || levelNumber > 60) return null;
             return AssetDatabase.LoadAssetAtPath<LevelData>(
                 Folder + Names[levelNumber - 41] + ".asset");
         }
 
-        [MenuItem("SHIFT/Chapter 3/Validate Draft Levels 41-50")]
+        [MenuItem("SHIFT/Chapter 3/Validate Draft Levels 41-60")]
         public static void ValidateAll()
         {
             int pass = 0, fail = 0;
-            for (int number = 41; number <= 50; number++)
+            for (int number = 41; number <= 60; number++)
             {
                 var level = Get(number);
                 if (level == null) { fail++; Debug.LogError("Missing Chapter 3 Level " + number); continue; }
@@ -57,7 +67,7 @@ namespace Shift.Game.Editor
                     " moves, maximum route reaction " + depth + ", explored " +
                     proof.states + " states.", level);
             }
-            Debug.Log("Chapter 3 draft audit: " + pass + "/10 certified, " + fail +
+            Debug.Log("Chapter 3 draft audit: " + pass + "/20 certified, " + fail +
                 " failed. Levels 1–40 untouched.");
         }
     }

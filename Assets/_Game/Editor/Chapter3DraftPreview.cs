@@ -27,7 +27,7 @@ namespace Shift.Game.Editor
                 !EditorUtility.DisplayDialog("Recreate Chapter 3 Preview?",
                     "Only the isolated preview scene will be replaced. Original Prototype.unity will not change.",
                     "Replace Preview", "Cancel")) return;
-            for (int n = 41; n <= 50; n++)
+            for (int n = 41; n <= 60; n++)
                 if (Chapter3DraftAudit.Get(n) == null)
                 {
                     Debug.LogError("Missing Chapter 3 draft Level " + n + ". Re-run the draft importer.");
@@ -49,8 +49,8 @@ namespace Shift.Game.Editor
                 Debug.LogError("Expected existing 40-level baseline. Preview not saved.");
                 return;
             }
-            levels.arraySize = 50;
-            for (int n = 41; n <= 50; n++)
+            levels.arraySize = 60;
+            for (int n = 41; n <= 60; n++)
                 levels.GetArrayElementAtIndex(n - 1).objectReferenceValue = Chapter3DraftAudit.Get(n);
             serialized.FindProperty("useLevelSet").boolValue = true;
             serialized.FindProperty("selectedLevel").intValue = 40;
@@ -76,10 +76,10 @@ namespace Shift.Game.Editor
         private void OnGUI()
         {
             EditorGUILayout.Space(10);
-            EditorGUILayout.LabelField("Chapter 3 — Level 41–50", EditorStyles.boldLabel);
+            EditorGUILayout.LabelField("Chapter 3 — Level 41–60", EditorStyles.boldLabel);
             EditorGUILayout.HelpBox("Editor-only preview. Save keys are isolated. Do not build or publish this test scene.",
                 MessageType.Info);
-            selectedLevel = EditorGUILayout.IntSlider("Level", selectedLevel, 41, 50);
+            selectedLevel = EditorGUILayout.IntSlider("Level", selectedLevel, 41, 60);
             GUI.enabled = EditorApplication.isPlaying;
             if (GUILayout.Button("Load Draft Level " + selectedLevel, GUILayout.Height(42)))
             {
