@@ -263,14 +263,18 @@ namespace Shift.Game
             var selectedLabel = select.GetComponentInChildren<Text>();
             selectedLabel.rectTransform.anchorMin = new Vector2(.34f, .08f);
             selectedLabel.rectTransform.anchorMax = new Vector2(.98f, .92f);
-            Button("Future Companion 1", rail.transform,
+            var lockOne = Button("Future Companion 1", rail.transform,
                 new Vector2(.365f, .09f), new Vector2(.585f, .91f),
-                new Color(.18f, .45f, .51f, .95f), "", "?", "?",
+                new Color(.18f, .45f, .51f, .95f), "", " ", " ",
                 () => ShowPage(MoraHubPage.Collection));
-            Button("Future Companion 2", rail.transform,
+            Picture("Locked Companion One", lockOne.transform, Art("IconLock"),
+                new Vector2(.28f, .22f), new Vector2(.72f, .80f));
+            var lockTwo = Button("Future Companion 2", rail.transform,
                 new Vector2(.60f, .09f), new Vector2(.82f, .91f),
-                new Color(.18f, .45f, .51f, .95f), "", "?", "?",
+                new Color(.18f, .45f, .51f, .95f), "", " ", " ",
                 () => ShowPage(MoraHubPage.Collection));
+            Picture("Locked Companion Two", lockTwo.transform, Art("IconLock"),
+                new Vector2(.28f, .22f), new Vector2(.72f, .80f));
             Button("Future Companion Add", rail.transform,
                 new Vector2(.835f, .09f), new Vector2(.985f, .91f),
                 Ocean, "", "+", "+", () => ShowPage(MoraHubPage.Collection));
@@ -311,16 +315,28 @@ namespace Shift.Game
             Tile("Decor Tile", "Dekor", "Decor", IdentitySymbol.Levels, .663f, .205f, .95f,
                 () => ShowPage(MoraHubPage.Decor));
 
-            Button("Growth Menu", transform, new Vector2(.07f, .123f),
-                new Vector2(.475f, .192f), new Color32(192, 235, 216, 250),
-                "", "GELİŞİM", "GROWTH", () => ShowPage(MoraHubPage.Growth));
-            Button("Collection Menu", transform, new Vector2(.525f, .123f),
-                new Vector2(.93f, .192f), new Color32(192, 235, 216, 250),
-                "", "KOLEKSİYON", "COLLECTION", () => ShowPage(MoraHubPage.Collection));
+            var growthButton = Button("Growth Menu", transform, new Vector2(.05f, .12f),
+                new Vector2(.48f, .194f), SeaGlass, "",
+                "GELİŞİM", "GROWTH", () => ShowPage(MoraHubPage.Growth));
+            Picture("Growth Menu Leaf", growthButton.transform, Art("IconGrowth"),
+                new Vector2(.055f, .18f), new Vector2(.31f, .83f));
+            growthButton.GetComponentInChildren<Text>().rectTransform.anchorMin =
+                new Vector2(.31f, .06f);
+            var collectionButton = Button("Collection Menu", transform, new Vector2(.52f, .12f),
+                new Vector2(.95f, .194f), SeaGlass, "",
+                "KOLEKSİYON", "COLLECTION", () => ShowPage(MoraHubPage.Collection));
+            Picture("Collection Menu Cards", collectionButton.transform, Art("IconCollection"),
+                new Vector2(.055f, .16f), new Vector2(.31f, .84f));
+            collectionButton.GetComponentInChildren<Text>().rectTransform.anchorMin =
+                new Vector2(.31f, .06f);
 
-            Button("Return to Chapters", transform, new Vector2(.20f, .034f),
-                new Vector2(.80f, .101f), DeepTeal, "", "BÖLÜMLERE DÖN",
+            var exitButton = Button("Return to Chapters", transform, new Vector2(.145f, .025f),
+                new Vector2(.855f, .10f), DeepTeal, "", "BÖLÜMLERE DÖN",
                 "BACK TO CHAPTERS", exit);
+            Picture("Return Spark Left", exitButton.transform, Art("IconSpark"),
+                new Vector2(.075f, .27f), new Vector2(.19f, .75f));
+            Picture("Return Spark Right", exitButton.transform, Art("IconSpark"),
+                new Vector2(.81f, .27f), new Vector2(.925f, .75f));
         }
 
         private void Tile(string name, string tr, string en, IdentitySymbol symbol,
@@ -487,9 +503,9 @@ namespace Shift.Game
                 var locked = Surface("Future Companion " + (i + 1), parent,
                     new Color32(213, 226, 217, 255),
                     new Vector2(left, .265f), new Vector2(left + .37f, .47f));
-                Label("Future Character Symbol", locked.transform, "?", 73,
-                    Ocean, new Vector2(.10f, .30f), new Vector2(.90f, .93f));
-                Label("Future Character Label", locked.transform, "", 24, DeepTeal,
+                Picture("Locked Character Icon", locked.transform, Art("IconLock"),
+                    new Vector2(.25f, .31f), new Vector2(.75f, .93f));
+                Label("Future Character Label", locked.transform, "", 24, Ivory,
                     new Vector2(.05f, .08f), new Vector2(.95f, .30f),
                     () => Turkish ? "Henüz Kilitli" : "Not Yet Unlocked");
             }
@@ -557,7 +573,8 @@ namespace Shift.Game
             button.targetGraphic = image;
             button.transition = Selectable.Transition.ColorTint;
             button.onClick.AddListener(() => { if (click != null) click(); });
-            var title = Label(name + " Label", rect, "", 29, DeepTeal,
+            var title = Label(name + " Label", rect, "",
+                name == "Return to Chapters" ? 38 : 30, DeepTeal,
                 new Vector2(.045f, .05f), new Vector2(.955f, .95f),
                 () => Turkish ? tr : en);
             if (color == DeepTeal || color == Ocean) title.color = Ivory;
