@@ -89,7 +89,7 @@ namespace Shift.Game
             hub.rounded = rounded;
             hub.circle = circle;
             hub.feel = feel;
-            hub.baseSeed = seed ?? premium;
+            hub.baseSeed = premium ?? seed;
             hub.premiumLayered = premium != null;
             hub.stageArt = new Sprite[4];
             hub.islandStages = new Sprite[4];
@@ -129,8 +129,10 @@ namespace Shift.Game
             var wordmark = Label("SHIFT Wordmark", transform, "S H I F T", 58, Ivory,
                 new Vector2(.18f, .94f), new Vector2(.82f, .99f));
             wordmark.fontStyle = FontStyle.Bold;
-            Button("Exit To Chapters Top", transform, new Vector2(.04f, .937f),
-                new Vector2(.15f, .992f), DeepTeal, "", "←", "←", returnToChapters);
+            var backButton = Button("Exit To Chapters Top", transform, new Vector2(.04f, .937f),
+                new Vector2(.15f, .992f), DeepTeal, "", "", "", returnToChapters);
+            Picture("Back Navigation Icon", backButton.transform, Art("IconBack"),
+                new Vector2(.18f, .14f), new Vector2(.82f, .86f));
 
             BuildCharacterRail();
             var title = Label("MORA Name", transform, "M O R A", 74, Ivory,
@@ -144,7 +146,7 @@ namespace Shift.Game
             if (premiumLayered)
             {
                 var stageGround = PlaceholderVisuals.Rect("MORA Four-Stage Island", transform,
-                    new Vector2(.045f, .408f), new Vector2(.955f, .663f));
+                    new Vector2(.045f, .481f), new Vector2(.955f, .736f));
                 islandBase = stageGround.gameObject.AddComponent<Image>();
                 islandBase.sprite = islandStages[0];
                 islandBase.preserveAspect = true;
