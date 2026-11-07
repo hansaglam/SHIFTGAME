@@ -150,7 +150,7 @@ namespace Shift.Game
             if (premiumLayered)
             {
                 var stageGround = PlaceholderVisuals.Rect("MORA Four-Stage Island", transform,
-                    new Vector2(.045f, .481f), new Vector2(.955f, .736f));
+                    new Vector2(.028f, .472f), new Vector2(.972f, .748f));
                 islandBase = stageGround.gameObject.AddComponent<Image>();
                 islandBase.sprite = islandStages[0];
                 islandBase.preserveAspect = true;
@@ -180,8 +180,8 @@ namespace Shift.Game
             }
             BuildWaterGlints();
             portraitRect = PlaceholderVisuals.Rect("MORA Grounded Portrait", transform,
-                premiumLayered ? new Vector2(.115f, .55f) : new Vector2(.04f, .431f),
-                premiumLayered ? new Vector2(.885f, .833f) : new Vector2(.96f, .811f));
+                premiumLayered ? new Vector2(.083f, .523f) : new Vector2(.04f, .431f),
+                premiumLayered ? new Vector2(.917f, .840f) : new Vector2(.96f, .811f));
             portrait = portraitRect.gameObject.AddComponent<Image>();
             portrait.sprite = stageArt[0];
             portrait.preserveAspect = true;
@@ -325,9 +325,10 @@ namespace Shift.Game
                     i == 0 ? Gold : new Color(.70f, .85f, .81f, .57f),
                     new Vector2(x, .30f), new Vector2(x + .19f, .65f));
                 Label("Growth Number " + stageNumber, indicator.transform,
-                    stageNumber.ToString("00"), 27, DeepTeal, Vector2.zero, Vector2.one);
+                    stageNumber.ToString("00"), 30, stageNumber == 1 ? DeepTeal : Ivory,
+                    Vector2.zero, Vector2.one);
             }
-            growthSummary = Label("Growth Ribbon Note", ribbon.transform, "", 21, Ivory,
+            growthSummary = Label("Growth Ribbon Note", ribbon.transform, "", 25, Ivory,
                 new Vector2(.04f, .015f), new Vector2(.96f, .24f));
             LocalizedLabel.Bind(growthSummary, () => Turkish
                 ? "Yeni bölümlerle gelişecek · Ön izleme"
@@ -469,7 +470,7 @@ namespace Shift.Game
                               : "MORA's habitat will come alive over time.");
             Picture("Current Habitat", parent, stageArt[0],
                 new Vector2(.17f, .34f), new Vector2(.83f, .73f));
-            Label("Decor Status", parent, "", 30, DeepTeal,
+            Label("Decor Status", parent, "", 30, Ivory,
                 new Vector2(.09f, .235f), new Vector2(.91f, .35f),
                 () => Turkish ? "Mevcut habitat · Yeni dekorlar hazırlanıyor"
                               : "Current habitat · More decor is in development");
@@ -601,12 +602,12 @@ namespace Shift.Game
             button.targetGraphic = image;
             button.transition = Selectable.Transition.ColorTint;
             button.onClick.AddListener(() => { if (click != null) click(); });
+            bool lightSurface = color == Ivory || color == Gold;
             var title = Label(name + " Label", rect, "",
-                name == "Return to Chapters" ? 38 : 30, DeepTeal,
+                name == "Return to Chapters" ? 38 : 33,
+                lightSurface ? DeepTeal : Ivory,
                 new Vector2(.045f, .05f), new Vector2(.955f, .95f),
                 () => Turkish ? tr : en);
-            if (color == DeepTeal || color == Ocean || color == SeaGlass)
-                title.color = Ivory;
             title.fontStyle = FontStyle.Bold;
             var press = rect.gameObject.AddComponent<PresentationMotion>();
             press.Settings = feel;
