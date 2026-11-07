@@ -21,11 +21,15 @@ namespace Shift.Game.Editor
             importer.mipmapEnabled = false;
             importer.isReadable = false;
             importer.filterMode = FilterMode.Bilinear;
-            importer.textureCompression = TextureImporterCompression.CompressedHQ;
+            string file = System.IO.Path.GetFileNameWithoutExtension(assetPath);
+            bool frameOrIcon = file.StartsWith("Frame") || file.StartsWith("Icon");
+            // Tiny UI decals stay crisp while large scene art remains compressed.
+            importer.textureCompression = frameOrIcon
+                ? TextureImporterCompression.Uncompressed
+                : TextureImporterCompression.CompressedHQ;
             bool characterOrHabitat = assetPath.Contains("MoraStage") ||
                 assetPath.Contains("HabitatStage");
             importer.maxTextureSize = characterOrHabitat ? 1024 : 512;
-            string file = System.IO.Path.GetFileNameWithoutExtension(assetPath);
             importer.spriteBorder = file.StartsWith("Frame")
                 ? new Vector4(34f, 32f, 34f, 32f) : Vector4.zero;
         }
