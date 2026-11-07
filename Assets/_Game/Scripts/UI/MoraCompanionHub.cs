@@ -324,8 +324,11 @@ namespace Shift.Game
             label.fontStyle = FontStyle.Bold;
             label.rectTransform.anchorMin = new Vector2(.08f, .055f);
             label.rectTransform.anchorMax = new Vector2(.92f, .43f);
-            IdentityIcon.Create("Action Motif", button.transform, symbol, Ocean,
-                new Vector2(.38f, .49f), new Vector2(.62f, .90f));
+            string fileName = symbol == IdentitySymbol.Spark ? "IconApple"
+                : symbol == IdentitySymbol.Forward ? "IconPlay"
+                : symbol == IdentitySymbol.Levels ? "IconDecor" : "IconSpark";
+            Picture("Premium Action Icon", button.transform, Art(fileName),
+                new Vector2(.32f, .44f), new Vector2(.68f, .95f));
         }
 
         private void BuildSections()
@@ -334,10 +337,10 @@ namespace Shift.Game
                 Vector2.zero, Vector2.one);
             overlay = root.gameObject;
             var blocker = overlay.AddComponent<Image>();
-            blocker.color = new Color(.025f, .13f, .18f, .83f);
+            blocker.color = new Color(.025f, .13f, .18f, .18f);
             blocker.raycastTarget = true;
-            var card = Surface("MORA Room Panel", root, Ivory,
-                new Vector2(.075f, .12f), new Vector2(.925f, .86f));
+            var card = Surface("MORA Room Panel", root, DeepTeal,
+                new Vector2(.06f, .095f), new Vector2(.94f, .51f));
             VisualTheme.Shadow(card, 8);
             pages = new GameObject[5];
             for (int i = 0; i < pages.Length; i++)
@@ -346,7 +349,7 @@ namespace Shift.Game
                 var view = PlaceholderVisuals.Rect(section + " View", card.transform,
                     Vector2.zero, Vector2.one);
                 pages[i] = view.gameObject;
-                var heading = Label(section + " Heading", view, "", 54, DeepTeal,
+                var heading = Label(section + " Heading", view, "", 49, Gold,
                     new Vector2(.08f, .85f), new Vector2(.92f, .94f),
                     () => TitleFor(section, Turkish));
                 heading.fontStyle = FontStyle.Bold;
@@ -365,22 +368,20 @@ namespace Shift.Game
 
         private void BuildFeed(Transform parent)
         {
-            Label("Feed Note", parent, "", 30, VisualTheme.Muted,
+            Label("Feed Note", parent, "", 30, Ivory,
                 new Vector2(.10f, .745f), new Vector2(.90f, .84f),
                 () => Turkish ? "MORA'ya küçük bir hediye sun."
                               : "Give MORA a little treat.");
-            var fruit = Surface("Golden Berry", parent, Gold, new Vector2(.36f, .51f),
-                new Vector2(.64f, .69f));
+            var fruit = Picture("Golden Fruit", parent, Art("IconApple"),
+                new Vector2(.36f, .50f), new Vector2(.64f, .70f));
             feedToken = fruit.rectTransform;
-            Label("Berry Mark", parent, "●", 90, Ocean, new Vector2(.37f, .53f),
-                new Vector2(.63f, .68f));
-            feedMessage = Label("Feed Result", parent, "", 30, DeepTeal,
+            feedMessage = Label("Feed Result", parent, "", 30, Ivory,
                 new Vector2(.08f, .37f), new Vector2(.92f, .48f));
             RefreshFeedMessage();
             Button("Give Berry", parent, new Vector2(.20f, .24f),
                 new Vector2(.80f, .335f), Ocean, "", "MEYVE VER",
                 "GIVE BERRY", Feed);
-            Label("Feed Preview Notice", parent, "", 23, VisualTheme.Muted,
+            Label("Feed Preview Notice", parent, "", 23, Ivory,
                 new Vector2(.09f, .145f), new Vector2(.91f, .205f),
                 () => Turkish ? "Deneme etkileşimi · Enerji veya ödül verilmez"
                               : "Preview interaction · No energy or rewards");
@@ -388,22 +389,20 @@ namespace Shift.Game
 
         private void BuildPlay(Transform parent)
         {
-            Label("Play Note", parent, "", 30, VisualTheme.Muted,
+            Label("Play Note", parent, "", 30, Ivory,
                 new Vector2(.09f, .755f), new Vector2(.91f, .835f),
                 () => Turkish ? "MORA ile kısa bir oyun oyna."
                               : "Enjoy a quick moment with MORA.");
-            var ball = Surface("Play Ball", parent, SeaGlass,
-                new Vector2(.355f, .505f), new Vector2(.645f, .70f));
+            var ball = Picture("Play Ball", parent, Art("IconBall"),
+                new Vector2(.355f, .50f), new Vector2(.645f, .70f));
             playToken = ball.rectTransform;
-            Label("Ball Mark", parent, "★", 78, DeepTeal,
-                new Vector2(.37f, .53f), new Vector2(.63f, .665f));
-            playMessage = Label("Play Result", parent, "", 29, DeepTeal,
+            playMessage = Label("Play Result", parent, "", 29, Ivory,
                 new Vector2(.10f, .37f), new Vector2(.90f, .48f));
             RefreshPlayMessage();
             Button("Bounce Ball", parent, new Vector2(.20f, .24f),
                 new Vector2(.80f, .335f), Ocean, "", "TOPU AT",
                 "TOSS THE BALL", Play);
-            Label("Play Preview Notice", parent, "", 23, VisualTheme.Muted,
+            Label("Play Preview Notice", parent, "", 23, Ivory,
                 new Vector2(.09f, .145f), new Vector2(.91f, .205f),
                 () => Turkish ? "Deneme etkileşimi · Mini oyun daha sonra"
                               : "Preview interaction · Mini-game comes later");
@@ -411,7 +410,7 @@ namespace Shift.Game
 
         private void BuildDecor(Transform parent)
         {
-            Label("Decor Note", parent, "", 28, VisualTheme.Muted,
+            Label("Decor Note", parent, "", 28, Ivory,
                 new Vector2(.07f, .75f), new Vector2(.93f, .845f),
                 () => Turkish ? "MORA'nın yuvası da zamanla canlanacak."
                               : "MORA's habitat will come alive over time.");
@@ -421,7 +420,7 @@ namespace Shift.Game
                 new Vector2(.09f, .235f), new Vector2(.91f, .35f),
                 () => Turkish ? "Mevcut habitat · Yeni dekorlar hazırlanıyor"
                               : "Current habitat · More decor is in development");
-            Label("Decor Preview Notice", parent, "", 23, VisualTheme.Muted,
+            Label("Decor Preview Notice", parent, "", 23, Ivory,
                 new Vector2(.10f, .14f), new Vector2(.90f, .21f),
                 () => Turkish ? "Henüz satın alma ve envanter sistemi yok"
                               : "Purchases and inventory are not available yet");
@@ -429,7 +428,7 @@ namespace Shift.Game
 
         private void BuildGrowth(Transform parent)
         {
-            Label("Growth Note", parent, "", 28, VisualTheme.Muted,
+            Label("Growth Note", parent, "", 28, Ivory,
                 new Vector2(.07f, .77f), new Vector2(.93f, .85f),
                 () => Turkish ? "Dört form; ilerleme yeni bölümlerle açılacak."
                               : "Four forms; future chapters will unlock growth.");
@@ -452,14 +451,14 @@ namespace Shift.Game
             }
             growthThumbnail = Picture("Selected Growth Artwork", parent, stageArt[0],
                 new Vector2(.22f, .235f), new Vector2(.78f, .48f));
-            growthMessage = Label("Growth Stage Status", parent, "", 27, DeepTeal,
+            growthMessage = Label("Growth Stage Status", parent, "", 27, Ivory,
                 new Vector2(.07f, .13f), new Vector2(.93f, .225f));
             RefreshGrowthMessage();
         }
 
         private void BuildCollection(Transform parent)
         {
-            Label("Collection Note", parent, "", 27, VisualTheme.Muted,
+            Label("Collection Note", parent, "", 27, Ivory,
                 new Vector2(.07f, .765f), new Vector2(.93f, .845f),
                 () => Turkish ? "Karakterler zamanla koleksiyonuna katılacak."
                               : "More companions will join your collection.");
@@ -485,7 +484,7 @@ namespace Shift.Game
                     new Vector2(.05f, .08f), new Vector2(.95f, .30f),
                     () => Turkish ? "Henüz Kilitli" : "Not Yet Unlocked");
             }
-            Label("Collection Preview Notice", parent, "", 23, VisualTheme.Muted,
+            Label("Collection Preview Notice", parent, "", 23, Ivory,
                 new Vector2(.07f, .16f), new Vector2(.93f, .24f),
                 () => Turkish ? "Özel karakter ödülleri daha sonra eklenecek"
                               : "Special companion rewards are coming later");
@@ -506,7 +505,18 @@ namespace Shift.Game
         private Image Surface(string name, Transform parent, Color color,
             Vector2 min, Vector2 max)
         {
-            var image = VisualTheme.Surface(name, parent, rounded, color, min, max);
+            string look = color == Gold ? "FrameGold"
+                : color == Ivory ? "FrameCream"
+                : color == SeaGlass ? "FrameGlass"
+                : name.StartsWith("Growth Step") ? "FrameGlass"
+                : name.Contains("Future Companion") ? "FrameMuted"
+                : name.Contains("Owned MORA") ? "FrameGold"
+                : "FrameTeal";
+            Sprite skin = Art(look);
+            var image = VisualTheme.Surface(name, parent,
+                skin != null ? skin : rounded, skin != null ? Color.white : color, min, max);
+            if (skin != null) image.type = skin.border.sqrMagnitude > 0f ?
+                Image.Type.Sliced : Image.Type.Simple;
             image.raycastTarget = false;
             return image;
         }
@@ -524,9 +534,15 @@ namespace Shift.Game
         {
             var rect = PlaceholderVisuals.Rect(name, parent, min, max);
             var image = rect.gameObject.AddComponent<Image>();
-            image.sprite = rounded;
-            image.type = Image.Type.Sliced;
-            image.color = color;
+            string skinName = color == DeepTeal || color == Ocean ? "FrameTeal"
+                : color == Gold ? "FrameGold"
+                : color == SeaGlass ? "FrameGlass"
+                : color == Ivory ? "FrameCream" : "FrameGlass";
+            Sprite skin = Art(skinName);
+            image.sprite = skin != null ? skin : rounded;
+            image.type = skin != null && skin.border.sqrMagnitude == 0 ?
+                Image.Type.Simple : Image.Type.Sliced;
+            image.color = skin != null ? Color.white : color;
             image.raycastTarget = true;
             var button = rect.gameObject.AddComponent<Button>();
             button.targetGraphic = image;
