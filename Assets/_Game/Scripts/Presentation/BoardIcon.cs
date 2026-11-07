@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 namespace Shift.Game
 {
-    public enum BoardIconShape { Arrow, Clockwise, Diamond, DoubleDiamond, Crate }
+    public enum BoardIconShape { Arrow, Clockwise, Diamond, DoubleDiamond, Crate, Echo }
     [RequireComponent(typeof(CanvasRenderer))]
     public sealed class BoardIcon : MaskableGraphic
     {
@@ -63,6 +63,19 @@ namespace Shift.Game
                 // The right-hand tangent is (0,-1): the prominent arrow points DOWN, never left/back.
                 Tri(endpoint+normal*.14f-tangent*.04f,endpoint+tangent*.22f,endpoint-normal*.14f-tangent*.04f);
                 Quad(new Vector2(-.12f,-.32f),new Vector2(-.12f,-.08f),new Vector2(.12f,-.08f),new Vector2(.12f,-.32f));
+            }
+            else if (Shape == BoardIconShape.Echo)
+            {
+                // Two opposing arrows with a central diamond, not a Restart glyph.
+                // Facing Right: next turn CW. Facing Left: next turn CCW.
+                float sign = Facing == Direction.Left ? -1f : 1f;
+                Bar(new Vector2(-.35f*sign,.23f),new Vector2(.13f*sign,.23f),.115f);
+                Tri(new Vector2(.10f*sign,.42f),new Vector2(.39f*sign,.23f),
+                    new Vector2(.10f*sign,.04f));
+                Bar(new Vector2(.35f*sign,-.23f),new Vector2(-.13f*sign,-.23f),.115f);
+                Tri(new Vector2(-.10f*sign,-.04f),new Vector2(-.39f*sign,-.23f),
+                    new Vector2(-.10f*sign,-.42f));
+                Diamond(0,.12f);
             }
             else if(Shape==BoardIconShape.Diamond) Diamond(0,.34f);
             else if(Shape==BoardIconShape.DoubleDiamond) { Diamond(-.26f,.25f); Diamond(.26f,.25f); }

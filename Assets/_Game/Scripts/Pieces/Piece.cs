@@ -67,6 +67,10 @@ namespace Shift.Game
         private void OnDisable() => CancelMechanismFeedback();
         private void OnApplicationPause(bool paused) { if (paused) CancelMechanismFeedback(); }
         private void OnApplicationFocus(bool focused) { if (!focused) CancelMechanismFeedback(); }
+        public void ShowEcho(bool nextClockwise)
+        {
+            if (Data.Type == PieceType.EchoRotator) appearance.ShowEcho(nextClockwise);
+        }
         public void ShowGate(bool open)
         {
             if (Data.Type != PieceType.Gate) return;
@@ -76,7 +80,7 @@ namespace Shift.Game
         {
             pulsing = false; pulseTime = 0; exitScale = 1;
             if (channelFeedback != null) channelFeedback.color = Color.clear;
-            gameObject.SetActive(Data.Active); Place(Data.Position); ShowDirection(Data.Direction); ShowGate(Data.GateOpen);
+            gameObject.SetActive(Data.Active); Place(Data.Position); ShowDirection(Data.Direction); ShowGate(Data.GateOpen); ShowEcho(Data.EchoNextClockwise);
             opacity.alpha = 1; body.anchoredPosition = Vector2.zero; appearance.Highlight(0); body.localScale = Vector3.one; trail.color = Color.clear; image.color = Color.white;
         }
         public void Feedback(float strength, bool isBlocked = false)

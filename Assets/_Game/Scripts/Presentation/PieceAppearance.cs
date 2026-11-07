@@ -6,7 +6,7 @@ namespace Shift.Game
     // A view-only composition. Gate state and direction are supplied by action playback.
     public sealed class PieceAppearance
     {
-        private BoardIcon arrow, arrowShadow;
+        private BoardIcon arrow, arrowShadow, echoGlyph;
         private GameObject barrier, channelHeader;
         private Image threshold, flash;
         public bool GateShownOpen { get; private set; }
@@ -25,7 +25,7 @@ namespace Shift.Game
             Color tint=data.Type switch
             {
                 PieceType.Normal => PieceTint(data.Color), PieceType.Direction => new Color32(97,126,158,255),
-                PieceType.Rotator => new Color32(123,100,171,255), PieceType.PushBlock => new Color32(191,134,69,255),
+                PieceType.Rotator => new Color32(123,100,171,255), PieceType.EchoRotator => new Color32(40,143,164,255), PieceType.PushBlock => new Color32(191,134,69,255),
                 PieceType.Switch => new Color32(97,73,43,255), PieceType.Gate => new Color32(41,57,70,255),
                 PieceType.Exit => data.Color==PieceColor.None?new Color32(51,190,142,255):PieceTint(data.Color),
                 _ => new Color32(46,63,79,255)
@@ -41,6 +41,17 @@ namespace Shift.Game
             {
                 BoardIcon.Create("Rotation Relief",body,BoardIconShape.Clockwise,new Color(0,0,0,.24f),new Vector2(.09f,.07f),new Vector2(.91f,.89f));
                 BoardIcon.Create("Clockwise Icon",body,BoardIconShape.Clockwise,new Color32(248,244,255,255),new Vector2(.09f,.10f),new Vector2(.91f,.92f));
+            }
+            else if(data.Type==PieceType.EchoRotator)
+            {
+                Surface("Echo Inner Recess",body,new Color32(15,77,92,255),
+                    new Vector2(.07f,.07f),new Vector2(.93f,.93f),BoardSurface.Well);
+                var rim=Surface("Echo Teal Rim",body,new Color32(69,213,220,255),
+                    new Vector2(.17f,.17f),new Vector2(.83f,.83f));
+                echoGlyph=BoardIcon.Create("Echo State Arrows",rim.transform,
+                    BoardIconShape.Echo,new Color32(241,254,246,255),
+                    new Vector2(.04f,.04f),new Vector2(.96f,.96f));
+                ShowEcho(data.EchoNextClockwise);
             }
             else if(data.Type==PieceType.PushBlock)
             {
@@ -88,6 +99,11 @@ namespace Shift.Game
         public void UseExternalChannelBadge() { if(channelHeader!=null) channelHeader.SetActive(false); }
         public void Direction(Direction value)
         { if(arrow!=null) { arrow.Configure(BoardIconShape.Arrow,value); arrowShadow.Configure(BoardIconShape.Arrow,value); } }
+        public void ShowEcho(bool nextClockwise)
+        {
+            if(echoGlyph != null) echoGlyph.Configure(BoardIconShape.Echo,
+                nextClockwise ? Direction.Right : Direction.Left);
+        }
         public void ShowGate(bool open)
         { GateShownOpen=open; if(barrier!=null) barrier.SetActive(!open); if(threshold!=null) threshold.gameObject.SetActive(open); }
         public void Highlight(float amount) { if(flash!=null) flash.color=new Color(1,1,1,amount); }

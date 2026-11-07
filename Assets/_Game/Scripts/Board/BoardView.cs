@@ -112,6 +112,13 @@ namespace Shift.Game
                         { tile.Feedback(feel.tapPunch); rotated = tile.Data.Type == PieceType.Rotator; }
                     audioManager.Reaction(rotated ? AudioCue.Rotate : AudioCue.DirectionChange, i + 1);
                 }
+                else if (action.Type == BoardActionType.EchoFlipped)
+                {
+                    piece.ShowEcho(action.Direction == Direction.Right);
+                    piece.Feedback(feel.tapPunch);
+                    audioManager.Reaction(AudioCue.Rotate, i + 1);
+                    haptics.Interaction();
+                }
                 else if (action.Type == BoardActionType.SwitchActivated)
                 { piece.Feedback(feel.tapPunch); audioManager.Reaction(AudioCue.SwitchActivate, i + 1); haptics.Interaction(); }
                 else if (action.Type == BoardActionType.GateOpened || action.Type == BoardActionType.GateClosed)
