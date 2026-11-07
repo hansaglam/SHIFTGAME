@@ -35,6 +35,8 @@ namespace Shift.Game
         private float faceExpires;
         private Image[] stars;
         private RectTransform[] starRects;
+        private Image[] waterLights;
+        private RectTransform[] waterRects;
         private RectTransform feedToken, playToken;
         private float feedMotion, playMotion;
         private int growthInfoStage = 1;
@@ -170,6 +172,7 @@ namespace Shift.Game
                     ground.raycastTarget = false;
                 }
             }
+            BuildWaterGlints();
             portraitRect = PlaceholderVisuals.Rect("MORA Grounded Portrait", transform,
                 premiumLayered ? new Vector2(.115f, .55f) : new Vector2(.04f, .431f),
                 premiumLayered ? new Vector2(.885f, .833f) : new Vector2(.96f, .811f));
@@ -212,6 +215,25 @@ namespace Shift.Game
         }
 
         private static Color CreamText() => new Color32(255, 248, 215, 255);
+
+        private void BuildWaterGlints()
+        {
+            if (!premiumLayered || circle == null) return;
+            waterLights = new Image[2];
+            waterRects = new RectTransform[2];
+            for (int i = 0; i < 2; i++)
+            {
+                var rect = PlaceholderVisuals.Rect("Habitat Water Shimmer " + i, transform,
+                    new Vector2(.22f + i * .13f, .445f - i * .012f),
+                    new Vector2(.67f + i * .08f, .466f - i * .012f));
+                var image = rect.gameObject.AddComponent<Image>();
+                image.sprite = circle;
+                image.type = Image.Type.Simple;
+                image.color = new Color(.36f, .91f, 1f, .09f);
+                image.raycastTarget = false;
+                waterLights[i] = image; waterRects[i] = rect;
+            }
+        }
 
         private void BuildAmbientStars()
         {
@@ -805,6 +827,17 @@ namespace Shift.Game
             }
             if (facialOverlay != null && Time.unscaledTime >= faceExpires)
                 facialOverlay.color = new Color(1f, 1f, 1f, 0f);
+            if (waterLights != null)
+            {
+                for (int i = 0; i < waterLights.Length; i++)
+                {
+                    float wave = reduced ? 0f : Mathf.Sin(Time.unscaledTime * .63f + i * 1.8f);
+                    waterLights[i].color = new Color(.36f, .91f, 1f,
+                        .075f + .035f * wave);
+                    waterRects[i].localScale = reduced ? Vector3.one :
+                        new Vector3(1f + .08f * wave, 1f, 1f);
+                }
+            }
             if (stars != null)
             {
                 for (int i = 0; i < stars.Length; i++)
@@ -844,6 +877,8 @@ namespace Shift.Game
             if (playToken != null) playToken.localScale = Vector3.one;
             if (stars != null) for (int i = 0; i < stars.Length; i++)
                 if (starRects[i] != null) starRects[i].anchoredPosition = Vector2.zero;
+            if (waterRects != null) for (int i = 0; i < waterRects.Length; i++)
+                if (waterRects[i] != null) waterRects[i].localScale = Vector3.one;
             if (facialOverlay != null) facialOverlay.color = new Color(1f, 1f, 1f, 0f);
             if (inTransition) FinishBlend();
         }
