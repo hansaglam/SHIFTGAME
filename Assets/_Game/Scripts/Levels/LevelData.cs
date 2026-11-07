@@ -94,6 +94,9 @@ namespace Shift.Game
                     !Enum.IsDefined(typeof(Direction), p.direction)) { error = "Unknown piece enum value."; return false; }
                 if (p.position.x < 0 || p.position.y < 0 || p.position.x >= width || p.position.y >= height)
                 { error = $"Piece outside board at {p.position}."; return false; }
+                if (p.type == PieceType.EchoRotator &&
+                    (p.color != PieceColor.None || p.direction != Direction.None))
+                { error = "Echo rotator has no color or fixed direction."; return false; }
                 bool stateTile = p.type == PieceType.Switch || p.type == PieceType.Gate;
                 if (stateTile && (p.channel < 1 || p.channel > 2 || p.color != PieceColor.None || p.direction != Direction.None))
                 { error = "Switch/Gate requires channel 1 or 2, no color and no direction."; return false; }

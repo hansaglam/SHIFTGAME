@@ -11,6 +11,15 @@ namespace Shift.Game
             _ => new GridPosition(0, 0)
         };
 
+        public static Direction RotateCounterClockwise(Direction direction) => direction switch
+        {
+            Direction.Up => Direction.Left,
+            Direction.Left => Direction.Down,
+            Direction.Down => Direction.Right,
+            Direction.Right => Direction.Up,
+            _ => Direction.None
+        };
+
         public static Direction RotateClockwise(Direction direction) => direction switch
         {
             Direction.Up => Direction.Right,

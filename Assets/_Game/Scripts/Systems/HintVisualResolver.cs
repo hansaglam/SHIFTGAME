@@ -6,19 +6,19 @@ namespace Shift.Game
     {
         private readonly GridPosition[] positions;
         private readonly Direction[] directions;
-        private readonly bool[] active, gates;
+        private readonly bool[] active, gates, echo;
         private readonly int moves, width, height;
         private readonly GameState state;
         public HintBoardState(BoardManager board)
         {
             moves = board.MovesRemaining; width = board.Width; height = board.Height; state = board.State;
-            int n = board.Pieces.Count; positions = new GridPosition[n]; directions = new Direction[n]; active = new bool[n]; gates = new bool[n];
-            for (int i = 0; i < n; i++) { var p = board.Pieces[i]; positions[i] = p.Position; directions[i] = p.Direction; active[i] = p.Active; gates[i] = p.GateOpen; }
+            int n = board.Pieces.Count; positions = new GridPosition[n]; directions = new Direction[n]; active = new bool[n]; gates = new bool[n]; echo = new bool[n];
+            for (int i = 0; i < n; i++) { var p = board.Pieces[i]; positions[i] = p.Position; directions[i] = p.Direction; active[i] = p.Active; gates[i] = p.GateOpen; echo[i] = p.EchoNextClockwise; }
         }
         public bool Matches(BoardManager board)
         {
             if (board == null || board.State != state || board.MovesRemaining != moves || board.Width != width || board.Height != height || board.Pieces.Count != positions.Length) return false;
-            for (int i = 0; i < positions.Length; i++) { var p = board.Pieces[i]; if (p.Position != positions[i] || p.Direction != directions[i] || p.Active != active[i] || p.GateOpen != gates[i]) return false; }
+            for (int i = 0; i < positions.Length; i++) { var p = board.Pieces[i]; if (p.Position != positions[i] || p.Direction != directions[i] || p.Active != active[i] || p.GateOpen != gates[i] || p.EchoNextClockwise != echo[i]) return false; }
             return true;
         }
     }

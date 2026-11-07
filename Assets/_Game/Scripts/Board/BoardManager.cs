@@ -26,7 +26,7 @@ namespace Shift.Game
             for (int i = 0; i < pieces.Length; i++)
             {
                 var p = pieces[i]; var saved = undoSnapshot[i];
-                p.Position = saved.Position; p.Direction = saved.Direction; p.Active = saved.Active; p.GateOpen = saved.GateOpen;
+                p.Position = saved.Position; p.Direction = saved.Direction; p.Active = saved.Active; p.GateOpen = saved.GateOpen; p.EchoNextClockwise = saved.EchoNextClockwise;
                 if (p.Active && p.Movable) occupants[p.Position.x, p.Position.y] = p;
             }
             MovesRemaining = undoMoves; State = GameState.Playing;
@@ -37,7 +37,7 @@ namespace Shift.Game
         private HashSet<PieceColor> targetColors;
         private bool overflow;
         private int operations;
-        private struct Snapshot { public GridPosition Position; public Direction Direction; public bool Active; public bool GateOpen; }
+        private struct Snapshot { public GridPosition Position; public Direction Direction; public bool Active; public bool GateOpen; public bool EchoNextClockwise; }
 
         public int Width { get; private set; }
         public int Height { get; private set; }
@@ -82,7 +82,7 @@ namespace Shift.Game
             actions.Clear(); overflow = false; operations = 0; LastReactionWasCancelled = false;
             Array.Clear(moving, 0, moving.Length);
             for (int i = 0; i < pieces.Length; i++)
-                snapshots[i] = new Snapshot { Position = pieces[i].Position, Direction = pieces[i].Direction, Active = pieces[i].Active, GateOpen = pieces[i].GateOpen };
+                snapshots[i] = new Snapshot { Position = pieces[i].Position, Direction = pieces[i].Direction, Active = pieces[i].Active, GateOpen = pieces[i].GateOpen, EchoNextClockwise = pieces[i].EchoNextClockwise };
             Move(piece, piece.Direction, 0);
             if (overflow)
             {
@@ -90,7 +90,7 @@ namespace Shift.Game
                 Array.Clear(occupants, 0, occupants.Length);
                 for (int i = 0; i < pieces.Length; i++)
                 {
-                    var p = pieces[i]; p.Position = snapshots[i].Position; p.Direction = snapshots[i].Direction; p.Active = snapshots[i].Active; p.GateOpen = snapshots[i].GateOpen;
+                    var p = pieces[i]; p.Position = snapshots[i].Position; p.Direction = snapshots[i].Direction; p.Active = snapshots[i].Active; p.GateOpen = snapshots[i].GateOpen; p.EchoNextClockwise = snapshots[i].EchoNextClockwise;
                     if (p.Active && p.Movable) occupants[p.Position.x, p.Position.y] = p;
                 }
                 actions.Clear(); LastReactionWasCancelled = true;
@@ -163,13 +163,38 @@ namespace Shift.Game
                     Record(gate.GateOpen ? BoardActionType.GateOpened : BoardActionType.GateClosed, gate, gate.Position, gate.Position);
                 }
             }
-            else if (tile.Type == PieceType.Direction || tile.Type == PieceType.Rotator)
+            else if (tile.Type == PieceType.Direction || tile.Type == PieceType.Rotator ||
+                tile.Type == PieceType.EchoRotator)
             {
-                piece.Direction = tile.Type == PieceType.Direction ? tile.Direction : DirectionUtility.RotateClockwise(direction);
+                Direction outgoing;
+                if (tile.Type == PieceType.Direction) outgoing = tile.Direction;
+                else if (tile.Type == PieceType.Rotator) outgoing = DirectionUtility.RotateClockwise(direction);
+                else
+                {
+                    // Each *entry*, including a pushed block, toggles the next turn.
+                    // The current turn uses the pre-toggle state. Snapshot rollback
+                    // also restores this state if a reaction cycles or overflows.
+                    outgoing = tile.EchoNextClockwise
+                        ? DirectionUtility.RotateClockwise(direction)
+                        : DirectionUtility.RotateCounterClockwise(direction);
+                    tile.EchoNextClockwise = !tile.EchoNextClockwise;
+                    RecordEcho(tile);
+                }
+                piece.Direction = outgoing;
                 Record(BoardActionType.Turn, piece, next, next);
-                Move(piece, piece.Direction, depth + 1);
+                Move(piece, outgoing, depth + 1);
             }
             return true;
+        }
+
+        private void RecordEcho(BoardPiece tile)
+        {
+            if (actions.Count >= ReactionLimit) { overflow = true; return; }
+            // Encode the new state in the action, not the final mutable tile state,
+            // so a tile crossed twice in one reaction animates both flips correctly.
+            var facing = tile.EchoNextClockwise ? Direction.Right : Direction.Left;
+            actions.Add(new BoardAction(BoardActionType.EchoFlipped, tile.Id,
+                tile.Position, tile.Position, facing));
         }
 
         private void Record(BoardActionType type, BoardPiece piece, GridPosition from, GridPosition to)

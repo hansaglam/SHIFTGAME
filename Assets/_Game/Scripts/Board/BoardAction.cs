@@ -1,6 +1,6 @@
 namespace Shift.Game
 {
-    public enum BoardActionType { Move, Turn, Deliver, SwitchActivated, GateOpened, GateClosed }
+    public enum BoardActionType { Move, Turn, Deliver, SwitchActivated, GateOpened, GateClosed, EchoFlipped }
 
     public readonly struct BoardAction
     {
@@ -22,6 +22,9 @@ namespace Shift.Game
         public Direction Direction { get; internal set; }
         public int Channel { get; }
         public bool GateOpen { get; internal set; }
+        // Stateful Echo tile: true = next traversal turns clockwise.
+        // Always begins clockwise; no new serialized LevelData field or RNG.
+        public bool EchoNextClockwise { get; internal set; } = true;
         public bool Active { get; internal set; } = true;
         public bool Movable => Type == PieceType.Normal || Type == PieceType.PushBlock;
         internal BoardPiece(int id, PiecePlacement placement)
