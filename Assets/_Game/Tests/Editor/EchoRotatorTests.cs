@@ -81,6 +81,52 @@ namespace Shift.Game.Tests
         }
 
         [Test]
+        public void PushedBlockActivatesEchoWithoutChangingItsColorOrTheObjective()
+        {
+            scratch = ScriptableObject.CreateInstance<LevelData>();
+            scratch.Configure(5, 5, 4, PieceColor.Red, new[]
+            {
+                P(PieceType.Normal, PieceColor.Red, Direction.Right, 0, 2),
+                P(PieceType.PushBlock, PieceColor.None, Direction.None, 1, 2),
+                P(PieceType.EchoRotator, PieceColor.None, Direction.None, 2, 2),
+                P(PieceType.Exit, PieceColor.Red, Direction.None, 4, 4)
+            });
+            Assert.That(scratch.ValidatePlayable(out var error), Is.True, error);
+            var board = new BoardManager(); board.Load(scratch);
+            Assert.That(board.RequestMove(new GridPosition(0, 2)), Is.True);
+            Assert.That(board.Actions.Any(a => a.Type == BoardActionType.EchoFlipped),
+                Is.True, "Pushed boxes must alternate the tile.");
+            Assert.That(board.GetTerrain(new GridPosition(2, 2)).EchoNextClockwise, Is.False);
+            var block = board.Pieces.Single(p => p.Type == PieceType.PushBlock);
+            Assert.That(block.Position, Is.EqualTo(new GridPosition(2, 1)));
+            Assert.That(block.Color, Is.EqualTo(PieceColor.None));
+            board.CompleteResolution();
+            Assert.That(board.State, Is.EqualTo(GameState.Playing));
+            Assert.That(board.Undo(), Is.True);
+            Assert.That(board.GetTerrain(new GridPosition(2, 2)).EchoNextClockwise, Is.True);
+            Assert.That(block.Position, Is.EqualTo(new GridPosition(1, 2)));
+        }
+
+        [Test]
+        public void DifferentEchoTilesKeepIndependentDirectionState()
+        {
+            scratch = ScriptableObject.CreateInstance<LevelData>();
+            scratch.Configure(5, 5, 3, PieceColor.Red, new[]
+            {
+                P(PieceType.Normal, PieceColor.Red, Direction.Right, 0, 2),
+                P(PieceType.EchoRotator, PieceColor.None, Direction.None, 1, 2),
+                P(PieceType.EchoRotator, PieceColor.None, Direction.None, 4, 3),
+                P(PieceType.Exit, PieceColor.Red, Direction.None, 1, 1)
+            });
+            var board = new BoardManager(); board.Load(scratch);
+            Assert.That(board.RequestMove(new GridPosition(0, 2)), Is.True);
+            Assert.That(board.GetTerrain(new GridPosition(1, 2)).EchoNextClockwise, Is.False);
+            Assert.That(board.GetTerrain(new GridPosition(4, 3)).EchoNextClockwise, Is.True);
+            board.CompleteResolution();
+            Assert.That(board.State, Is.EqualTo(GameState.Won));
+        }
+
+        [Test]
         public void PushingATargetThroughEchoChangesItsState()
         {
             var level = Chapter4EchoDrafts.Get(62);
