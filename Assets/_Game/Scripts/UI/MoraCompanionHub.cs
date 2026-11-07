@@ -240,6 +240,15 @@ namespace Shift.Game
                 new Vector2(.012f, .09f), new Vector2(.345f, .91f),
                 Ocean, "", "MORA", "MORA", () => ShowPage(MoraHubPage.Home));
             select.GetComponentInChildren<Text>().fontStyle = FontStyle.Bold;
+            var selected = Art("FrameSelected");
+            if (selected != null)
+            {
+                var image = (Image)select.targetGraphic;
+                image.sprite = selected;
+                image.type = selected.border.sqrMagnitude > 0f ?
+                    Image.Type.Sliced : Image.Type.Simple;
+                image.color = Color.white;
+            }
 
             Sprite avatar = baseSeed ?? stageArt[0];
             if (avatar != null)
@@ -575,8 +584,9 @@ namespace Shift.Game
             if (playToken != null) playToken.localScale = Vector3.one;
             nextTapTime = float.NegativeInfinity;
             fadeTime = reactionTime = 0f;
+            faceExpires = float.NegativeInfinity;
             gameObject.SetActive(true);
-            ShowStageInstant(1);
+            ShowStageInstant(Mathf.Clamp(snapshot.Stage, 1, 4));
             ShowPage(MoraHubPage.Home);
             RefreshGreeting();
             RefreshFeedMessage();
@@ -608,6 +618,7 @@ namespace Shift.Game
             nextTapTime = Time.unscaledTime + .28f;
             touches++;
             reactionTime = .56f;
+            ShowFacialReaction(touches % 2 == 1);
             RefreshGreeting();
         }
 
@@ -615,6 +626,7 @@ namespace Shift.Game
         {
             feedTaps++;
             reactionTime = .56f;
+            ShowFacialReaction(true);
             feedMotion = .48f;
             RefreshFeedMessage();
         }
@@ -623,6 +635,7 @@ namespace Shift.Game
         {
             playTaps++;
             reactionTime = .56f;
+            ShowFacialReaction(true);
             playMotion = .48f;
             RefreshPlayMessage();
         }
@@ -684,17 +697,35 @@ namespace Shift.Game
             RefreshGrowthMessage();
         }
 
+        private void ShowFacialReaction(bool cheerful)
+        {
+            if (!premiumLayered || stage != 1 || facialOverlay == null)
+                return;
+            Sprite expression = cheerful ? happyFace : curiousFace;
+            if (expression == null) return;
+            facialOverlay.sprite = expression;
+            facialOverlay.color = new Color(1f, 1f, 1f, 1f);
+            faceExpires = Time.unscaledTime + 1.5f;
+        }
+
         private void SetStage(int nextStage)
         {
             nextStage = Mathf.Clamp(nextStage, 1, 4);
-            if (stageArt[nextStage - 1] == null || portrait == null || transition == null) return;
+            if (stageArt[nextStage - 1] == null || portrait == null || transition == null)
+                return;
             if (stage == nextStage && !inTransition) return;
-            if (inTransition && transition.color.a > .5f)
-                portrait.sprite = transition.sprite;
+            if (inTransition) FinishBlend(); // Always-visible base persists across taps.
             stage = nextStage;
             transition.sprite = stageArt[stage - 1];
             fadeTime = 0f;
             transition.color = new Color(1f, 1f, 1f, 0f);
+            if (premiumLayered && islandIncoming != null)
+            {
+                islandIncoming.sprite = islandStages[stage - 1];
+                islandIncoming.enabled = islandStages[stage - 1] != null;
+                islandIncoming.color = new Color(1f, 1f, 1f, 0f);
+            }
+            if (facialOverlay != null) facialOverlay.color = new Color(1f, 1f, 1f, 0f);
             inTransition = true;
             if (feel != null && feel.reducedMotion) FinishBlend();
             if (growthThumbnail != null) growthThumbnail.sprite = stageArt[stage - 1];
@@ -702,10 +733,18 @@ namespace Shift.Game
 
         private void ShowStageInstant(int nextStage)
         {
-            stage = nextStage;
+            stage = Mathf.Clamp(nextStage, 1, 4);
+            if (stageArt[stage - 1] == null) stage = 1;
             inTransition = false;
             if (portrait != null) portrait.sprite = stageArt[stage - 1];
             if (transition != null) transition.color = new Color(1f, 1f, 1f, 0f);
+            if (premiumLayered && islandBase != null)
+            {
+                islandBase.sprite = islandStages[stage - 1];
+                islandBase.enabled = islandStages[stage - 1] != null;
+                islandIncoming.color = new Color(1f, 1f, 1f, 0f);
+            }
+            if (facialOverlay != null) facialOverlay.color = new Color(1f, 1f, 1f, 0f);
             if (portraitRect != null) portraitRect.localScale = Vector3.one;
             if (growthThumbnail != null) growthThumbnail.sprite = stageArt[stage - 1];
             RefreshGrowthMessage();
@@ -717,6 +756,12 @@ namespace Shift.Game
             {
                 portrait.sprite = transition.sprite;
                 transition.color = new Color(1f, 1f, 1f, 0f);
+            }
+            if (premiumLayered && islandBase != null && islandIncoming != null)
+            {
+                islandBase.sprite = islandStages[stage - 1];
+                islandBase.enabled = islandStages[stage - 1] != null;
+                islandIncoming.color = new Color(1f, 1f, 1f, 0f);
             }
             inTransition = false;
         }
@@ -735,7 +780,21 @@ namespace Shift.Game
                     float opacity = Mathf.SmoothStep(0f, 1f,
                         Mathf.Clamp01(fadeTime / .35f));
                     transition.color = new Color(1f, 1f, 1f, opacity);
+                    if (islandIncoming != null && islandIncoming.enabled)
+                        islandIncoming.color = new Color(1f, 1f, 1f, opacity);
                     if (fadeTime >= .35f) FinishBlend();
+                }
+            }
+            if (facialOverlay != null && Time.unscaledTime >= faceExpires)
+                facialOverlay.color = new Color(1f, 1f, 1f, 0f);
+            if (stars != null)
+            {
+                for (int i = 0; i < stars.Length; i++)
+                {
+                    float wave = reduced ? 0f : Mathf.Sin(Time.unscaledTime * .8f + i * 1.17f);
+                    stars[i].color = new Color(1f, 1f, 1f, .3f + .22f * wave);
+                    starRects[i].anchoredPosition = reduced ? Vector2.zero
+                        : new Vector2(wave * 2f, wave * 3.5f);
                 }
             }
             reactionTime = Mathf.Max(0f, reactionTime - dt);
@@ -765,6 +824,9 @@ namespace Shift.Game
             if (portraitRect != null) portraitRect.localScale = Vector3.one;
             if (feedToken != null) feedToken.localScale = Vector3.one;
             if (playToken != null) playToken.localScale = Vector3.one;
+            if (stars != null) for (int i = 0; i < stars.Length; i++)
+                if (starRects[i] != null) starRects[i].anchoredPosition = Vector2.zero;
+            if (facialOverlay != null) facialOverlay.color = new Color(1f, 1f, 1f, 0f);
             if (inTransition) FinishBlend();
         }
     }
