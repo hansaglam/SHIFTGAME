@@ -121,6 +121,10 @@ namespace Shift.Game
             tint.sprite = Art("RoomTint");
             tint.color = tint.sprite == null ? new Color(.015f, .18f, .20f, .26f) : Color.white;
             tint.raycastTarget = false;
+            // Distant portal belongs behind the habitat, not on top of MORA or UI.
+            var portal = Picture("MORA Distant Portal", transform, Art("GatewayRight"),
+                new Vector2(.68f, .49f), new Vector2(1.03f, .775f));
+            portal.color = new Color(1f, 1f, 1f, .80f);
             Picture("Foreground Flowers Left", transform, Art("BottomFloraLeft"),
                 new Vector2(0f, 0f), new Vector2(.35f, .19f));
             Picture("Foreground Flowers Right", transform, Art("BottomFloraRight"),
