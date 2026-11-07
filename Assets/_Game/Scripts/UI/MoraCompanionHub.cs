@@ -28,6 +28,13 @@ namespace Shift.Game
         private Text greeting, growthSummary;
         private Text feedMessage, playMessage, growthMessage;
         private Image growthThumbnail;
+        private Image islandBase, islandIncoming, facialOverlay;
+        private Sprite[] islandStages;
+        private Sprite happyFace, curiousFace;
+        private bool premiumLayered;
+        private float faceExpires;
+        private Image[] stars;
+        private RectTransform[] starRects;
         private RectTransform feedToken, playToken;
         private float feedMotion, playMotion;
         private int growthInfoStage = 1;
@@ -47,6 +54,11 @@ namespace Shift.Game
         public static string StageArtPath(int index)
             => "Mora/MoraScene_S" + Mathf.Clamp(index, 1, 4);
 
+        public static string PremiumStagePath(int index)
+            => "MoraPremium/MoraStage" + Mathf.Clamp(index, 1, 4);
+
+        private static Sprite Art(string name) => Resources.Load<Sprite>("MoraPremium/" + name);
+
         public static string TitleFor(MoraHubPage section, bool tr)
         {
             switch (section)
@@ -63,10 +75,10 @@ namespace Shift.Game
         public static MoraCompanionHub TryCreate(RectTransform safe, Font font,
             Sprite rounded, Sprite circle, GameFeelSettings feel, Action returnToChapters)
         {
+            Sprite premium = Resources.Load<Sprite>(PremiumStagePath(1));
             Sprite accepted = Resources.Load<Sprite>(StageArtPath(1));
             Sprite seed = Resources.Load<Sprite>("Mora/MoraSeed_Idle");
-            // The teal special character is deliberately not used as primary MORA.
-            if (accepted == null && seed == null) return null;
+            if (premium == null && accepted == null && seed == null) return null;
 
             var root = PlaceholderVisuals.Rect("MORA Companion Hub v1", safe,
                 Vector2.zero, Vector2.one);
@@ -75,11 +87,21 @@ namespace Shift.Game
             hub.rounded = rounded;
             hub.circle = circle;
             hub.feel = feel;
-            hub.baseSeed = seed;
+            hub.baseSeed = seed ?? premium;
+            hub.premiumLayered = premium != null;
             hub.stageArt = new Sprite[4];
+            hub.islandStages = new Sprite[4];
             for (int i = 0; i < 4; i++)
-                hub.stageArt[i] = Resources.Load<Sprite>(StageArtPath(i + 1));
-            if (hub.stageArt[0] == null) hub.stageArt[0] = seed;
+            {
+                hub.stageArt[i] = hub.premiumLayered
+                    ? Resources.Load<Sprite>(PremiumStagePath(i + 1))
+                    : Resources.Load<Sprite>(StageArtPath(i + 1));
+                hub.islandStages[i] = hub.premiumLayered
+                    ? Art("HabitatStage" + (i + 1)) : null;
+            }
+            if (hub.stageArt[0] == null) hub.stageArt[0] = seed ?? accepted;
+            hub.happyFace = Art("MoraStage1_Happy");
+            hub.curiousFace = Art("MoraStage1_Curious");
             hub.snapshot = MoraGrowthPolicy.FromCampaign(-1, 40);
             hub.Build(returnToChapters);
             hub.gameObject.SetActive(false);
@@ -94,26 +116,47 @@ namespace Shift.Game
             VisualTheme.Background(transform, circle);
             var tint = PlaceholderVisuals.Rect("Lake Tint", transform,
                 Vector2.zero, Vector2.one).gameObject.AddComponent<Image>();
-            tint.color = new Color(.015f, .18f, .20f, .20f);
+            tint.sprite = Art("RoomTint");
+            tint.color = tint.sprite == null ? new Color(.015f, .18f, .20f, .26f) : Color.white;
             tint.raycastTarget = false;
+            Picture("Foreground Flowers Left", transform, Art("BottomFloraLeft"),
+                new Vector2(0f, 0f), new Vector2(.35f, .19f));
+            Picture("Foreground Flowers Right", transform, Art("BottomFloraRight"),
+                new Vector2(.65f, 0f), new Vector2(1f, .19f));
 
-            var wordmark = Label("SHIFT Wordmark", transform, "S H I F T", 48, Color.white,
+            var wordmark = Label("SHIFT Wordmark", transform, "S H I F T", 58, Ivory,
                 new Vector2(.18f, .94f), new Vector2(.82f, .99f));
             wordmark.fontStyle = FontStyle.Bold;
             Button("Exit To Chapters Top", transform, new Vector2(.04f, .937f),
                 new Vector2(.15f, .992f), DeepTeal, "", "←", "←", returnToChapters);
 
             BuildCharacterRail();
-            var title = Label("MORA Name", transform, "MORA", 67, Ivory,
-                new Vector2(.14f, .814f), new Vector2(.86f, .885f));
+            var title = Label("MORA Name", transform, "M O R A", 74, Ivory,
+                new Vector2(.14f, .842f), new Vector2(.86f, .890f));
             title.fontStyle = FontStyle.Bold;
-            Label("Habitat Label", transform, "", 28, Color.white,
-                new Vector2(.10f, .789f), new Vector2(.90f, .823f),
+            Label("Habitat Label", transform, "", 30, CreamText(),
+                new Vector2(.10f, .812f), new Vector2(.90f, .843f),
                 () => Turkish ? "MORA'NIN YAŞAM ALANI" : "MORA'S LITTLE HABITAT");
 
-            // A single composite portrait keeps the creature and stone platform aligned.
-            // When only the old seed image exists, draw a fallback island behind it.
-            if (stageArt[0] == baseSeed && baseSeed != null)
+            // The new staged art uses independent avatar + island layers.
+            if (premiumLayered)
+            {
+                var stageGround = PlaceholderVisuals.Rect("MORA Four-Stage Island", transform,
+                    new Vector2(.045f, .408f), new Vector2(.955f, .663f));
+                islandBase = stageGround.gameObject.AddComponent<Image>();
+                islandBase.sprite = islandStages[0];
+                islandBase.preserveAspect = true;
+                islandBase.raycastTarget = false;
+                var nextGround = PlaceholderVisuals.Rect("Incoming Island", stageGround,
+                    Vector2.zero, Vector2.one);
+                islandIncoming = nextGround.gameObject.AddComponent<Image>();
+                islandIncoming.sprite = islandStages[0];
+                islandIncoming.preserveAspect = true;
+                islandIncoming.raycastTarget = false;
+                islandIncoming.color = new Color(1f,1f,1f,0f);
+            }
+            // Legacy fallback is preserved if the premium pack is not installed.
+            else if (stageArt[0] == baseSeed && baseSeed != null)
             {
                 Sprite island = Resources.Load<Sprite>("Mora/MoraHabitat_S1")
                     ?? Resources.Load<Sprite>("Mora/Mora_Habitat");
@@ -128,7 +171,8 @@ namespace Shift.Game
                 }
             }
             portraitRect = PlaceholderVisuals.Rect("MORA Grounded Portrait", transform,
-                new Vector2(.04f, .431f), new Vector2(.96f, .811f));
+                premiumLayered ? new Vector2(.115f, .55f) : new Vector2(.04f, .431f),
+                premiumLayered ? new Vector2(.885f, .833f) : new Vector2(.96f, .811f));
             portrait = portraitRect.gameObject.AddComponent<Image>();
             portrait.sprite = stageArt[0];
             portrait.preserveAspect = true;
@@ -140,15 +184,22 @@ namespace Shift.Game
             transition.preserveAspect = true;
             transition.color = new Color(1f, 1f, 1f, 0f);
             transition.raycastTarget = false;
+            var faceRect = PlaceholderVisuals.Rect("MORA Always Grounded Face Reaction", portraitRect,
+                Vector2.zero, Vector2.one);
+            facialOverlay = faceRect.gameObject.AddComponent<Image>();
+            facialOverlay.preserveAspect = true;
+            facialOverlay.raycastTarget = false;
+            facialOverlay.color = new Color(1f, 1f, 1f, 0f);
             var characterTap = portraitRect.gameObject.AddComponent<Button>();
             characterTap.targetGraphic = portrait;
             characterTap.transition = Selectable.Transition.None;
             characterTap.onClick.AddListener(TouchMora);
 
+            BuildAmbientStars();
             var speech = Surface("Companion Speech", transform, Ivory,
-                new Vector2(.13f, .406f), new Vector2(.87f, .446f));
+                new Vector2(.135f, .425f), new Vector2(.865f, .474f));
             VisualTheme.Shadow(speech, 3);
-            greeting = Label("Companion Speech Text", speech.transform, "", 30, DeepTeal,
+            greeting = Label("Companion Speech Text", speech.transform, "", 34, DeepTeal,
                 new Vector2(.05f, .05f), new Vector2(.95f, .95f));
             RefreshGreeting();
 
@@ -158,6 +209,26 @@ namespace Shift.Game
             BuildActionNavigation(returnToChapters);
             // Modal must be built last to cover the complete home screen.
             BuildSections();
+        }
+
+        private static Color CreamText() => new Color32(255, 248, 215, 255);
+
+        private void BuildAmbientStars()
+        {
+            Sprite sprite = Art("Sparkle");
+            if (sprite == null) return;
+            var points = new [] { new Vector2(.19f,.60f),new Vector2(.82f,.63f),
+                new Vector2(.13f,.50f),new Vector2(.86f,.52f),
+                new Vector2(.32f,.695f),new Vector2(.76f,.70f) };
+            stars = new Image[points.Length]; starRects = new RectTransform[points.Length];
+            for(int i=0;i<points.Length;i++)
+            {
+                float w=.010f + .002f*(i%3);
+                var image=Picture("Ambient Glint "+i, transform, sprite,
+                    points[i]-new Vector2(w,w),points[i]+new Vector2(w,w));
+                image.color=new Color(1f,1f,1f,.36f);
+                stars[i]=image;starRects[i]=image.rectTransform;
+            }
         }
 
         private void BuildCharacterRail()
