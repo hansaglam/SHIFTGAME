@@ -102,7 +102,7 @@ namespace Shift.Game
         public void ShowEcho(bool nextClockwise)
         {
             if(echoGlyph != null) echoGlyph.Configure(BoardIconShape.Echo,
-                nextClockwise ? Direction.Right : Direction.Left);
+                nextClockwise ? global::Shift.Game.Direction.Right : global::Shift.Game.Direction.Left);
         }
         public void ShowGate(bool open)
         { GateShownOpen=open; if(barrier!=null) barrier.SetActive(!open); if(threshold!=null) threshold.gameObject.SetActive(open); }
