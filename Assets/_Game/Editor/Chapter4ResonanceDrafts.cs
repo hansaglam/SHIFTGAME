@@ -56,5 +56,42 @@ namespace Shift.Game.Editor
             Debug.Log("Resonance pilot 61-65: " + pass + "/5 certified.");
             if (pass != 5) Debug.LogError("Resonance validation failed: DO NOT ship these levels.");
         }
+
+        [MenuItem("SHIFT/Chapter 4/Analyze Resonance Decision Quality 61-65")]
+        public static void AnalyzeDecisions()
+        {
+            int pass = 0;
+            for (int n = 61; n <= 65; n++)
+            {
+                var level = Get(n);
+                if (level == null) { Debug.LogError("Missing Resonance Level " + n); continue; }
+                try
+                {
+                    var result = new PuzzleBatchAnalysis(level).Analyze(level.KnownSolution);
+                    if (result.minimum != level.KnownSolutionLength)
+                    {
+                        Debug.LogError(level.name + ": known route is not the shortest. " +
+                            "Proven " + result.minimum + " vs authored " +
+                            level.KnownSolutionLength, level);
+                        continue;
+                    }
+                    Debug.Log(level.name + " | min=" + result.minimum +
+                        " | explored=" + result.states +
+                        " | winningPaths=" + result.solutionPaths +
+                        " | meaningfulDecisions=" + result.meaningfulDecisions +
+                        " | efficiencyDecisions=" + result.efficiencyDecisions +
+                        " | maxReactionDepth=" + result.routeMaxDepth +
+                        " | randomWinProbability=" +
+                        result.randomSolveProbability.ToString("F3") +
+                        " (uniform-choice model, NOT player analytics)", level);
+                    pass++;
+                }
+                catch (System.Exception ex)
+                {
+                    Debug.LogError(level.name + " decision analysis failed: " + ex.Message, level);
+                }
+            }
+            Debug.Log("Resonance decision report: " + pass + "/5 analyzed.");
+        }
     }
 }
