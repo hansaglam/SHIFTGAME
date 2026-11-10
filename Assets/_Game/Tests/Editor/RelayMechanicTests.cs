@@ -129,8 +129,8 @@ namespace Shift.Game.Tests
                 P(PieceType.Normal, 0, 1, Direction.Right, PieceColor.Red),
                 P(PieceType.Relay, 1, 1, channel:1),
                 P(PieceType.Relay, 3, 1, channel:1),
-                P(PieceType.Relay, 2, 1, channel:2),
-                P(PieceType.Relay, 4, 1, channel:2),
+                P(PieceType.Direction, 4, 1, Direction.Left),
+                P(PieceType.Direction, 0, 1, Direction.Right),
                 P(PieceType.Exit, 0, 3, color:PieceColor.Red));
             Assert.That(board.RequestMove(new GridPosition(0, 1)), Is.True);
             Assert.That(board.LastReactionWasCancelled, Is.True);
