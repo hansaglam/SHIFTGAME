@@ -64,7 +64,7 @@ namespace Shift.Game
             Label("Guide Title","guide.title",.88f,1,48).fontStyle=FontStyle.Bold;
             for(int i=0;i<MechanicGuideCatalog.Topics.Length;i++)
             {
-                var topic=MechanicGuideCatalog.Topics[i];float y=.76f-i*.097f;
+                var topic=MechanicGuideCatalog.Topics[i];float y=.79f-i*.085f;
                 Button("Guide "+topic,MechanicGuideCatalog.Key(topic)+".name",new Vector2(.04f,y),new Vector2(.96f,y+.08f),()=>OpenTopic(topic));
             }
             Button("Close Guide","common.back",new Vector2(.2f,.01f),new Vector2(.8f,.09f),close);
