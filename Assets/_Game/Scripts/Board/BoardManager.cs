@@ -14,6 +14,7 @@ namespace Shift.Game
         private IReadOnlyList<BoardPiece> readOnlyPieces;
         private BoardPiece[,] occupants;
         private BoardPiece[,] terrain;
+        private BoardPiece[] relayPartnerById;
         private Snapshot[] snapshots;
         private Snapshot[] undoSnapshot;
         private int undoMoves;
@@ -61,10 +62,22 @@ namespace Shift.Game
             pieces = new BoardPiece[level.Placements.Count]; snapshots = new Snapshot[pieces.Length];
             moving = new bool[pieces.Length];
             readOnlyPieces = Array.AsReadOnly(pieces);
+            relayPartnerById = new BoardPiece[pieces.Length];
             for (int i = 0; i < pieces.Length; i++)
             {
                 var piece = new BoardPiece(i, level.Placements[i]); pieces[i] = piece;
                 (piece.Movable ? occupants : terrain)[piece.Position.x, piece.Position.y] = piece;
+            }
+            // Pair lookup is resolved once per load; no allocations or scanning per transfer.
+            for (int i = 0; i < pieces.Length; i++)
+            {
+                if (pieces[i].Type != PieceType.Relay) continue;
+                for (int j = 0; j < pieces.Length; j++)
+                    if (i != j && pieces[j].Type == PieceType.Relay && pieces[i].Channel == pieces[j].Channel)
+                    {
+                        relayPartnerById[i] = pieces[j];
+                        break;
+                    }
             }
             actions.Clear(); LastReactionWasCancelled = false; State = GameState.Playing;
         }
@@ -120,6 +133,15 @@ namespace Shift.Game
             var next = piece.Position + DirectionUtility.ToOffset(direction);
             if (direction == Direction.None || !IsValid(next)) return false;
             var tile = GetTerrain(next);
+            // A blocked linked destination makes the entire transfer unavailable.
+            // A piece already standing on the paired pad may return to that very cell.
+            if (tile != null && tile.Type == PieceType.Relay)
+            {
+                var partner = relayPartnerById[tile.Id];
+                if (partner == null) return false;
+                var linkedOccupant = GetOccupant(partner.Position);
+                if (linkedOccupant != null && linkedOccupant != piece) return false;
+            }
             if (tile != null && (tile.Type == PieceType.Wall || (tile.Type == PieceType.Gate && !tile.GateOpen) ||
                 (tile.Type == PieceType.Exit && (piece.Type != PieceType.Normal ||
                 (tile.Color != PieceColor.None && tile.Color != piece.Color))))) return false;
@@ -168,6 +190,25 @@ namespace Shift.Game
                 piece.Direction = tile.Type == PieceType.Direction ? tile.Direction : DirectionUtility.RotateClockwise(direction);
                 Record(BoardActionType.Turn, piece, next, next);
                 Move(piece, piece.Direction, depth + 1);
+            }
+            else if (tile.Type == PieceType.Relay)
+            {
+                var partner = relayPartnerById[tile.Id];
+                // A preceding push in this same reaction might have occupied the landing
+                // after the initial check. Roll back the *whole tap* atomically.
+                if (partner == null || GetOccupant(partner.Position) != null)
+                {
+                    overflow = true;
+                    return false;
+                }
+                occupants[next.x, next.y] = null;
+                var from = piece.Position;
+                piece.Position = partner.Position;
+                occupants[piece.Position.x, piece.Position.y] = piece;
+                Record(BoardActionType.Transfer, piece, from, piece.Position);
+                // Landing on the destination does not trigger it a second time.
+                // The outgoing direction and color remain unchanged.
+                Move(piece, direction, depth + 1);
             }
             return true;
         }
