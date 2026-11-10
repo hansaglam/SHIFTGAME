@@ -53,11 +53,16 @@ namespace Shift.Game
             // Non-interactive channel badges remain readable above occupied switches AND gates.
             foreach (var data in board.Pieces)
             {
-                if (data.Type != PieceType.Switch && data.Type != PieceType.Gate) continue;
-                var marker = PlaceholderVisuals.Rect(data.Type == PieceType.Gate ? "Gate Channel" : "Switch Channel", transform,
+                if (data.Type != PieceType.Switch && data.Type != PieceType.Gate && data.Type != PieceType.Relay) continue;
+                var marker = PlaceholderVisuals.Rect(data.Type == PieceType.Gate ? "Gate Channel" : data.Type == PieceType.Relay ? "Relay Channel" : "Switch Channel", transform,
                     new Vector2((float)data.Position.x/board.Width,(float)data.Position.y/board.Height),
                     new Vector2((float)(data.Position.x+1)/board.Width,(float)(data.Position.y+1)/board.Height));
-                var badge = VisualTheme.Surface("Channel Badge",marker,art.Surface(BoardSurface.Raised,new Color32(238,190,95,255)),Color.white,data.Type == PieceType.Gate ? new Vector2(.16f,.76f) : new Vector2(.05f,.76f),data.Type == PieceType.Gate ? new Vector2(.84f,.985f) : new Vector2(.59f,.985f));
+                bool relay = data.Type == PieceType.Relay;
+                var badge = VisualTheme.Surface("Channel Badge",marker,
+                    art.Surface(BoardSurface.Raised,relay ? new Color32(98,221,227,255)
+                        : new Color32(238,190,95,255)),Color.white,
+                    relay ? new Vector2(.42f,.77f) : data.Type == PieceType.Gate ? new Vector2(.16f,.76f) : new Vector2(.05f,.76f),
+                    relay ? new Vector2(.92f,.99f) : data.Type == PieceType.Gate ? new Vector2(.84f,.985f) : new Vector2(.59f,.985f));
                 PieceAppearance.Channel(badge.transform,data.Channel,new Color32(25,42,62,255),new Vector2(.14f,.08f),new Vector2(.86f,.92f));
                 var highlight=VisualTheme.Surface("Channel Feedback",badge.transform,rounded,Color.clear,Vector2.zero,Vector2.one);
                 pieces[data.Id].BindChannelFeedback(highlight);
@@ -111,6 +116,26 @@ namespace Shift.Game
                         if (i > 0 && board.Actions[i-1].Type == BoardActionType.Move && board.Actions[i-1].PieceId == action.PieceId && !tile.Data.Movable && tile.Data.Position == action.To && (tile.Data.Type == PieceType.Direction || tile.Data.Type == PieceType.Rotator))
                         { tile.Feedback(feel.tapPunch); rotated = tile.Data.Type == PieceType.Rotator; }
                     audioManager.Reaction(rotated ? AudioCue.Rotate : AudioCue.DirectionChange, i + 1);
+                }
+                else if (action.Type == BoardActionType.Transfer)
+                {
+                    // Never lerp across the entire board; this is a linked jump.
+                    // Both anchors glow briefly and the piece remains readable.
+                    foreach (var tile in pieces)
+                        if (tile.Data.Type == PieceType.Relay &&
+                            (tile.Data.Position == action.From || tile.Data.Position == action.To))
+                            tile.Feedback(feel.impactPunch);
+                    audioManager.Reaction(AudioCue.SwitchActivate, i + 1);
+                    haptics.Interaction();
+                    if (!feel.reducedMotion)
+                    {
+                        float wait = Mathf.Min(.10f, feel.moveDuration * .5f);
+                        for (float elapsed = 0f; elapsed < wait; elapsed += Time.unscaledDeltaTime)
+                            yield return null;
+                    }
+                    piece.Place(action.To);
+                    piece.MotionAccent(Vector2.zero, 0f);
+                    piece.Feedback(feel.impactPunch);
                 }
                 else if (action.Type == BoardActionType.SwitchActivated)
                 { piece.Feedback(feel.tapPunch); audioManager.Reaction(AudioCue.SwitchActivate, i + 1); haptics.Interaction(); }

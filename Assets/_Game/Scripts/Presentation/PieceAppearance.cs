@@ -25,7 +25,7 @@ namespace Shift.Game
             Color tint=data.Type switch
             {
                 PieceType.Normal => PieceTint(data.Color), PieceType.Direction => new Color32(97,126,158,255),
-                PieceType.Rotator => new Color32(123,100,171,255), PieceType.PushBlock => new Color32(191,134,69,255),
+                PieceType.Rotator => new Color32(123,100,171,255), PieceType.Relay => new Color32(28,156,161,255), PieceType.PushBlock => new Color32(191,134,69,255),
                 PieceType.Switch => new Color32(97,73,43,255), PieceType.Gate => new Color32(41,57,70,255),
                 PieceType.Exit => data.Color==PieceColor.None?new Color32(51,190,142,255):PieceTint(data.Color),
                 _ => new Color32(46,63,79,255)
@@ -41,6 +41,15 @@ namespace Shift.Game
             {
                 BoardIcon.Create("Rotation Relief",body,BoardIconShape.Clockwise,new Color(0,0,0,.24f),new Vector2(.09f,.07f),new Vector2(.91f,.89f));
                 BoardIcon.Create("Clockwise Icon",body,BoardIconShape.Clockwise,new Color32(248,244,255,255),new Vector2(.09f,.10f),new Vector2(.91f,.92f));
+            }
+            else if(data.Type==PieceType.Relay)
+            {
+                Surface("Linked Passage Recess",body,new Color32(16,68,89,255),
+                    new Vector2(.055f,.055f),new Vector2(.945f,.945f),BoardSurface.Well);
+                var halo=Surface("Cyan Relay Frame",body,new Color32(70,215,225,255),
+                    new Vector2(.14f,.14f),new Vector2(.86f,.86f));
+                BoardIcon.Create("Two Connected Endpoints",halo.transform,BoardIconShape.Linked,
+                    new Color32(245,255,226,255),new Vector2(.065f,.11f),new Vector2(.935f,.89f));
             }
             else if(data.Type==PieceType.PushBlock)
             {

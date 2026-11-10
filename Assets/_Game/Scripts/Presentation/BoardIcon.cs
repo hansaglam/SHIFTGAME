@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 namespace Shift.Game
 {
-    public enum BoardIconShape { Arrow, Clockwise, Diamond, DoubleDiamond, Crate }
+    public enum BoardIconShape { Arrow, Clockwise, Diamond, DoubleDiamond, Crate, Linked }
     [RequireComponent(typeof(CanvasRenderer))]
     public sealed class BoardIcon : MaskableGraphic
     {
@@ -63,6 +63,12 @@ namespace Shift.Game
                 // The right-hand tangent is (0,-1): the prominent arrow points DOWN, never left/back.
                 Tri(endpoint+normal*.14f-tangent*.04f,endpoint+tangent*.22f,endpoint-normal*.14f-tangent*.04f);
                 Quad(new Vector2(-.12f,-.32f),new Vector2(-.12f,-.08f),new Vector2(.12f,-.08f),new Vector2(.12f,-.32f));
+            }
+            else if(Shape==BoardIconShape.Linked)
+            {
+                // Two linked geometry nodes: visually distinct from a rotator.
+                Bar(new Vector2(-.20f,0),new Vector2(.20f,0),.10f);
+                Diamond(-.24f,.24f); Diamond(.24f,.24f);
             }
             else if(Shape==BoardIconShape.Diamond) Diamond(0,.34f);
             else if(Shape==BoardIconShape.DoubleDiamond) { Diamond(-.26f,.25f); Diamond(.26f,.25f); }
