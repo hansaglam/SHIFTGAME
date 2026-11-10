@@ -45,7 +45,7 @@ MonoBehaviour:
   - type: 5
     color: 1
     direction: 0
-    position: {x: 2, y: 2}
+    position: {x: 3, y: 2}
     channel: 0
     initialOpen: 0
   - type: 5
@@ -55,8 +55,8 @@ MonoBehaviour:
     channel: 0
     initialOpen: 0
   displayTitle: 62 - Quiet Shortcut
-  hint: "Uzaktaki taşı kendin oynatmak mümkün, ancak sinyal hamle kazandırır."
+  hint: "İki taşı tek tek götürebilirsin. Peki sinyalle bir hamle kazanabilir misin?"
   knownSolution:
   - {x: 0, y: 2}
-  - {x: 1, y: 2}
+  - {x: 2, y: 2}
   - {x: 4, y: 3}

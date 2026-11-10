@@ -14,19 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier:
   width: 7
   height: 6
-  moveLimit: 6
+  moveLimit: 8
   targetColor: 1
   targetColors: 0100000002000000
   placements:
   - type: 0
-    color: 1
+    color: 3
     direction: 4
     position: {x: 0, y: 2}
     channel: 0
     initialOpen: 0
   - type: 0
-    color: 3
-    direction: 4
+    color: 1
+    direction: 1
     position: {x: 1, y: 2}
     channel: 0
     initialOpen: 0
@@ -34,12 +34,6 @@ MonoBehaviour:
     color: 2
     direction: 4
     position: {x: 3, y: 4}
-    channel: 0
-    initialOpen: 0
-  - type: 3
-    color: 0
-    direction: 1
-    position: {x: 1, y: 2}
     channel: 0
     initialOpen: 0
   - type: 8
@@ -53,6 +47,12 @@ MonoBehaviour:
     direction: 0
     position: {x: 3, y: 4}
     channel: 1
+    initialOpen: 0
+  - type: 2
+    color: 0
+    direction: 0
+    position: {x: 1, y: 3}
+    channel: 0
     initialOpen: 0
   - type: 6
     color: 0
@@ -69,7 +69,7 @@ MonoBehaviour:
   - type: 5
     color: 1
     direction: 0
-    position: {x: 1, y: 4}
+    position: {x: 6, y: 2}
     channel: 0
     initialOpen: 0
   - type: 5
@@ -78,10 +78,17 @@ MonoBehaviour:
     position: {x: 6, y: 4}
     channel: 0
     initialOpen: 0
+  - type: 3
+    color: 0
+    direction: 4
+    position: {x: 4, y: 2}
+    channel: 0
+    initialOpen: 0
   displayTitle: 65 - Remote Cascade
-  hint: "Bir taşı iterek sinyali başlat; uzaktaki düğme kapıyı açsın."
+  hint: "Kırmızı kendi yönünde sıkıştı. Doğru itme sinyali, uzaktaki kapıyı açar."
   knownSolution:
   - {x: 0, y: 2}
-  - {x: 1, y: 3}
+  - {x: 1, y: 2}
+  - {x: 3, y: 2}
   - {x: 4, y: 4}
   - {x: 5, y: 4}

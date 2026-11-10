@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c1f84ab736b460fa687851315dce861, type: 3}
   m_Name: Level64_ChainOfSignals
   m_EditorClassIdentifier:
-  width: 6
-  height: 6
-  moveLimit: 6
+  width: 7
+  height: 7
+  moveLimit: 7
   targetColor: 1
   targetColors: 010000000200000003000000
   placements:
@@ -63,24 +63,25 @@ MonoBehaviour:
   - type: 5
     color: 1
     direction: 0
-    position: {x: 2, y: 1}
+    position: {x: 3, y: 1}
     channel: 0
     initialOpen: 0
   - type: 5
     color: 2
     direction: 0
-    position: {x: 5, y: 3}
+    position: {x: 6, y: 3}
     channel: 0
     initialOpen: 0
   - type: 5
     color: 3
     direction: 0
-    position: {x: 1, y: 5}
+    position: {x: 1, y: 6}
     channel: 0
     initialOpen: 0
   displayTitle: 64 - Chain Of Signals
-  hint: "Bir sinyal diğer sinyali başlatabilir. İki kanalı birlikte düşün."
+  hint: "İlk sinyal ikincisini başlatabilir. Üç taşı tek dokunuşta hazırlamak mümkün."
   knownSolution:
   - {x: 0, y: 1}
-  - {x: 1, y: 1}
-  - {x: 4, y: 3}
+  - {x: 2, y: 1}
+  - {x: 5, y: 3}
+  - {x: 1, y: 5}
