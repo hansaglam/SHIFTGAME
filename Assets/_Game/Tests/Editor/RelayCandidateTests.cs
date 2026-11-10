@@ -1,3 +1,4 @@
+using System.Linq;
 using NUnit.Framework;
 using Shift.Game.Editor;
 
@@ -42,8 +43,8 @@ namespace Shift.Game.Tests
             // Restart explicitly, keeping this test independent from a blocked tap.
             board.Load(level);
             Assert.That(board.RequestMove(new GridPosition(0, 2)), Is.True);
-            Assert.That(board.Actions, Has.Some.Matches<BoardAction>(
-                a => a.Type == BoardActionType.Transfer));
+            Assert.That(board.Actions.Any(a => a.Type == BoardActionType.Transfer),
+                Is.True, "A pushed target should reach the remote switch through a Relay.");
             Assert.That(gate.GateOpen, Is.True);
             board.CompleteResolution();
         }
