@@ -14,6 +14,8 @@ namespace Shift.Game
         private IReadOnlyList<BoardPiece> readOnlyPieces;
         private BoardPiece[,] occupants;
         private BoardPiece[,] terrain;
+        private BoardPiece[] resonancePartners;
+        private readonly bool[] signaled = new bool[3];
         private Snapshot[] snapshots;
         private Snapshot[] undoSnapshot;
         private int undoMoves;
@@ -31,7 +33,9 @@ namespace Shift.Game
             }
             MovesRemaining = undoMoves; State = GameState.Playing;
             actions.Clear(); LastReactionWasCancelled = false; overflow = false; operations = 0;
-            Array.Clear(moving, 0, moving.Length); ClearUndo(); return true;
+            Array.Clear(moving, 0, moving.Length);
+            Array.Clear(signaled, 0, signaled.Length);
+            ClearUndo(); return true;
         }
         private bool[] moving;
         private HashSet<PieceColor> targetColors;
@@ -61,11 +65,24 @@ namespace Shift.Game
             pieces = new BoardPiece[level.Placements.Count]; snapshots = new Snapshot[pieces.Length];
             moving = new bool[pieces.Length];
             readOnlyPieces = Array.AsReadOnly(pieces);
+            resonancePartners = new BoardPiece[pieces.Length];
             for (int i = 0; i < pieces.Length; i++)
             {
                 var piece = new BoardPiece(i, level.Placements[i]); pieces[i] = piece;
                 (piece.Movable ? occupants : terrain)[piece.Position.x, piece.Position.y] = piece;
             }
+            for (int i = 0; i < pieces.Length; i++)
+            {
+                if (pieces[i].Type != PieceType.Resonance) continue;
+                for (int j = 0; j < pieces.Length; j++)
+                    if (i != j && pieces[j].Type == PieceType.Resonance &&
+                        pieces[i].Channel == pieces[j].Channel)
+                    {
+                        resonancePartners[i] = pieces[j];
+                        break;
+                    }
+            }
+            Array.Clear(signaled, 0, signaled.Length);
             actions.Clear(); LastReactionWasCancelled = false; State = GameState.Playing;
         }
 
@@ -81,6 +98,7 @@ namespace Shift.Game
             State = GameState.Resolving;
             actions.Clear(); overflow = false; operations = 0; LastReactionWasCancelled = false;
             Array.Clear(moving, 0, moving.Length);
+            Array.Clear(signaled, 0, signaled.Length);
             for (int i = 0; i < pieces.Length; i++)
                 snapshots[i] = new Snapshot { Position = pieces[i].Position, Direction = pieces[i].Direction, Active = pieces[i].Active, GateOpen = pieces[i].GateOpen };
             Move(piece, piece.Direction, 0);
@@ -168,6 +186,25 @@ namespace Shift.Game
                 piece.Direction = tile.Type == PieceType.Direction ? tile.Direction : DirectionUtility.RotateClockwise(direction);
                 Record(BoardActionType.Turn, piece, next, next);
                 Move(piece, piece.Direction, depth + 1);
+            }
+            else if (tile.Type == PieceType.Resonance && !signaled[tile.Channel])
+            {
+                // Exactly one signal per channel per tap; no repeat firing in a loop.
+                // The other *normal* piece moves along its own direction. The
+                // triggering piece stays on the source pad, no teleportation.
+                signaled[tile.Channel] = true;
+                var partner = resonancePartners[tile.Id];
+                if (partner != null)
+                {
+                    Record(BoardActionType.ResonancePulse, tile, tile.Position, partner.Position);
+                    var receiver = GetOccupant(partner.Position);
+                    if (receiver != null && receiver != piece && receiver.Type == PieceType.Normal)
+                    {
+                        moving[piece.Id] = true;
+                        Move(receiver, receiver.Direction, depth + 1);
+                        moving[piece.Id] = false;
+                    }
+                }
             }
             return true;
         }

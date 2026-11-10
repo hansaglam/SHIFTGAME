@@ -86,6 +86,7 @@ namespace Shift.Game
             var terrain = new HashSet<GridPosition>();
             var walls = new HashSet<GridPosition>();
             var switches = new HashSet<int>(); var gates = new HashSet<int>();
+            var resonanceCounts = new Dictionary<int, int>();
             var targets = new HashSet<PieceColor>();
             if (placements == null) { error = "Missing placements."; return false; }
             foreach (var p in placements)
@@ -95,12 +96,18 @@ namespace Shift.Game
                 if (p.position.x < 0 || p.position.y < 0 || p.position.x >= width || p.position.y >= height)
                 { error = $"Piece outside board at {p.position}."; return false; }
                 bool stateTile = p.type == PieceType.Switch || p.type == PieceType.Gate;
+                bool resonator = p.type == PieceType.Resonance;
                 if (stateTile && (p.channel < 1 || p.channel > 2 || p.color != PieceColor.None || p.direction != Direction.None))
                 { error = "Switch/Gate requires channel 1 or 2, no color and no direction."; return false; }
-                if ((!stateTile && p.channel != 0) || (p.type != PieceType.Gate && p.initialOpen))
-                { error = "Channel/open fields are only supported on Switch/Gate."; return false; }
+                if (resonator && (p.channel < 1 || p.channel > 2 || p.color != PieceColor.None ||
+                    p.direction != Direction.None || p.initialOpen))
+                { error = "Resonance requires paired channel 1/2 with no color, direction or open state."; return false; }
+                if ((!stateTile && !resonator && p.channel != 0) || (p.type != PieceType.Gate && p.initialOpen))
+                { error = "Channel is for Switch/Gate and Resonance; open state is for Gate."; return false; }
                 if (p.type == PieceType.Switch) switches.Add(p.channel);
                 if (p.type == PieceType.Gate) gates.Add(p.channel);
+                if (resonator)
+                    resonanceCounts[p.channel] = resonanceCounts.TryGetValue(p.channel, out int count) ? count + 1 : 1;
                 bool movable = p.type == PieceType.Normal || p.type == PieceType.PushBlock;
                 if (!(movable ? occupied : terrain).Add(p.position))
                 { error = $"Duplicate piece on the same layer at {p.position}."; return false; }
@@ -110,6 +117,8 @@ namespace Shift.Game
                 if (p.type == PieceType.Normal && IsTargetColor(p.color)) targets.Add(p.color);
             }
             if (!switches.SetEquals(gates)) { error = "Each switch channel needs a gate and each gate needs a switch."; return false; }
+            foreach (var pair in resonanceCounts)
+                if (pair.Value != 2) { error = "Each Resonance channel needs exactly two nodes."; return false; }
             if (walls.Overlaps(occupied)) error = "A movable piece cannot overlap a wall.";
             else if (!targets.SetEquals(objective)) error = "Place at least one Normal piece of each target color.";
             return error == null;
