@@ -69,7 +69,7 @@ namespace Shift.Game
                 var highlight=VisualTheme.Surface("Channel Feedback",badge.transform,rounded,Color.clear,Vector2.zero,Vector2.one);
                 pieces[data.Id].BindChannelFeedback(highlight);
             }
-            // One reusable overlay: no per-reaction allocations or full-board
+            // One reusable overlay: no per-reaction GameObjects or full-board
             // animations. Raycast disabled so taps still reach the pieces.
             signalRect = PlaceholderVisuals.Rect("Resonance Signal Link", transform,
                 Vector2.zero, Vector2.zero);
@@ -144,8 +144,8 @@ namespace Shift.Game
                 signalRect.anchoredPosition = (a + b) * .5f;
                 signalRect.sizeDelta = new Vector2(length, thickness);
                 signalImage.color = cyan;
-                yield return null;
-                yield return null;
+                for (float hold = 0f; hold < .09f; hold += Time.unscaledDeltaTime)
+                    yield return null;
             }
             else
             {
