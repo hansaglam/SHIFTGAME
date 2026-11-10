@@ -56,7 +56,7 @@ namespace Shift.Game
 
         // Overlay belongs to this tile, but renders above occupants without intercepting input.
         public void BindChannelFeedback(Image overlay) { channelFeedback = overlay; appearance.UseExternalChannelBadge(); }
-        private bool IsMechanism => Data != null && (Data.Type == PieceType.Gate || Data.Type == PieceType.Switch);
+        private bool IsMechanism => Data != null && (Data.Type == PieceType.Gate || Data.Type == PieceType.Switch || Data.Type == PieceType.Resonance);
         private void CancelMechanismFeedback()
         {
             if (!IsMechanism || appearance == null) return;

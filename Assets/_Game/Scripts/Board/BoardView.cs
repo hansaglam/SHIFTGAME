@@ -53,11 +53,16 @@ namespace Shift.Game
             // Non-interactive channel badges remain readable above occupied switches AND gates.
             foreach (var data in board.Pieces)
             {
-                if (data.Type != PieceType.Switch && data.Type != PieceType.Gate) continue;
-                var marker = PlaceholderVisuals.Rect(data.Type == PieceType.Gate ? "Gate Channel" : "Switch Channel", transform,
+                if (data.Type != PieceType.Switch && data.Type != PieceType.Gate && data.Type != PieceType.Resonance) continue;
+                var marker = PlaceholderVisuals.Rect(data.Type == PieceType.Gate ? "Gate Channel" : data.Type == PieceType.Resonance ? "Resonance Channel" : "Switch Channel", transform,
                     new Vector2((float)data.Position.x/board.Width,(float)data.Position.y/board.Height),
                     new Vector2((float)(data.Position.x+1)/board.Width,(float)(data.Position.y+1)/board.Height));
-                var badge = VisualTheme.Surface("Channel Badge",marker,art.Surface(BoardSurface.Raised,new Color32(238,190,95,255)),Color.white,data.Type == PieceType.Gate ? new Vector2(.16f,.76f) : new Vector2(.05f,.76f),data.Type == PieceType.Gate ? new Vector2(.84f,.985f) : new Vector2(.59f,.985f));
+                bool resonant = data.Type == PieceType.Resonance;
+                var badge = VisualTheme.Surface("Channel Badge",marker,
+                    art.Surface(BoardSurface.Raised,resonant ? new Color32(92,225,228,255)
+                        : new Color32(238,190,95,255)),Color.white,
+                    resonant ? new Vector2(.44f,.77f) : data.Type == PieceType.Gate ? new Vector2(.16f,.76f) : new Vector2(.05f,.76f),
+                    resonant ? new Vector2(.94f,.99f) : data.Type == PieceType.Gate ? new Vector2(.84f,.985f) : new Vector2(.59f,.985f));
                 PieceAppearance.Channel(badge.transform,data.Channel,new Color32(25,42,62,255),new Vector2(.14f,.08f),new Vector2(.86f,.92f));
                 var highlight=VisualTheme.Surface("Channel Feedback",badge.transform,rounded,Color.clear,Vector2.zero,Vector2.one);
                 pieces[data.Id].BindChannelFeedback(highlight);
@@ -111,6 +116,18 @@ namespace Shift.Game
                         if (i > 0 && board.Actions[i-1].Type == BoardActionType.Move && board.Actions[i-1].PieceId == action.PieceId && !tile.Data.Movable && tile.Data.Position == action.To && (tile.Data.Type == PieceType.Direction || tile.Data.Type == PieceType.Rotator))
                         { tile.Feedback(feel.tapPunch); rotated = tile.Data.Type == PieceType.Rotator; }
                     audioManager.Reaction(rotated ? AudioCue.Rotate : AudioCue.DirectionChange, i + 1);
+                }
+                else if (action.Type == BoardActionType.ResonancePulse)
+                {
+                    piece.Feedback(feel.tapPunch);
+                    foreach (var node in pieces)
+                        if (node.Data.Type == PieceType.Resonance && node.Data.Position == action.To)
+                            node.Feedback(feel.tapPunch);
+                    audioManager.Reaction(AudioCue.SwitchActivate, i + 1);
+                    haptics.Interaction();
+                    if (!feel.reducedMotion)
+                        for (float elapsed = 0f; elapsed < .10f; elapsed += Time.unscaledDeltaTime)
+                            yield return null;
                 }
                 else if (action.Type == BoardActionType.SwitchActivated)
                 { piece.Feedback(feel.tapPunch); audioManager.Reaction(AudioCue.SwitchActivate, i + 1); haptics.Interaction(); }
