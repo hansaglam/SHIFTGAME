@@ -14,6 +14,8 @@ namespace Shift.Game
         private GameHud hud;
         private RectTransform rect;
         private float shakeRemaining, successRemaining;
+        private RectTransform signalRect;
+        private Image signalImage;
         public void Build(BoardManager board, Font font, Sprite circle, Sprite rounded, GameFeelSettings settings,
             AudioManager audio, HapticService hapticService, GameHud gameHud, Action<GridPosition> onTap, bool sculptedTopology = false)
         {
@@ -67,10 +69,23 @@ namespace Shift.Game
                 var highlight=VisualTheme.Surface("Channel Feedback",badge.transform,rounded,Color.clear,Vector2.zero,Vector2.one);
                 pieces[data.Id].BindChannelFeedback(highlight);
             }
+            // One reusable overlay: no per-reaction allocations or full-board
+            // animations. Raycast disabled so taps still reach the pieces.
+            signalRect = PlaceholderVisuals.Rect("Resonance Signal Link", transform,
+                Vector2.zero, Vector2.zero);
+            signalRect.anchorMin = signalRect.anchorMax = Vector2.zero;
+            signalRect.pivot = new Vector2(.5f, .5f);
+            signalRect.sizeDelta = Vector2.zero;
+            signalImage = signalRect.gameObject.AddComponent<Image>();
+            signalImage.sprite = rounded;
+            signalImage.raycastTarget = false;
+            signalImage.color = Color.clear;
+            signalRect.gameObject.SetActive(false);
         }
         public void SetInput(bool enabled) { foreach (var piece in pieces) piece.SetInput(enabled); }
         public void RestoreFromModel()
         {
+            ResetSignal();
             shakeRemaining = successRemaining = 0; rect.anchoredPosition = Vector2.zero; rect.localScale = Vector3.one;
             foreach (var piece in pieces)
                 if (piece.Data.Type != PieceType.Wall) piece.RestoreFromModel();
@@ -97,6 +112,59 @@ namespace Shift.Game
                 rect.localScale = Vector3.one * (1 + (feel.reducedMotion ? 0 : feel.successScale * Mathf.Sin(t * Mathf.PI)));
             }
         }
+        private void ResetSignal()
+        {
+            if (signalRect != null) signalRect.gameObject.SetActive(false);
+            if (signalImage != null) signalImage.color = Color.clear;
+        }
+
+        private IEnumerator PlayResonanceSignal(BoardAction action, BoardManager board)
+        {
+            if (signalRect == null || signalImage == null) yield break;
+            // Grid-to-canvas mapping remains correct at every portrait size,
+            // including non-square boards and UI scale changes.
+            var width = rect.rect.width;
+            var height = rect.rect.height;
+            var a = new Vector2((action.From.x + .5f) * width / board.Width,
+                (action.From.y + .5f) * height / board.Height);
+            var b = new Vector2((action.To.x + .5f) * width / board.Width,
+                (action.To.y + .5f) * height / board.Height);
+            var vector = b - a;
+            var length = vector.magnitude;
+            if (length < 1f) yield break;
+            signalRect.localRotation = Quaternion.Euler(0f, 0f,
+                Mathf.Atan2(vector.y, vector.x) * Mathf.Rad2Deg);
+            var thickness = Mathf.Clamp(Mathf.Min(width / board.Width,
+                height / board.Height) * .055f, 3f, 7f);
+            var cyan = new Color(.46f, .94f, .96f, 1f);
+            signalRect.gameObject.SetActive(true);
+            if (feel.reducedMotion)
+            {
+                // Brief static connection: no translating or scaling animation.
+                signalRect.anchoredPosition = (a + b) * .5f;
+                signalRect.sizeDelta = new Vector2(length, thickness);
+                signalImage.color = cyan;
+                yield return null;
+                yield return null;
+            }
+            else
+            {
+                const float duration = .17f;
+                for (float elapsed = 0f; elapsed < duration; elapsed += Time.unscaledDeltaTime)
+                {
+                    float t = Mathf.Clamp01(elapsed / duration);
+                    float spread = Mathf.SmoothStep(0f, 1f, t);
+                    var tip = Vector2.Lerp(a, b, spread);
+                    signalRect.anchoredPosition = (a + tip) * .5f;
+                    signalRect.sizeDelta = new Vector2(length * spread, thickness);
+                    cyan.a = .95f * (1f - .25f * t);
+                    signalImage.color = cyan;
+                    yield return null;
+                }
+            }
+            ResetSignal();
+        }
+
         public IEnumerator Play(BoardManager board, int tappedId, int lastDelivery = -1)
         {
             bool completed = false;
@@ -125,9 +193,7 @@ namespace Shift.Game
                             node.Feedback(feel.tapPunch);
                     audioManager.Reaction(AudioCue.SwitchActivate, i + 1);
                     haptics.Interaction();
-                    if (!feel.reducedMotion)
-                        for (float elapsed = 0f; elapsed < .10f; elapsed += Time.unscaledDeltaTime)
-                            yield return null;
+                    yield return PlayResonanceSignal(action, board);
                 }
                 else if (action.Type == BoardActionType.SwitchActivated)
                 { piece.Feedback(feel.tapPunch); audioManager.Reaction(AudioCue.SwitchActivate, i + 1); haptics.Interaction(); }
@@ -164,6 +230,7 @@ namespace Shift.Game
             finally
             {
                 // A disposed/interrupted playback must not retain an intermediate gate state.
+                if (this != null) ResetSignal();
                 if (!completed && this != null && pieces != null) RestoreFromModel();
             }
         }
