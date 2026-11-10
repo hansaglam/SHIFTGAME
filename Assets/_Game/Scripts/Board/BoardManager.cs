@@ -187,24 +187,34 @@ namespace Shift.Game
                 Record(BoardActionType.Turn, piece, next, next);
                 Move(piece, piece.Direction, depth + 1);
             }
-            else if (tile.Type == PieceType.Resonance && !signaled[tile.Channel])
+            else if (tile.Type == PieceType.Resonance)
             {
-                // Exactly one signal per channel per tap; no repeat firing in a loop.
-                // The other *normal* piece moves along its own direction. The
-                // triggering piece stays on the source pad, no teleportation.
-                signaled[tile.Channel] = true;
-                var partner = resonancePartners[tile.Id];
-                if (partner != null)
+                // Resonance 2.0: entering a node signals a remote piece, then the
+                // triggering piece continues on its ORIGINAL heading. This is a
+                // single atomic tap, not a teleport or a second player move.
+                if (!signaled[tile.Channel])
                 {
-                    Record(BoardActionType.ResonancePulse, tile, tile.Position, partner.Position);
-                    var receiver = GetOccupant(partner.Position);
-                    if (receiver != null && receiver != piece && receiver.Type == PieceType.Normal)
+                    signaled[tile.Channel] = true;
+                    var partner = resonancePartners[tile.Id];
+                    if (partner != null)
                     {
-                        moving[piece.Id] = true;
-                        Move(receiver, receiver.Direction, depth + 1);
-                        moving[piece.Id] = false;
+                        Record(BoardActionType.ResonancePulse, tile, tile.Position, partner.Position);
+                        var receiver = GetOccupant(partner.Position);
+                        if (receiver != null && receiver != piece && receiver.Type == PieceType.Normal)
+                        {
+                            // While the receiver runs, it must not push its still-active
+                            // source. Keep existing cyclic rollback semantics intact.
+                            moving[piece.Id] = true;
+                            Move(receiver, receiver.Direction, depth + 1);
+                            moving[piece.Id] = false;
+                        }
                     }
                 }
+                // No second pulse when this channel has fired already; however
+                // the surface is always traversable. A blocked next cell leaves
+                // the source on the pad without undoing the successful signal.
+                if (!overflow && piece.Active)
+                    Move(piece, direction, depth + 1);
             }
             return true;
         }
