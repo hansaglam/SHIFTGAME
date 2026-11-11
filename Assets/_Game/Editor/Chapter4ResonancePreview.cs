@@ -11,7 +11,11 @@ namespace Shift.Game.Editor
     public sealed class Chapter4ResonancePreview : EditorWindow
     {
         private const string PreviewScene = "Assets/_Game/Scenes/Chapter4_ResonancePreview.unity";
-        private int selection = 61;
+        private int selection = 66;
+
+        private static LevelData Draft(int number) => number <= 65
+            ? Chapter4ResonanceDrafts.Get(number)
+            : Chapter4ResonanceExtendedDrafts.Get(number);
 
         [MenuItem("SHIFT/Chapter 4/Create Isolated Resonance Preview Scene")]
         public static void Create()
@@ -34,8 +38,8 @@ namespace Shift.Game.Editor
                     Debug.LogError("Missing Chapter 3 Level " + n);
                     return;
                 }
-            for (int n=61; n<=65; n++)
-                if (Chapter4ResonanceDrafts.Get(n) == null)
+            for (int n=61; n<=80; n++)
+                if (Draft(n) == null)
                 {
                     Debug.LogError("Missing Resonance Level " + n);
                     return;
@@ -56,11 +60,11 @@ namespace Shift.Game.Editor
                 Debug.LogError("Expected locked 40-level Prototype baseline. Preview was NOT saved.");
                 return;
             }
-            levels.arraySize = 65;
+            levels.arraySize = 80;
             for (int n=41; n<=60; n++)
                 levels.GetArrayElementAtIndex(n-1).objectReferenceValue = Chapter3DraftAudit.Get(n);
-            for (int n=61; n<=65; n++)
-                levels.GetArrayElementAtIndex(n-1).objectReferenceValue = Chapter4ResonanceDrafts.Get(n);
+            for (int n=61; n<=80; n++)
+                levels.GetArrayElementAtIndex(n-1).objectReferenceValue = Draft(n);
             serialized.FindProperty("useLevelSet").boolValue = true;
             serialized.FindProperty("selectedLevel").intValue = 60;
             serialized.FindProperty("saveKeyPrefix").stringValue = "SHIFT.Chapter4.ResonancePreview.Progress.";
@@ -72,7 +76,9 @@ namespace Shift.Game.Editor
                 Debug.LogError("Unable to save Resonance preview scene.");
                 return;
             }
-            Debug.Log("Created isolated Resonance preview. Play Mode > SHIFT > Chapter 4 > Resonance Preview Controls.");
+            Debug.Log("Created isolated 80-level Resonance preview. " +
+                "Play Mode > SHIFT > Chapter 4 > Resonance Preview Controls. " +
+                "No real campaign progress is saved.");
             ShowControls();
         }
 
@@ -88,11 +94,12 @@ namespace Shift.Game.Editor
             if (game == null) return "PrototypeGame is missing from the preview scene.";
             var serialized = new SerializedObject(game);
             var levels = serialized.FindProperty("levels");
-            if (levels == null || levels.arraySize != 65)
-                return "This preview does not have 65 levels. Exit Play Mode and recreate it.";
-            if (number < 61 || number > 65) return "Invalid Resonance level number.";
+            if (levels == null || levels.arraySize != 80)
+                return "This preview has stale level references; 80 required. " +
+                    "Exit Play Mode and recreate the isolated Resonance preview.";
+            if (number < 61 || number > 80) return "Invalid Resonance level number.";
             var level = levels.GetArrayElementAtIndex(number - 1).objectReferenceValue as LevelData;
-            if (level == null || level != Chapter4ResonanceDrafts.Get(number))
+            if (level == null || level != Draft(number))
                 return "Missing or mismatched Level " + number + " asset. Recreate the preview scene.";
             if (!level.ValidatePlayable(out string error))
                 return "Invalid Level " + number + ": " + error;
@@ -102,10 +109,10 @@ namespace Shift.Game.Editor
         private void OnGUI()
         {
             EditorGUILayout.Space(8);
-            EditorGUILayout.LabelField("Chapter 4 — Resonance 61–65", EditorStyles.boldLabel);
+            EditorGUILayout.LabelField("Chapter 4 — Resonance 61–80", EditorStyles.boldLabel);
             EditorGUILayout.HelpBox("Experimental scene only. The first 60 levels, MORA, " +
                 "production saves and Perfect rewards remain unchanged.", MessageType.Info);
-            selection = EditorGUILayout.IntSlider("Level", selection, 61, 65);
+            selection = EditorGUILayout.IntSlider("Level", selection, 61, 80);
             var game = Object.FindFirstObjectByType<PrototypeGame>();
             var problem = Problem(game, selection);
             if (problem != null) EditorGUILayout.HelpBox(problem, MessageType.Warning);
