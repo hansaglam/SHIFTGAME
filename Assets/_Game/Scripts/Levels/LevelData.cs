@@ -13,9 +13,12 @@ namespace Shift.Game
         public GridPosition position;
         public int channel;
         public bool initialOpen;
+        // Optional, Chapter 6+ only. Two Normal pieces with the same id share a link.
+        // Zero preserves all existing 1-100 level assets and game rules.
+        public int tetherId;
 
-        public PiecePlacement(PieceType type, PieceColor color, Direction direction, GridPosition position, int channel = 0, bool initialOpen = false)
-        { this.type = type; this.color = color; this.direction = direction; this.position = position; this.channel = channel; this.initialOpen = initialOpen; }
+        public PiecePlacement(PieceType type, PieceColor color, Direction direction, GridPosition position, int channel = 0, bool initialOpen = false, int tetherId = 0)
+        { this.type = type; this.color = color; this.direction = direction; this.position = position; this.channel = channel; this.initialOpen = initialOpen; this.tetherId = tetherId; }
     }
 
     [CreateAssetMenu(fileName = "Level", menuName = "SHIFT/Level")]
@@ -87,6 +90,7 @@ namespace Shift.Game
             var walls = new HashSet<GridPosition>();
             var switches = new HashSet<int>(); var gates = new HashSet<int>();
             var resonanceCounts = new Dictionary<int, int>();
+            var tetherEndpoints = new Dictionary<int, List<GridPosition>>();
             var targets = new HashSet<PieceColor>();
             if (placements == null) { error = "Missing placements."; return false; }
             foreach (var p in placements)
@@ -104,6 +108,20 @@ namespace Shift.Game
                 { error = "Resonance requires paired channel 1/2 with no color, direction or open state."; return false; }
                 if ((!stateTile && !resonator && p.channel != 0) || (p.type != PieceType.Gate && p.initialOpen))
                 { error = "Channel is for Switch/Gate and Resonance; open state is for Gate."; return false; }
+                if (p.tetherId != 0)
+                {
+                    if (p.type != PieceType.Normal || p.tetherId < 1 || p.tetherId > 2)
+                    {
+                        error = "A Tether id (1 or 2) may only belong to a Normal piece.";
+                        return false;
+                    }
+                    if (!tetherEndpoints.TryGetValue(p.tetherId, out var ends))
+                    {
+                        ends = new List<GridPosition>(2);
+                        tetherEndpoints.Add(p.tetherId, ends);
+                    }
+                    ends.Add(p.position);
+                }
                 if (p.type == PieceType.Switch) switches.Add(p.channel);
                 if (p.type == PieceType.Gate) gates.Add(p.channel);
                 if (resonator)
@@ -119,6 +137,22 @@ namespace Shift.Game
             if (!switches.SetEquals(gates)) { error = "Each switch channel needs a gate and each gate needs a switch."; return false; }
             foreach (var pair in resonanceCounts)
                 if (pair.Value != 2) { error = "Each Resonance channel needs exactly two nodes."; return false; }
+            foreach (var link in tetherEndpoints)
+            {
+                if (link.Value.Count != 2)
+                {
+                    error = "Each Tether id needs exactly two linked Normal pieces.";
+                    return false;
+                }
+                var a = link.Value[0];
+                var b = link.Value[1];
+                int length = Math.Abs(a.x - b.x) + Math.Abs(a.y - b.y);
+                if (length < 1 || length > 3)
+                {
+                    error = "Tethered normals must begin 1-3 Manhattan cells apart.";
+                    return false;
+                }
+            }
             if (walls.Overlaps(occupied)) error = "A movable piece cannot overlap a wall.";
             else if (!targets.SetEquals(objective)) error = "Place at least one Normal piece of each target color.";
             return error == null;
