@@ -91,7 +91,7 @@ MonoBehaviour:
     channel: 0
     initialOpen: 0
   displayTitle: 72 - Prepare the Echo
-  hint: "Open the distant route before you send the signal."
+  hint: "Önce uzak yolun kilidini aç; sonra sinyali doğru anda kullan."
   knownSolution:
   - {x: 5, y: 1}
   - {x: 3, y: 1}
