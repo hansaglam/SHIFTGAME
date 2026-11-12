@@ -69,6 +69,72 @@ namespace Shift.Game.Tests
         }
 
         [Test]
+        public void Level97MustUseBothRemoteSignalsAndTheYellowConvoy()
+        {
+            var level = Chapter5Drafts.Get(97);
+            Assert.That(level, Is.Not.Null);
+            Assert.That(level.KnownSolutionLength, Is.EqualTo(9));
+            Assert.That(level.MoveLimit, Is.EqualTo(11));
+            Assert.That(Chapter5Drafts.AlternateWinningRoute(97).Length,
+                Is.EqualTo(10));
+            Assert.That(LevelValidation.VerifySolution(level,
+                out string error, out _), Is.True, error);
+            Assert.That(Chapter5Drafts.CheckAlternate(level, 97,
+                out error), Is.True, error);
+            var proof = CampaignCertification.Prove(level, 97);
+            Assert.That(proof.complete, Is.True, proof.error);
+            Assert.That(proof.minimum, Is.EqualTo(9));
+            Assert.That(Post40QualityAudit.CountProductiveResonanceMoves(
+                level, level.KnownSolution), Is.EqualTo(2));
+
+            var board = new BoardManager();
+            board.Load(level);
+            var signalChannels = new HashSet<int>();
+            var pulseSteps = new List<int>();
+            var yellowDeliveries = new List<int>();
+            int multi = 0, yellowTargets = 0, tapNumber = 0;
+            foreach (var p in level.Placements)
+                if (p.type == PieceType.Normal &&
+                    p.color == PieceColor.Yellow)
+                    yellowTargets++;
+            Assert.That(yellowTargets, Is.EqualTo(2));
+            foreach (var tap in level.KnownSolution)
+            {
+                tapNumber++;
+                Assert.That(board.RequestMove(tap), Is.True);
+                Assert.That(board.LastReactionWasCancelled, Is.False);
+                var moved = new HashSet<int>();
+                foreach (var action in board.Actions)
+                {
+                    if (action.Type == BoardActionType.Move)
+                        moved.Add(action.PieceId);
+                    if (action.Type == BoardActionType.ResonancePulse)
+                    {
+                        signalChannels.Add(board.Pieces[action.PieceId].Channel);
+                        pulseSteps.Add(tapNumber);
+                    }
+                    if (action.Type == BoardActionType.Deliver &&
+                        board.Pieces[action.PieceId].Color == PieceColor.Yellow)
+                        yellowDeliveries.Add(tapNumber);
+                }
+                if (moved.Count > 1) multi++;
+                board.CompleteResolution();
+            }
+            Assert.That(board.State, Is.EqualTo(GameState.Won));
+            Assert.That(multi, Is.GreaterThanOrEqualTo(5));
+            Assert.That(signalChannels.SetEquals(new[] { 1, 2 }), Is.True);
+            Assert.That(pulseSteps, Is.EqualTo(new[] { 1, 6 }));
+            Assert.That(yellowDeliveries, Is.EqualTo(new[] { 8, 9 }));
+            Assert.That(Post40QualityAudit.AnalyzeRhythm(
+                level, level.KnownSolution).longestSinglePieceRun,
+                Is.LessThanOrEqualTo(2));
+            var overlap = Chapter5Drafts.ScanMotifSimilarities(.75f);
+            Assert.That(overlap.candidatePairs.Exists(pair =>
+                pair.first == 95 && pair.second == 97), Is.False,
+                "Do not restore identical 95/97 player-decision rhythms.");
+        }
+
+        [Test]
         public void HundredMustConcludeWithThreeColorsTwoSignalsTwoGatesAndRealPushes()
         {
             var l = Chapter5Drafts.Get(100);
