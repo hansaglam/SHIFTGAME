@@ -143,6 +143,27 @@ namespace Shift.Game.Tests
         }
 
         [Test]
+        public void ResonanceAuditMustIdentifyDecorativeLevel77Pulse()
+        {
+            var level77 = Chapter4ResonanceExtendedDrafts.Get(77);
+            Assert.That(level77, Is.Not.Null);
+            Post40QualityAudit.CountResonanceReceivers(level77,
+                level77.KnownSolution, out int pulses77, out int occupied77);
+            Assert.That(pulses77, Is.GreaterThanOrEqualTo(1),
+                "Level 77 currently emits a visible signal.");
+            Assert.That(occupied77, Is.EqualTo(0),
+                "Document the real design defect until Level 77 is rebuilt.");
+
+            var finale = Chapter4ResonanceExtendedDrafts.Get(80);
+            Assert.That(finale, Is.Not.Null);
+            Post40QualityAudit.CountResonanceReceivers(finale,
+                finale.KnownSolution, out int pulses80, out int occupied80);
+            Assert.That(pulses80, Is.GreaterThanOrEqualTo(2));
+            Assert.That(occupied80, Is.GreaterThanOrEqualTo(2),
+                "Both finale signal channels must activate real remote pieces.");
+        }
+
+        [Test]
         public void Chapter4FinaleMustRetainTwoSignalsTwoGatesAndThreeColors()
         {
             var finale = Chapter4ResonanceExtendedDrafts.Get(80);
