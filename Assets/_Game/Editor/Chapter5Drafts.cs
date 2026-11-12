@@ -131,6 +131,121 @@ namespace Shift.Game.Editor
             public List<CandidateProof> levels = new List<CandidateProof>();
         }
 
+        [Serializable]
+        public sealed class MotifPair
+        {
+            public int first, second, sharedTapPattern, firstLength, secondLength;
+            public float normalizedOverlap;
+            public int sharedOpening;
+        }
+
+        [Serializable]
+        public sealed class MotifReport
+        {
+            public string status = "EDITOR DESIGN REVIEW - similarity is not a failure by itself";
+            public List<MotifPair> candidatePairs = new List<MotifPair>();
+        }
+
+        // Coordinates are deliberately excluded. Different-looking boards can
+        // repeat the very same player decision sequence, hence include color
+        // and action consequences on each committed tap.
+        public static List<string> DecisionMotif(LevelData level)
+        {
+            var board = new BoardManager();
+            board.Load(level);
+            var pattern = new List<string>();
+            foreach (var tap in level.KnownSolution)
+            {
+                var piece = board.GetOccupant(tap);
+                if (piece == null || piece.Type != PieceType.Normal)
+                    throw new InvalidOperationException("No normal piece at " + tap);
+                var color = piece.Color;
+                if (!board.RequestMove(tap) || board.LastReactionWasCancelled)
+                    throw new InvalidOperationException("Invalid optimal motif tap.");
+                var moved = new HashSet<int>();
+                int remote = 0, gates = 0, delivered = 0;
+                foreach (var action in board.Actions)
+                {
+                    if (action.Type == BoardActionType.Move) moved.Add(action.PieceId);
+                    if (action.Type == BoardActionType.ResonancePulse) remote++;
+                    if (action.Type == BoardActionType.GateOpened) gates++;
+                    if (action.Type == BoardActionType.Deliver) delivered++;
+                }
+                pattern.Add(((int)color).ToString() + ":" +
+                    (moved.Count > 1 ? "chain" : "solo") + ":" +
+                    (remote > 0 ? "signal" : "quiet") + ":" +
+                    (gates > 0 ? "gate" : "closed") + ":" +
+                    (delivered > 0 ? "exit" : "moving"));
+                board.CompleteResolution();
+            }
+            if (board.State != GameState.Won)
+                throw new InvalidOperationException("Motif requires winning route.");
+            return pattern;
+        }
+
+        private static int MotifLcs(List<string> a, List<string> b)
+        {
+            var previous = new int[b.Count + 1];
+            for (int i = 0; i < a.Count; i++)
+            {
+                var current = new int[b.Count + 1];
+                for (int j = 0; j < b.Count; j++)
+                    current[j + 1] = a[i] == b[j] ? previous[j] + 1 :
+                        Math.Max(previous[j + 1], current[j]);
+                previous = current;
+            }
+            return previous[b.Count];
+        }
+
+        public static MotifReport ScanMotifSimilarities(float threshold = .75f)
+        {
+            var profiles = new List<string>[20];
+            for (int n = 81; n <= 100; n++)
+            {
+                var level = Get(n);
+                if (level == null)
+                    throw new InvalidOperationException("Missing level " + n);
+                profiles[n - 81] = DecisionMotif(level);
+            }
+            var result = new MotifReport();
+            for (int i = 0; i < profiles.Length; i++)
+                for (int j = i + 1; j < profiles.Length; j++)
+                {
+                    var a = profiles[i]; var b = profiles[j];
+                    int common = MotifLcs(a, b);
+                    float overlap = (float)common / Math.Min(a.Count, b.Count);
+                    int opening = 0;
+                    while (opening < a.Count && opening < b.Count &&
+                        a[opening] == b[opening]) opening++;
+                    if (overlap < threshold && opening < 4) continue;
+                    result.candidatePairs.Add(new MotifPair
+                    {
+                        first = 81 + i, second = 81 + j,
+                        sharedTapPattern = common,
+                        firstLength = a.Count, secondLength = b.Count,
+                        normalizedOverlap = overlap, sharedOpening = opening
+                    });
+                }
+            return result;
+        }
+
+        [MenuItem("SHIFT/Chapter 5/Export Decision Motif Similarities 81-100")]
+        public static void ExportMotifSimilarities()
+        {
+            var report = ScanMotifSimilarities();
+            string folder = Path.Combine(Application.dataPath, "../Validation");
+            Directory.CreateDirectory(folder);
+            string output = Path.Combine(folder, "chapter5_motif_similarity.json");
+            File.WriteAllText(output, JsonUtility.ToJson(report, true));
+            foreach (var pair in report.candidatePairs)
+                Debug.LogWarning("Chapter 5 design review: Level " + pair.first +
+                    " / " + pair.second + " pattern overlap " +
+                    (pair.normalizedOverlap * 100f).ToString("F0") +
+                    "%; common opening taps=" + pair.sharedOpening +
+                    ". Review insight, not just rotated board shape.");
+            Debug.Log("Chapter 5 motif review exported: " + output);
+        }
+
         [MenuItem("SHIFT/Chapter 5/Validate All Draft Levels 81-100")]
         public static void ValidateAll()
         {
