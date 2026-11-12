@@ -283,3 +283,67 @@ The existing `Post40QualityAudit.AnalyzeRhythm` now writes an additional indepen
 - The independent simulator models repository BoardManager rules but is **not** Unity's authoritative Editor runtime. The new Level 70 and 80 designs require `CampaignCertification`, all EditMode suites and later final blind playtesting and device UX checks.
 - No new Perfect Shift fingerprints were created or enabled.
 - Level 73/75's pacing concerns remain transparent; no claim that every 70–75 design is final.
+
+
+## 2026-11-12 — Level 73/75 pacing follow-up + world progression preview (latest)
+
+### Level 73 — Crossed Signals (updated candidate)
+
+The former Level 73 had three visible pulse events but only one useful remote reaction, a seven-tap recorded win and **five consecutive one-piece taps**. Its late yellow progress was largely routine.
+
+The redesign keeps all three target colors and two Resonance pairs, relocates the second pair and the yellow starting point, and adds **one switch/gate dependency** in the yellow corridor. First, red fires channel 1 and prepares blue. Later, blue fires channel 2, which remotely moves yellow onto the switch, opening the closed gate on yellow's path. The actual insight is **signal → remote switch → unlock**, not a passive light effect.
+
+| Property | Previous | Revised candidate |
+|---|---:|---:|
+| Independently searched shortest | 7 | **6** |
+| Valid +1-tap win | 8 | **7** |
+| Multi-piece taps | 1 | **2** |
+| Useful remote moves | 1 | **2** |
+| Longest run of one-piece-only taps | 5 | **3** |
+| Pulse steps in authored optimal | 2,6 (and nested pulse at 2) | **1,3** |
+| Gate openings in authored optimal | 0 | **1** |
+
+The 7-tap longer route opens the gate manually by moving yellow before blue activates its pulse; the 6-tap route saves that input by triggering yellow remotely. Disabling remote receiver motion in the independent model increases the minimum from 6 to **8**. The board does still end with a short yellow run; that is a known residual pacing limit, not a claim of complete creative perfection.
+
+Recorded optimal `(6,5), (4,5), (2,3), (5,3), (5,2), (5,1)`.
+Recorded +1 alternate `(6,5), (4,5), (5,4), (2,3), (5,3), (5,2), (5,1)`.
+
+### Level 75 — Hidden Order (updated candidate)
+
+Rather than add another near-identical blue-on-blue pushing finale (already in Level 80), this revision retains the **two-gate ordering puzzle**. The first yellow push redirects red via a directional tile (now at `(2,2)`), moving it into the staging lane. Red's second-step tap then enters the Resonance source (moved to `(4,2)`) and remotely advances blue onto the first switch. Blue subsequently opens the second gate, and red completes its route.
+
+| Property | Previous | Revised candidate |
+|---|---:|---:|
+| Independently searched shortest | 7 | **7** |
+| Valid +1-tap win | 8 | **8** |
+| Multi-piece taps | 1 | **2** |
+| Useful remote moves | 1 | **1** |
+| Longest run of one-piece-only taps | 6 | **5** |
+| Resonance activation | Opening yellow tap | **Second, deliberately selected red tap** |
+| Opened gate channels | 1,2 | **1,2** |
+
+Disabling remote movement increases the independently computed minimum from 7 to **8**. The alternate eight-tap solution moves blue manually before the remote signal. Later simple movement is still a remaining rhythm risk, but this candidate preserves the chapter's deliberate **set up → open gate one → open gate two** logic rather than introducing decorative extra pieces.
+
+Recorded optimal `(0,2), (3,2), (4,4), (5,4), (5,2), (6,2), (6,4)`.
+Recorded +1 alternate `(0,2), (3,4), (3,2), (4,4), (5,4), (5,2), (6,2), (6,4)`.
+
+### Design verification / protections
+
+- Updated existing `ResonanceExtendedDraftTests` thresholds for 73 and 75; added focused tests for exact route, shorter-versus-longer completion, separate signal timings, real remote movement and gate state changes.
+- **No Unity 6.3 LTS or device tests run** here; all shortest route and counterfactual metrics are from a separate BoardManager-style Python simulator, not authoritative runtime certification.
+- Original asset filenames and Unity GUIDs preserved; no change to Levels 1–40, MORA, ads, progression, shipping Perfect fingerprints, live releases or main branch.
+
+### Chapter 3–4 Purpose & Progression prototype
+
+A **new Unity Editor-only window** now previews five bilingual (TR/EN) world-restoration milestones per Chapter, a chapter progress bar, a level-win completion control, scenic color-state cues, and separate static descriptions for Reduced Motion. Access through `SHIFT → Chapter Journey → Preview 41-80`. Export the draft via `SHIFT → Chapter Journey → Export EN-TR Design Draft`.
+
+The desired world experience: **Chapter 3 repairs fractured lines around the alpine lake; Chapter 4 progressively awakens two remote resonance shores and ends in a central convergence.** No new resource/quest/metagame systems; core chain-puzzle experience stays central.
+
+**This is editor-only, not a runtime UI implementation**. Its data, stages, localization and completion guard are implemented, while the actual game chapter HUD/environment/saved-progress connection is intentionally deferred until the preview concept is accepted. See `Validation/chapter3_4_journey_v01.md` for exact milestones, integration criteria and accessibility rules. Also added `ChapterJourneyPreviewTests`, but they have not yet run inside Unity.
+
+### Outstanding next actions
+
+1. Open the draft branch in Unity, compile/run the EditMode suites. Verify all 41–80 shortest paths and editor alternatives; resolve any engine-model mismatches.
+2. Preview the new Chapter Journey Editor screen and check whether the atmospheric states reinforce the puzzle but stay subtle. Once accepted, integrate through the existing chapter-selection/runtime progress source rather than inventing a second save system.
+3. Continue reviewing the residual single-piece stretches in 75 and a few nearby levels; use editor rhythm flags as screening data, not an automatic verdict on entertainment.
+4. Real-player tests remain **at the end of content design**, followed by final device QA and release certification. Keep PR draft and do not merge or enable Perfect Shift early.
