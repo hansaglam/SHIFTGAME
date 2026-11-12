@@ -153,6 +153,9 @@ namespace Shift.Game.Tests
                 "The Level 77 intended route should have one clear pulse.");
             Assert.That(occupied77, Is.EqualTo(1),
                 "Level 77's signal must actually reach a waiting receiver.");
+            Assert.That(Post40QualityAudit.CountProductiveResonanceMoves(
+                level77, level77.KnownSolution), Is.EqualTo(1),
+                "The waiting blue receiver must actually move during the pulse.");
 
             var finale = Chapter4ResonanceExtendedDrafts.Get(80);
             Assert.That(finale, Is.Not.Null);
@@ -161,6 +164,9 @@ namespace Shift.Game.Tests
             Assert.That(pulses80, Is.GreaterThanOrEqualTo(2));
             Assert.That(occupied80, Is.GreaterThanOrEqualTo(2),
                 "Both finale signal channels must activate real remote pieces.");
+            Assert.That(Post40QualityAudit.CountProductiveResonanceMoves(
+                finale, finale.KnownSolution), Is.GreaterThanOrEqualTo(2),
+                "Finale needs real remote moves, not occupied-but-blocked signals.");
         }
 
         [Test]
