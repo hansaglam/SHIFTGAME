@@ -136,3 +136,29 @@ The chosen 8-tap route delivers red **before** the helper re-enters the switch a
 2. Rework **72** and **69** first where their corridors still repeat similar decisions; re-check 78 against the resulting family.
 3. Preserve Level 80 as the chapter's distinct dual-signal, dual-gate climax rather than making 77 another finale.
 4. Final real-player experience tests occur after the content-design phase, as requested; automated certification gates remain mandatory for release.
+
+
+## Structural audit — Levels 69, 72, 78 (still unresolved)
+
+The independent replay used the exact saved LevelData route, a BoardManager-style simulator and a counterfactual replay with **only remote signal movement disabled**. These three levels are **not accepted yet**:
+
+| Level | Shortest | Multi-piece taps | Visible pulses | Productive remote moves | Shortest with remote movement disabled |
+|---|---:|---:|---:|---:|---:|
+| 69 | 6 | 2 | 3 | **0** | 6 |
+| 72 | 6 | 1 | 2 | **0** | 6 |
+| 78 | 8 | 4 | 3 | **0** | 8 |
+
+These are **not merely cosmetic near-duplicates**: the same initial yellow/red/blue lanes, the 3,2 and 1,3 resonator pair, the switch at 1,4 and a closely related exit/gate sequence recur. The 69 and 72 routes can both be solved just as efficiently with remote signal movement disabled, as can 78. This independently supports the conclusion that remote signal movement is currently *not necessary for their optimal solutions*.
+
+Research candidates for 72 that simply repositioned the receiver onto an already-occupied pad still resembled Level 77's new insight. They were **rejected rather than committed**: the next 72 revision should make preparation of an empty remote node a deliberate **setup decision**, rather than duplicating 77's initially ready receiver. The initial design search did not yield a candidate meeting the useful pulse, distinct insight and shorter/longer win constraints together.
+
+Likewise, experimental 69 candidates that merely moved the gate onto the red lane reused the red/blue dependency from the revised 77. These remain unsaved experiments, not accepted designs.
+
+**Editor QA now emits an explicit design-blocking error** when any Level 66–80 candidate has visible resonance pulses but zero confirmed remote-piece moves, even if a solvable shortest route exists. This prevents declaring all levels design-ready simply because the mechanical solver passes.
+
+### Next revision brief
+
+- **69:** Make the remote pulse causally meaningful using a simpler lesson than 77; avoid copying the exact red gate/blue receiver reciprocity.
+- **72:** Require a genuine receiver-preparation moment *before* firing the source, with visible consequences and no straight-line filler. Do not accept a different-looking board with the same 77 solution.
+- **78:** After 69 and 72 are distinct, use a late-stage *delayed consequence* and coordination idea—not a longer version of their original vertical lane.
+- Keep all three as **design blockers**; no promotion to main or any Perfect certificates until redesigned and solver-certified.
