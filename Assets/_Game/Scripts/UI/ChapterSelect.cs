@@ -75,7 +75,7 @@ namespace Shift.Game
             }
             else
             {
-                int tabCount = Mathf.Min(4, count / CampaignChapters.LevelsPerChapter);
+                int tabCount = Mathf.Min(5, count / CampaignChapters.LevelsPerChapter);
                 chapterTabs = new Button[tabCount];
                 float gap = .015f, availableWidth = .88f;
                 float width = (availableWidth - gap * (tabCount - 1)) / tabCount;
@@ -88,7 +88,7 @@ namespace Shift.Game
                         new Vector2(left, .655f), new Vector2(left + width, .705f),
                         () => ShowPage(chapterIndex), out var tab);
                     LocalizedLabel.Bind(tab, "chapter.title", i + 1);
-                    tab.fontSize = tabCount == 4 ? 20 : 25;
+                    tab.fontSize = tabCount == 5 ? 18 : tabCount == 4 ? 20 : 25;
                 }
                 secondTab = chapterTabs[1];
                 journey = PlaceholderVisuals.Rect("Chapter Journey", content,
