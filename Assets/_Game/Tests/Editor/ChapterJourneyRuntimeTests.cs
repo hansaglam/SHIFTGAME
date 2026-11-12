@@ -137,6 +137,58 @@ namespace Shift.Game.Tests
         }
 
         [Test]
+        public void HundredLevelPreviewUnlocksButDoesNotRestoreChapterFive()
+        {
+            var preview = Saved(100, 99, 79, 80);
+            var fifth = ChapterJourneyCatalog.ForChapter(4);
+            Assert.That(fifth, Is.Not.Null);
+            Assert.That(fifth.startLevel, Is.EqualTo(81));
+            Assert.That(fifth.endLevel, Is.EqualTo(100));
+            Assert.That(ChapterJourneyCatalog.Available(preview, 4), Is.True);
+            Assert.That(ChapterJourneyCatalog.Completed(fifth,
+                preview.HighestCompleted), Is.EqualTo(0));
+            Assert.That(ChapterJourneyCatalog.LastRestoredBeat(fifth,
+                preview.HighestCompleted), Is.EqualTo(-1));
+            Assert.That(ChapterJourneyCatalog.Restored(fifth.beats[0],
+                preview.HighestCompleted), Is.False);
+            Assert.That(ChapterJourneyCatalog.Restored(fifth.beats[4],
+                preview.HighestCompleted), Is.False);
+        }
+
+        [Test]
+        public void LevelHundredVictoryIsRequiredForTheFinalHorizon()
+        {
+            var fifth = ChapterJourneyCatalog.ForChapter(4);
+            var before = Saved(100, 99, 98, 99);
+            Assert.That(ChapterJourneyCatalog.Completed(fifth,
+                before.HighestCompleted), Is.EqualTo(19));
+            Assert.That(ChapterJourneyCatalog.Restored(fifth.beats[4],
+                before.HighestCompleted), Is.False);
+            Assert.That(ChapterJourneyMilestoneNotice.NewMilestone(
+                before, 99, 98), Is.Null);
+
+            var won = Saved(100, 99, 99, 99);
+            Assert.That(ChapterJourneyCatalog.Completed(fifth,
+                won.HighestCompleted), Is.EqualTo(20));
+            Assert.That(ChapterJourneyCatalog.Progress01(fifth,
+                won.HighestCompleted), Is.EqualTo(1f));
+            Assert.That(ChapterJourneyCatalog.Restored(fifth.beats[4],
+                won.HighestCompleted), Is.True);
+            Assert.That(ChapterJourneyMilestoneNotice.NewMilestone(
+                won, 99, 98)?.level, Is.EqualTo(100));
+            Assert.That(ChapterJourneyMilestoneNotice.NewMilestone(
+                won, 99, 99), Is.Null);
+        }
+
+        [Test]
+        public void LevelEightyCampaignDoesNotExposeFifthWorld()
+        {
+            var old = Saved(80, 79, 79, 79);
+            Assert.That(ChapterJourneyCatalog.Available(old, 4), Is.False);
+            Assert.That(ChapterJourneyCatalog.ForChapter(4).startLevel, Is.EqualTo(81));
+        }
+
+        [Test]
         public void ReturningPlayerShowsIdenticalProgressWithoutNewSaveKeys()
         {
             var save = new SaveService(Prefix);
