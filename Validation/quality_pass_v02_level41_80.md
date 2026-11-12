@@ -5,7 +5,7 @@
 **Based on:** `feature/chapter3-4-quality-pass-v01`  
 **Status:** **ISOLATED CANDIDATE — do not merge to production or enable Perfect Shift.**
 
-**Latest design outcome:** Level 59, Level 60 and now **Level 77** have revised candidates. 69/72/78 remain open.
+**Latest design outcome:** The latest continuation revised 59/60 and Chapter 4's 66, 69, 71, 72, 74, 76, 77, 78 and 79. Earlier open issues below are retained as historical investigation; the newest results are in the final section.
 
 ## Goal and protection
 
@@ -162,3 +162,60 @@ Likewise, experimental 69 candidates that merely moved the gate onto the red lan
 - **72:** Require a genuine receiver-preparation moment *before* firing the source, with visible consequences and no straight-line filler. Do not accept a different-looking board with the same 77 solution.
 - **78:** After 69 and 72 are distinct, use a late-stage *delayed consequence* and coordination idea—not a longer version of their original vertical lane.
 - Keep all three as **design blockers**; no promotion to main or any Perfect certificates until redesigned and solver-certified.
+
+
+## 12 November 2026 — Chapter 4 full functional-quality sweep (latest status)
+
+**Objective:** Remove objectively decorative Resonance from the *recorded optimal solution*, while preserving different insights and valid manual +1-tap wins. This is a **design candidate** pass, not a completed player-quality or Unity certification.
+
+### Independently replayed / searched results
+
+The post-edit source candidate board for every level 66–80 was enumerated in a separate Python reproduction of the current `BoardManager` movement, switch/gate, rotator/direction, recursive push, Resonance and win rules. A **counterfactual** search disabled only the *remote receiver movement*, leaving pulses and other rules unchanged.
+
+| Level | Recorded minimum | Without remote movement | Multi-piece taps on recorded optimum | Total pulses | Productive remote moves |
+|---|---:|---:|---:|---:|---:|
+| 66 | 5 | 6 | 3 | 2 | 1 |
+| 67 | 5 | 6 | 1 | 3 | 1 |
+| 68 | 6 | 7 | 4 | 4 | 1 |
+| 69 | 6 | 7 | 3 | 1 | 1 |
+| 70 | 6 | 8 | 1 | 2 | 2 |
+| 71 | 6 | 7 | 1 | 1 | 1 |
+| 72 | 6 | 7 | 2 | 1 | 1 |
+| 73 | 7 | 8 | 1 | 3 | 1 |
+| 74 | 6 | 7 | 1 | 2 | 1 |
+| 75 | 7 | 8 | 1 | 1 | 1 |
+| 76 | 7 | 8 | 2 | 2 | 1 |
+| 77 | 8 | 9 | 5 | 1 | 1 |
+| 78 | 8 | 9 | 7 | 3 | 1 |
+| 79 | 8 | 9 | 4 | 1 | 1 |
+| 80 | 8 | 9 | 2 | 2 | 2 |
+
+**Candidate result: 15/15 levels have a real remote movement in the recorded shortest solution, and disabling remote movement worsens the computed minimum for all 15.** This is much stronger than a simple “pulse animation exists” check. It is still *not a Unity runtime certification*; Unity's `CampaignCertification` and EditMode tests remain required, and player delight has not been measured.
+
+### Concrete changes and intentionally different solution ideas
+
+- **66 — Signal Lock:** Moved blue onto the waiting resonance receiver and shifted the red exit. The pulse now opens the blue gate remotely. Introductory immediate-echo payoff; 5 versus 6 taps.
+- **69 — Distant Arrival:** The yellow helper corrects a wrong-facing red piece while the same chain awakens the distant blue route; the switch opens the red path. 6 versus 7 taps.
+- **71 — Delayed Relay:** Moving the partner pad beneath the blue starting piece makes a *delayed remote step* beneficial. The longer alternative explicitly advances blue manually **before** the pulse. 6 versus 7 taps, but a quieter consolidation level with only one multi-piece tap.
+- **72 — Prepare the Echo:** Yellow first opens a gate blocking the receiver's path; a later red signal then moves the waiting blue piece for free. Distinct **prepare-before-signal** concept. 6 versus 7 taps.
+- **74 — Crossed Priority:** Red starts the signal; distant blue is redirected downward, activates the switch and opens a gate across red's path. Longer route may manually reposition blue before the signal. 6 versus 7 taps; remains a lower-chain, higher-planning candidate.
+- **76 — Held in Resonance:** Yellow pushes red **onto** the receiver, where a closed gate prevents it from moving away. The same yellow reaction turns onto the switch and opens the gate. Blue's later source pulse releases red remotely. Alternative can move red manually. 7 versus 8 taps.
+- **77 — The Return Signal:** Previously revised reciprocal pulse/gate design preserved. Remote blue opens red's route, 5 multi-piece taps, 8 versus 9.
+- **78 — The Deferred Handoff:** New four-normal design. Red's source pulse pushes a yellow non-target helper onto the switch, opening a gate directly ahead. Later blue frees that helper through a **neutral shared exit**, then follows into the same exit. Gate closure is timed for an **unoccupied** gate; saved optimal route has 7 multi-piece taps, 8 versus 9.
+- **79 — The Last Key:** Blue first triggers remote movement of red **into yellow's push lane**. Yellow's later chain delivers red. The slower alternative positions red manually before blue fires, establishing real Perfect-vs-normal discovery. 8 versus 9.
+- **80 — Heart of Resonance:** No direct asset revision in this continuation; the v01 two-channel/two-gate/three-color finale still has productive remote movement in both channels. Remains a final payoff evaluation priority.
+
+All altered levels preserve their original `.asset` file paths and Unity GUIDs, avoiding scene-reference churn. Updated recorded optimum routes and editor-only distinct longer winning routes for each edited level. The early 41–40 released content, MORA, save schema, production scene, shipped Perfect registry and app builds are untouched.
+
+### Quality regressions and remaining design judgement
+
+- New EditMode checks cover exact shortest and +1 route contracts, actual remotely moved pieces, minimum reaction density of revised boards, neutral shared-exit behavior and timing of gate closure. An **all-66–80 actual remote movement** regression prevents return to purely decorative signals.
+- `SHIFT → Quality → Export Level 41-80 Decision Matrix` emits a **design-blocking error** if any post-65 candidate has signals but no productive remote movement; it also flags excessive simple-move sequences for editorial review.
+- **Still under design review:** 67, 70, 71, 73, 74, 75 have only one multi-piece tap on the recorded optimum. Some may be legitimate pacing/teaching steps, but a long block of similar simple taps could still feel like filler. They should be judged as a group during final design pass; not automatically given a quality grade.
+- **78:** Two of its three signal events have no remote receiver; only the first is productive. This is consistent with the per-tap Resonance rule, but visual/audio feedback must not falsely imply another movement.
+- **80:** Has two productive signals and two gate dependencies but only two multi-piece taps on its eight-tap optimum. Evaluate chapter-ending satisfaction separately; do not manufacture a “finale” merely by extra moves.
+- The *static* claim “15/15 are now causally useful” does not establish puzzle memorability, chapter atmosphere or retention. Final blind playtests are deliberately deferred, per the owner's direction.
+
+### Release boundary
+
+Keep `feature/level41-80-design-quality-v02` and PR #2 **draft**. Final conditions remain: Unity 6.3 LTS compilation, `ChapterFinaleQualityTests`, `ResonanceExtendedDraftTests`, other mechanic suites, Chapter 3 **20/20**, Chapter 4 **5/5 + 15/15**, complete 41–80 decision matrix **40/40**, phone readability, reduced motion, EN/TR and user data migration. Never enable or fabricate Perfect Shift certificates before exact Unity proof and design acceptance.
