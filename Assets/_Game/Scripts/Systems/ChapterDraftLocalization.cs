@@ -132,13 +132,13 @@ namespace Shift.Game
             "The two gates need a sequence, not a simultaneous trigger.",
             "Three colors share one connected current.",
             "The first signal opens one gate; the other key is on the side route.",
-            "A turn far away can change the decision here.",
+            "Open the gate before the second echo can move yellow forward.",
             "Prepare the next chain before the first one ends.",
             "The second gate's key waits beyond the first.",
             "The obvious shortcut may not be the right route.",
             "Set up the last move with your first decision.",
             "Link two distant consequences with one tap.",
-            "Bring two signals together for a single payoff.",
+            "Two gates guard the same route; choose when to open each one.",
             "Find where the two distant signals meet."
         };
 
