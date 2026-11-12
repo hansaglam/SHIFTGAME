@@ -33,6 +33,15 @@ namespace Shift.Game.Tests
                 Assert.That(Post40QualityAudit.CountProductiveResonanceMoves(
                     level, level.KnownSolution), Is.GreaterThanOrEqualTo(1),
                     "The remote signal must move an actual normal piece: Level " + n);
+                var definedChannels = new HashSet<int>();
+                foreach (var placement in level.Placements)
+                    if (placement.type == PieceType.Resonance)
+                        definedChannels.Add(placement.channel);
+                Assert.That(definedChannels.SetEquals(
+                    Chapter5Drafts.ProductiveResonanceChannels(
+                        level, level.KnownSolution)), Is.True,
+                    "Every displayed Resonance pair must cause a real " +
+                    "remote movement in Level " + n);
                 var profile = Post40QualityAudit.AnalyzeRhythm(
                     level, level.KnownSolution);
                 Assert.That(profile.longestSinglePieceRun, Is.LessThan(4),
@@ -66,6 +75,62 @@ namespace Shift.Game.Tests
                 Assert.That(l.MoveLimit, Is.LessThanOrEqualTo(12));
                 Assert.That(l.ResolvedTargetColors.Count, Is.InRange(2, 3));
             }
+        }
+
+        [Test]
+        public void Level91MustDeliverBlueViaTheSecondRemoteChannel()
+        {
+            var level = Chapter5Drafts.Get(91);
+            Assert.That(level, Is.Not.Null);
+            Assert.That(level.KnownSolutionLength, Is.EqualTo(8));
+            Assert.That(Chapter5Drafts.AlternateWinningRoute(91).Length,
+                Is.EqualTo(9));
+            Assert.That(LevelValidation.VerifySolution(level,
+                out string error, out _), Is.True, error);
+            var proof = CampaignCertification.Prove(level, 91);
+            Assert.That(proof.complete, Is.True, proof.error);
+            Assert.That(proof.minimum, Is.EqualTo(8));
+            Assert.That(Chapter5Drafts.CheckAlternate(level, 91,
+                out error), Is.True, error);
+            Assert.That(Chapter5Drafts.ProductiveResonanceChannels(
+                level, level.KnownSolution).SetEquals(new[] { 1, 2 }),
+                Is.True);
+            Assert.That(Post40QualityAudit.CountProductiveResonanceMoves(
+                level, level.KnownSolution), Is.EqualTo(2));
+
+            var board = new BoardManager();
+            board.Load(level);
+            var pulseSteps = new List<int>();
+            var opened = new HashSet<int>();
+            bool remoteBlueDeliveredOnFourthTap = false;
+            int multi = 0, step = 0;
+            foreach (var tap in level.KnownSolution)
+            {
+                step++;
+                Assert.That(board.RequestMove(tap), Is.True);
+                Assert.That(board.LastReactionWasCancelled, Is.False);
+                var moved = new HashSet<int>();
+                foreach (var action in board.Actions)
+                {
+                    if (action.Type == BoardActionType.ResonancePulse)
+                        pulseSteps.Add(step);
+                    if (action.Type == BoardActionType.GateOpened)
+                        opened.Add(board.Pieces[action.PieceId].Channel);
+                    if (action.Type == BoardActionType.Move)
+                        moved.Add(action.PieceId);
+                    if (step == 4 &&
+                        action.Type == BoardActionType.Deliver &&
+                        action.PieceId == 14)
+                        remoteBlueDeliveredOnFourthTap = true;
+                }
+                if (moved.Count >= 2) multi++;
+                board.CompleteResolution();
+            }
+            Assert.That(board.State, Is.EqualTo(GameState.Won));
+            Assert.That(pulseSteps, Is.EqualTo(new[] { 1, 4 }));
+            Assert.That(opened.SetEquals(new[] { 1, 2 }), Is.True);
+            Assert.That(remoteBlueDeliveredOnFourthTap, Is.True);
+            Assert.That(multi, Is.GreaterThanOrEqualTo(4));
         }
 
         [Test]
