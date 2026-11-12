@@ -58,3 +58,7 @@ crashlytics-build.properties
 # Isolated 100-level design scene; never include in release commits
 /Assets/_Game/Scenes/SHIFT_Journey_100Level_Preview.unity
 /Assets/_Game/Scenes/SHIFT_Journey_100Level_Preview.unity.meta
+
+# Isolated BAĞ 101-104 mechanic preview (generated only in Unity Editor)
+/Assets/_Game/Scenes/SHIFT_Tether_101_104_Preview.unity
+/Assets/_Game/Scenes/SHIFT_Tether_101_104_Preview.unity.meta
