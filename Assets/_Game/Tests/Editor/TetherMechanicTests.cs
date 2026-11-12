@@ -170,6 +170,56 @@ namespace Shift.Game.Tests
         }
 
         [Test]
+        public void DiagonalTetherPullUsesLargerAxisAndXOnTies()
+        {
+            var level = Level(
+                P(PieceType.Normal, PieceColor.Red, Direction.Right,
+                    2, 2, tetherId: 1),
+                P(PieceType.Normal, PieceColor.Blue, Direction.Up,
+                    0, 1, tetherId: 1),
+                P(PieceType.Exit, PieceColor.Red, Direction.None, 6, 2));
+            Assert.That(level.ValidatePlayable(out string error), Is.True, error);
+            var board = new BoardManager();
+            board.Load(level);
+            Assert.That(board.RequestMove(G(2, 2)), Is.True);
+            Assert.That(board.Pieces[0].Position, Is.EqualTo(G(3, 2)));
+            Assert.That(board.Pieces[1].Position, Is.EqualTo(G(1, 1)),
+                "The larger horizontal gap must win, never choose randomly.");
+            Assert.That(board.Pieces[1].Direction, Is.EqualTo(Direction.Right));
+            Assert.That(board.Actions.Count(a =>
+                a.Type == BoardActionType.TetherPull), Is.EqualTo(1));
+        }
+
+        [Test]
+        public void TwoIndependentTetherPairsMoveOnlyTheirOwnPartners()
+        {
+            var level = Level(
+                P(PieceType.Normal, PieceColor.Red, Direction.Right,
+                    3, 1, tetherId: 1),
+                P(PieceType.Normal, PieceColor.Blue, Direction.Right,
+                    0, 1, tetherId: 1),
+                P(PieceType.Normal, PieceColor.Yellow, Direction.Right,
+                    3, 3, tetherId: 2),
+                P(PieceType.Normal, PieceColor.Green, Direction.Right,
+                    0, 3, tetherId: 2),
+                P(PieceType.Exit, PieceColor.Red, Direction.None, 6, 1)
+            );
+            Assert.That(level.ValidatePlayable(out string error), Is.True, error);
+            var board = new BoardManager();
+            board.Load(level);
+            Assert.That(board.GetTetherPartner(0), Is.SameAs(board.Pieces[1]));
+            Assert.That(board.GetTetherPartner(2), Is.SameAs(board.Pieces[3]));
+            Assert.That(board.RequestMove(G(3, 1)), Is.True);
+            Assert.That(board.Pieces[1].Position, Is.EqualTo(G(1, 1)));
+            Assert.That(board.Pieces[3].Position, Is.EqualTo(G(0, 3)),
+                "Another link must never respond to the wrong source.");
+            board.CompleteResolution();
+            Assert.That(board.RequestMove(G(3, 3)), Is.True);
+            Assert.That(board.Pieces[3].Position, Is.EqualTo(G(1, 3)));
+            Assert.That(board.Pieces[1].Position, Is.EqualTo(G(1, 1)));
+        }
+
+        [Test]
         public void TetherAndResonanceCanCauseThreeDifferentNormalMoves()
         {
             var level = Chapter6TetherPrototypes.Get(103);
