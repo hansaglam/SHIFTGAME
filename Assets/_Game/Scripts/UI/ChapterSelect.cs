@@ -18,6 +18,7 @@ namespace Shift.Game
         private Button secondTab;
         private Button[] chapterTabs;
         private ChapterJourneyPanel journey;
+        private ChapterWorldBackdrop worldBackdrop;
         private bool expanded;
         private Text continueLabel;
         private LevelProgression progressState;
@@ -35,15 +36,33 @@ namespace Shift.Game
             group = content.gameObject.AddComponent<CanvasGroup>();
             var card = VisualTheme.Surface("Chapter Card", content, rounded, IdentityStyle.Cream, new Vector2(.025f,.04f), new Vector2(.975f,.95f));
             IdentityStyle.Material(card); VisualTheme.Shadow(card,8);
+            if (expanded)
+            {
+                // Scenic, low-contrast illustration behind buttons and labels.
+                // Decorative-only: never capture a tap on a puzzle or tab.
+                var worldRect = PlaceholderVisuals.Rect(
+                    "Chapter World Landscape", content,
+                    new Vector2(.06f, .28f), new Vector2(.94f, .65f));
+                worldBackdrop = worldRect.gameObject
+                    .AddComponent<ChapterWorldBackdrop>();
+                worldBackdrop.raycastTarget = false;
+                worldBackdrop.gameObject.SetActive(false);
+            }
             chapterTitle = PlaceholderVisuals.Label("Chapter Title", content, font, "CHAPTER 1", 64, VisualTheme.Ink, new Vector2(.08f,.83f),new Vector2(.92f,.91f));
             masterySummary = PlaceholderVisuals.Label("Chapter Hint", content, font, "", 30, VisualTheme.Ink,new Vector2(.05f,.79f),new Vector2(.95f,.83f));
             if (expanded)
             {
                 // Reserve a clean, non-overlapping header lane for the world track.
-                chapterTitle.rectTransform.anchorMin = new Vector2(.08f, .84f);
-                chapterTitle.rectTransform.anchorMax = new Vector2(.92f, .92f);
-                masterySummary.rectTransform.anchorMin = new Vector2(.05f, .799f);
-                masterySummary.rectTransform.anchorMax = new Vector2(.95f, .833f);
+                chapterTitle.rectTransform.anchorMin = new Vector2(.08f, .872f);
+                chapterTitle.rectTransform.anchorMax = new Vector2(.92f, .936f);
+                chapterTitle.resizeTextForBestFit = true;
+                chapterTitle.resizeTextMinSize = 21;
+                chapterTitle.resizeTextMaxSize = 38;
+                masterySummary.rectTransform.anchorMin = new Vector2(.05f, .820f);
+                masterySummary.rectTransform.anchorMax = new Vector2(.95f, .867f);
+                masterySummary.resizeTextForBestFit = true;
+                masterySummary.resizeTextMinSize = 16;
+                masterySummary.resizeTextMaxSize = 23;
             }
             masteryLegend = PlaceholderVisuals.Label("Mastery Legend", content, font, "", 23, VisualTheme.Ink,new Vector2(.04f,.25f),new Vector2(.96f,.278f));
             masteryReplay = PlaceholderVisuals.Label("Mastery Replay", content, font, "", 23, VisualTheme.Ink,new Vector2(.05f,.225f),new Vector2(.95f,.25f));
@@ -75,7 +94,7 @@ namespace Shift.Game
             }
             else
             {
-                int tabCount = Mathf.Min(4, count / CampaignChapters.LevelsPerChapter);
+                int tabCount = Mathf.Min(5, count / CampaignChapters.LevelsPerChapter);
                 chapterTabs = new Button[tabCount];
                 float gap = .015f, availableWidth = .88f;
                 float width = (availableWidth - gap * (tabCount - 1)) / tabCount;
@@ -88,11 +107,11 @@ namespace Shift.Game
                         new Vector2(left, .655f), new Vector2(left + width, .705f),
                         () => ShowPage(chapterIndex), out var tab);
                     LocalizedLabel.Bind(tab, "chapter.title", i + 1);
-                    tab.fontSize = tabCount == 4 ? 20 : 25;
+                    tab.fontSize = tabCount == 5 ? 18 : tabCount == 4 ? 20 : 25;
                 }
                 secondTab = chapterTabs[1];
                 journey = PlaceholderVisuals.Rect("Chapter Journey", content,
-                    new Vector2(.07f, .755f), new Vector2(.93f, .795f))
+                    new Vector2(.07f, .755f), new Vector2(.93f, .814f))
                     .gameObject.AddComponent<ChapterJourneyPanel>();
                 journey.Build(font, rounded);
             }
@@ -154,27 +173,31 @@ namespace Shift.Game
             if (journey != null && chapterWorld != null &&
                 ChapterJourneyCatalog.Available(progressState, page))
             {
-                chapterTitle.fontSize = 41;
+                chapterTitle.fontSize = 36;
                 LocalizedLabel.Bind(chapterTitle, () =>
                     GameLanguageService.Shared.Text("chapter.title", page + 1) +
                     " · " + (Language == HintLanguage.Turkish
                         ? chapterWorld.titleTr : chapterWorld.titleEn));
-                masterySummary.fontSize = 25;
+                masterySummary.fontSize = 23;
                 LocalizedLabel.Bind(masterySummary, () =>
                     Language == HintLanguage.Turkish
                         ? chapterWorld.purposeTr : chapterWorld.purposeEn);
                 LocalizedLabel.Bind(masteryLegend, () => MasteryText.Legend(Language));
                 LocalizedLabel.Bind(masteryReplay, () => MasteryText.Summary(summary, Language));
                 journey.Show(progressState, page);
+                if (worldBackdrop != null)
+                    worldBackdrop.Show(progressState, page, Settings.reducedMotion);
             }
             else
             {
                 if (journey != null) journey.Hide();
+                if (worldBackdrop != null) worldBackdrop.Hide();
                 LocalizedLabel.Bind(chapterTitle, () =>
                     summary.Mastered ? MasteryText.Mastered(Language)
                         : GameLanguageService.Shared.Text("chapter.title", page + 1));
-                chapterTitle.fontSize = summary.Mastered ? 46 : 64;
-                masterySummary.fontSize = 30;
+                chapterTitle.fontSize = expanded ? 38
+                    : summary.Mastered ? 46 : 64;
+                masterySummary.fontSize = expanded ? 23 : 30;
                 LocalizedLabel.Bind(masterySummary, () => MasteryText.Summary(summary, Language));
                 LocalizedLabel.Bind(masteryLegend, () => MasteryText.Legend(Language));
                 LocalizedLabel.Bind(masteryReplay, () =>

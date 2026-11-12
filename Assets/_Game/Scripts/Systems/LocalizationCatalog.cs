@@ -58,6 +58,8 @@ namespace Shift.Game
             { "onboarding.welcome.title", new[] { "WELCOME TO SHIFT", "SHIFT'E HOŞ GELDİN" } },
             { "onboarding.welcome.subtitle", new[] { "Small puzzles. One-finger control.\nSatisfying chain reactions.", "Kısa bulmacalar. Tek parmak kontrol.\nTatmin edici zincir reaksiyonları." } },
             { "onboarding.welcome.levels", new[] { "40 handcrafted levels", "40 el yapımı seviye" } },
+            { "onboarding.extended_levels", new[] { "{0} handcrafted levels", "{0} özenle hazırlanmış seviye" } },
+            { "onboarding.extended_campaign", new[] { "{0}-level campaign", "{0} seviyelik kampanya" } },
             { "onboarding.welcome.daily", new[] { "A new Daily Shift every day", "Günün SHIFT'i ile her gün yeni bulmaca" } },
             { "onboarding.welcome.perfect", new[] { "Master the most efficient solution with Perfect Shift", "Perfect Shift ile en iyi çözümü bul" } },
             { "onboarding.how.title", new[] { "HOW TO PLAY", "NASIL OYNANIR" } },
@@ -114,6 +116,8 @@ namespace Shift.Game
             { "results.ready", new[] { "GOAL COMPLETE!\nReady for the next puzzle?", "HEDEF TAMAMLANDI!\nSıradaki bulmacaya hazır mısın?" } },
             { "results.chapter1", new[] { "CHAPTER COMPLETE!\nChapter 2 is ready.", "BÖLÜM TAMAMLANDI!\n2. Bölüm hazır." } },
             { "results.chapter2", new[] { "CHAPTER 2 COMPLETE!\nSmall moves. Big reactions.", "2. BÖLÜM TAMAMLANDI!\nKüçük hamleler. Büyük etkiler." } },
+            { "results.chapter_next", new[] { "CHAPTER {0} COMPLETE!\nChapter {1} is ready.", "{0}. BÖLÜM TAMAMLANDI!\n{1}. Bölüm hazır." } },
+            { "results.chapter_final", new[] { "CHAPTER {0} COMPLETE!\nA new horizon awaits.", "{0}. BÖLÜM TAMAMLANDI!\nYeni bir ufuk seni bekliyor." } },
             { "results.chapter_title1", new[] { "CHAPTER COMPLETE!", "BÖLÜM TAMAMLANDI!" } },
             { "results.chapter_title2", new[] { "CHAPTER 2 COMPLETE!", "2. BÖLÜM TAMAMLANDI!" } },
             { "results.lost", new[] { "OUT OF MOVES\nOne more try?", "HAMLE KALMADI\nBir daha deneyelim mi?" } },
@@ -249,12 +253,28 @@ namespace Shift.Game
             return args.Length == 0 ? value : string.Format(CultureInfo.GetCultureInfo(language == GameLanguage.Turkish ? "tr-TR" : "en-US"), value, args);
         }
         public static string ForHint(string key, HintLanguage language, params object[] args) => Format(key, language == HintLanguage.Turkish ? GameLanguage.Turkish : GameLanguage.English, args);
-        public static string Title(LevelData level) => Contains("level." + level.name + ".title") ? GameLanguageService.Shared.Text("level." + level.name + ".title") : "SHIFT";
+        public static string Title(LevelData level)
+        {
+            if (level == null) return "SHIFT";
+            string key = "level." + level.name + ".title";
+            if (Contains(key)) return GameLanguageService.Shared.Text(key);
+            if (ChapterDraftLocalization.TryTitle(level,
+                GameLanguageService.Shared.CurrentLanguage, out string title))
+                return title;
+            return "SHIFT";
+        }
+
         public static string Instruction(LevelData level)
         {
+            if (level == null) return GameLanguageService.Shared.Text("hint.fallback");
             string key = "level." + level.name + ".instruction";
             if (Contains(key)) return GameLanguageService.Shared.Text(key);
-            return GameLanguageService.Shared.CurrentLanguage == GameLanguage.English && !string.IsNullOrEmpty(level.Hint) ? level.Hint : GameLanguageService.Shared.Text("hint.fallback");
+            if (ChapterDraftLocalization.TryInstruction(level,
+                GameLanguageService.Shared.CurrentLanguage, out string draftHint))
+                return draftHint;
+            return GameLanguageService.Shared.CurrentLanguage == GameLanguage.English &&
+                !string.IsNullOrEmpty(level.Hint) ? level.Hint
+                : GameLanguageService.Shared.Text("hint.fallback");
         }
     }
 }

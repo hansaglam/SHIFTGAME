@@ -104,6 +104,9 @@ namespace Shift.Game
                 return GameLanguageService.Shared.Text(string.IsNullOrEmpty(number) ? "results.complete_generic" : "results.complete", number);
             };
             finaleTitle = level.Design?.difficultyBand == DifficultyBand.Finale;
+            if (!finaleTitle &&
+                ChapterDraftLocalization.TryNumber(level, out int draftNumber))
+                finaleTitle = draftNumber % CampaignChapters.LevelsPerChapter == 0;
             Wordmark.Build(transform, font);
             var header = PlaceholderVisuals.Rect("Level Header", transform, new Vector2(.13f,.866f), new Vector2(.87f,.908f));
             var badge = VisualTheme.Surface("Level Badge", header, rounded, new Color32(34,61,88,255), new Vector2(.34f,.64f), new Vector2(.66f,1));
@@ -212,7 +215,18 @@ namespace Shift.Game
                 levels.anchorMax = won ? new Vector2(.64f,.068f) : new Vector2(.60f,.055f);
             }
             restartRect.GetComponent<Image>().color = won && canNext ? IdentityStyle.Navy : IdentityStyle.Teal;
-            if (won && final) { LocalizedLabel.Bind(status, chapterNumber == 1 ? "results.chapter1" : "results.chapter2"); resultBackground.color = new Color32(255,234,171,255); }
+            if (won && final)
+            {
+                if (chapterNumber <= 2)
+                    LocalizedLabel.Bind(status, chapterNumber == 1
+                        ? "results.chapter1" : "results.chapter2");
+                else
+                    LocalizedLabel.Bind(status, () =>
+                        GameLanguageService.Shared.Text(
+                            canNext ? "results.chapter_next" : "results.chapter_final",
+                            chapterNumber, chapterNumber + 1));
+                resultBackground.color = new Color32(255, 234, 171, 255);
+            }
             else if (won && canNext) LocalizedLabel.Bind(status, completionHeading);
             restartRect.anchorMin = won && canNext ? new Vector2(.12f,.077f) : new Vector2(.32f,.077f);
             restartRect.anchorMax = won && canNext ? new Vector2(.38f,.133f) : new Vector2(.68f,.133f);

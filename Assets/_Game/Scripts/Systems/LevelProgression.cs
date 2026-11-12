@@ -21,6 +21,16 @@ namespace Shift.Game
             if (levelCount < 1) throw new ArgumentOutOfRangeException(nameof(levelCount));
             LevelCount = levelCount; this.saves = saves ?? throw new ArgumentNullException(nameof(saves));
             var data = saves.Load(levelCount);
+            // Returning players who completed the published 40-level campaign
+            // must unlock 41 in an expanded 60/80/100-level campaign.
+            // Do not reset actual completion, Perfects or replay selection.
+            if (levelCount > 40 && data.HighestUnlocked == 39 &&
+                data.HighestCompleted == 39)
+            {
+                data = new ProgressData(40,
+                    data.Current == 39 ? 40 : data.Current, 39);
+                saves.Save(data);
+            }
             HighestUnlocked = data.HighestUnlocked; Current = data.Current; HighestCompleted = data.HighestCompleted;
             perfects = saves.LoadPerfects(levelCount); eligible = new bool[levelCount];
             masteryLevels = levels == null ? null : (LevelData[])levels.Clone();
