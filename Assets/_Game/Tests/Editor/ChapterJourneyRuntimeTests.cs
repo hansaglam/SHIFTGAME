@@ -103,6 +103,40 @@ namespace Shift.Game.Tests
         }
 
         [Test]
+        public void MilestoneToastRequiresANewlyRecordedWinNotJustAnUnlock()
+        {
+            var before = Saved(80, 79, 43, 44);
+            Assert.That(ChapterJourneyMilestoneNotice.NewMilestone(
+                before, 44, 43), Is.Null);
+            var after = Saved(80, 79, 44, 45);
+            var beat = ChapterJourneyMilestoneNotice.NewMilestone(after, 44, 43);
+            Assert.That(beat, Is.Not.Null);
+            Assert.That(beat.level, Is.EqualTo(45));
+            Assert.That(ChapterJourneyMilestoneNotice.NewMilestone(
+                after, 44, 44), Is.Null, "Replay must not re-award milestone.");
+            Assert.That(ChapterJourneyMilestoneNotice.NewMilestone(
+                after, 43, 42), Is.Null, "Stale level cannot emit a new cue.");
+            Assert.That(ChapterJourneyMilestoneNotice.NewMilestone(
+                after, 46, 44), Is.Null, "Opening future level is not a win.");
+        }
+
+        [Test]
+        public void FinalMilestoneToastCannotBeTriggeredByViewingFinalLevel()
+        {
+            var third = Saved(80, 79, 58, 59);
+            Assert.That(ChapterJourneyMilestoneNotice.NewMilestone(
+                third, 59, 58), Is.Null);
+            var thirdWon = Saved(80, 79, 59, 60);
+            Assert.That(ChapterJourneyMilestoneNotice.NewMilestone(
+                thirdWon, 59, 58)?.level, Is.EqualTo(60));
+            var fourthWon = Saved(80, 79, 79, 79);
+            Assert.That(ChapterJourneyMilestoneNotice.NewMilestone(
+                fourthWon, 79, 78)?.level, Is.EqualTo(80));
+            Assert.That(ChapterJourneyMilestoneNotice.NewMilestone(
+                fourthWon, 79, 79), Is.Null);
+        }
+
+        [Test]
         public void ReturningPlayerShowsIdenticalProgressWithoutNewSaveKeys()
         {
             var save = new SaveService(Prefix);
