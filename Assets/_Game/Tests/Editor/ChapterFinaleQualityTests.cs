@@ -235,7 +235,10 @@ namespace Shift.Game.Tests
         [TestCase(69, 6, 3)]
         [TestCase(71, 6, 1)]
         [TestCase(72, 6, 2)]
+        [TestCase(74, 6, 1)]
+        [TestCase(76, 7, 2)]
         [TestCase(78, 8, 7)]
+        [TestCase(79, 8, 4)]
         public void QualityRevisionsMustUseRealRemoteMovementAndDistinctPaths(
             int number, int shortest, int minimumMultiPieceTaps)
         {
@@ -361,6 +364,39 @@ namespace Shift.Game.Tests
             Assert.That(helperDelivered, Is.True);
             Assert.That(blueDelivered, Is.True);
             Assert.That(board.State, Is.EqualTo(GameState.Won));
+        }
+
+        [Test]
+        public void AllChapter4ExtendedLevelsMustHaveARealRemoteMove()
+        {
+            for (int n = 66; n <= 80; n++)
+            {
+                var level = Chapter4ResonanceExtendedDrafts.Get(n);
+                Assert.That(level, Is.Not.Null, "Missing Level " + n);
+                Assert.That(Post40QualityAudit.CountProductiveResonanceMoves(
+                    level, level.KnownSolution), Is.GreaterThanOrEqualTo(1),
+                    "Level " + n + " must not use decorative-only Resonance.");
+            }
+        }
+
+        [TestCase(71)]
+        [TestCase(74)]
+        [TestCase(76)]
+        [TestCase(79)]
+        public void SlowerWinningRouteMayReplaceTheRemoteShortcutWithManualMoves(int n)
+        {
+            var level = Chapter4ResonanceExtendedDrafts.Get(n);
+            Assert.That(level, Is.Not.Null);
+            var slower = Chapter4ResonanceExtendedDrafts.AlternateWinningRoute(n);
+            Assert.That(slower, Is.Not.Null);
+            Assert.That(slower.Length, Is.EqualTo(level.KnownSolutionLength + 1));
+            Assert.That(Chapter4ResonanceExtendedDrafts.CheckAlternate(
+                level, n, out string error), Is.True, error);
+            Assert.That(Post40QualityAudit.CountProductiveResonanceMoves(
+                level, slower), Is.EqualTo(0),
+                "The longer path should win by manual work instead of the remote shortcut.");
+            Assert.That(Post40QualityAudit.CountProductiveResonanceMoves(
+                level, level.KnownSolution), Is.GreaterThanOrEqualTo(1));
         }
 
         [Test]
