@@ -133,7 +133,7 @@ MonoBehaviour:
     channel: 0
     initialOpen: 0
   displayTitle: 99 - Convergence Test
-  hint: "İki sinyali tek bir sonuca bağla."
+  hint: "İki kapı aynı yolu koruyor; onları hangi sırayla açmalısın?"
   knownSolution:
   - {x: 5, y: 3}
   - {x: 6, y: 4}
