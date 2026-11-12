@@ -29,7 +29,7 @@ namespace Shift.Game.Editor
         public sealed class Matrix
         {
             public string status = "EXPERIMENTAL / EDITOR ONLY - not a shipping certificate";
-            public int attempted, passed, flagged;
+            public int attempted, passed, flagged, nonproductiveResonanceLevels;
             public List<Row> rows = new List<Row>();
         }
 
@@ -229,6 +229,14 @@ namespace Shift.Game.Editor
                         (row.simpleMoveTaps > row.shortestMoves / 2 ||
                          row.multiPieceTaps < 2 && number >= 76 ||
                          row.pulseEvents > 0 && row.productiveRemotePulseEvents == 0);
+                    if (number >= 66 && row.pulseEvents > 0 &&
+                        row.productiveRemotePulseEvents == 0)
+                    {
+                        matrix.nonproductiveResonanceLevels++;
+                        Debug.LogWarning("Level " + number +
+                            " has Resonance visual pulses but no confirmed remote " +
+                            "piece movement on its intended route.");
+                    }
                     if (row.needsDesignReview) matrix.flagged++;
                     matrix.passed++;
                 }
@@ -247,6 +255,11 @@ namespace Shift.Game.Editor
                 "JSON: " + output + ". No Perfect rewards were enabled.");
             if (matrix.passed != 40)
                 Debug.LogError("SHIFT 41-80 audit FAILED. Keep the candidate branch isolated.");
+            if (matrix.nonproductiveResonanceLevels > 0)
+                Debug.LogError("SHIFT 41-80 DESIGN GATE OPEN: " +
+                    matrix.nonproductiveResonanceLevels +
+                    " levels have nonproductive Resonance pulses. " +
+                    "Do not release even if all shortest paths are provable.");
         }
     }
 }
