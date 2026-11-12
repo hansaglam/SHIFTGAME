@@ -120,7 +120,8 @@ namespace Shift.Game.Editor
         public sealed class Check
         {
             public int level, minimum, known, alternative, visited,
-                pulls, distinctMovedPieces;
+                pulls, distinctMovedPieces, multiPieceTaps, resonanceEvents,
+                gateOpenEvents;
             public bool passed;
             public string error;
         }
@@ -171,25 +172,34 @@ namespace Shift.Game.Editor
                     var board = new BoardManager();
                     board.Load(level);
                     var moved = new HashSet<int>();
-                    int pulls = 0;
+                    int pulls = 0, multiPiece = 0, pulses = 0, opened = 0;
                     foreach (var tap in level.KnownSolution)
                     {
                         if (!board.RequestMove(tap) ||
                             board.LastReactionWasCancelled)
                             throw new InvalidOperationException("Invalid tap.");
+                        var movedThisTap = new HashSet<int>();
                         foreach (var action in board.Actions)
                         {
                             if (action.Type == BoardActionType.TetherPull)
                                 pulls++;
+                            if (action.Type == BoardActionType.ResonancePulse)
+                                pulses++;
+                            if (action.Type == BoardActionType.GateOpened)
+                                opened++;
                             if (action.Type == BoardActionType.Move)
+                            {
                                 moved.Add(action.PieceId);
+                                movedThisTap.Add(action.PieceId);
+                            }
                         }
+                        if (movedThisTap.Count >= 2) multiPiece++;
                         board.CompleteResolution();
                     }
                     if (board.State != GameState.Won || pulls == 0 ||
-                        moved.Count < 2)
+                        moved.Count < 2 || multiPiece == 0)
                         throw new InvalidOperationException(
-                            "BAĞ is decorative, unproductive, or route lost.");
+                            "BAĞ has no useful multi-piece chain or route lost.");
 
                     record.passed = true;
                     record.minimum = proof.minimum;
@@ -198,6 +208,9 @@ namespace Shift.Game.Editor
                     record.visited = proof.states;
                     record.pulls = pulls;
                     record.distinctMovedPieces = moved.Count;
+                    record.multiPieceTaps = multiPiece;
+                    record.resonanceEvents = pulses;
+                    record.gateOpenEvents = opened;
                     passes++;
                     Debug.Log("BAĞ Level " + n + ": " + pulls +
                         " pulls, " + proof.minimum + " minimum, " +
