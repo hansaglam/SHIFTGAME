@@ -37,6 +37,14 @@ namespace Shift.Game
             IdentityStyle.Material(card); VisualTheme.Shadow(card,8);
             chapterTitle = PlaceholderVisuals.Label("Chapter Title", content, font, "CHAPTER 1", 64, VisualTheme.Ink, new Vector2(.08f,.83f),new Vector2(.92f,.91f));
             masterySummary = PlaceholderVisuals.Label("Chapter Hint", content, font, "", 30, VisualTheme.Ink,new Vector2(.05f,.79f),new Vector2(.95f,.83f));
+            if (expanded)
+            {
+                // Reserve a clean, non-overlapping header lane for the world track.
+                chapterTitle.rectTransform.anchorMin = new Vector2(.08f, .84f);
+                chapterTitle.rectTransform.anchorMax = new Vector2(.92f, .92f);
+                masterySummary.rectTransform.anchorMin = new Vector2(.05f, .799f);
+                masterySummary.rectTransform.anchorMax = new Vector2(.95f, .833f);
+            }
             masteryLegend = PlaceholderVisuals.Label("Mastery Legend", content, font, "", 23, VisualTheme.Ink,new Vector2(.04f,.25f),new Vector2(.96f,.278f));
             masteryReplay = PlaceholderVisuals.Label("Mastery Replay", content, font, "", 23, VisualTheme.Ink,new Vector2(.05f,.225f),new Vector2(.95f,.25f));
             masteryMarkers = new Text[count];
