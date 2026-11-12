@@ -33,7 +33,7 @@ MonoBehaviour:
   - type: 0
     color: 2
     direction: 1
-    position: {x: 1, y: 1}
+    position: {x: 1, y: 2}
     channel: 0
     initialOpen: 0
   - type: 8
@@ -48,12 +48,6 @@ MonoBehaviour:
     position: {x: 1, y: 3}
     channel: 1
     initialOpen: 0
-  - type: 2
-    color: 0
-    direction: 0
-    position: {x: 2, y: 1}
-    channel: 0
-    initialOpen: 0
   - type: 6
     color: 0
     direction: 0
@@ -63,7 +57,7 @@ MonoBehaviour:
   - type: 7
     color: 0
     direction: 0
-    position: {x: 1, y: 5}
+    position: {x: 3, y: 5}
     channel: 1
     initialOpen: 0
   - type: 5
@@ -84,26 +78,14 @@ MonoBehaviour:
     position: {x: 3, y: 4}
     channel: 0
     initialOpen: 0
-  - type: 3
-    color: 0
-    direction: 3
-    position: {x: 0, y: 1}
-    channel: 0
-    initialOpen: 0
-  - type: 3
-    color: 0
-    direction: 1
-    position: {x: 3, y: 3}
-    channel: 0
-    initialOpen: 0
   displayTitle: 78 - Deferred Chain
-  hint: "Birden fazla işe yarayan hamleyi önce aramayı dene."
+  hint: "Sinyali erken tüketme. Doğru hamle sırası iki taşı birlikte ilerletebilir."
   knownSolution:
   - {x: 3, y: 0}
   - {x: 3, y: 1}
-  - {x: 3, y: 5}
-  - {x: 1, y: 1}
   - {x: 1, y: 2}
+  - {x: 3, y: 3}
+  - {x: 3, y: 5}
   - {x: 1, y: 4}
   - {x: 1, y: 5}
   - {x: 1, y: 6}

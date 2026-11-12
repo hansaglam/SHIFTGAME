@@ -33,7 +33,7 @@ MonoBehaviour:
   - type: 0
     color: 2
     direction: 3
-    position: {x: 4, y: 1}
+    position: {x: 5, y: 1}
     channel: 0
     initialOpen: 0
   - type: 8
@@ -84,12 +84,6 @@ MonoBehaviour:
     position: {x: 2, y: 3}
     channel: 0
     initialOpen: 0
-  - type: 4
-    color: 0
-    direction: 0
-    position: {x: 5, y: 3}
-    channel: 0
-    initialOpen: 0
   - type: 8
     color: 0
     direction: 0
@@ -103,11 +97,11 @@ MonoBehaviour:
     channel: 2
     initialOpen: 0
   displayTitle: 68 - Twin Circuit
-  hint: "İki Rezonans bağlantısının doğru çalışma sırasını bul."
+  hint: "İki bağlantıyı ayrı zamanlarda çalıştır. Bir taşın hareketi diğerini de yerinden oynatabilir."
   knownSolution:
-  - {x: 5, y: 4}
+  - {x: 5, y: 1}
   - {x: 6, y: 3}
+  - {x: 5, y: 3}
   - {x: 3, y: 3}
-  - {x: 1, y: 3}
   - {x: 2, y: 1}
   - {x: 1, y: 1}

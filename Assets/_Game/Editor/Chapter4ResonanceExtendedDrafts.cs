@@ -40,19 +40,19 @@ namespace Shift.Game.Editor
             {
                 case 66: return new[] { new GridPosition(6, 3), new GridPosition(5, 3), new GridPosition(3, 3), new GridPosition(4, 1), new GridPosition(2, 1), new GridPosition(1, 1) };
                 case 67: return new[] { new GridPosition(3, 3), new GridPosition(0, 1), new GridPosition(2, 1), new GridPosition(3, 1), new GridPosition(5, 3), new GridPosition(1, 3) };
-                case 68: return new[] { new GridPosition(5, 4), new GridPosition(6, 3), new GridPosition(5, 5), new GridPosition(3, 3), new GridPosition(1, 3), new GridPosition(2, 1), new GridPosition(1, 1) };
+                case 68: return new[] { new GridPosition(5, 4), new GridPosition(6, 3), new GridPosition(5, 3), new GridPosition(3, 3), new GridPosition(5, 1), new GridPosition(2, 1), new GridPosition(1, 1) };
                 case 69: return new[] { new GridPosition(3, 0), new GridPosition(3, 1), new GridPosition(3, 3), new GridPosition(1, 1), new GridPosition(1, 2), new GridPosition(1, 4), new GridPosition(1, 5) };
                 case 70: return new[] { new GridPosition(1, 6), new GridPosition(1, 5), new GridPosition(1, 4), new GridPosition(3, 5), new GridPosition(3, 4), new GridPosition(3, 1), new GridPosition(5, 5) };
                 case 71: return new[] { new GridPosition(6, 3), new GridPosition(5, 4), new GridPosition(3, 3), new GridPosition(1, 3), new GridPosition(4, 1), new GridPosition(2, 1), new GridPosition(1, 1) };
                 case 72: return new[] { new GridPosition(3, 0), new GridPosition(4, 1), new GridPosition(3, 3), new GridPosition(3, 5), new GridPosition(1, 2), new GridPosition(1, 4), new GridPosition(1, 5) };
                 case 73: return new[] { new GridPosition(3, 3), new GridPosition(1, 3), new GridPosition(5, 5), new GridPosition(6, 5), new GridPosition(4, 5), new GridPosition(5, 4), new GridPosition(5, 3), new GridPosition(5, 1) };
                 case 74: return new[] { new GridPosition(0, 2), new GridPosition(1, 1), new GridPosition(3, 2), new GridPosition(5, 2), new GridPosition(1, 4), new GridPosition(2, 4), new GridPosition(4, 4), new GridPosition(5, 4) };
-                case 75: return new[] { new GridPosition(3, 4), new GridPosition(0, 2), new GridPosition(3, 2), new GridPosition(5, 2), new GridPosition(6, 2), new GridPosition(4, 4), new GridPosition(5, 4), new GridPosition(6, 4) };
+                case 75: return new[] { new GridPosition(3, 4), new GridPosition(0, 2), new GridPosition(3, 2), new GridPosition(4, 4), new GridPosition(5, 4), new GridPosition(5, 2), new GridPosition(6, 2), new GridPosition(6, 4) };
                 case 76: return new[] { new GridPosition(2, 6), new GridPosition(1, 5), new GridPosition(2, 3), new GridPosition(2, 1), new GridPosition(4, 5), new GridPosition(4, 4), new GridPosition(4, 2), new GridPosition(4, 1) };
                 case 77: return new[] { new GridPosition(3, 0), new GridPosition(4, 1), new GridPosition(3, 3), new GridPosition(3, 5), new GridPosition(1, 1), new GridPosition(1, 2), new GridPosition(1, 3), new GridPosition(1, 4), new GridPosition(1, 5) };
-                case 78: return new[] { new GridPosition(3, 0), new GridPosition(3, 1), new GridPosition(3, 6), new GridPosition(3, 5), new GridPosition(1, 1), new GridPosition(1, 2), new GridPosition(1, 4), new GridPosition(1, 5), new GridPosition(1, 6) };
+                case 78: return new[] { new GridPosition(3, 0), new GridPosition(3, 1), new GridPosition(1, 2), new GridPosition(3, 3), new GridPosition(3, 6), new GridPosition(3, 5), new GridPosition(1, 4), new GridPosition(1, 5), new GridPosition(1, 6) };
                 case 79: return new[] { new GridPosition(1, 1), new GridPosition(0, 2), new GridPosition(1, 2), new GridPosition(2, 2), new GridPosition(3, 2), new GridPosition(2, 4), new GridPosition(4, 4), new GridPosition(5, 4), new GridPosition(6, 4) };
-                case 80: return new[] { new GridPosition(3, 3), new GridPosition(0, 1), new GridPosition(2, 1), new GridPosition(4, 1), new GridPosition(5, 1), new GridPosition(6, 1), new GridPosition(5, 3), new GridPosition(6, 3), new GridPosition(1, 5), new GridPosition(1, 6) };
+                case 80: return new[] { new GridPosition(0, 1), new GridPosition(2, 1), new GridPosition(3, 1), new GridPosition(1, 4), new GridPosition(4, 3), new GridPosition(1, 5), new GridPosition(5, 3), new GridPosition(6, 3), new GridPosition(1, 6) };
                 default: return null;
             }
         }
