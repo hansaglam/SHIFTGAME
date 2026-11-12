@@ -11,7 +11,9 @@ namespace Shift.Game.Tests
         [TestCase(60, true)]
         [TestCase(61, true)]
         [TestCase(80, true)]
-        [TestCase(81, false)]
+        [TestCase(81, true)]
+        [TestCase(100, true)]
+        [TestCase(101, false)]
         public void JourneyPrototypeOnlyCoversDraftLevels(int level, bool exists)
         {
             Assert.That(ChapterJourneyPrototype.ForLevel(level) != null, Is.EqualTo(exists));
@@ -28,6 +30,10 @@ namespace Shift.Game.Tests
             Assert.That(ChapterJourneyPrototype.PreviewProgress(80, false),
                 Is.LessThan(1f));
             Assert.That(ChapterJourneyPrototype.PreviewProgress(80, true), Is.EqualTo(1f));
+            Assert.That(ChapterJourneyPrototype.PreviewProgress(81, false), Is.EqualTo(0f));
+            Assert.That(ChapterJourneyPrototype.PreviewProgress(100, false),
+                Is.EqualTo(19f / 20f).Within(.001f));
+            Assert.That(ChapterJourneyPrototype.PreviewProgress(100, true), Is.EqualTo(1f));
             Assert.That(ChapterJourneyPrototype.IsBeatRestored(
                 ChapterJourneyPrototype.Chapters[0],
                 ChapterJourneyPrototype.Chapters[0].beats[4], 60, false), Is.False);
@@ -40,12 +46,18 @@ namespace Shift.Game.Tests
             Assert.That(ChapterJourneyPrototype.IsBeatRestored(
                 ChapterJourneyPrototype.Chapters[1],
                 ChapterJourneyPrototype.Chapters[1].beats[4], 80, true), Is.True);
+            Assert.That(ChapterJourneyPrototype.IsBeatRestored(
+                ChapterJourneyPrototype.Chapters[2],
+                ChapterJourneyPrototype.Chapters[2].beats[4], 100, false), Is.False);
+            Assert.That(ChapterJourneyPrototype.IsBeatRestored(
+                ChapterJourneyPrototype.Chapters[2],
+                ChapterJourneyPrototype.Chapters[2].beats[4], 100, true), Is.True);
         }
 
         [Test]
         public void EachChapterMustHaveFiveBilingualMilestonesAndAccessibleAlternatives()
         {
-            Assert.That(ChapterJourneyPrototype.Chapters.Length, Is.EqualTo(2));
+            Assert.That(ChapterJourneyPrototype.Chapters.Length, Is.EqualTo(3));
             foreach (var chapter in ChapterJourneyPrototype.Chapters)
             {
                 Assert.That(chapter.endLevel - chapter.startLevel + 1, Is.EqualTo(20));
