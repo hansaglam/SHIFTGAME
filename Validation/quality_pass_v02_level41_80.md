@@ -13,7 +13,7 @@ Improve memorability and originality, not the number of levels. Level 81–100 i
 
 - All 40 YAML LevelData candidates (41–80) were inspected for board dimensions, mechanics and recorded tap routes.
 - **55 → 60:** The pre-v02 Level 60 reused **the first eight taps of Level 55 verbatim**. That is unacceptable for a chapter finale, even though Level 60 had extra moves and pieces.
-- **58 / 59:** The *longer* winning routes share the first **six** taps and much of their remaining sequence, a likely repeat family. They still need distinct redesigns; v02 does not silently claim a fix.
+- **58 / 59 (pre-continuation baseline):** The *longer* winning routes previously shared the first **six** taps. The later Level 59 revision below changes this; Level 58 itself is not modified.
 - **69 / 72 / 77 / 78:** Reused vertical-corridor/order-of-operations route family. Level 78 had already been revised in v01, but the cluster still requires in-game observation and likely replacement of at least one idea.
 - **80:** The prior v01 revision already added a second gate dependency and separated resonance events. Its exact shortest solution (8), alternative longer win (9), two resonance channels, two gate channels and three colors are preserved; only design/reaction regression assertions have been added in v02.
 
@@ -54,4 +54,30 @@ Existing **SHIFT → Quality → Export Level 41-80 Decision Matrix** remains re
 
 ## Unresolved follow-up
 
-v02 fixes the proven 55/60 eight-tap copy, but **is not a complete redesign of all repetitive levels**. 58/59 and the Chapter 4 vertical-lane family remain explicitly open. The Release gate remains closed until Unity and blind playtests pass.
+v02 fixes the proven 55/60 eight-tap copy. The continuation also revises 59 to break its repeated routes with 58, but **this is not a complete redesign of all repetitive levels**. The Chapter 4 vertical-lane family remains open. Unity acceptance and blind playtests are still required before release.
+
+
+## Design-first continuation — Level 59 and corridor checks
+
+The owner chose to defer **real-player testing until the full content-design pass is complete**. This changes the sequence, not the release safety conditions. Independent candidate simulation and editor regression checks are kept throughout authoring; human testing, overall feel review, device UX and final Unity signoff can happen at the end of the content-design cycle.
+
+### Level 59 — *Borrowed Momentum* (new candidate)
+- Previous 58 and 59 used virtually identical 4×6 board silhouettes and similar longer-winning routes. Rather than copy the mechanical idea, the revised 59 places the chain on a **6×4 horizontal presentation**, changes the blue helper's trajectory, repositions the switch and redirects an early path.
+- The blue helper now physically participates in the solution instead of sitting as dead decoration. A long chain builds the gate-opening setup.
+- Independent simulation, reproducing current BoardManager movement and comparing against previously recorded shortest solutions, found an **optimal 10-tap win and a different 11-tap winning route**, within the original 11-move limit.
+- Recorded 10-tap route has **seven multi-piece taps**, **44 movement/turn/gate/delivery actions total**, one gate opening, and all three red targets delivered. The previous 58 level remains at nine taps.
+- Coordinate longest-common-subsequence between Level 58 shortest and revised Level 59 shortest is **3 / 10** (low, but this does not by itself prove conceptual novelty). The previous shared opening of their longer routes is gone.
+- The exact Level 59 Unity asset and editor-only longer route were changed. Added focused EditMode assertions for shortest-path proof, the blue helper's participation, at least six multi-piece taps and non-repetition with 58.
+- **Do not regard this as release-certified or player-validated yet.** The simulator is independent, and no Unity runtime compilation or device tests have been executed during this continuation.
+
+### New single-level repetition check
+`SHIFT → Quality → Export Route Similarities 41-80` now reports **corridor-run risks** as well as duplicate-route pairs. A level is flagged when four or more consecutive recorded taps stay on one row or one column. This is a *screening heuristic*, not automatic design rejection.
+
+In particular **Level 77** has a five-tap vertical progression that risks feeling like repeated manual advancement rather than a new puzzle. Experimental modifications that only changed route coordinates without changing that underlying idea were **rejected**, not saved.
+
+### Next design work (before player tests)
+1. Redesign the **69 / 72 / 77 / 78** family by changing the necessary **insight**, not only the board orientation or length. Prioritize 77's long same-lane sequence.
+2. Review 41–60 difficulty and insight progression; promote 60 only if its two-gate chain proves satisfying by design and solver consistency.
+3. Lock 80's unique double-signal culmination (already revised in v01) after checking that earlier levels do not preempt the same revelation.
+4. Complete Chapter 3/4 visual purpose, chapter milestones and concise feedback without adding a distracting metagame.
+5. Only after the design pass, run final blind human-playtest rounds, Unity/Android/iOS regression and Perfect Shift certification. No main merge or production release until checks pass.
