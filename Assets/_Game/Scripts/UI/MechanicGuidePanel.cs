@@ -78,6 +78,18 @@ namespace Shift.Game
             var sample=PlaceholderVisuals.Rect("Generic Example",content,new Vector2(.04f,.61f),new Vector2(.96f,.86f));
             var art=sample.gameObject.AddComponent<BoardVisualResources>();
             var pieces=MechanicGuideCatalog.Example(topic);
+            if (topic == MechanicTopic.Tether)
+            {
+                // Show an unmistakable connection between the example pair,
+                // not merely two old Normal arrows next to each other.
+                var sampleLine = PlaceholderVisuals.Rect(
+                    "Example Tether Bond", sample,
+                    new Vector2(.16f, .47f), new Vector2(.50f, .54f));
+                var lineImage = sampleLine.gameObject.AddComponent<Image>();
+                lineImage.sprite = rounded;
+                lineImage.color = new Color32(248, 204, 111, 220);
+                lineImage.raycastTarget = false;
+            }
             for(int i=0;i<pieces.Length;i++)
             {
                 float x=(float)i/pieces.Length;
