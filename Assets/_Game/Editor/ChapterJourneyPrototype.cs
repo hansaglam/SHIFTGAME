@@ -49,7 +49,7 @@ namespace Shift.Game.Editor
             return ChapterJourneyCatalog.Progress01(chapter, completedIndex);
         }
 
-        [MenuItem("SHIFT/Chapter Journey/Preview 41-80")]
+        [MenuItem("SHIFT/Chapter Journey/Preview 41-100")]
         private static void Open()
         {
             EditorWindow.GetWindow<ChapterJourneyPreviewWindow>(
@@ -61,7 +61,7 @@ namespace Shift.Game.Editor
         {
             var folder = Path.Combine(Application.dataPath, "../Validation");
             Directory.CreateDirectory(folder);
-            var output = Path.Combine(folder, "chapter3_4_journey_editor_draft.json");
+            var output = Path.Combine(folder, "chapter3_5_journey_editor_draft.json");
             File.WriteAllText(output, JsonUtility.ToJson(new PreviewExport
             {
                 chapters = Chapters
@@ -82,13 +82,13 @@ namespace Shift.Game.Editor
         private void OnGUI()
         {
             EditorGUILayout.Space(8);
-            EditorGUILayout.LabelField("41-80 / PURPOSE & PROGRESSION",
+            EditorGUILayout.LabelField("41-100 / PURPOSE & PROGRESSION",
                 EditorStyles.boldLabel);
             EditorGUILayout.HelpBox(
                 "DESIGN PREVIEW ONLY: no runtime HUD, save, chapter unlock, " +
                 "game assets or Perfect Shift state is modified.",
                 MessageType.Info);
-            int nextLevel = EditorGUILayout.IntSlider("Preview level", level, 41, 80);
+            int nextLevel = EditorGUILayout.IntSlider("Preview level", level, 41, 100);
             if (nextLevel != level)
             {
                 level = nextLevel;
