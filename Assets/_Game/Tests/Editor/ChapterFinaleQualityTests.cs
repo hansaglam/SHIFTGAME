@@ -400,6 +400,113 @@ namespace Shift.Game.Tests
         }
 
         [Test]
+        public void Level73MustUseBothSignalsToUnlockTheFinalGate()
+        {
+            var level = Chapter4ResonanceExtendedDrafts.Get(73);
+            Assert.That(level, Is.Not.Null);
+            Assert.That(level.KnownSolutionLength, Is.EqualTo(6));
+            Assert.That(level.ResolvedTargetColors.Count, Is.EqualTo(3));
+            Assert.That(LevelValidation.VerifySolution(level, out string error, out _),
+                Is.True, error);
+            Assert.That(Chapter4ResonanceExtendedDrafts.CheckAlternate(level, 73, out error),
+                Is.True, error);
+            var proof = CampaignCertification.Prove(level, 73);
+            Assert.That(proof.complete, Is.True, proof.error);
+            Assert.That(proof.minimum, Is.EqualTo(6));
+            Assert.That(Post40QualityAudit.CountProductiveResonanceMoves(
+                level, level.KnownSolution), Is.EqualTo(2));
+
+            var board = new BoardManager();
+            board.Load(level);
+            var channelByTap = new List<int>();
+            int gateOpenedAt = 0, blueMoves = 0, yellowMoves = 0;
+            int step = 0;
+            foreach (var tap in level.KnownSolution)
+            {
+                step++;
+                Assert.That(board.RequestMove(tap), Is.True);
+                Assert.That(board.LastReactionWasCancelled, Is.False);
+                foreach (var action in board.Actions)
+                {
+                    if (action.Type == BoardActionType.ResonancePulse)
+                        channelByTap.Add(board.Pieces[action.PieceId].Channel);
+                    if (action.Type == BoardActionType.GateOpened)
+                        gateOpenedAt = step;
+                    if (action.Type == BoardActionType.Move && action.PieceId == 1)
+                        blueMoves++;
+                    if (action.Type == BoardActionType.Move && action.PieceId == 2)
+                        yellowMoves++;
+                }
+                board.CompleteResolution();
+            }
+            Assert.That(board.State, Is.EqualTo(GameState.Won));
+            Assert.That(channelByTap, Is.EqualTo(new[] { 1, 2 }));
+            Assert.That(gateOpenedAt, Is.EqualTo(3),
+                "The second signal should move yellow onto its switch.");
+            Assert.That(blueMoves, Is.GreaterThanOrEqualTo(2));
+            Assert.That(yellowMoves, Is.GreaterThanOrEqualTo(4));
+            Assert.That(LevelRouteSimilarityAudit.LongestSameAxisRun(
+                level.KnownSolution), Is.LessThan(4));
+            Assert.That(level.VerifiedOptimalMoveCount, Is.Null);
+        }
+
+        [Test]
+        public void Level75MustPushRedForwardThenSignalBlueToOpenBothGates()
+        {
+            var level = Chapter4ResonanceExtendedDrafts.Get(75);
+            Assert.That(level, Is.Not.Null);
+            Assert.That(level.KnownSolutionLength, Is.EqualTo(7));
+            Assert.That(level.ResolvedTargetColors.Count, Is.EqualTo(3));
+            Assert.That(LevelValidation.VerifySolution(level, out string error, out _),
+                Is.True, error);
+            Assert.That(Chapter4ResonanceExtendedDrafts.CheckAlternate(level, 75, out error),
+                Is.True, error);
+            var proof = CampaignCertification.Prove(level, 75);
+            Assert.That(proof.complete, Is.True, proof.error);
+            Assert.That(proof.minimum, Is.EqualTo(7));
+            Assert.That(Post40QualityAudit.CountProductiveResonanceMoves(
+                level, level.KnownSolution), Is.EqualTo(1));
+
+            var board = new BoardManager();
+            board.Load(level);
+            var opened = new HashSet<int>();
+            int redFirstTapMoves = 0, signalStep = 0, multiPieceTaps = 0;
+            int step = 0;
+            foreach (var tap in level.KnownSolution)
+            {
+                step++;
+                Assert.That(board.RequestMove(tap), Is.True);
+                Assert.That(board.LastReactionWasCancelled, Is.False);
+                var moved = new HashSet<int>();
+                foreach (var action in board.Actions)
+                {
+                    if (action.Type == BoardActionType.Move)
+                    {
+                        moved.Add(action.PieceId);
+                        if (step == 1 && action.PieceId == 1)
+                            redFirstTapMoves++;
+                    }
+                    if (action.Type == BoardActionType.ResonancePulse)
+                        signalStep = step;
+                    if (action.Type == BoardActionType.GateOpened)
+                        opened.Add(board.Pieces[action.PieceId].Channel);
+                }
+                if (moved.Count >= 2) multiPieceTaps++;
+                board.CompleteResolution();
+            }
+            Assert.That(board.State, Is.EqualTo(GameState.Won));
+            Assert.That(redFirstTapMoves, Is.EqualTo(2),
+                "Yellow's push should set red on the correct trajectory.");
+            Assert.That(signalStep, Is.EqualTo(2),
+                "Signal should be a planned second decision, not an opening auto-win.");
+            Assert.That(opened.SetEquals(new[] { 1, 2 }), Is.True);
+            Assert.That(multiPieceTaps, Is.GreaterThanOrEqualTo(2));
+            Assert.That(LevelRouteSimilarityAudit.LongestSameAxisRun(
+                level.KnownSolution), Is.LessThan(4));
+            Assert.That(level.VerifiedOptimalMoveCount, Is.Null);
+        }
+
+        [Test]
         public void Level70MustDeliverTwoDistinctRemoteReactionsOnSeparateTaps()
         {
             var level = Chapter4ResonanceExtendedDrafts.Get(70);
