@@ -71,7 +71,18 @@ namespace Shift.Game
         {
             var text=PlaceholderVisuals.Label(name,content,font,"",size,new Color32(27,52,69,255),min,max);
             text.fontStyle=bold?FontStyle.Bold:FontStyle.Normal; text.lineSpacing=1.12f;
-            LocalizedLabel.Bind(text,"onboarding."+key); return text;
+            // Keep the exact shipped 40-level copy, but never advertise
+            // "40 levels" when a 60/80/100-level campaign is actually wired.
+            if (levels != null && levels.Length > 40 &&
+                (key == "welcome.levels" || key == "ready.campaign"))
+            {
+                string extended = key == "welcome.levels"
+                    ? "onboarding.extended_levels" : "onboarding.extended_campaign";
+                LocalizedLabel.Bind(text, () =>
+                    GameLanguageService.Shared.Text(extended, levels.Length));
+            }
+            else LocalizedLabel.Bind(text, "onboarding." + key);
+            return text;
         }
         private void Row(string key,int index,int count,bool gold=false,string number=null)
         {
