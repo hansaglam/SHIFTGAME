@@ -59,7 +59,7 @@ These are **independent Python-model shortest routes**, not Unity-proven certifi
 
 ### Automated acceptance gates (authored, not executed in Unity)
 
-`TetherMechanicTests` checks: pair validation, actual switch activation by a pulled partner, first-tap multi-piece count, deterministic same-tap replays, Undo, blocked source when the partner hits a wall, redirected forced follow, full local rollback when a pulled partner opens a switch but the source then cannot push, BAĞ+Resonance with three moved Normal pieces, two-gate dependency, all shortest/alternative routes and old 1–100 assets remaining unlinked.
+`TetherMechanicTests` checks: pair validation, actual switch activation by a pulled partner, first-tap multi-piece count, deterministic same-tap replays, Undo, blocked source when the partner hits a wall, redirected forced follow, full local rollback when a pulled partner opens a switch but the source then cannot push, deterministic longer-axis/X-on-tie pulls, **two independent bond pairs** that never cross-signal, BAĞ+Resonance with three moved Normal pieces, two-gate dependency, all shortest/alternative routes, a nonzero bond changing the future Perfect-proof fingerprint, and old 1–100 assets remaining unlinked.
 
 `Chapter6PreviewTests` checks: unchanged 1–100 asset identity, isolated preview/build settings/save prefix, specific bilingual hints, distinct board layouts and recorded shortest routes. No new speculative Perfect Shift certificates.
 
@@ -89,3 +89,15 @@ Recommended Chapter identity: **Bağlı Ufuk / Bound Horizon**—two distant sho
 - Retain the user-requested order: 101+ game systems → world progression → Mora LAST → final real-player/device/release tests; mechanical regressions are checked during development.
 
 **Branch remains DRAFT. No merge to `main`, no production build, no Level 101–120 unlock, no Perfect Shift registration.**
+
+
+### Source audit addendum — safety and technical constraints
+
+The new puzzle-folder `.meta` is tracked with a stable GUID so Unity does not generate different folder metadata on each development computer. A focused source-level check verified **4/4** prototype asset/alternate lists, matching GUIDs, unique layer positions, legal initial Tether distances and targets. GitHub comparison confirms no Level1–100 `.asset` files or real production scene were changed.
+
+The new Tether event is displayed **before** partner movement and followed by the actual board actions; there is never a second virtual tap. Forced partner movement propagates the "already following this link" flag through Direction/Rotator/Resonance automatic continuation, preventing an accidental second pull during the same forced step.
+
+The internal candidate export now records **multi-piece taps, Rezonans pulse events, gate openings and distinct moved pieces** instead of using raw animation/event count as a fun score. Every pilot must have a real bond pull and at least one multi-piece decision; these numbers screen for inert mechanics but do not establish player enjoyment.
+
+Note that the **preview's optional direct-level jumps** can mark earlier pilot levels completed *in the isolated development save only*, to preserve the ordered completion frontier. Real player progress and shipped Level1–100 saves are never touched.
+
