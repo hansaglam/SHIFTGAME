@@ -115,6 +115,64 @@ namespace Shift.Game.Editor
             return true;
         }
 
+        // Replay ordered BoardAction records to distinguish a useful remote
+        // signal from a pulse whose paired pad was empty or blocked.
+        // Board.Pieces reflects the END of a tap, so track piece positions
+        // from the LevelData initial layout instead of checking them afterward.
+        public static HashSet<int> ProductiveResonanceChannels(
+            LevelData level, IReadOnlyList<GridPosition> route)
+        {
+            var productive = new HashSet<int>();
+            var positions = new GridPosition[level.Placements.Count];
+            var alive = new bool[level.Placements.Count];
+            for (int i = 0; i < positions.Length; i++)
+            {
+                positions[i] = level.Placements[i].position;
+                alive[i] = true;
+            }
+            var board = new BoardManager();
+            board.Load(level);
+            foreach (var tap in route)
+            {
+                if (!board.RequestMove(tap) ||
+                    board.LastReactionWasCancelled || board.Actions.Count == 0)
+                    throw new InvalidOperationException(
+                        "Invalid recorded route for channel analysis: " + tap);
+                var pending = new Dictionary<int, int>();
+                foreach (var action in board.Actions)
+                {
+                    if (action.Type == BoardActionType.ResonancePulse)
+                    {
+                        int channel = level.Placements[action.PieceId].channel;
+                        int receiver = -1;
+                        for (int i = 0; i < positions.Length; i++)
+                            if (alive[i] &&
+                                level.Placements[i].type == PieceType.Normal &&
+                                positions[i].Equals(action.To))
+                            {
+                                receiver = i;
+                                break;
+                            }
+                        if (receiver >= 0) pending[channel] = receiver;
+                    }
+                    else if (action.Type == BoardActionType.Move)
+                    {
+                        foreach (var candidate in pending)
+                            if (candidate.Value == action.PieceId)
+                                productive.Add(candidate.Key);
+                        positions[action.PieceId] = action.To;
+                    }
+                    else if (action.Type == BoardActionType.Deliver)
+                        alive[action.PieceId] = false;
+                }
+                board.CompleteResolution();
+            }
+            if (board.State != GameState.Won)
+                throw new InvalidOperationException(
+                    "Channel audit route did not win.");
+            return productive;
+        }
+
         [Serializable]
         public sealed class CandidateProof
         {
@@ -304,6 +362,15 @@ namespace Shift.Game.Editor
                         throw new InvalidOperationException("Route failed to win.");
                     int remote = Post40QualityAudit.CountProductiveResonanceMoves(
                         level, level.KnownSolution);
+                    var defined = new HashSet<int>();
+                    foreach (var placement in level.Placements)
+                        if (placement.type == PieceType.Resonance)
+                            defined.Add(placement.channel);
+                    if (!defined.SetEquals(ProductiveResonanceChannels(
+                        level, level.KnownSolution)))
+                        throw new InvalidOperationException(
+                            "One or more Resonance pairs are decorative on " +
+                            "the recorded shortest win.");
                     if (remote < 1 || multi < 2 || rhythm.longestSinglePieceRun > 3)
                         throw new InvalidOperationException(
                             "Weak candidate: empty signal, insufficient chain, " +
