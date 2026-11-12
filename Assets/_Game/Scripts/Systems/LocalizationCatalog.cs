@@ -58,6 +58,8 @@ namespace Shift.Game
             { "onboarding.welcome.title", new[] { "WELCOME TO SHIFT", "SHIFT'E HOŞ GELDİN" } },
             { "onboarding.welcome.subtitle", new[] { "Small puzzles. One-finger control.\nSatisfying chain reactions.", "Kısa bulmacalar. Tek parmak kontrol.\nTatmin edici zincir reaksiyonları." } },
             { "onboarding.welcome.levels", new[] { "40 handcrafted levels", "40 el yapımı seviye" } },
+            { "onboarding.extended_levels", new[] { "{0} handcrafted levels", "{0} özenle hazırlanmış seviye" } },
+            { "onboarding.extended_campaign", new[] { "{0}-level campaign", "{0} seviyelik kampanya" } },
             { "onboarding.welcome.daily", new[] { "A new Daily Shift every day", "Günün SHIFT'i ile her gün yeni bulmaca" } },
             { "onboarding.welcome.perfect", new[] { "Master the most efficient solution with Perfect Shift", "Perfect Shift ile en iyi çözümü bul" } },
             { "onboarding.how.title", new[] { "HOW TO PLAY", "NASIL OYNANIR" } },
