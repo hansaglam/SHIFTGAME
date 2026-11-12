@@ -25,7 +25,7 @@ namespace Shift.Game
                     if (level.IsTargetColor(color)) Add((int)color);
             }
             foreach (var p in level.Placements)
-            { Add((int)p.type); Add((int)p.color); Add((int)p.direction); Add(p.position.x); Add(p.position.y); if (stateful) { Add(p.channel); Add(p.initialOpen ? 1 : 0); } }
+            { Add((int)p.type); Add((int)p.color); Add((int)p.direction); Add(p.position.x); Add(p.position.y); if (stateful) { Add(p.channel); Add(p.initialOpen ? 1 : 0); } if (p.tetherId != 0) { Add(-406); Add(p.tetherId); } }
             using var sha = SHA256.Create();
             var bytes = sha.ComputeHash(Encoding.UTF8.GetBytes(text.ToString()));
             var key = new StringBuilder(64);
