@@ -23,12 +23,12 @@ namespace Shift.Game
             back.color = new Color(.09f, .19f, .26f, .08f);
             back.raycastTarget = false;
             var bar = PlaceholderVisuals.Rect("Journey Track Line", transform,
-                new Vector2(.07f, .13f), new Vector2(.93f, .23f));
+                new Vector2(.07f, .19f), new Vector2(.93f, .28f));
             var muted = bar.gameObject.AddComponent<Image>();
             muted.color = new Color(.31f, .40f, .45f, .45f);
             muted.raycastTarget = false;
             var completeBar = PlaceholderVisuals.Rect("Journey Restored Line", transform,
-                new Vector2(.07f, .13f), new Vector2(.07f, .23f));
+                new Vector2(.07f, .19f), new Vector2(.07f, .28f));
             fill = completeBar.gameObject.AddComponent<Image>();
             fill.color = new Color32(73, 163, 147, 255);
             fill.raycastTarget = false;
@@ -37,7 +37,7 @@ namespace Shift.Game
             {
                 float x = .07f + .86f * i / (nodes.Length - 1f);
                 var node = PlaceholderVisuals.Rect("Journey Beat " + i, transform,
-                    new Vector2(x - .028f, .08f), new Vector2(x + .028f, .30f));
+                    new Vector2(x - .028f, .08f), new Vector2(x + .028f, .47f));
                 nodes[i] = node.gameObject.AddComponent<Image>();
                 nodes[i].sprite = rounded;
                 nodes[i].type = Image.Type.Sliced;
@@ -51,7 +51,7 @@ namespace Shift.Game
 
             status = PlaceholderVisuals.Label("Journey Milestone Status", transform,
                 font, "", 22, VisualTheme.Ink,
-                new Vector2(.02f, .38f), new Vector2(.98f, .98f));
+                new Vector2(.02f, .54f), new Vector2(.98f, .98f));
             status.alignment = TextAnchor.MiddleCenter;
             status.resizeTextForBestFit = true;
             status.resizeTextMinSize = 16;
