@@ -41,13 +41,13 @@ The following are **candidate properties**, not gameplay metrics from users or U
 | 88 | 8 | 9 | 5 | 1 | 1 |
 | 89 | 8 | 9 | 5 | 1 | 1 |
 | 90 | 8 | 9 | 4 | 1 | 1 |
-| 91 | 8 | 9 | 4 | 1 | 2 |
-| 92 | 8 | 9 | 4 | 2 | 1 |
+| 91 | 8 | 9 | 4 | 2 | 2 |
+| 92 | 8 | 9 | 4 | 2 | 2 |
 | 93 | 9 | 10 | 6 | 1 | 2 |
 | 94 | 9 | 10 | 7 | 1 | 2 |
-| 95 | 9 | 10 | 4 | 1 | 2 |
+| 95 | 8 | 9 | 2 | 2 | 2 |
 | 96 | 10 | 11 | 7 | 1 | 2 |
-| 97 | 9 | 10 | 4 | 1 | 2 |
+| 97 | 9 | 10 | 5 | 2 | 2 |
 | 98 | 9 | 10 | 4 | 1 | 2 |
 | 99 | 10 | 11 | 7 | 1 | 2 |
 | **100** | **9** | **10** | **4** | **2** | **2** |
@@ -99,4 +99,42 @@ The 100-level plan exposed three genuine issues outside the new puzzle asset fol
 No user's prior completion is overwritten. These are source changes on the isolated Chapter5 draft branch, **not applied to the published app**.
 
 **Next engine verification must explicitly exercise** a completed 40-level save opened in the 100-level preview, reentering Chapter3, and the correct 60/80/100 result screens. Failures here block release even if Level81–100 all solve.
+
+
+
+## Second gameplay + world-quality pass — 12 Nov 2026 (latest)
+
+**This section supersedes earlier interpretations of Level 91, 92, 95 and 97.** The table above has also been updated to match the current candidate boards. Nothing below is a Unity certificate or a player satisfaction claim.
+
+### Removed repeated/decorative interactions
+
+- **Level 91, Three Currents:** A formerly decorative second signal now remotely moves the blue helper waiting at its paired node. The helper is delivered by the same chain, after the yellow switch opens the second gate. Red's exit has shifted one step to preserve an eight-tap optimal route; a **nine-tap manual blue-helper alternative** remains. Both Resonance channels are now productive.
+- **Level 92, Silent Relay:** Added a channel-2 switch at `(4,2)` and gate at `(5,1)`. The first distant signal opens channel 1, while the separate yellow side-route tap opens channel 2. Both channels matter, still **8/9 taps**. Relative shape-independent decision motif overlap with Level 85 decreases from ~86% to **~71%**, under the editor's 75% review threshold.
+- **Level 95, Interlocked:** Moved the channel-2 receiver under the blue helper at `(5,6)` and moved the red exit to `(6,4)`. The second signal now contributes real motion and a late blue delivery. Shortest **8**, alternate **9**; on the longer path, the player chooses to open the *first gate manually* instead of using the first remote signal. Two productive channels rather than one and no four-tap solo corridor in the recorded shortest.
+- **Level 97, Late Handoff:** Rebuilt the second signal receiver under the movable blue helper at `(2,1)`, moved yellow's starting target to `(3,6)`, moved red's exit to `(1,3)`, and added a second real yellow target at `(4,6)`. Two yellow targets now push as a convoy; the second signal remotely advances and delivers the blue helper. This creates **five multi-piece taps**, **two productive signals**, shortest **9**, alternate **10**. The longer route delivers the leading yellow before the trailing yellow instead of using the convoy's optimal push. Level 95/97 formerly had **identical** decision labels; after both redesigns, LCS overlap is **5/8 (62.5%)**.
+
+Added `Chapter5Drafts.ProductiveResonanceChannels` to replay ordered BoardAction events and count actual **normal-piece movement at the remote partner**. The Unity candidate validator and `Chapter5DraftTests` now require **every Resonance pair shown on a Level81–100 board** to affect a piece on the recorded optimal route. This rejects the misleading situation where a decorative pulse is presented as a meaningful puzzle mechanic. Regressions lock the 91/92/95/97 route lengths, signal timings, channels, opening gates and late deliveries.
+
+### In-game world visualization upgraded
+
+Added `Assets/_Game/Scripts/UI/ChapterWorldBackdrop.cs` and its stable `.meta`. It draws a **noninteractive alpine backdrop inside the extended Chapter selector**, behind all buttons and level tiles, using Unity's existing UI VertexHelper (no downloads/new textures). Low-contrast mountain silhouettes, a lake ellipse, interconnected network routes and five beacon nodes are mapped to the real saved Chapter 3/4/5 completion state.
+
+The three worlds use different route shapes, and completed connections gain a distinct static highlight. The end-of-Chapter horizon/beacon lights up **only after Level 60/80/100 is recorded complete**. Subtle .42s interpolation plays only on newly advanced milestones; Reduced Motion immediately displays the final state. The first-40 legacy selector never creates this component.
+
+The existing top route strip had only ~4% screen height, risking unreadable status text. The expanded layout now reserves approximately 6% of the Chapter view for the strip and arranges title, purpose, route and Daily entry in **separate nonoverlapping vertical bands**, with auto-resizing text. In-game puzzles still receive all taps, unchanged.
+
+New `ChapterWorldBackdropTests` checks legacy isolation, no fake restoration from unlocked Level 100, milestone-by-milestone completion, final horizon gating, save reset and Reduced Motion. Updated `ChapterJourneyScenePreviewTests` checks the backdrop is non-raycasting and the title/route text areas do not overlap.
+
+**Important rendering limitation:** Procedural UI paths/silhouettes and the existing scenic background are implemented, but bespoke full-screen Chapter-world illustrations or a dedicated illustrated world map are not yet shipped. Device-level readability and visual appeal are not verified.
+
+### Verification after edits
+
+- Latest source-controlled Level81–100 YAML files, source manifest and editor alternate-route registry remain aligned; the changes preserved existing Chapter 5 asset GUIDs.
+- Independent BoardManager-style search confirmed **8/9** (91), **8/9** (92), **8/9** (95), **9/10** (97), with actual winning replays, action-event logs and minimum searches.
+- Level81–90 source/route/layer checks remain intact; Level91–100 passed a fresh source-vs-manifest static consistency check including legal gates, signal pairing, layer collisions, objective colors and move limits.
+- The model-based LCS, action counts and BFS are design-screening evidence, not live Unity results. **Unity Editor compilation, CampaignCertification, new EditMode tests and actual device presentation still have NOT been executed** in this connector-only workflow.
+
+### Remaining quality review
+
+Pairs in the **93/96/99** design cluster still share some reasoning patterns (roughly 75–80% label overlap), even though their geometry, gates and chain lengths differ. The motif report is a **warning**, not proof of duplication, and does not justify changing a level just to game a metric. Review these next for a distinct causal decision *before* expanding to 101+. Mora and holistic blind player tests remain deferred per development plan.
 
