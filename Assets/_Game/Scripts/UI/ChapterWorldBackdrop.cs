@@ -15,6 +15,10 @@ namespace Shift.Game
         private bool reducedMotion;
         private Color restoredColor;
         private Color mutedColor;
+        // Read-only diagnostic state for Editor progression assertions.
+        public int VisibleMilestones => chapter == null ? 0 : toBeats;
+        public bool FinaleRestored => chapter != null && toBeats == 5;
+        public int ChapterStart => chapter == null ? 0 : chapter.startLevel;
         private static readonly Vector2[] Valley =
         {
             new Vector2(.09f, .37f), new Vector2(.29f, .49f),
