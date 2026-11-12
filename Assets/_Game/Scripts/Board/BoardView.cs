@@ -57,7 +57,14 @@ namespace Shift.Game
             int belowMovable = 0;
             foreach (var piece in board.Pieces)
                 if (!piece.Movable) belowMovable++;
-            int insertionIndex = board.Width * board.Height + belowMovable;
+            // Three frame layers precede visible cells. Sculpted topology
+            // skips wall cells, so compute the actual cell count.
+            int insertionIndex = 3 + belowMovable;
+            for (int y = 0; y < board.Height; y++)
+                for (int x = 0; x < board.Width; x++)
+                    if (!sculptedTopology ||
+                        board.GetTerrain(new GridPosition(x, y))?.Type != PieceType.Wall)
+                        insertionIndex++;
             foreach (var data in board.Pieces)
             {
                 if (data.Type != PieceType.Normal || data.TetherId == 0)
