@@ -28,7 +28,7 @@ namespace Shift.Game
             { "guide.resonance.body", new[] { "Two matching signal nodes are linked. When a moving piece ENTERS one, a piece waiting on the other node moves in its OWN direction. Then the first piece continues in its original direction. Both movements belong to ONE tap. No teleporting or rotation.\n\nEach link signals only once per tap. A blocked receiver stays in place, but the source still continues when possible. Undo restores every piece.", "Eşleşen iki sinyal düğümü uzaktan bağlıdır. Hareketli bir taş birine GİRDİĞİNDE, diğer düğümde bekleyen renkli taş KENDİ yönünde ilerler. Ardından ilk taş eski yönünde ilerlemeye devam eder. İkisi de TEK dokunuşun sonucudur. Işınlanma veya döndürme yoktur.\n\nHer bağlantı tek hamlede yalnızca bir sinyal verir. Uzak taş engelliyse yerinde kalır ancak ilk taş ilerleyebilir. Geri Al tüm taşları eski konumuna getirir." } },
             { "guide.resonance.example", new[] { "Enter A → activate B → continue A.", "A'ya gir → B'yi tetikle → A ile devam et." } },
             { "guide.tether.name", new[] { "Tether Bond", "BAĞ — Bağlı Taşlar" } },
-            { "guide.tether.body", new[] { "Two stones with matching gold badges share a visible bond. Their maximum Manhattan separation is three cells. If one steps too far, it PULLS the other one cell toward its new position. If the other stone is blocked, the first cannot move. A pull follows normal switches, gates and direction tiles. Once a linked stone exits, the bond ends. Undo restores both.", "Aynı altın işareti taşıyan iki taş birbirine BAĞ ile bağlıdır. Aralarındaki yatay+dikey mesafe en fazla üç hücre olabilir. Bir taş fazla uzaklaşırsa diğerini yeni konumuna doğru bir hücre ÇEKER. Diğeri engelliyse ilk taş da ilerleyemez. Çekilen taş düğme, kapı ve yön karolarının kurallarına uyar. Taşlardan biri çıkışa girince bağ çözülür. Geri Al ikisini de geri getirir." } },
+            { "guide.tether.body", new[] { "Two stones with matching gold badges share a visible bond. Their maximum Manhattan separation is three cells. If one steps too far, it PULLS the other one cell toward its new position. If the other stone is blocked, the first cannot move. A pulled stone faces the pull direction; it takes the longer axis toward its partner (horizontal on ties). The pull still obeys switches, gates and direction tiles. Once a linked stone exits, the bond ends. Undo restores both.", "Aynı altın işareti taşıyan iki taş birbirine BAĞ ile bağlıdır. Aralarındaki yatay+dikey mesafe en fazla üç hücre olabilir. Bir taş fazla uzaklaşırsa diğerini yeni konumuna doğru bir hücre ÇEKER. Diğeri engelliyse ilk taş da ilerleyemez. Çekilen taş çekildiği yöne döner; büyük eksen farkı önceliklidir (eşitse yatay). Düğme, kapı ve yön karolarına uyar. Taşlardan biri çıkışa girince bağ çözülür. Geri Al ikisini de geri getirir." } },
             { "guide.tether.example", new[] { "Stretch the link → pull partner → unlock a route.", "Bağı ger → eşini çek → yolu aç." } },
             { "guide.gates.name", new[] { "Switches & gates", "Düğmeler ve Kapılar" } },
             { "guide.gates.body", new[] { "Colored pieces entering a switch trigger it. Pushed pieces count too.\n\nBoxes do not trigger switches.\n\nGates with the same channel symbol toggle: closed opens, open closes. Closed gates block entry.", "Düğmeye giren renkli taşlar onu tetikler. İtilen renkli taşlar da buna dahildir.\n\nKutular düğmeleri tetiklemez.\n\nAynı kanal simgesindeki kapılar durum değiştirir: kapalı açılır, açık kapanır. Kapalı kapıya girilemez." } },
@@ -264,6 +264,9 @@ namespace Shift.Game
             if (ChapterDraftLocalization.TryTitle(level,
                 GameLanguageService.Shared.CurrentLanguage, out string title))
                 return title;
+            if (TetherPrototypeLocalization.TryTitle(level,
+                GameLanguageService.Shared.CurrentLanguage, out string pilotTitle))
+                return pilotTitle;
             return "SHIFT";
         }
 
@@ -275,6 +278,9 @@ namespace Shift.Game
             if (ChapterDraftLocalization.TryInstruction(level,
                 GameLanguageService.Shared.CurrentLanguage, out string draftHint))
                 return draftHint;
+            if (TetherPrototypeLocalization.TryInstruction(level,
+                GameLanguageService.Shared.CurrentLanguage, out string tetherHint))
+                return tetherHint;
             return GameLanguageService.Shared.CurrentLanguage == GameLanguage.English &&
                 !string.IsNullOrEmpty(level.Hint) ? level.Hint
                 : GameLanguageService.Shared.Text("hint.fallback");
