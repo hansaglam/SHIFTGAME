@@ -19,6 +19,7 @@ namespace Shift.Game.Editor
             public int meaningfulDecisions, efficiencyDecisions, pulseTaps;
             public int multiPieceTaps, gateOpenings, gateClosings, simpleMoveTaps;
             public int distinctPulseChannels, totalActions, longestReaction;
+            public int pulseEvents, occupiedRemotePulseEvents, emptyRemotePulseEvents;
             public bool solvedAndProven, needsDesignReview;
             public string title, error, fingerprint;
         }
@@ -37,6 +38,50 @@ namespace Shift.Game.Editor
             if (number >= 61 && number <= 65) return Chapter4ResonanceDrafts.Get(number);
             return number >= 66 && number <= 80
                 ? Chapter4ResonanceExtendedDrafts.Get(number) : null;
+        }
+
+        // Counts whether a remote Resonance receiver was actually waiting at
+        // the partner node when the pulse happened. Merely emitting a pulse is
+        // not proof of a meaningful remote action. Replays BoardManager events
+        // in order so occupants arriving earlier within the tap are included.
+        public static void CountResonanceReceivers(LevelData level,
+            IReadOnlyList<GridPosition> route, out int pulses, out int occupied)
+        {
+            pulses = 0;
+            occupied = 0;
+            var board = new BoardManager();
+            board.Load(level);
+            foreach (var tap in route)
+            {
+                var timeline = new Dictionary<int, GridPosition>();
+                foreach (var piece in board.Pieces)
+                    if (piece.Type == PieceType.Normal && piece.Active)
+                        timeline[piece.Id] = piece.Position;
+                if (!board.RequestMove(tap) || board.LastReactionWasCancelled ||
+                    board.Actions.Count == 0)
+                    throw new InvalidOperationException("Invalid route for Resonance audit: " + tap);
+                foreach (var action in board.Actions)
+                {
+                    if (action.Type == BoardActionType.Move &&
+                        board.Pieces[action.PieceId].Type == PieceType.Normal)
+                        timeline[action.PieceId] = action.To;
+                    else if (action.Type == BoardActionType.Deliver)
+                        timeline.Remove(action.PieceId);
+                    else if (action.Type == BoardActionType.ResonancePulse)
+                    {
+                        pulses++;
+                        foreach (var remote in timeline)
+                            if (remote.Value == action.To)
+                            {
+                                occupied++;
+                                break;
+                            }
+                    }
+                }
+                board.CompleteResolution();
+            }
+            if (board.State != GameState.Won)
+                throw new InvalidOperationException("Resonance audit route is not winning.");
         }
 
         [MenuItem("SHIFT/Quality/Export Level 41-80 Decision Matrix")]
@@ -98,6 +143,13 @@ namespace Shift.Game.Editor
                     if (board.State != GameState.Won)
                         throw new InvalidOperationException("Recorded route is not a win.");
                     row.distinctPulseChannels = channels.Count;
+                    if (number >= 61)
+                    {
+                        CountResonanceReceivers(level, level.KnownSolution,
+                            out row.pulseEvents, out row.occupiedRemotePulseEvents);
+                        row.emptyRemotePulseEvents =
+                            row.pulseEvents - row.occupiedRemotePulseEvents;
+                    }
                     var quality = new PuzzleBatchAnalysis(level).Analyze(level.KnownSolution);
                     row.meaningfulDecisions = quality.meaningfulDecisions;
                     row.efficiencyDecisions = quality.efficiencyDecisions;
@@ -107,7 +159,8 @@ namespace Shift.Game.Editor
                     // playtest can decide whether a pattern feels repetitive.
                     row.needsDesignReview = number >= 66 &&
                         (row.simpleMoveTaps > row.shortestMoves / 2 ||
-                         row.multiPieceTaps < 2 && number >= 76);
+                         row.multiPieceTaps < 2 && number >= 76 ||
+                         row.pulseEvents > 0 && row.occupiedRemotePulseEvents == 0);
                     if (row.needsDesignReview) matrix.flagged++;
                     matrix.passed++;
                 }
