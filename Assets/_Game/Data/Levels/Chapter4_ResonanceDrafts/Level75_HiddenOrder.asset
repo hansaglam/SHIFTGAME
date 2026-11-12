@@ -39,7 +39,7 @@ MonoBehaviour:
   - type: 8
     color: 0
     direction: 0
-    position: {x: 2, y: 2}
+    position: {x: 4, y: 2}
     channel: 1
     initialOpen: 0
   - type: 8
@@ -81,7 +81,7 @@ MonoBehaviour:
   - type: 3
     color: 0
     direction: 4
-    position: {x: 4, y: 2}
+    position: {x: 2, y: 2}
     channel: 0
     initialOpen: 0
   - type: 5
@@ -115,7 +115,7 @@ MonoBehaviour:
     channel: 2
     initialOpen: 0
   displayTitle: 75 - Hidden Order
-  hint: "İlk kapıyı açmak yetmez. Bir taşın hazırladığı yol diğer rengin geçişini sağlayabilir."
+  hint: "Kırmızının başlattığı sinyal, mavinin ilk kapısını açabilir."
   knownSolution:
   - {x: 0, y: 2}
   - {x: 3, y: 2}
