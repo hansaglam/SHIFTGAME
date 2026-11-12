@@ -1,0 +1,78 @@
+using NUnit.Framework;
+using Shift.Game.Editor;
+using UnityEditor;
+using UnityEngine;
+
+namespace Shift.Game.Tests
+{
+    // Pure Editor wiring checks. Never creates or saves the preview scene.
+    public sealed class ChapterJourneyScenePreviewTests
+    {
+        [Test]
+        public void EightyLevelPreviewKeepsAllPublishedAssetsInOriginalOrder()
+        {
+            var original = ChapterLevelWiring.LoadExpected();
+            var preview = ChapterJourneyScenePreview.Load80();
+            Assert.That(original.Length, Is.EqualTo(40));
+            Assert.That(preview.Length, Is.EqualTo(80));
+            for (int i = 0; i < 40; i++)
+                Assert.That(preview[i], Is.SameAs(original[i]),
+                    "Never rewrite released level " + (i + 1));
+            for (int number = 41; number <= 80; number++)
+            {
+                var expected = number <= 60 ? Chapter3DraftAudit.Get(number)
+                    : number <= 65 ? Chapter4ResonanceDrafts.Get(number)
+                    : Chapter4ResonanceExtendedDrafts.Get(number);
+                Assert.That(preview[number - 1], Is.SameAs(expected),
+                    "Draft level reference drift: " + number);
+            }
+        }
+
+        [Test]
+        public void PreviewSceneMustNeverBeAnEnabledBuildScene()
+        {
+            Assert.That(ChapterJourneyScenePreview.PreviewScenePath,
+                Is.Not.EqualTo(PrototypeSetup.ScenePath));
+            foreach (var scene in EditorBuildSettings.scenes)
+                Assert.That(scene.path,
+                    Is.Not.EqualTo(ChapterJourneyScenePreview.PreviewScenePath),
+                    "Opt-in preview scenes must never appear in production build settings.");
+        }
+
+        [TestCase(40, false)]
+        [TestCase(80, true)]
+        public void ChapterSelectorOnlyCreatesNewWorldsForExtendedCampaign(
+            int count, bool hasJourney)
+        {
+            var root = new GameObject("Journey Chapter UI Test", typeof(RectTransform));
+            var rounded = PlaceholderVisuals.CreateRounded();
+            try
+            {
+                var select = root.AddComponent<ChapterSelect>();
+                select.Build(Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf"),
+                    rounded, count, _ => { }, () => { }, () => { });
+                var content = root.transform.Find("Chapter Content");
+                Assert.That(content, Is.Not.Null);
+                Assert.That(content.Find("Chapter 1 Tab"), Is.Not.Null);
+                Assert.That(content.Find("Chapter 2 Tab"), Is.Not.Null);
+                Assert.That(content.Find("Chapter 3 Tab") != null,
+                    Is.EqualTo(hasJourney));
+                Assert.That(content.Find("Chapter 4 Tab") != null,
+                    Is.EqualTo(hasJourney));
+                Assert.That(content.Find("Chapter Journey") != null,
+                    Is.EqualTo(hasJourney));
+                Assert.That(content.Find("Level " + count), Is.Not.Null);
+            }
+            finally
+            {
+                Object.DestroyImmediate(root);
+                if (rounded != null)
+                {
+                    var texture = rounded.texture;
+                    Object.DestroyImmediate(rounded);
+                    if (texture != null) Object.DestroyImmediate(texture);
+                }
+            }
+        }
+    }
+}
