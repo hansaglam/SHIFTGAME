@@ -81,3 +81,15 @@ In particular **Level 77** has a five-tap vertical progression that risks feelin
 3. Lock 80's unique double-signal culmination (already revised in v01) after checking that earlier levels do not preempt the same revelation.
 4. Complete Chapter 3/4 visual purpose, chapter milestones and concise feedback without adding a distracting metagame.
 5. Only after the design pass, run final blind human-playtest rounds, Unity/Android/iOS regression and Perfect Shift certification. No main merge or production release until checks pass.
+
+
+### Further gameplay-quality finding: useful vs decorative Resonance
+
+Replaying the recorded routes in a separate BoardManager-style simulator exposed a defect that ordinary pulse-count tests miss:
+
+- **77:** The source resonance pulse occurs when there is **no normal piece waiting on the paired node**. The visual signal therefore does not cause a useful remote piece movement on the saved route. The recorded route also contains five consecutive blue-lane taps; only one of eight taps moves more than one piece. **Do not approve this design as-is.**
+- **80:** Both recorded resonance signals **do** have actual remote receivers and drive remote movement. Nevertheless, only two of its eight recorded taps move multiple pieces; its chapter-finale feel should be reviewed after the core quality pass.
+
+The editor-only `Post40QualityAudit.CountResonanceReceivers` now reconstructs normal-piece positions event-by-event in the authoritative BoardManager action log, so the generated Unity quality matrix distinguishes pulse events with an occupied remote partner from **empty** ones. Focused regression assertions document this gap at 77 and guard the productive channels at 80.
+
+**Level 77 redesign target:** a non-obvious setup that makes the remote receiver essential, changes the gate decision at a meaningful moment, avoids a four-plus-tap straight corridor and ends with an understandable chain payoff. Pure coordinate shuffles and mechanically decorative signals are rejected even when they produce a valid shortest route. No new mechanism is needed.
