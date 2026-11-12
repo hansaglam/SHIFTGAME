@@ -89,7 +89,7 @@ namespace Shift.Game
                 progress.HighestCompleted);
             var current = definition.beats[Mathf.Max(0, last)];
             string milestone = completed == 20
-                ? (turkish ? definition.finaleTr : definition.finaleEn)
+                ? (turkish ? definition.beats[4].nameTr : definition.beats[4].nameEn)
                 : last < 0
                     ? (turkish ? definition.purposeTr : definition.purposeEn)
                     : (turkish ? current.nameTr : current.nameEn);
@@ -104,9 +104,15 @@ namespace Shift.Game
             }
         }
 
+        public void Hide()
+        {
+            chapterIndex = -1;
+            gameObject.SetActive(false);
+        }
+
         private void OnLanguageChanged()
         {
-            if (progressState != null && chapterIndex >= 2)
+            if (gameObject.activeSelf && progressState != null && chapterIndex >= 2)
                 Show(progressState, chapterIndex);
         }
 
