@@ -137,6 +137,46 @@ namespace Shift.Game.Tests
         }
 
         [Test]
+        public void ReturningFortyLevelCompleterCanEnterLevelFortyOneWithoutReplay()
+        {
+            var original = Saved(40, 39, 39, 39);
+            Assert.That(original.HighestUnlocked, Is.EqualTo(39));
+            Assert.That(original.HighestCompleted, Is.EqualTo(39));
+
+            var extended = new LevelProgression(100, new SaveService(Prefix));
+            Assert.That(extended.HighestUnlocked, Is.EqualTo(40));
+            Assert.That(extended.Current, Is.EqualTo(40));
+            Assert.That(extended.HighestCompleted, Is.EqualTo(39));
+            Assert.That(extended.IsUnlocked(40), Is.True);
+            Assert.That(extended.Recommended, Is.EqualTo(40));
+
+            var reopened = new LevelProgression(100, new SaveService(Prefix));
+            Assert.That(reopened.HighestUnlocked, Is.EqualTo(40));
+            Assert.That(reopened.Current, Is.EqualTo(40));
+            Assert.That(reopened.HighestCompleted, Is.EqualTo(39));
+            Assert.That(ChapterJourneyCatalog.Completed(
+                ChapterJourneyCatalog.ForChapter(2),
+                reopened.HighestCompleted), Is.Zero);
+        }
+
+        [Test]
+        public void FortyLevelMigrationPreservesReplayChoiceAndIncompletePlayers()
+        {
+            var save = new SaveService(Prefix);
+            save.Save(new ProgressData(39, 11, 39));
+            var replaying = new LevelProgression(100, save);
+            Assert.That(replaying.Current, Is.EqualTo(11));
+            Assert.That(replaying.HighestUnlocked, Is.EqualTo(40));
+            Assert.That(replaying.HighestCompleted, Is.EqualTo(39));
+
+            save.Save(new ProgressData(39, 39, 38));
+            var unfinished = new LevelProgression(100, save);
+            Assert.That(unfinished.HighestUnlocked, Is.EqualTo(39));
+            Assert.That(unfinished.Current, Is.EqualTo(39));
+            Assert.That(unfinished.HighestCompleted, Is.EqualTo(38));
+        }
+
+        [Test]
         public void HundredLevelPreviewUnlocksButDoesNotRestoreChapterFive()
         {
             var preview = Saved(100, 99, 79, 80);
