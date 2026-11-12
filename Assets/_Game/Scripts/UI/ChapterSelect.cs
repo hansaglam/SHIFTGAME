@@ -18,6 +18,7 @@ namespace Shift.Game
         private Button secondTab;
         private Button[] chapterTabs;
         private ChapterJourneyPanel journey;
+        private ChapterWorldBackdrop worldBackdrop;
         private bool expanded;
         private Text continueLabel;
         private LevelProgression progressState;
@@ -35,6 +36,18 @@ namespace Shift.Game
             group = content.gameObject.AddComponent<CanvasGroup>();
             var card = VisualTheme.Surface("Chapter Card", content, rounded, IdentityStyle.Cream, new Vector2(.025f,.04f), new Vector2(.975f,.95f));
             IdentityStyle.Material(card); VisualTheme.Shadow(card,8);
+            if (expanded)
+            {
+                // Scenic, low-contrast illustration behind buttons and labels.
+                // Decorative-only: never capture a tap on a puzzle or tab.
+                var worldRect = PlaceholderVisuals.Rect(
+                    "Chapter World Landscape", content,
+                    new Vector2(.06f, .28f), new Vector2(.94f, .65f));
+                worldBackdrop = worldRect.gameObject
+                    .AddComponent<ChapterWorldBackdrop>();
+                worldBackdrop.raycastTarget = false;
+                worldBackdrop.gameObject.SetActive(false);
+            }
             chapterTitle = PlaceholderVisuals.Label("Chapter Title", content, font, "CHAPTER 1", 64, VisualTheme.Ink, new Vector2(.08f,.83f),new Vector2(.92f,.91f));
             masterySummary = PlaceholderVisuals.Label("Chapter Hint", content, font, "", 30, VisualTheme.Ink,new Vector2(.05f,.79f),new Vector2(.95f,.83f));
             if (expanded)
@@ -166,10 +179,13 @@ namespace Shift.Game
                 LocalizedLabel.Bind(masteryLegend, () => MasteryText.Legend(Language));
                 LocalizedLabel.Bind(masteryReplay, () => MasteryText.Summary(summary, Language));
                 journey.Show(progressState, page);
+                if (worldBackdrop != null)
+                    worldBackdrop.Show(progressState, page, Settings.reducedMotion);
             }
             else
             {
                 if (journey != null) journey.Hide();
+                if (worldBackdrop != null) worldBackdrop.Hide();
                 LocalizedLabel.Bind(chapterTitle, () =>
                     summary.Mastered ? MasteryText.Mastered(Language)
                         : GameLanguageService.Shared.Text("chapter.title", page + 1));
