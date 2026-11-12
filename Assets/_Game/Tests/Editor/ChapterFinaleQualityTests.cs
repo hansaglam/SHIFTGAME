@@ -446,6 +446,11 @@ namespace Shift.Game.Tests
             Assert.That(multiPieceTaps, Is.GreaterThanOrEqualTo(2));
             Assert.That(Post40QualityAudit.CountProductiveResonanceMoves(
                 level, level.KnownSolution), Is.EqualTo(2));
+            var rhythm = Post40QualityAudit.AnalyzeRhythm(level, level.KnownSolution);
+            Assert.That(rhythm.firstPulseStep, Is.EqualTo(2));
+            Assert.That(rhythm.lastPulseStep, Is.EqualTo(5));
+            Assert.That(rhythm.separatePulseSteps, Is.EqualTo(2));
+            Assert.That(rhythm.longestSinglePieceRun, Is.LessThanOrEqualTo(2));
             Assert.That(level.VerifiedOptimalMoveCount, Is.Null);
         }
 
