@@ -114,6 +114,8 @@ namespace Shift.Game
             { "results.ready", new[] { "GOAL COMPLETE!\nReady for the next puzzle?", "HEDEF TAMAMLANDI!\nSıradaki bulmacaya hazır mısın?" } },
             { "results.chapter1", new[] { "CHAPTER COMPLETE!\nChapter 2 is ready.", "BÖLÜM TAMAMLANDI!\n2. Bölüm hazır." } },
             { "results.chapter2", new[] { "CHAPTER 2 COMPLETE!\nSmall moves. Big reactions.", "2. BÖLÜM TAMAMLANDI!\nKüçük hamleler. Büyük etkiler." } },
+            { "results.chapter_next", new[] { "CHAPTER {0} COMPLETE!\\nChapter {1} is ready.", "{0}. BÖLÜM TAMAMLANDI!\\n{1}. Bölüm hazır." } },
+            { "results.chapter_final", new[] { "CHAPTER {0} COMPLETE!\\nA new horizon awaits.", "{0}. BÖLÜM TAMAMLANDI!\\nYeni bir ufuk seni bekliyor." } },
             { "results.chapter_title1", new[] { "CHAPTER COMPLETE!", "BÖLÜM TAMAMLANDI!" } },
             { "results.chapter_title2", new[] { "CHAPTER 2 COMPLETE!", "2. BÖLÜM TAMAMLANDI!" } },
             { "results.lost", new[] { "OUT OF MOVES\nOne more try?", "HAMLE KALMADI\nBir daha deneyelim mi?" } },
