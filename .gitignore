@@ -50,3 +50,7 @@ crashlytics-build.properties
 *.jks
 *.mobileprovision
 *.provisionprofile
+
+# Chapter Journey 41-80: isolated Unity preview scene (generated locally only)
+/Assets/_Game/Scenes/SHIFT_Journey_80Level_Preview.unity
+/Assets/_Game/Scenes/SHIFT_Journey_80Level_Preview.unity.meta
