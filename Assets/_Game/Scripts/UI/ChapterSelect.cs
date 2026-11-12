@@ -161,7 +161,7 @@ namespace Shift.Game
             }
             else
             {
-                if (journey != null) journey.gameObject.SetActive(false);
+                if (journey != null) journey.Hide();
                 LocalizedLabel.Bind(chapterTitle, () =>
                     summary.Mastered ? MasteryText.Mastered(Language)
                         : GameLanguageService.Shared.Text("chapter.title", page + 1));
