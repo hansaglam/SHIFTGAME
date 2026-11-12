@@ -131,7 +131,7 @@ namespace Shift.Game
             "A distant move can set up the piece beside it.",
             "The two gates need a sequence, not a simultaneous trigger.",
             "Three colors share one connected current.",
-            "Find the route before waking the waiting piece.",
+            "The first signal opens one gate; the other key is on the side route.",
             "A turn far away can change the decision here.",
             "Prepare the next chain before the first one ends.",
             "The second gate's key waits beyond the first.",
