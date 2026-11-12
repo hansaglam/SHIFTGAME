@@ -105,7 +105,7 @@ MonoBehaviour:
   - type: 7
     color: 0
     direction: 0
-    position: {x: 1, y: 5}
+    position: {x: 3, y: 4}
     channel: 2
     initialOpen: 0
   - type: 0
@@ -115,7 +115,7 @@ MonoBehaviour:
     channel: 0
     initialOpen: 0
   displayTitle: 93 - Hidden Crossing
-  hint: "Uzakta değişen yön, yakın kararı etkiler."
+  hint: "Önce sarıyı beklet; kapıyı açan ikinci sinyal onu yeniden harekete geçirir."
   knownSolution:
   - {x: 3, y: 2}
   - {x: 1, y: 1}
