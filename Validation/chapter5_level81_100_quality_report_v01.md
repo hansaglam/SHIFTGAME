@@ -87,3 +87,16 @@ Similarity analysis flagged recycled solution motifs despite different board coo
 
 **A.** Iterate the high-similarity Level81–100 candidates and final-world visuals using the new audit. **B.** Optionally prototype new, truly distinct complex mechanics for **Level101+** after this first 100-level baseline is convincingly strong. **C.** Revisit Mora's scene quality/evolution once chapters and worlds feel cohesive. **D.** Run all Unity/regression, retention/UX, real-player and Android/iOS tests at the final acceptance stage, with publication conditioned on zero release blockers.
 
+
+## Integration compatibility fixes discovered during final source audit
+
+The 100-level plan exposed three genuine issues outside the new puzzle asset folder. Each fix is **guarded** to avoid altering the shipped 40-level experience:
+
+1. **Returning 40-level completers:** Existing `LevelProgression` saved `HighestCompleted = HighestUnlocked = 39` on a finished, 40-level release. Merely giving Unity a 100-level array would strand these players before Level 41. The constructor now advances **only the unlocked frontier to 40** when `levelCount > 40` and 40 was already completed. Completion, earlier Perfect flags, low-level replay choice and the original PlayerPrefs keys remain untouched. Added tests for old-40 stability, Level41 access, relaunch and replay selection.
+2. **Correct Chapter 3/4/5 final message:** The existing `GameHud` treated every chapter other than Chapter 1 as Chapter 2. It now retains existing Chapter 1–2 completion keys, while using chapter-number-aware EN/TR text for Chapter 3–5, with a separate terminal Chapter 5 horizon message. Unregistered Level60/80/100 finale candidates receive a proper finale presentation without changing published Level20/40 metadata.
+3. **Onboarding copy:** The first-launch card previously said **40 handcrafted levels** even in a fully wired 100-level preview. For campaigns whose level array is **greater than 40 only**, the card now shows the actual dynamic count in EN/TR. The shipped 40-level text and onboarding flow remain unchanged. Added dynamic 60/80/100 formatting regression checks.
+
+No user's prior completion is overwritten. These are source changes on the isolated Chapter5 draft branch, **not applied to the published app**.
+
+**Next engine verification must explicitly exercise** a completed 40-level save opened in the 100-level preview, reentering Chapter3, and the correct 60/80/100 result screens. Failures here block release even if Level81–100 all solve.
+
