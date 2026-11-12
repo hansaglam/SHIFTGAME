@@ -129,6 +129,14 @@ namespace Shift.Game.Tests
             Assert.That(alternateRisk.commonOpening, Is.GreaterThanOrEqualTo(6));
             Assert.That(alternateRisk.priority, Is.EqualTo("HIGH"));
 
+            Assert.That(LevelRouteSimilarityAudit.LongestSameAxisRun(
+                Chapter3DraftAudit.Get(59).KnownSolution), Is.LessThan(4),
+                "The redesigned Level 59 must not rely on a long tap corridor.");
+            Assert.That(LevelRouteSimilarityAudit.LongestSameAxisRun(
+                Chapter4ResonanceExtendedDrafts.Get(77).KnownSolution),
+                Is.GreaterThanOrEqualTo(5),
+                "Level 77 needs an explicit redesign; it is still too corridor-like.");
+
             var route69 = Chapter4ResonanceExtendedDrafts.Get(69).KnownSolution;
             var route72 = Chapter4ResonanceExtendedDrafts.Get(72).KnownSolution;
             Assert.That(LevelRouteSimilarityAudit.Evaluate(69, 72, false,
