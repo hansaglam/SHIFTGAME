@@ -33,7 +33,7 @@ MonoBehaviour:
   - type: 0
     color: 3
     direction: 4
-    position: {x: 4, y: 6}
+    position: {x: 3, y: 6}
     channel: 0
     initialOpen: 0
   - type: 8
@@ -57,13 +57,13 @@ MonoBehaviour:
   - type: 8
     color: 0
     direction: 0
-    position: {x: 4, y: 6}
+    position: {x: 2, y: 1}
     channel: 2
     initialOpen: 0
   - type: 5
     color: 1
     direction: 0
-    position: {x: 1, y: 4}
+    position: {x: 1, y: 3}
     channel: 0
     initialOpen: 0
   - type: 5
@@ -114,15 +114,21 @@ MonoBehaviour:
     position: {x: 3, y: 2}
     channel: 0
     initialOpen: 0
+  - type: 0
+    color: 3
+    direction: 4
+    position: {x: 4, y: 6}
+    channel: 0
+    initialOpen: 0
   displayTitle: 97 - Late Handoff
   hint: "İlk hamlenin sonucunu son hamle için hazırla."
   knownSolution:
   - {x: 1, y: 7}
   - {x: 1, y: 5}
+  - {x: 1, y: 4}
+  - {x: 3, y: 6}
   - {x: 4, y: 6}
-  - {x: 5, y: 6}
   - {x: 3, y: 3}
-  - {x: 6, y: 6}
-  - {x: 2, y: 1}
-  - {x: 3, y: 2}
   - {x: 3, y: 1}
+  - {x: 5, y: 6}
+  - {x: 6, y: 6}
