@@ -113,6 +113,7 @@ namespace Shift.Game
         private HapticService haptics;
         private LevelProgression progress;
         private ChapterSelect chapter;
+        private ChapterJourneyMilestoneNotice journeyNotice;
         private bool debugLevel;
         private bool returningContext;
         private int activeLevelIndex;
@@ -320,6 +321,15 @@ namespace Shift.Game
                 dailyPanel.Build(font,rounded,gameFeel,(p,archive)=>StartDaily(p.Date,archive),CloseDaily);
                 if(IsDaily)hud.BuildDaily(font,rounded,ActiveDaily,DailyLanguage,OpenDaily);
             }
+            journeyNotice = null;
+            // Opt-in extended campaigns only: the shipped 40-level UI stays unchanged.
+            if (progress != null && !IsDaily && levels != null && levels.Length >= 60)
+            {
+                var notice = PlaceholderVisuals.Rect("Chapter Journey Milestone",
+                    safe, new Vector2(.15f, .705f), new Vector2(.85f, .768f));
+                journeyNotice = notice.gameObject.AddComponent<ChapterJourneyMilestoneNotice>();
+                journeyNotice.Build(font, rounded, gameFeel);
+            }
             var settingsRect = PlaceholderVisuals.Rect("Settings Panel", safe, Vector2.zero, Vector2.one);
             settingsPanel = settingsRect.gameObject.AddComponent<SettingsPanel>();
             settingsPanel.Build(font, rounded, Settings, gameFeel, audioManager, CloseSettings, () => RewardedAds as IPrivacyChoices, openGuide: OpenGuideIndex);
@@ -366,6 +376,7 @@ namespace Shift.Game
             board.CompleteResolution();
             if (board.State == GameState.Won || board.State == GameState.Lost) Telemetry.Finish(board.State == GameState.Won);
             bool firstPerfect = false, chapterMasteredNow = false;
+            int previousHighestCompleted = progress == null ? -1 : progress.HighestCompleted;
             int chapterIndex = CampaignChapters.Index(activeLevelIndex);
             if (board.State == GameState.Won && progress != null && !debugLevel && !IsDaily)
             {
@@ -389,6 +400,8 @@ namespace Shift.Game
             hud.Refresh(board); RefreshControls();
             hud.SetCompletion(board.State == GameState.Won, !IsDaily && progress != null && CampaignChapters.IsLast(activeLevelIndex, levels.Length),
                 !IsDaily && progress != null && !debugLevel && activeLevelIndex < levels.Length - 1, chapterIndex + 1);
+            if (board.State == GameState.Won && !IsDaily && !debugLevel && progress != null)
+                journeyNotice?.ShowNew(progress, activeLevelIndex, previousHighestCompleted);
             hud.FinishChain(); audioManager.ChainPayoff(board.Actions.Count); view.SetInput(board.State == GameState.Playing && !InputModalOpen);
             if (board.State == GameState.Won && progress != null && !debugLevel && !IsDaily && CampaignChapters.IsLast(activeLevelIndex, levels.Length))
                 hud.ShowChapterMastery(progress.ChapterSummary(chapterIndex));
@@ -553,6 +566,7 @@ namespace Shift.Game
             guideNotice?.Dismiss();
             if (chapter == null || rewardPending) return;
             hintVisual?.Clear();
+            journeyNotice?.Dismiss();
             if (hintPanel != null && hintPanel.IsOpen) CloseHint();
             dailyPanel?.Close(); settingsPanel?.Close(); view.SetInput(false); chapter.Open(progress);
             RefreshChapterDaily(); audioManager.Play(AudioCue.PanelOpen); RefreshControls();
