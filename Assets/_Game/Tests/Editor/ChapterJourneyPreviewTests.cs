@@ -28,6 +28,18 @@ namespace Shift.Game.Tests
             Assert.That(ChapterJourneyPrototype.PreviewProgress(80, false),
                 Is.LessThan(1f));
             Assert.That(ChapterJourneyPrototype.PreviewProgress(80, true), Is.EqualTo(1f));
+            Assert.That(ChapterJourneyPrototype.IsBeatRestored(
+                ChapterJourneyPrototype.Chapters[0],
+                ChapterJourneyPrototype.Chapters[0].beats[4], 60, false), Is.False);
+            Assert.That(ChapterJourneyPrototype.IsBeatRestored(
+                ChapterJourneyPrototype.Chapters[0],
+                ChapterJourneyPrototype.Chapters[0].beats[4], 60, true), Is.True);
+            Assert.That(ChapterJourneyPrototype.IsBeatRestored(
+                ChapterJourneyPrototype.Chapters[1],
+                ChapterJourneyPrototype.Chapters[1].beats[4], 80, false), Is.False);
+            Assert.That(ChapterJourneyPrototype.IsBeatRestored(
+                ChapterJourneyPrototype.Chapters[1],
+                ChapterJourneyPrototype.Chapters[1].beats[4], 80, true), Is.True);
         }
 
         [Test]
