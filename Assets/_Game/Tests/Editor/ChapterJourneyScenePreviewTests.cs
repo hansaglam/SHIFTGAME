@@ -52,12 +52,14 @@ namespace Shift.Game.Tests
             Assert.That(ChapterJourneyScenePreview.Preview100ScenePath,
                 Is.Not.EqualTo(ChapterJourneyScenePreview.PreviewScenePath));
             foreach (var scene in EditorBuildSettings.scenes)
+            {
                 Assert.That(scene.path,
                     Is.Not.EqualTo(ChapterJourneyScenePreview.PreviewScenePath),
                     "Opt-in preview scenes must never appear in production build settings.");
                 Assert.That(scene.path,
                     Is.Not.EqualTo(ChapterJourneyScenePreview.Preview100ScenePath),
                     "100-level preview must not be included in production builds.");
+            }
         }
 
         [TestCase(40, false, false)]
