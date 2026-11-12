@@ -36,7 +36,7 @@ namespace Shift.Game.Tests
         [TestCase(68, 4, 3, 1, 2)]
         [TestCase(75, 1, 1, 2, 1)]
         [TestCase(78, 4, 3, 1, 1)]
-        [TestCase(80, 2, 2, 2, 2)]
+        [TestCase(80, 3, 2, 2, 2)]
         public void RevisedLevelReactionsMustNotRegress(int number, int minMultiPieceTaps,
             int minPulseTaps, int minGateOpenings, int expectedChannels)
         {
