@@ -138,8 +138,8 @@ namespace Shift.Game.Tests
             var route69 = Chapter4ResonanceExtendedDrafts.Get(69).KnownSolution;
             var route72 = Chapter4ResonanceExtendedDrafts.Get(72).KnownSolution;
             Assert.That(LevelRouteSimilarityAudit.Evaluate(69, 72, false,
-                route69, route72), Is.Not.Null,
-                "Repeated vertical-lane family must remain in the review queue.");
+                route69, route72), Is.Null,
+                "New Levels 69 and 72 must not regress to the same vertical route.");
         }
 
         [Test]
@@ -229,6 +229,108 @@ namespace Shift.Game.Tests
             Assert.That(sharedTaps, Is.GreaterThanOrEqualTo(5));
             Assert.That(level.VerifiedOptimalMoveCount, Is.Null,
                 "Keep Perfect Shift disabled until final chapter approval.");
+        }
+
+        [TestCase(69, 6, 3)]
+        [TestCase(72, 6, 2)]
+        [TestCase(78, 8, 7)]
+        public void QualityRevisionsMustUseRealRemoteMovementAndDistinctPaths(
+            int number, int shortest, int minimumMultiPieceTaps)
+        {
+            var level = Chapter4ResonanceExtendedDrafts.Get(number);
+            Assert.That(level, Is.Not.Null);
+            Assert.That(level.ValidatePlayable(out string error), Is.True, error);
+            Assert.That(level.KnownSolutionLength, Is.EqualTo(shortest));
+            Assert.That(level.MoveLimit, Is.GreaterThanOrEqualTo(shortest + 1));
+            Assert.That(LevelValidation.VerifySolution(level, out error, out _),
+                Is.True, error);
+            Assert.That(Chapter4ResonanceExtendedDrafts.CheckAlternate(
+                level, number, out error), Is.True, error);
+            var proof = CampaignCertification.Prove(level, number);
+            Assert.That(proof.complete, Is.True, proof.error);
+            Assert.That(proof.minimum, Is.EqualTo(shortest));
+
+            Assert.That(Post40QualityAudit.CountProductiveResonanceMoves(
+                level, level.KnownSolution), Is.GreaterThanOrEqualTo(1),
+                "A visual pulse must move a real remote normal piece.");
+            Assert.That(LevelRouteSimilarityAudit.LongestSameAxisRun(
+                level.KnownSolution), Is.LessThan(4),
+                "The recorded optimal route must not be a repeated straight-lane run.");
+
+            var board = new BoardManager();
+            board.Load(level);
+            int multiPieceTaps = 0, gateOpenings = 0, remotePulses = 0;
+            foreach (var tap in level.KnownSolution)
+            {
+                Assert.That(board.RequestMove(tap), Is.True,
+                    "Noncommitting tap in " + level.name + ": " + tap);
+                Assert.That(board.LastReactionWasCancelled, Is.False);
+                var moved = new HashSet<int>();
+                foreach (var action in board.Actions)
+                {
+                    if (action.Type == BoardActionType.Move)
+                        moved.Add(action.PieceId);
+                    if (action.Type == BoardActionType.GateOpened)
+                        gateOpenings++;
+                    if (action.Type == BoardActionType.ResonancePulse)
+                        remotePulses++;
+                }
+                if (moved.Count >= 2) multiPieceTaps++;
+                board.CompleteResolution();
+            }
+            Assert.That(board.State, Is.EqualTo(GameState.Won));
+            Assert.That(multiPieceTaps, Is.GreaterThanOrEqualTo(minimumMultiPieceTaps));
+            Assert.That(remotePulses, Is.GreaterThan(0));
+            Assert.That(gateOpenings, Is.GreaterThanOrEqualTo(1));
+            Assert.That(level.VerifiedOptimalMoveCount, Is.Null,
+                "Release-only Perfect fingerprints must remain unavailable.");
+        }
+
+        [Test]
+        public void Level78SharedExitMustClearTheHelperAndKeepTheGateReadable()
+        {
+            var level = Chapter4ResonanceExtendedDrafts.Get(78);
+            Assert.That(level, Is.Not.Null);
+            Assert.That(level.ResolvedTargetColors.Count, Is.EqualTo(2));
+            int sharedExitCount = 0;
+            foreach (var piece in level.Placements)
+                if (piece.type == PieceType.Exit && piece.color == PieceColor.None)
+                    sharedExitCount++;
+            Assert.That(sharedExitCount, Is.EqualTo(1),
+                "The same neutral exit must accept the yellow helper and blue target.");
+
+            var board = new BoardManager();
+            board.Load(level);
+            bool helperDelivered = false, blueDelivered = false, gateOpened = false;
+            foreach (var tap in level.KnownSolution)
+            {
+                Assert.That(board.RequestMove(tap), Is.True);
+                Assert.That(board.LastReactionWasCancelled, Is.False);
+                bool gateClosed = false;
+                foreach (var action in board.Actions)
+                {
+                    if (action.Type == BoardActionType.GateOpened) gateOpened = true;
+                    if (action.Type == BoardActionType.GateClosed) gateClosed = true;
+                    if (action.Type == BoardActionType.Deliver)
+                    {
+                        if (action.PieceId == 3) helperDelivered = true;
+                        if (board.Pieces[action.PieceId].Color == PieceColor.Blue)
+                        {
+                            Assert.That(helperDelivered, Is.True,
+                                "Blue must share the exit only after the helper clears it.");
+                            blueDelivered = true;
+                        }
+                    }
+                }
+                if (gateClosed)
+                    Assert.That(board.GetOccupant(new GridPosition(3, 3)), Is.Null,
+                        "Never close the gate underneath a movable piece.");
+                board.CompleteResolution();
+            }
+            Assert.That(gateOpened, Is.True);
+            Assert.That(helperDelivered, Is.True);
+            Assert.That(blueDelivered, Is.True);
+            Assert.That(board.State, Is.EqualTo(GameState.Won));
         }
 
         [Test]
