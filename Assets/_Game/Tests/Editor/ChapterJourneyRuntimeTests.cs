@@ -218,6 +218,17 @@ namespace Shift.Game.Tests
                 won, 99, 98)?.level, Is.EqualTo(100));
             Assert.That(ChapterJourneyMilestoneNotice.NewMilestone(
                 won, 99, 99), Is.Null);
+            Assert.That(ChapterJourneyMilestoneNotice.IsFinalConvergence(
+                ChapterJourneyMilestoneNotice.NewMilestone(
+                    won, 99, 98)), Is.True,
+                "The Level 100 convergence is a one-time win cue.");
+            Assert.That(ChapterJourneyMilestoneNotice.IsFinalConvergence(
+                ChapterJourneyMilestoneNotice.NewMilestone(
+                    won, 99, 99)), Is.False,
+                "Replay must not emit a second finale.");
+            Assert.That(ChapterJourneyMilestoneNotice.IsFinalConvergence(
+                ChapterJourneyCatalog.ForChapter(3).beats[4]), Is.False,
+                "Level 80 keeps its own quieter finale experience.");
         }
 
         [Test]
