@@ -249,12 +249,28 @@ namespace Shift.Game
             return args.Length == 0 ? value : string.Format(CultureInfo.GetCultureInfo(language == GameLanguage.Turkish ? "tr-TR" : "en-US"), value, args);
         }
         public static string ForHint(string key, HintLanguage language, params object[] args) => Format(key, language == HintLanguage.Turkish ? GameLanguage.Turkish : GameLanguage.English, args);
-        public static string Title(LevelData level) => Contains("level." + level.name + ".title") ? GameLanguageService.Shared.Text("level." + level.name + ".title") : "SHIFT";
+        public static string Title(LevelData level)
+        {
+            if (level == null) return "SHIFT";
+            string key = "level." + level.name + ".title";
+            if (Contains(key)) return GameLanguageService.Shared.Text(key);
+            if (ChapterDraftLocalization.TryTitle(level,
+                GameLanguageService.Shared.CurrentLanguage, out string title))
+                return title;
+            return "SHIFT";
+        }
+
         public static string Instruction(LevelData level)
         {
+            if (level == null) return GameLanguageService.Shared.Text("hint.fallback");
             string key = "level." + level.name + ".instruction";
             if (Contains(key)) return GameLanguageService.Shared.Text(key);
-            return GameLanguageService.Shared.CurrentLanguage == GameLanguage.English && !string.IsNullOrEmpty(level.Hint) ? level.Hint : GameLanguageService.Shared.Text("hint.fallback");
+            if (ChapterDraftLocalization.TryInstruction(level,
+                GameLanguageService.Shared.CurrentLanguage, out string draftHint))
+                return draftHint;
+            return GameLanguageService.Shared.CurrentLanguage == GameLanguage.English &&
+                !string.IsNullOrEmpty(level.Hint) ? level.Hint
+                : GameLanguageService.Shared.Text("hint.fallback");
         }
     }
 }
