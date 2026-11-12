@@ -53,10 +53,16 @@ namespace Shift.Game
             if (expanded)
             {
                 // Reserve a clean, non-overlapping header lane for the world track.
-                chapterTitle.rectTransform.anchorMin = new Vector2(.08f, .84f);
-                chapterTitle.rectTransform.anchorMax = new Vector2(.92f, .92f);
-                masterySummary.rectTransform.anchorMin = new Vector2(.05f, .799f);
-                masterySummary.rectTransform.anchorMax = new Vector2(.95f, .833f);
+                chapterTitle.rectTransform.anchorMin = new Vector2(.08f, .872f);
+                chapterTitle.rectTransform.anchorMax = new Vector2(.92f, .936f);
+                chapterTitle.resizeTextForBestFit = true;
+                chapterTitle.resizeTextMinSize = 21;
+                chapterTitle.resizeTextMaxSize = 38;
+                masterySummary.rectTransform.anchorMin = new Vector2(.05f, .820f);
+                masterySummary.rectTransform.anchorMax = new Vector2(.95f, .867f);
+                masterySummary.resizeTextForBestFit = true;
+                masterySummary.resizeTextMinSize = 16;
+                masterySummary.resizeTextMaxSize = 23;
             }
             masteryLegend = PlaceholderVisuals.Label("Mastery Legend", content, font, "", 23, VisualTheme.Ink,new Vector2(.04f,.25f),new Vector2(.96f,.278f));
             masteryReplay = PlaceholderVisuals.Label("Mastery Replay", content, font, "", 23, VisualTheme.Ink,new Vector2(.05f,.225f),new Vector2(.95f,.25f));
@@ -105,7 +111,7 @@ namespace Shift.Game
                 }
                 secondTab = chapterTabs[1];
                 journey = PlaceholderVisuals.Rect("Chapter Journey", content,
-                    new Vector2(.07f, .755f), new Vector2(.93f, .795f))
+                    new Vector2(.07f, .755f), new Vector2(.93f, .814f))
                     .gameObject.AddComponent<ChapterJourneyPanel>();
                 journey.Build(font, rounded);
             }
@@ -167,12 +173,12 @@ namespace Shift.Game
             if (journey != null && chapterWorld != null &&
                 ChapterJourneyCatalog.Available(progressState, page))
             {
-                chapterTitle.fontSize = 41;
+                chapterTitle.fontSize = 36;
                 LocalizedLabel.Bind(chapterTitle, () =>
                     GameLanguageService.Shared.Text("chapter.title", page + 1) +
                     " · " + (Language == HintLanguage.Turkish
                         ? chapterWorld.titleTr : chapterWorld.titleEn));
-                masterySummary.fontSize = 25;
+                masterySummary.fontSize = 23;
                 LocalizedLabel.Bind(masterySummary, () =>
                     Language == HintLanguage.Turkish
                         ? chapterWorld.purposeTr : chapterWorld.purposeEn);
@@ -189,8 +195,9 @@ namespace Shift.Game
                 LocalizedLabel.Bind(chapterTitle, () =>
                     summary.Mastered ? MasteryText.Mastered(Language)
                         : GameLanguageService.Shared.Text("chapter.title", page + 1));
-                chapterTitle.fontSize = summary.Mastered ? 46 : 64;
-                masterySummary.fontSize = 30;
+                chapterTitle.fontSize = expanded ? 38
+                    : summary.Mastered ? 46 : 64;
+                masterySummary.fontSize = expanded ? 23 : 30;
                 LocalizedLabel.Bind(masterySummary, () => MasteryText.Summary(summary, Language));
                 LocalizedLabel.Bind(masteryLegend, () => MasteryText.Legend(Language));
                 LocalizedLabel.Bind(masteryReplay, () =>
