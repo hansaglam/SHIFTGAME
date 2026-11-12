@@ -87,6 +87,15 @@ namespace Shift.Game.Tests
                     Is.EqualTo(hasFifthChapter));
                 Assert.That(content.Find("Chapter Journey") != null,
                     Is.EqualTo(hasJourney));
+                var world = content.Find("Chapter World Landscape");
+                Assert.That(world != null, Is.EqualTo(hasJourney));
+                if (hasJourney)
+                {
+                    var graphic = world.GetComponent<ChapterWorldBackdrop>();
+                    Assert.That(graphic, Is.Not.Null);
+                    Assert.That(graphic.raycastTarget, Is.False,
+                        "World artwork must not steal taps from puzzle selection.");
+                }
                 Assert.That(content.Find("Level " + count), Is.Not.Null);
             }
             finally
