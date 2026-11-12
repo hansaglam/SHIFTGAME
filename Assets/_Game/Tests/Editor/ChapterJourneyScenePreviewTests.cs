@@ -29,20 +29,42 @@ namespace Shift.Game.Tests
         }
 
         [Test]
+        public void HundredLevelPreviewMustPreserveTheFirstEightyAndAppendTwenty()
+        {
+            var original = ChapterJourneyScenePreview.Load80();
+            var hundred = ChapterJourneyScenePreview.Load100();
+            Assert.That(hundred.Length, Is.EqualTo(100));
+            for (int i = 0; i < original.Length; i++)
+                Assert.That(hundred[i], Is.SameAs(original[i]),
+                    "Old LevelData identity changed at " + (i + 1));
+            for (int number = 81; number <= 100; number++)
+                Assert.That(hundred[number - 1], Is.SameAs(Chapter5Drafts.Get(number)),
+                    "Chapter 5 incorrect reference: " + number);
+        }
+
+        [Test]
         public void PreviewSceneMustNeverBeAnEnabledBuildScene()
         {
             Assert.That(ChapterJourneyScenePreview.PreviewScenePath,
                 Is.Not.EqualTo(PrototypeSetup.ScenePath));
+            Assert.That(ChapterJourneyScenePreview.Preview100ScenePath,
+                Is.Not.EqualTo(PrototypeSetup.ScenePath));
+            Assert.That(ChapterJourneyScenePreview.Preview100ScenePath,
+                Is.Not.EqualTo(ChapterJourneyScenePreview.PreviewScenePath));
             foreach (var scene in EditorBuildSettings.scenes)
                 Assert.That(scene.path,
                     Is.Not.EqualTo(ChapterJourneyScenePreview.PreviewScenePath),
                     "Opt-in preview scenes must never appear in production build settings.");
+                Assert.That(scene.path,
+                    Is.Not.EqualTo(ChapterJourneyScenePreview.Preview100ScenePath),
+                    "100-level preview must not be included in production builds.");
         }
 
-        [TestCase(40, false)]
-        [TestCase(80, true)]
+        [TestCase(40, false, false)]
+        [TestCase(80, true, false)]
+        [TestCase(100, true, true)]
         public void ChapterSelectorOnlyCreatesNewWorldsForExtendedCampaign(
-            int count, bool hasJourney)
+            int count, bool hasJourney, bool hasFifthChapter)
         {
             var root = new GameObject("Journey Chapter UI Test", typeof(RectTransform));
             var rounded = PlaceholderVisuals.CreateRounded();
@@ -59,6 +81,8 @@ namespace Shift.Game.Tests
                     Is.EqualTo(hasJourney));
                 Assert.That(content.Find("Chapter 4 Tab") != null,
                     Is.EqualTo(hasJourney));
+                Assert.That(content.Find("Chapter 5 Tab") != null,
+                    Is.EqualTo(hasFifthChapter));
                 Assert.That(content.Find("Chapter Journey") != null,
                     Is.EqualTo(hasJourney));
                 Assert.That(content.Find("Level " + count), Is.Not.Null);
