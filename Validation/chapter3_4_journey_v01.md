@@ -1,8 +1,53 @@
-# SHIFT — Chapter 3–4 Purpose & Progression / Editor Prototype v01
+# SHIFT — Chapter 3–4 Purpose & Progression / Design Prototype v02
 
 **Date:** 2026-11-12
 **Scope:** Level 41–80 only, design preview in Unity Editor.
-**Status:** **NOT IN SHIPPING GAME**. No changes to Levels 1–40, MORA, runtime chapter selection, save format, Perfect Shift, ads or production build.
+**Status:** **DRAFT RUNTIME UI INTEGRATION, NOT IN SHIPPING GAME**. Chapter screen code is conditionally extended for 60/80-level campaigns, while the checked-in live scene remains 40 levels. No changes to Levels 1–40, MORA, saved data format, Perfect Shift, ads or production build.
+
+## Implementation update — Runtime Chapter Journey integration (design candidate, 2026-11-12)
+
+This section supersedes the earlier statement that **only** the Editor preview exists. The content source is now shared between Editor and runtime, and the Chapter selection UI now supports the additional world/route presentation **when a complete 60/80-level campaign is supplied**. The currently checked-in production scene is still **40 levels**, so this change does **not** automatically make 41–80 available in published builds.
+
+### What was implemented
+
+- `Assets/_Game/Scripts/Systems/ChapterJourneyCatalog.cs` is the single EN/TR catalog for Chapter 3 and 4. The Editor preview `ChapterJourneyPrototype.cs` now reads it directly; it no longer contains a duplicate copy that could drift.
+- `ChapterJourneyCatalog.Available(progress, chapter)` requires the entire Chapter's level array to exist and its first level to be unlocked. **Unlocked does not mean completed**. All five restoration beats and progress percentage use the **existing `LevelProgression.HighestCompleted`**, with no new PlayerPrefs keys, external services or mastery reward claims.
+- `ChapterSelect.cs` preserves the **original two-tab 40-level layout**, while dynamically adding Chapter 3/4 tabs for complete 60/80 level arrays. Those tabs are disabled until their existing chapter frontier unlocks. The extended layout includes a five-node route-restoration strip, progress and a short localized current world-state label. The 20-level card grid remains accessible.
+- `ChapterJourneyPanel.cs` renders restored vs muted nodes and a calm connecting route. Stage colors follow the established lake/teal and echo/purple direction, not a brand-new UI system. The strip is passive (no raycast capture, currencies or mandatory next steps), and localizes whenever the existing GameLanguageService changes. Its normal state is static, including with Reduced Motion enabled.
+- `ChapterJourneyMilestoneNotice.cs` displays a **brief non-blocking** EN/TR world milestone when a level 41/45/50/55/60 or 61/65/70/75/80 is **newly completed** in a fully wired preview campaign. It relies on the before/after saved completion frontier; replay, Daily, debug/invalid wins and mere unlocks cannot trigger a restoration. Reduced Motion displays the final state directly (no fade); it does not interfere with board input.
+- `PrototypeGame.cs` only instantiates this notice when `levels.Length >= 60` and uses its existing completion callback to show it. Existing CampaignEnding, save format, audio, ads and the first 40 levels are unchanged.
+
+### Safe way to see it in a complete 80-level campaign
+
+A new **opt-in** Editor menu action can create an independent Preview scene:
+
+1. Checkout `feature/level41-80-design-quality-v02` in a separate local working tree.
+2. Open Unity **6.3 LTS 6000.3.23f1** and first review the Console for compile issues.
+3. Select **SHIFT → Chapter Journey → Create or Open Isolated 80-Level Preview Scene**. The tool checks all 80 assets first, then copies `Assets/_Game/Scenes/Prototype.unity` to `Assets/_Game/Scenes/SHIFT_Journey_80Level_Preview.unity` (only if this separate path does not already exist). It assigns levels 1–40 and the 41–80 draft candidates in order **without modifying the original scene**.
+4. To browse unlocked draft levels without grinding the first 40 again, choose **SHIFT → Chapter Journey → Unlock Draft Chapters in Preview Save Only**. This writes **only** `SHIFT.Preview.ChapterJourney.v1.*` keys. It marks first 40 levels as completed *only inside the isolated debug save*; Chapter 3/4 world milestones still start un-restored. It never uses or overwrites the real player progress namespace.
+5. Enter Play Mode in the copied preview scene, open Chapters 3 and 4, check milestone progression, page switching, text length, Reduced Motion, and win-only finale states. The copied scene is not automatically added to Build Settings; it is not production content.
+
+The preview generation is **not** executed by this GitHub-only workflow. The actual copied Unity scene file is created on the user's computer by the Editor tool. All newly added runtime code and tests still require local Unity compilation and validation.
+
+### Engine acceptance checks added
+
+- `ChapterJourneyRuntimeTests`: legacy 40-level isolation, unlocked-vs-completed, real 60/80 finale victory, reopening saved progress, incomplete chapter visibility, and new-milestone-only feedback.
+- `ChapterJourneyScenePreviewTests`: original 40 references retained, every Level 41–80 candidate assigned to expected index, copied scene excluded from build, and layout 40-vs-80 selector shape.
+- Existing `ChapterJourneyPreviewTests`: bilingual stage copy and reduced-motion descriptions, editor stage boundaries and finale preview guard.
+
+**Tests authored but not executed in Unity**. Real-player testing is intentionally deferred until content design is complete. Before publication, inspect small-screen typography/touch targets and ensure existing progress, returning player menu, onboarding, campaign ending, Daily Shift, EN/TR and Perfect Shift continue working.
+
+### Intentionally not included yet
+
+- No external original background illustrations, complete scenic environment transformations or full new Chapter-world 3D/2D scenes. This is a **reusable route/progress presentation plus a subtle milestone cue**, not a claim that the entire lake landscape is dynamically rebuilt.
+- No automatic assignment of the 80-level candidate array to the live production `Prototype.unity`.
+- No new reward economy, Mora dependencies or offboard minigames.
+
+### Release boundary
+
+**Keep PR #2 draft.** Do not modify main or production build settings until authored levels are Unity-certified and the complete player experience has been reviewed. A directly cloned/remote Github source branch is not a running Unity build.
+
+---
 
 ## Design decision
 
