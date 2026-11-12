@@ -31,6 +31,48 @@ namespace Shift.Game.Tests
             }
         }
 
+        // Exact source-level behavior regressions for the four quality revisions.
+        // These are game-engine tests, not heuristic scores and not release certificates.
+        [TestCase(68, 4, 3, 1, 2)]
+        [TestCase(75, 1, 1, 2, 1)]
+        [TestCase(78, 4, 3, 1, 1)]
+        [TestCase(80, 2, 2, 2, 2)]
+        public void RevisedLevelReactionsMustNotRegress(int number, int minMultiPieceTaps,
+            int minPulseTaps, int minGateOpenings, int expectedChannels)
+        {
+            var level = Chapter4ResonanceExtendedDrafts.Get(number);
+            Assert.That(level, Is.Not.Null);
+            var board = new BoardManager();
+            board.Load(level);
+            int multi = 0, pulseTaps = 0, opened = 0;
+            var channels = new System.Collections.Generic.HashSet<int>();
+            foreach (var tap in level.KnownSolution)
+            {
+                Assert.That(board.RequestMove(tap), Is.True, level.name + ": " + tap);
+                Assert.That(board.LastReactionWasCancelled, Is.False, level.name);
+                var moved = new System.Collections.Generic.HashSet<int>();
+                bool pulsed = false;
+                foreach (var action in board.Actions)
+                {
+                    if (action.Type == BoardActionType.Move) moved.Add(action.PieceId);
+                    if (action.Type == BoardActionType.ResonancePulse)
+                    {
+                        pulsed = true;
+                        channels.Add(board.Pieces[action.PieceId].Channel);
+                    }
+                    if (action.Type == BoardActionType.GateOpened) opened++;
+                }
+                if (moved.Count >= 2) multi++;
+                if (pulsed) pulseTaps++;
+                board.CompleteResolution();
+            }
+            Assert.That(board.State, Is.EqualTo(GameState.Won), level.name);
+            Assert.That(multi, Is.GreaterThanOrEqualTo(minMultiPieceTaps), level.name);
+            Assert.That(pulseTaps, Is.GreaterThanOrEqualTo(minPulseTaps), level.name);
+            Assert.That(opened, Is.GreaterThanOrEqualTo(minGateOpenings), level.name);
+            Assert.That(channels.Count, Is.EqualTo(expectedChannels), level.name);
+        }
+
         [Test]
         public void EveryShortestPathActuallyUsesResonance()
         {
