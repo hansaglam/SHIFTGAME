@@ -400,6 +400,56 @@ namespace Shift.Game.Tests
         }
 
         [Test]
+        public void Level70MustDeliverTwoDistinctRemoteReactionsOnSeparateTaps()
+        {
+            var level = Chapter4ResonanceExtendedDrafts.Get(70);
+            Assert.That(level, Is.Not.Null);
+            Assert.That(level.ResolvedTargetColors.Count, Is.EqualTo(3));
+            Assert.That(level.KnownSolutionLength, Is.EqualTo(6));
+            Assert.That(LevelValidation.VerifySolution(level, out string error, out _),
+                Is.True, error);
+            Assert.That(Chapter4ResonanceExtendedDrafts.CheckAlternate(
+                level, 70, out error), Is.True, error);
+            var proof = CampaignCertification.Prove(level, 70);
+            Assert.That(proof.complete, Is.True, proof.error);
+            Assert.That(proof.minimum, Is.EqualTo(6));
+
+            var board = new BoardManager();
+            board.Load(level);
+            var distinctChannels = new HashSet<int>();
+            var pulseSteps = new List<int>();
+            int multiPieceTaps = 0;
+            int step = 0;
+            foreach (var tap in level.KnownSolution)
+            {
+                step++;
+                Assert.That(board.RequestMove(tap), Is.True);
+                Assert.That(board.LastReactionWasCancelled, Is.False);
+                var moved = new HashSet<int>();
+                foreach (var action in board.Actions)
+                {
+                    if (action.Type == BoardActionType.Move)
+                        moved.Add(action.PieceId);
+                    if (action.Type == BoardActionType.ResonancePulse)
+                    {
+                        pulseSteps.Add(step);
+                        distinctChannels.Add(board.Pieces[action.PieceId].Channel);
+                    }
+                }
+                if (moved.Count >= 2) multiPieceTaps++;
+                board.CompleteResolution();
+            }
+            Assert.That(board.State, Is.EqualTo(GameState.Won));
+            Assert.That(pulseSteps, Is.EqualTo(new[] { 2, 5 }),
+                "Two signals must require separate player decisions.");
+            Assert.That(distinctChannels.SetEquals(new[] { 1, 2 }), Is.True);
+            Assert.That(multiPieceTaps, Is.GreaterThanOrEqualTo(2));
+            Assert.That(Post40QualityAudit.CountProductiveResonanceMoves(
+                level, level.KnownSolution), Is.EqualTo(2));
+            Assert.That(level.VerifiedOptimalMoveCount, Is.Null);
+        }
+
+        [Test]
         public void Chapter4FinaleMustRetainTwoSignalsTwoGatesAndThreeColors()
         {
             var finale = Chapter4ResonanceExtendedDrafts.Get(80);
