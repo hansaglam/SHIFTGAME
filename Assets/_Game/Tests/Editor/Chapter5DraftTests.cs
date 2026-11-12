@@ -78,6 +78,126 @@ namespace Shift.Game.Tests
         }
 
         [Test]
+        public void Level93MustOpenTheGateBeforeTheSecondPulseMovesYellow()
+        {
+            var level = Chapter5Drafts.Get(93);
+            Assert.That(level, Is.Not.Null);
+            Assert.That(level.KnownSolutionLength, Is.EqualTo(9));
+            Assert.That(Chapter5Drafts.AlternateWinningRoute(93).Length,
+                Is.EqualTo(10));
+            Assert.That(LevelValidation.VerifySolution(level,
+                out string error, out _), Is.True, error);
+            Assert.That(Chapter5Drafts.CheckAlternate(
+                level, 93, out error), Is.True, error);
+            var proof = CampaignCertification.Prove(level, 93);
+            Assert.That(proof.complete, Is.True, proof.error);
+            Assert.That(proof.minimum, Is.EqualTo(9));
+            Assert.That(Post40QualityAudit.CountProductiveResonanceMoves(
+                level, level.KnownSolution), Is.EqualTo(2));
+            Assert.That(Chapter5Drafts.ProductiveResonanceChannels(
+                level, level.KnownSolution).SetEquals(new[] { 1 }), Is.True);
+
+            var board = new BoardManager();
+            board.Load(level);
+            var gate = board.GetTerrain(new GridPosition(3, 4));
+            Assert.That(gate, Is.Not.Null);
+            Assert.That(gate.Type, Is.EqualTo(PieceType.Gate));
+            Assert.That(gate.Channel, Is.EqualTo(2));
+            Assert.That(gate.GateOpen, Is.False);
+            int step = 0, usefulPulses = 0;
+            foreach (var tap in level.KnownSolution)
+            {
+                step++;
+                Assert.That(board.RequestMove(tap), Is.True);
+                Assert.That(board.LastReactionWasCancelled, Is.False);
+                if (step == 1)
+                {
+                    Assert.That(board.GetOccupant(new GridPosition(3, 3)),
+                        Is.Not.Null, "Yellow must stop at the closed gate.");
+                    Assert.That(gate.GateOpen, Is.False);
+                }
+                if (step == 2)
+                {
+                    int openIndex = -1, pulseIndex = -1,
+                        remoteMoveIndex = -1;
+                    for (int i = 0; i < board.Actions.Count; i++)
+                    {
+                        var action = board.Actions[i];
+                        if (action.Type == BoardActionType.GateOpened &&
+                            action.PieceId == gate.Id) openIndex = i;
+                        if (action.Type == BoardActionType.ResonancePulse &&
+                            action.To == new GridPosition(3, 3)) pulseIndex = i;
+                        if (action.Type == BoardActionType.Move &&
+                            action.PieceId == 2 &&
+                            action.From == new GridPosition(3, 3) &&
+                            action.To == new GridPosition(3, 4))
+                            remoteMoveIndex = i;
+                    }
+                    Assert.That(openIndex, Is.GreaterThanOrEqualTo(0));
+                    Assert.That(pulseIndex, Is.GreaterThan(openIndex));
+                    Assert.That(remoteMoveIndex, Is.GreaterThan(pulseIndex),
+                        "The same decision must open the gate, signal yellow, " +
+                        "and move it remotely through the gate.");
+                    usefulPulses++;
+                }
+                board.CompleteResolution();
+            }
+            Assert.That(board.State, Is.EqualTo(GameState.Won));
+            Assert.That(usefulPulses, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void Level99SecondGateMustBeOpenedBeforeRedCanCrossIt()
+        {
+            var level = Chapter5Drafts.Get(99);
+            Assert.That(level, Is.Not.Null);
+            Assert.That(level.KnownSolutionLength, Is.EqualTo(10));
+            Assert.That(LevelValidation.VerifySolution(level,
+                out string error, out _), Is.True, error);
+            Assert.That(Chapter5Drafts.CheckAlternate(
+                level, 99, out error), Is.True, error);
+            var proof = CampaignCertification.Prove(level, 99);
+            Assert.That(proof.complete, Is.True, proof.error);
+            Assert.That(proof.minimum, Is.EqualTo(10));
+
+            var board = new BoardManager();
+            board.Load(level);
+            var gate = board.GetTerrain(new GridPosition(3, 3));
+            Assert.That(gate, Is.Not.Null);
+            Assert.That(gate.Type, Is.EqualTo(PieceType.Gate));
+            Assert.That(gate.Channel, Is.EqualTo(2));
+            Assert.That(gate.GateOpen, Is.False);
+            bool openedOnSecondTap = false;
+            bool crossedOnFourthTap = false;
+            int step = 0;
+            foreach (var tap in level.KnownSolution)
+            {
+                step++;
+                Assert.That(board.RequestMove(tap), Is.True);
+                Assert.That(board.LastReactionWasCancelled, Is.False);
+                foreach (var action in board.Actions)
+                {
+                    if (step == 2 &&
+                        action.Type == BoardActionType.GateOpened &&
+                        action.PieceId == gate.Id)
+                        openedOnSecondTap = true;
+                    if (step == 4 &&
+                        action.Type == BoardActionType.Move &&
+                        action.To == new GridPosition(3, 3) &&
+                        action.PieceId == 1)
+                        crossedOnFourthTap = true;
+                }
+                if (step == 2) Assert.That(gate.GateOpen, Is.True);
+                board.CompleteResolution();
+            }
+            Assert.That(board.State, Is.EqualTo(GameState.Won));
+            Assert.That(openedOnSecondTap, Is.True);
+            Assert.That(crossedOnFourthTap, Is.True,
+                "Level99 second gate must constrain the red route, " +
+                "not merely animate a switch.");
+        }
+
+        [Test]
         public void Level91MustDeliverBlueViaTheSecondRemoteChannel()
         {
             var level = Chapter5Drafts.Get(91);
