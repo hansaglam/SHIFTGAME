@@ -219,3 +219,67 @@ All altered levels preserve their original `.asset` file paths and Unity GUIDs, 
 ### Release boundary
 
 Keep `feature/level41-80-design-quality-v02` and PR #2 **draft**. Final conditions remain: Unity 6.3 LTS compilation, `ChapterFinaleQualityTests`, `ResonanceExtendedDraftTests`, other mechanic suites, Chapter 3 **20/20**, Chapter 4 **5/5 + 15/15**, complete 41–80 decision matrix **40/40**, phone readability, reduced motion, EN/TR and user data migration. Never enable or fabricate Perfect Shift certificates before exact Unity proof and design acceptance.
+
+## Chapter 4 finale and pacing follow-up — 12 November 2026
+
+**Current status:** This section supersedes any earlier `70` and `80` candidate measurements above. These are isolated prototype designs, **not** Unity-certified or player-tested.
+
+### Level 70 — *Two-Stage Echo* (accepted design candidate)
+
+Moved the channel-2 Resonance source from `(3,2)` to `(3,1)`, without adding any pieces or a new mechanic. The previous 6-tap solution triggered *both* signal channels during a single decision. The revised shortest solution still has 6 taps, but now two separate decisions at steps **2 and 5** each cause a productive remote move. The first teaches one consequence, and the second pays it off with a different color.
+
+| Measured outcome | Before | Revised |
+|---|---:|---:|
+| Shortest solution | 6 | 6 |
+| Alternative win | 7 | 7 |
+| Multi-piece taps | 1 | **2** |
+| Separate player actions causing pulses | 1 | **2** |
+| Productive remote moves | 2 | **2** |
+| Total BoardManager-style event count | 15 | 15 |
+
+The candidate shortest path, distinct +1 path, minimality and counterfactual remote-disabled minimum (8 taps) were replayed with a separate simulation. A new Unity EditMode regression locks the **two separate pulse steps**, channels, two productive moves and solution contract. Do not claim this is human-validated difficulty.
+
+### Level 80 — *Heart of Resonance* (revised late-blue-handoff candidate)
+
+The previous finale featured two effective signals and two gates but had **zero multi-piece taps in the final third** of the saved 8-tap win. Merely adding extra target pieces or long box-pushing sequences to inflate a reaction count was rejected.
+
+The selected revision retains the three target colors, both Resonance pairs and both independent gate channels while creating a **third-act dependency**:
+
+- Red's exit shifts from `(4,1)` to `(3,1)`, reducing uninteresting manual red advancement.
+- A **second blue target** begins at `(6,2)`, facing up. It cannot enter the closed channel-2 gate at `(6,3)` until yellow opens it.
+- Once the gate is open, the new blue target is positioned at `(6,3)`; the first blue target then pushes it into the shared blue exit at `(7,3)`. The first blue target follows on the final tap.
+- The second Resonance still awakens yellow, which opens the necessary gate. The remote signals remain separate and productive rather than a decorative double animation.
+- The new target is a **real objective** (blue), not a green novelty piece or a nonfunctional obstacle.
+
+| Measured outcome | Before | Revised |
+|---|---:|---:|
+| Shortest winning route | 8 | **8** |
+| Distinct longer winning route | 9 | **9** |
+| Multi-piece taps in shortest win | 2 | **3** |
+| Multi-piece taps in last third | 0 | **1** |
+| Productive remote Resonance events | 2 | **2** |
+| Gates opened | 2 | **2** |
+| Targets delivered | 3 | **4** |
+| Total BoardManager-style action events | 20 | **23** |
+
+The independently found shortest path is `(0,1) (2,1) (4,3) (1,5) (1,6) (6,2) (5,3) (6,3)`. A distinct 9-tap path is stored in editor-only alternate-route data. Disabling just the remote movement increases the best independently found route to 9 taps. Two separate blue targets are now interdependent via a late push rather than simply completing parallel lanes.
+
+**Unity tests added:** shortest-path proof/alternate, three-color/two-gate/two-signal invariants, blue target count, concrete late blue-to-blue push and delivery, and a final-third multi-piece reaction. The Level 80 reaction-profile test threshold is increased from 2 to 3 multi-piece taps. These tests were *added*, **not run inside Unity**.
+
+### Editorial pacing verdict — Levels 70–75
+
+- **70** now provides two sequential signal discoveries, rather than discharging both effects together.
+- **71** is a quieter remote-shortcut consolidation level.
+- **72** asks the player to prepare a remote path before sending a signal, a different lesson from 70.
+- **73** remains a review candidate because a long yellow-lane finish risks feeling mechanical rather than insightful.
+- **74** is a quieter gate/priority puzzle. Its single-piece stretch still merits a later design revision if the chapter feels slow.
+- **75** already contains a three-piece opening reaction and both gate channels as ordering constraints. Its long single-piece closing sequence remains an editorial risk, but candidate changes that merely added decorative target pieces were rejected.
+
+The existing `Post40QualityAudit.AnalyzeRhythm` now writes an additional independent **rhythm profile** for each Level 41–80: longest single-piece-only run, how many multi-piece taps occur in the final third, first and last signal steps, total separate signal steps and final-tap reaction/delivery counts. This intentionally does **not** call itself a fun or difficulty score. It flags four-plus consecutive simple taps for design review and Level 80 if its final third loses all multi-piece reactions.
+
+### Acceptance and safety
+
+- No Level 1–40, MORA, shipping progression, save data, ads, `VerifiedOptimality` registry or `main` edits.
+- The independent simulator models repository BoardManager rules but is **not** Unity's authoritative Editor runtime. The new Level 70 and 80 designs require `CampaignCertification`, all EditMode suites and later final blind playtesting and device UX checks.
+- No new Perfect Shift fingerprints were created or enabled.
+- Level 73/75's pacing concerns remain transparent; no claim that every 70–75 design is final.
