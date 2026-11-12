@@ -95,6 +95,18 @@ namespace Shift.Game.Tests
                     Assert.That(graphic, Is.Not.Null);
                     Assert.That(graphic.raycastTarget, Is.False,
                         "World artwork must not steal taps from puzzle selection.");
+                    var title = content.Find("Chapter Title") as RectTransform;
+                    var summary = content.Find("Chapter Hint") as RectTransform;
+                    var track = content.Find("Chapter Journey") as RectTransform;
+                    Assert.That(title, Is.Not.Null);
+                    Assert.That(summary, Is.Not.Null);
+                    Assert.That(track, Is.Not.Null);
+                    Assert.That(summary.anchorMax.y,
+                        Is.LessThan(title.anchorMin.y),
+                        "Chapter title and purpose must not overlap.");
+                    Assert.That(track.anchorMax.y,
+                        Is.LessThan(summary.anchorMin.y),
+                        "World route needs its own readable vertical space.");
                 }
                 Assert.That(content.Find("Level " + count), Is.Not.Null);
             }
