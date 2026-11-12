@@ -168,6 +168,14 @@ namespace Shift.Game.Editor
             return index;
         }
 
+        public static bool IsBeatRestored(Chapter chapter, Beat beat,
+            int level, bool currentLevelWon)
+        {
+            if (chapter == null || beat == null || level < beat.level)
+                return false;
+            return beat.level != chapter.endLevel || currentLevelWon;
+        }
+
         // A finale is completed only if the final level is explicitly marked
         // won; merely opening Level 60/80 must never award chapter completion.
         public static float PreviewProgress(int level, bool currentLevelWon)
@@ -247,8 +255,8 @@ namespace Shift.Game.Editor
             {
                 var beat = chapter.beats[i];
                 // Merely opening the finale cannot visually restore the world.
-                bool reached = level >= beat.level &&
-                    (beat.level != chapter.endLevel || currentLevelWon);
+                bool reached = ChapterJourneyPrototype.IsBeatRestored(
+                    chapter, beat, level, currentLevelWon);
                 Color c;
                 var hex = reached ? chapter.paletteEnd : chapter.paletteStart;
                 if (!ColorUtility.TryParseHtmlString(hex, out c))
