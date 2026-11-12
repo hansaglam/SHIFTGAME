@@ -52,6 +52,29 @@ namespace Shift.Game
                     piece.Initialize(data, board.Width, board.Height, font, circle, rounded, feel, onTap, art); pieces[data.Id] = piece;
                     if (sculptedTopology && data.Type == PieceType.Wall) pieceRect.gameObject.SetActive(false);
                 }
+            // Bond curves are drawn after terrain and before movable pieces.
+            // The link follows actual animated anchors; it never handles taps.
+            int belowMovable = 0;
+            foreach (var piece in board.Pieces)
+                if (!piece.Movable) belowMovable++;
+            int insertionIndex = board.Width * board.Height + belowMovable;
+            foreach (var data in board.Pieces)
+            {
+                if (data.Type != PieceType.Normal || data.TetherId == 0)
+                    continue;
+                var partner = board.GetTetherPartner(data.Id);
+                if (partner == null || partner.Id < data.Id)
+                    continue;
+                var linkRect = PlaceholderVisuals.Rect(
+                    "Tether Bond " + data.TetherId, transform,
+                    Vector2.zero, Vector2.one);
+                var link = linkRect.gameObject.AddComponent<TetherLinkGraphic>();
+                link.Bind(pieces[data.Id], pieces[partner.Id],
+                    rect, board.Width, board.Height);
+                linkRect.SetSiblingIndex(Mathf.Min(insertionIndex,
+                    transform.childCount - 1));
+                insertionIndex++;
+            }
             // Non-interactive channel badges remain readable above occupied switches AND gates.
             foreach (var data in board.Pieces)
             {
@@ -194,6 +217,14 @@ namespace Shift.Game
                     audioManager.Reaction(AudioCue.SwitchActivate, i + 1);
                     haptics.Interaction();
                     yield return PlayResonanceSignal(action, board);
+                }
+                else if (action.Type == BoardActionType.TetherPull)
+                {
+                    // Bond tension is a real physical dependency, not a teleport.
+                    // The following Move actions animate the partner and source.
+                    piece.Feedback(feel.tapPunch);
+                    audioManager.Reaction(AudioCue.Push, i + 1);
+                    if (!feel.reducedMotion) haptics.Interaction();
                 }
                 else if (action.Type == BoardActionType.SwitchActivated)
                 { piece.Feedback(feel.tapPunch); audioManager.Reaction(AudioCue.SwitchActivate, i + 1); haptics.Interaction(); }
