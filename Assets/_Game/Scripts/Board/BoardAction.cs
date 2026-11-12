@@ -21,10 +21,11 @@ namespace Shift.Game
         public GridPosition Position { get; internal set; }
         public Direction Direction { get; internal set; }
         public int Channel { get; }
+        public int TetherId { get; }
         public bool GateOpen { get; internal set; }
         public bool Active { get; internal set; } = true;
         public bool Movable => Type == PieceType.Normal || Type == PieceType.PushBlock;
         internal BoardPiece(int id, PiecePlacement placement)
-        { Id = id; Type = placement.type; Color = placement.color; Position = placement.position; Direction = placement.direction; Channel = placement.channel; GateOpen = placement.initialOpen; }
+        { Id = id; Type = placement.type; Color = placement.color; Position = placement.position; Direction = placement.direction; Channel = placement.channel; TetherId = placement.tetherId; GateOpen = placement.initialOpen; }
     }
 }
