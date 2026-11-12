@@ -138,3 +138,37 @@ New `ChapterWorldBackdropTests` checks legacy isolation, no fake restoration fro
 
 Pairs in the **93/96/99** design cluster still share some reasoning patterns (roughly 75–80% label overlap), even though their geometry, gates and chain lengths differ. The motif report is a **warning**, not proof of duplication, and does not justify changing a level just to game a metric. Review these next for a distinct causal decision *before* expanding to 101+. Mora and holistic blind player tests remain deferred per development plan.
 
+
+
+## Third quality pass — Levels 93, 96, 99, 100 (13 November 2026)
+
+**Design status: draft candidate, not Unity-certified or player-tested.** This section supersedes earlier editorial claims about Levels 93 and 99.
+
+### Why the apparent Level 93/96/99 similarity is not the same design
+
+A coarse action-label LCS reports about **78%** overlap for Level 93/96 and Level 93/99. The labels omit what an opened gate actually blocks and whether a pulse causes a real remote move. We compared the BoardManager action order and the dependency of each gate before changing anything.
+
+- **93 — Hidden Crossing: delayed remote release.** Moved the channel-2 gate from `(1,5)` to `(3,4)`, directly ahead of the yellow target after it triggers the first Resonance. Yellow is **held on the sending node**. On the following red decision, the second switch opens that gate *before* a return pulse moves yellow through it. Previously this pulse could fire without a remote move. New optimal route: 9 taps, alternate: 10; **both pulses now productive**, 2 gates opened, and 6 multi-piece taps in independent replay. This level is about *holding and releasing a remote receiver*, not a corridor.
+- **96 — Back Through: redirected push chain.** Retained the already distinct two-gate, push/redirect setup. The recorded ten-tap shortest includes multiple helper/target pushes and a different initial preparation than 93. We deliberately **did not change a functional Level 96 merely to beat a similarity score**.
+- **99 — Convergence Test: true second-gate dependency.** Relocated channel-2 gate from unused `(6,0)` to `(3,3)`, which the red target **must cross after** the channel-2 switch opens on tap 2. The red target crosses on tap 4; previously opening this gate produced a visual event but did not constrain the solution. Shortest remains 10 taps; alternate 11. In a BoardManager-style counterfactual with the channel-2 switch moved out of reach, no winning route was found under the 11-tap search horizon. It still uses one productive Resonance pair, two distinct gate channels and a long coupled push route. Updated both TR and EN hints to describe **two gates**, not two nonexistent signal channels.
+
+Original Unity asset paths and GUIDs are unchanged; only their serialized placement/hint data changed. `Validation/chapter5_level81_100_authoring_manifest_v01.txt` stays byte-for-byte aligned with the amended assets; Chapter5 editor alternate-route registry remains aligned.
+
+### Level 100 — protect the meaningful final chain, improve its payoff
+
+We specifically examined extending the last three taps. Adding extra blue targets or shifting starts/exits **did not yield a better, verified late multi-piece chain** in the screened candidates; most introduced extra single-piece preparation. We rejected those changes rather than inflate complexity.
+
+The **existing gameplay board is retained intentionally**: 9-tap shortest, 10-tap alternate, 3 target colors, 5 genuine delivered targets, 2 productive Resonance channels on taps 1 and 4, 2 gates opened on taps 1 and 5, and a late blue-to-blue shared-exit push on tap 8 before the last blue delivery on tap 9. This already provides a causal multi-stage finale.
+
+Added a distinctly **non-blocking, first-win-only Level 100 world convergence** to `ChapterJourneyMilestoneNotice`: two understated palette-colored lines draw toward the center for 0.42 seconds, alongside the bilingual Chapter 5 finale description. The cue is shown only if the save frontier records a new Level 100 win; replay, unlocking, Daily and previously completed 100 do not retrigger it. Reduced Motion renders its complete static state without animation. No new taps, rewards, sound tracks or Chapter 1–2 changes.
+
+The 100-level finale regression now asserts exact remote pulse steps, gate openings, *five delivery events in order*, the blue-to-blue push and late multi-piece payoff. New test coverage also checks Level 93 action ordering (gate → pulse → remote yellow through gate), Level 99 red crossing the formerly decorative second gate, and Level100's one-shot presentation gating.
+
+### Verification and remaining gates
+
+- Independently replayed and breadth-first searched the amended **Level 93 (9+10)** and **Level 99 (10+11)**, plus the retained Level 100 (9+10). Source-level checks reconfirmed placement / known route / alternate registry / +2 move budget alignment.
+- New/edited C# sources passed basic balanced-delimiter and Editor-versus-runtime reference inspection; **this is not a C# or Unity compile**.
+- Unity 6.3 LTS compilation, `CampaignCertification.Prove`, EditMode suites, phone presentation, blind player tests and device QA have not been run in this connected GitHub workflow. These remain **explicit release blockers**.
+- First 80 level assets, original production scene, published 40-level levels, `main`, saved-game schema, Mora and ads remain protected.
+- Current rubric for the upcoming Unity review: a pulse must move a real receiver, a gate must alter the winning decision graph, finales should have multi-stage causal payoffs, and no metric-only changes should sacrifice readability.
+
