@@ -75,6 +75,27 @@ namespace Shift.Game.Tests
             }
         }
 
+        [TestCase(60)]
+        [TestCase(80)]
+        [TestCase(100)]
+        public void ExpandedOnboardingCopyUsesActualCampaignSize(int count)
+        {
+            foreach (var language in new[] {
+                GameLanguage.English, GameLanguage.Turkish })
+            {
+                var levels = LocalizationCatalog.Format(
+                    "onboarding.extended_levels", language, count);
+                var campaign = LocalizationCatalog.Format(
+                    "onboarding.extended_campaign", language, count);
+                Assert.That(levels, Does.Contain(count.ToString()));
+                Assert.That(campaign, Does.Contain(count.ToString()));
+                Assert.That(campaign, Does.Not.Contain("40"));
+            }
+            Assert.That(LocalizationCatalog.Format(
+                "onboarding.welcome.levels", GameLanguage.English),
+                Does.Contain("40"));
+        }
+
         [Test]
         public void LevelHundredHasIndependentEnglishAndTurkishHints()
         {
