@@ -295,6 +295,33 @@ namespace Shift.Game.Tests
         }
 
         [Test]
+        public void TetherLinkageMustChangeFutureProofFingerprintWithoutTouchingOldHashes()
+        {
+            var linked = Chapter6TetherPrototypes.Get(101);
+            Assert.That(linked, Is.Not.Null);
+            var unlinked = ScriptableObject.CreateInstance<LevelData>();
+            try
+            {
+                var placements = linked.Placements.Select(p =>
+                {
+                    p.tetherId = 0;
+                    return p;
+                }).ToArray();
+                unlinked.Configure(linked.Width, linked.Height,
+                    linked.MoveLimit, linked.TargetColor, placements);
+                unlinked.ConfigureTargetColors(linked.ResolvedTargetColors);
+                Assert.That(VerifiedOptimality.Fingerprint(linked),
+                    Is.Not.EqualTo(VerifiedOptimality.Fingerprint(unlinked)),
+                    "Removing a bond must invalidate future solution proofs.");
+                Assert.That(linked.VerifiedOptimalMoveCount, Is.Null);
+            }
+            finally
+            {
+                Object.DestroyImmediate(unlinked);
+            }
+        }
+
+        [Test]
         public void AllExistingHundredLevelAssetsRemainWithoutTetherLinks()
         {
             var old = ChapterJourneyScenePreview.Load100();
