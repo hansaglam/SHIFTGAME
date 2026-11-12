@@ -31,10 +31,11 @@ namespace Shift.Game.Tests
             }
         }
 
-        // Exact source-level behavior regressions for the four quality revisions.
+        // Gameplay-source regressions for approved design candidates.
         // These are game-engine tests, not heuristic scores and not release certificates.
         [TestCase(68, 4, 3, 1, 2)]
-        [TestCase(75, 1, 1, 2, 1)]
+        [TestCase(73, 2, 2, 1, 2)]
+        [TestCase(75, 2, 1, 2, 1)]
         [TestCase(78, 4, 3, 1, 1)]
         [TestCase(80, 3, 2, 2, 2)]
         public void RevisedLevelReactionsMustNotRegress(int number, int minMultiPieceTaps,
