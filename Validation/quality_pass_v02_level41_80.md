@@ -5,6 +5,8 @@
 **Based on:** `feature/chapter3-4-quality-pass-v01`  
 **Status:** **ISOLATED CANDIDATE — do not merge to production or enable Perfect Shift.**
 
+**Latest design outcome:** Level 59, Level 60 and now **Level 77** have revised candidates. 69/72/78 remain open.
+
 ## Goal and protection
 
 Improve memorability and originality, not the number of levels. Level 81–100 is explicitly out of scope. Levels 1–40, MORA, live campaign wiring, PlayerPrefs/save data, advertisement integrations, and existing certified Perfect Shift registry were not changed.
@@ -14,7 +16,7 @@ Improve memorability and originality, not the number of levels. Level 81–100 i
 - All 40 YAML LevelData candidates (41–80) were inspected for board dimensions, mechanics and recorded tap routes.
 - **55 → 60:** The pre-v02 Level 60 reused **the first eight taps of Level 55 verbatim**. That is unacceptable for a chapter finale, even though Level 60 had extra moves and pieces.
 - **58 / 59 (pre-continuation baseline):** The *longer* winning routes previously shared the first **six** taps. The later Level 59 revision below changes this; Level 58 itself is not modified.
-- **69 / 72 / 77 / 78:** Reused vertical-corridor/order-of-operations route family. Level 78 had already been revised in v01, but the cluster still requires in-game observation and likely replacement of at least one idea.
+- **69 / 72 / 77 / 78 (previous baseline):** Reused vertical-corridor/order-of-operations route family. The Level 77 rework described below breaks its straight-line motif; **69/72/78 still require design review**.
 - **80:** The prior v01 revision already added a second gate dependency and separated resonance events. Its exact shortest solution (8), alternative longer win (9), two resonance channels, two gate channels and three colors are preserved; only design/reaction regression assertions have been added in v02.
 
 ## Level 60 — actual redesign candidate
@@ -76,7 +78,7 @@ The owner chose to defer **real-player testing until the full content-design pas
 In particular **Level 77** has a five-tap vertical progression that risks feeling like repeated manual advancement rather than a new puzzle. Experimental modifications that only changed route coordinates without changing that underlying idea were **rejected**, not saved.
 
 ### Next design work (before player tests)
-1. Redesign the **69 / 72 / 77 / 78** family by changing the necessary **insight**, not only the board orientation or length. Prioritize 77's long same-lane sequence.
+1. Redesign the remaining **69 / 72 / 78** corridor family by changing the necessary **insight**, not only the board orientation or length. Level 77 has a distinct new candidate below.
 2. Review 41–60 difficulty and insight progression; promote 60 only if its two-gate chain proves satisfying by design and solver consistency.
 3. Lock 80's unique double-signal culmination (already revised in v01) after checking that earlier levels do not preempt the same revelation.
 4. Complete Chapter 3/4 visual purpose, chapter milestones and concise feedback without adding a distracting metagame.
@@ -93,3 +95,44 @@ Replaying the recorded routes in a separate BoardManager-style simulator exposed
 The editor-only `Post40QualityAudit.CountResonanceReceivers` now reconstructs normal-piece positions event-by-event in the authoritative BoardManager action log, so the generated Unity quality matrix distinguishes pulse events with an occupied remote partner from **empty** ones. Focused regression assertions document this gap at 77 and guard the productive channels at 80.
 
 **Level 77 redesign target:** a non-obvious setup that makes the remote receiver essential, changes the gate decision at a meaningful moment, avoids a four-plus-tap straight corridor and ends with an understandable chain payoff. Pure coordinate shuffles and mechanically decorative signals are rejected even when they produce a valid shortest route. No new mechanism is needed.
+
+
+## Level 77 — The Return Signal (new design candidate)
+
+**Previous issue:** Level 77's saved route had **8 taps**, only **1 multi-piece tap**, a decorative pulse with **no remote receiver**, and a **five-tap straight-column run**. The original blue lane mainly advanced through repetitive manual taps.
+
+**New intended insight:** The red target's first action pushes the yellow non-target helper and enters the resonance source; this actually moves a waiting blue target remotely. The yellow helper then pushes blue onto the switch, opening the closed gate **on red's route**. Blue's movement allows red to finish, while the yellow helper subsequently pushes blue toward its own exit. The dependency is reciprocal across colors, not an arbitrary longer corridor.
+
+| Candidate property | Previous draft | New draft |
+|---|---:|---:|
+| Board | 6×8 | 6×8 |
+| Shortest recorded win (independent BFS) | 8 | 8 |
+| Distinct longer win | 9 | 9 |
+| Move budget | 10 | 9 |
+| Multi-piece taps on recorded shortest route | 1 | **5** |
+| Resonance pulses reaching and moving a waiting receiver | 0 | **1** |
+| Longest same-row/same-column run of tap coordinates | 5 | **3** |
+| Total BoardManager-style action events on shortest route | 20 | **29** |
+
+**Recorded optimal:** `(4,1) (2,1) (1,2) (3,3) (3,5) (1,3) (1,4) (1,5)`
+
+**Recorded 9-tap alternate:** `(3,1) (2,1) (4,1) (1,2) (3,3) (3,5) (1,3) (1,4) (1,5)`
+
+These are editor-only verification data, not player-facing solution spoilers. They were replayed and independently searched with a Python reproduction of current `BoardManager` recursive pushing, turns, switches/gates, Resonance 2.0 and win-state rules. In the counterfactual model **with only remote Resonance movement disabled**, the shortest completion becomes **9** committed taps rather than 8. Thus the remote movement is genuinely useful to the optimal route; it is **not a mandatory prerequisite for every possible win**. This distinction matters for honest mechanic claims.
+
+The chosen 8-tap route delivers red **before** the helper re-enters the switch and closes red's gate, avoiding visually confusing gate closure beneath the red target on the recorded solution. Its 9-tap alternative follows the same constraint.
+
+### Source and protections
+
+- Existing Unity asset filename/GUID preserved; updated serialized `Level77_FalseLead.asset` retains references, but its display title is `77 - The Return Signal`.
+- Updated editor-only 77 alternate in `Chapter4ResonanceExtendedDrafts.cs`.
+- `ChapterFinaleQualityTests` now enforces 8/9 solution structure, remote blue movement after the pulse, correct gate timing, five multi-piece reactions, no 4+ tap corridor and exact shortest-path proof in Unity.
+- `Post40QualityAudit` now distinguishes **empty pulses**, **occupied but ineffective pulses**, and **productive remote movements**. Mere visual signals are never sufficient.
+- **Not release-certified:** Unity compilation / authoritative solver, on-device UX, localization and human playtests still have not run. Keep the design branch isolated and Perfect rewards off.
+
+### Remaining design priorities
+
+1. Keep 77's reciprocal color-and-gate relationship unique; do not duplicate it in 78 or 80.
+2. Rework **72** and **69** first where their corridors still repeat similar decisions; re-check 78 against the resulting family.
+3. Preserve Level 80 as the chapter's distinct dual-signal, dual-gate climax rather than making 77 another finale.
+4. Final real-player experience tests occur after the content-design phase, as requested; automated certification gates remain mandatory for release.
