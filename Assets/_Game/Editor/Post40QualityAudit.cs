@@ -13,6 +13,14 @@ namespace Shift.Game.Editor
     public static class Post40QualityAudit
     {
         [Serializable]
+        public sealed class RhythmProfile
+        {
+            public int longestSinglePieceRun, finalThirdMultiPieceTaps;
+            public int firstPulseStep, lastPulseStep, separatePulseSteps;
+            public int finalTapEvents, finalTapDeliveries;
+        }
+
+        [Serializable]
         public sealed class Row
         {
             public int level, gridWidth, gridHeight, moveLimit, shortestMoves, exploredStates;
@@ -21,6 +29,7 @@ namespace Shift.Game.Editor
             public int distinctPulseChannels, totalActions, longestReaction;
             public int pulseEvents, occupiedRemotePulseEvents, emptyRemotePulseEvents;
             public int productiveRemotePulseEvents, ineffectiveOccupiedPulseEvents;
+            public RhythmProfile rhythm = new RhythmProfile();
             public bool solvedAndProven, needsDesignReview;
             public string title, error, fingerprint;
         }
@@ -147,6 +156,58 @@ namespace Shift.Game.Editor
             return productive;
         }
 
+        // Tracks player-facing solution rhythm, not difficulty or enjoyment.
+        // This deliberately records *where* reactions occur, rather than
+        // treating total animation/action count as a quality score.
+        public static RhythmProfile AnalyzeRhythm(LevelData level,
+            IReadOnlyList<GridPosition> route)
+        {
+            var result = new RhythmProfile();
+            var board = new BoardManager();
+            board.Load(level);
+            int simpleRun = 0, stepNumber = 0;
+            int tailStart = route.Count - Math.Max(1, (route.Count + 2) / 3) + 1;
+            foreach (var tap in route)
+            {
+                stepNumber++;
+                if (!board.RequestMove(tap) || board.LastReactionWasCancelled ||
+                    board.Actions.Count == 0)
+                    throw new InvalidOperationException("Invalid reaction rhythm route: " + tap);
+                var moved = new HashSet<int>();
+                bool pulsed = false;
+                int delivered = 0;
+                foreach (var action in board.Actions)
+                {
+                    if (action.Type == BoardActionType.Move)
+                        moved.Add(action.PieceId);
+                    if (action.Type == BoardActionType.ResonancePulse)
+                        pulsed = true;
+                    if (action.Type == BoardActionType.Deliver)
+                        delivered++;
+                }
+                simpleRun = moved.Count == 1 ? simpleRun + 1 : 0;
+                result.longestSinglePieceRun =
+                    Math.Max(result.longestSinglePieceRun, simpleRun);
+                if (moved.Count >= 2 && stepNumber >= tailStart)
+                    result.finalThirdMultiPieceTaps++;
+                if (pulsed)
+                {
+                    result.separatePulseSteps++;
+                    if (result.firstPulseStep == 0) result.firstPulseStep = stepNumber;
+                    result.lastPulseStep = stepNumber;
+                }
+                if (stepNumber == route.Count)
+                {
+                    result.finalTapEvents = board.Actions.Count;
+                    result.finalTapDeliveries = delivered;
+                }
+                board.CompleteResolution();
+            }
+            if (board.State != GameState.Won)
+                throw new InvalidOperationException("Reaction rhythm route must end in victory.");
+            return result;
+        }
+
         [MenuItem("SHIFT/Quality/Export Level 41-80 Decision Matrix")]
         public static void Export()
         {
@@ -206,6 +267,7 @@ namespace Shift.Game.Editor
                     if (board.State != GameState.Won)
                         throw new InvalidOperationException("Recorded route is not a win.");
                     row.distinctPulseChannels = channels.Count;
+                    row.rhythm = AnalyzeRhythm(level, level.KnownSolution);
                     if (number >= 61)
                     {
                         CountResonanceReceivers(level, level.KnownSolution,
@@ -228,7 +290,9 @@ namespace Shift.Game.Editor
                     row.needsDesignReview = number >= 66 &&
                         (row.simpleMoveTaps > row.shortestMoves / 2 ||
                          row.multiPieceTaps < 2 && number >= 76 ||
-                         row.pulseEvents > 0 && row.productiveRemotePulseEvents == 0);
+                         row.pulseEvents > 0 && row.productiveRemotePulseEvents == 0 ||
+                         row.rhythm.longestSinglePieceRun >= 4 ||
+                         number == 80 && row.rhythm.finalThirdMultiPieceTaps == 0);
                     if (number >= 66 && row.pulseEvents > 0 &&
                         row.productiveRemotePulseEvents == 0)
                     {
