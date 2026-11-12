@@ -33,13 +33,13 @@ MonoBehaviour:
   - type: 0
     color: 2
     direction: 4
-    position: {x: 2, y: 4}
+    position: {x: 1, y: 4}
     channel: 0
     initialOpen: 0
   - type: 8
     color: 0
     direction: 0
-    position: {x: 2, y: 0}
+    position: {x: 1, y: 1}
     channel: 1
     initialOpen: 0
   - type: 8
@@ -91,13 +91,13 @@ MonoBehaviour:
     channel: 0
     initialOpen: 0
   displayTitle: 79 - The Last Key
-  hint: "Her hareketten sonra başka hangi taşın konumu değişiyor?"
+  hint: "Bir sinyal, sonraki itişe doğru taşı hazırlayabilir."
   knownSolution:
-  - {x: 1, y: 1}
+  - {x: 1, y: 4}
+  - {x: 2, y: 4}
   - {x: 0, y: 2}
   - {x: 1, y: 2}
   - {x: 2, y: 2}
-  - {x: 2, y: 4}
   - {x: 4, y: 4}
   - {x: 5, y: 4}
   - {x: 6, y: 4}
