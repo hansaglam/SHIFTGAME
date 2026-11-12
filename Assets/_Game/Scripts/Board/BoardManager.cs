@@ -240,16 +240,19 @@ namespace Shift.Game
                 // effects, without cancelling earlier successful auto-moves.
                 Record(BoardActionType.TetherPull, piece,
                     piece.Position, partner.Position);
-                bool advanced = MoveInto(piece, direction, depth, next, tile);
+                bool advanced = MoveInto(piece, direction, depth, next, tile,
+                    forcedTetherFollow);
                 if (!advanced && !overflow)
                     RestoreLocal(before, priorSignals, beforeActions);
                 return advanced;
             }
-            return MoveInto(piece, direction, depth, next, tile);
+            return MoveInto(piece, direction, depth, next, tile,
+                forcedTetherFollow);
         }
 
         private bool MoveInto(BoardPiece piece, Direction direction,
-            int depth, GridPosition next, BoardPiece tile)
+            int depth, GridPosition next, BoardPiece tile,
+            bool forcedTetherFollow)
         {
             var other = GetOccupant(next);
             if (other != null)
@@ -295,7 +298,8 @@ namespace Shift.Game
             {
                 piece.Direction = tile.Type == PieceType.Direction ? tile.Direction : DirectionUtility.RotateClockwise(direction);
                 Record(BoardActionType.Turn, piece, next, next);
-                Move(piece, piece.Direction, depth + 1);
+                Move(piece, piece.Direction, depth + 1,
+                    forcedTetherFollow);
             }
             else if (tile.Type == PieceType.Resonance)
             {
@@ -324,7 +328,8 @@ namespace Shift.Game
                 // the surface is always traversable. A blocked next cell leaves
                 // the source on the pad without undoing the successful signal.
                 if (!overflow && piece.Active)
-                    Move(piece, direction, depth + 1);
+                    Move(piece, direction, depth + 1,
+                        forcedTetherFollow);
             }
             return true;
         }
