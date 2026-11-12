@@ -217,7 +217,12 @@ namespace Shift.Game.Editor
                 "DESIGN PREVIEW ONLY: no runtime HUD, save, chapter unlock, " +
                 "game assets or Perfect Shift state is modified.",
                 MessageType.Info);
-            level = EditorGUILayout.IntSlider("Preview level", level, 41, 80);
+            int nextLevel = EditorGUILayout.IntSlider("Preview level", level, 41, 80);
+            if (nextLevel != level)
+            {
+                level = nextLevel;
+                currentLevelWon = false;
+            }
             currentLevelWon = EditorGUILayout.Toggle("Current level won", currentLevelWon);
             turkish = EditorGUILayout.Toggle("Turkish copy", turkish);
             reducedMotion = EditorGUILayout.Toggle("Reduced motion", reducedMotion);
@@ -241,7 +246,9 @@ namespace Shift.Game.Editor
             for (int i = 0; i < chapter.beats.Length; i++)
             {
                 var beat = chapter.beats[i];
-                bool reached = level >= beat.level;
+                // Merely opening the finale cannot visually restore the world.
+                bool reached = level >= beat.level &&
+                    (beat.level != chapter.endLevel || currentLevelWon);
                 Color c;
                 var hex = reached ? chapter.paletteEnd : chapter.paletteStart;
                 if (!ColorUtility.TryParseHtmlString(hex, out c))
