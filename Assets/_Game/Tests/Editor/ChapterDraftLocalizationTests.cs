@@ -58,6 +58,24 @@ namespace Shift.Game.Tests
         }
 
         [Test]
+        public void FutureChapterFinaleMessagesMustHaveBilingualChapterNumbers()
+        {
+            foreach (var language in new[] { GameLanguage.English, GameLanguage.Turkish })
+            {
+                var next = LocalizationCatalog.Format(
+                    "results.chapter_next", language, 3, 4);
+                Assert.That(next, Does.Contain("3"));
+                Assert.That(next, Does.Contain("4"));
+                Assert.That(next, Does.Contain("\n"));
+                var final = LocalizationCatalog.Format(
+                    "results.chapter_final", language, 5, 6);
+                Assert.That(final, Does.Contain("5"));
+                Assert.That(final, Does.Not.Contain("6"));
+                Assert.That(final, Does.Contain("\n"));
+            }
+        }
+
+        [Test]
         public void LevelHundredHasIndependentEnglishAndTurkishHints()
         {
             var level = Chapter5Drafts.Get(100);
