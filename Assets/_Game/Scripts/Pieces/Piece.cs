@@ -46,6 +46,21 @@ namespace Shift.Game
                 var glowColor = data.Color == PieceColor.None ? (Color)new Color32(51,190,142,255) : PieceAppearance.PieceTint(data.Color);
                 exitGlow.color = new Color(glowColor.r,glowColor.g,glowColor.b,.16f);
             }
+            if (data.Type == PieceType.Normal && data.TetherId > 0)
+            {
+                var ring = PlaceholderVisuals.Rect("Bond Endpoint", transform,
+                    new Vector2(.70f, .68f), new Vector2(.96f, .94f));
+                var mark = ring.gameObject.AddComponent<Image>();
+                mark.sprite = circle;
+                mark.color = new Color32(252, 204, 106, 255);
+                mark.raycastTarget = false;
+                var label = PlaceholderVisuals.Label("Bond Number", ring,
+                    font, data.TetherId.ToString(), 20,
+                    new Color32(32, 47, 65, 255),
+                    new Vector2(.12f, .03f), new Vector2(.88f, .97f));
+                label.alignment = TextAnchor.MiddleCenter;
+                label.raycastTarget = false;
+            }
             if (data.Type == PieceType.Normal)
             {
                 button = body.gameObject.AddComponent<Button>(); button.targetGraphic = image;
