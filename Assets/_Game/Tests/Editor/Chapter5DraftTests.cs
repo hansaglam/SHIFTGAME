@@ -455,19 +455,49 @@ namespace Shift.Game.Tests
                 l, l.KnownSolution), Is.GreaterThanOrEqualTo(2));
             var board = new BoardManager();
             board.Load(l);
-            int multipieceTaps = 0, opened = 0, delivered = 0;
+            int multipieceTaps = 0, opened = 0, delivered = 0, step = 0;
+            var pulseSteps = new List<int>();
+            var openedSteps = new List<int>();
+            var deliveredSteps = new List<int>();
+            var productiveChannels = Chapter5Drafts.ProductiveResonanceChannels(
+                l, l.KnownSolution);
+            bool lateBluePushedAndFollowed = false;
             foreach (var tap in l.KnownSolution)
             {
+                step++;
                 Assert.That(board.RequestMove(tap), Is.True);
                 Assert.That(board.LastReactionWasCancelled, Is.False);
                 var moved = new HashSet<int>();
+                bool bluePushed = false, blueFollowed = false;
                 foreach (var action in board.Actions)
                 {
                     if (action.Type == BoardActionType.Move)
+                    {
                         moved.Add(action.PieceId);
-                    if (action.Type == BoardActionType.GateOpened) opened++;
-                    if (action.Type == BoardActionType.Deliver) delivered++;
+                        if (step == 8 && action.PieceId == 14 &&
+                            action.From == new GridPosition(6, 3) &&
+                            action.To == new GridPosition(7, 3))
+                            bluePushed = true;
+                        if (step == 8 && action.PieceId == 1 &&
+                            action.From == new GridPosition(5, 3) &&
+                            action.To == new GridPosition(6, 3))
+                            blueFollowed = true;
+                    }
+                    if (action.Type == BoardActionType.ResonancePulse)
+                        pulseSteps.Add(step);
+                    if (action.Type == BoardActionType.GateOpened)
+                    {
+                        opened++;
+                        openedSteps.Add(step);
+                    }
+                    if (action.Type == BoardActionType.Deliver)
+                    {
+                        delivered++;
+                        deliveredSteps.Add(step);
+                    }
                 }
+                if (step == 8)
+                    lateBluePushedAndFollowed = bluePushed && blueFollowed;
                 if (moved.Count >= 2) multipieceTaps++;
                 board.CompleteResolution();
             }
@@ -475,6 +505,16 @@ namespace Shift.Game.Tests
             Assert.That(multipieceTaps, Is.GreaterThanOrEqualTo(4));
             Assert.That(opened, Is.GreaterThanOrEqualTo(2));
             Assert.That(delivered, Is.EqualTo(5));
+            Assert.That(productiveChannels.SetEquals(new[] { 1, 2 }), Is.True,
+                "Both remote signals must move a real target.");
+            Assert.That(pulseSteps, Is.EqualTo(new[] { 1, 4 }));
+            Assert.That(openedSteps, Is.EqualTo(new[] { 1, 5 }));
+            Assert.That(lateBluePushedAndFollowed, Is.True,
+                "The final act must preserve the shared-exit blue handoff.");
+            Assert.That(deliveredSteps, Is.EqualTo(new[] { 3, 5, 6, 8, 9 }));
+            Assert.That(Post40QualityAudit.AnalyzeRhythm(
+                l, l.KnownSolution).finalThirdMultiPieceTaps,
+                Is.GreaterThanOrEqualTo(1));
         }
     }
 }
