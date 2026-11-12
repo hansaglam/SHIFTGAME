@@ -120,14 +120,12 @@ namespace Shift.Game.Tests
         [Test]
         public void DuplicateRouteAuditMustSurfaceExistingPatterns()
         {
-            var longer58 = Chapter3AlternateSolutions.Get(58);
-            var longer59 = Chapter3AlternateSolutions.Get(59);
+            // The former 58/59 duplicate has been redesigned; it must stay absent.
             var alternateRisk = LevelRouteSimilarityAudit.Evaluate(58, 59, true,
-                longer58, longer59);
-            Assert.That(alternateRisk, Is.Not.Null,
-                "Near-identical alternate solutions must not escape review.");
-            Assert.That(alternateRisk.commonOpening, Is.GreaterThanOrEqualTo(6));
-            Assert.That(alternateRisk.priority, Is.EqualTo("HIGH"));
+                Chapter3AlternateSolutions.Get(58),
+                Chapter3AlternateSolutions.Get(59));
+            Assert.That(alternateRisk, Is.Null,
+                "The redesigned Level 59 must not reintroduce Level 58's longer route.");
 
             Assert.That(LevelRouteSimilarityAudit.LongestSameAxisRun(
                 Chapter3DraftAudit.Get(59).KnownSolution), Is.LessThan(4),
