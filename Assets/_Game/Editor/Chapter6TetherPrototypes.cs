@@ -308,8 +308,11 @@ namespace Shift.Game.Editor
                 throw new InvalidOperationException("Exit Play Mode first.");
             var save = new SaveService(ProgressPrefix);
             var previous = save.Load(104);
+            // This is a developer-only jump. Keep the test save's
+            // completed frontier coherent with the selected level index;
+            // none of these synthetic completions touch real players.
             save.Save(new ProgressData(103, level - 1,
-                Math.Max(99, previous.HighestCompleted)));
+                Math.Max(level - 2, previous.HighestCompleted)));
             EditorSceneManager.OpenScene(PreviewScene, OpenSceneMode.Single);
             Debug.Log("BAĞ preview starts on Level " + level +
                 " using ONLY the developer preview save.");
