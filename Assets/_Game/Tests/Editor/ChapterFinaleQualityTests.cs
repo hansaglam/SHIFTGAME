@@ -63,6 +63,61 @@ namespace Shift.Game.Tests
         }
 
         [Test]
+        public void Level59MustUseHelperAndAvoidRepeatingLevel58()
+        {
+            var previous = Chapter3DraftAudit.Get(58);
+            var level = Chapter3DraftAudit.Get(59);
+            Assert.That(previous, Is.Not.Null);
+            Assert.That(level, Is.Not.Null);
+            Assert.That(level.Width, Is.EqualTo(6));
+            Assert.That(level.Height, Is.EqualTo(4));
+            Assert.That(level.KnownSolutionLength, Is.EqualTo(10));
+            Assert.That(level.MoveLimit, Is.EqualTo(11));
+            Assert.That(LevelRouteSimilarityAudit.Evaluate(58, 59, false,
+                previous.KnownSolution, level.KnownSolution), Is.Null,
+                "Level 59 should not reuse the previous level's route pattern.");
+            Assert.That(LevelRouteSimilarityAudit.Evaluate(58, 59, true,
+                Chapter3AlternateSolutions.Get(58),
+                Chapter3AlternateSolutions.Get(59)), Is.Null,
+                "The longer-winning path must not copy Level 58 either.");
+
+            Assert.That(LevelValidation.VerifySolution(level, out string error, out _),
+                Is.True, error);
+            var proof = CampaignCertification.Prove(level, 59);
+            Assert.That(proof.complete, Is.True, proof.error);
+            Assert.That(proof.minimum, Is.EqualTo(10));
+            var board = new BoardManager();
+            board.Load(level);
+            var movedPieces = new HashSet<int>();
+            int multiPieceTaps = 0, openings = 0;
+            foreach (var tap in level.KnownSolution)
+            {
+                Assert.That(board.RequestMove(tap), Is.True);
+                Assert.That(board.LastReactionWasCancelled, Is.False);
+                var movedThisTap = new HashSet<int>();
+                foreach (var action in board.Actions)
+                {
+                    if (action.Type == BoardActionType.Move)
+                    {
+                        movedPieces.Add(action.PieceId);
+                        movedThisTap.Add(action.PieceId);
+                    }
+                    if (action.Type == BoardActionType.GateOpened) openings++;
+                }
+                if (movedThisTap.Count >= 2) multiPieceTaps++;
+                board.CompleteResolution();
+            }
+            Assert.That(board.State, Is.EqualTo(GameState.Won));
+            Assert.That(multiPieceTaps, Is.GreaterThanOrEqualTo(6),
+                "The helper-chain interplay must not become decorative.");
+            Assert.That(openings, Is.GreaterThanOrEqualTo(1));
+            // Blue piece is an active helper rather than an objective; original index 2.
+            Assert.That(movedPieces.Contains(2), Is.True,
+                "The blue helper must participate in the recorded route.");
+            Assert.That(level.VerifiedOptimalMoveCount, Is.Null);
+        }
+
+        [Test]
         public void DuplicateRouteAuditMustSurfaceExistingPatterns()
         {
             var longer58 = Chapter3AlternateSolutions.Get(58);
