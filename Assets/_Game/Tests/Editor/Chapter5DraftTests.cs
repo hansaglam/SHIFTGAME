@@ -69,6 +69,61 @@ namespace Shift.Game.Tests
         }
 
         [Test]
+        public void Level95MustHaveTwoUsefulSignalsAndAnOptionalManualGateRoute()
+        {
+            var level = Chapter5Drafts.Get(95);
+            Assert.That(level, Is.Not.Null);
+            Assert.That(level.KnownSolutionLength, Is.EqualTo(8));
+            Assert.That(Chapter5Drafts.AlternateWinningRoute(95).Length,
+                Is.EqualTo(9));
+            Assert.That(LevelValidation.VerifySolution(level,
+                out string error, out _), Is.True, error);
+            Assert.That(Chapter5Drafts.CheckAlternate(
+                level, 95, out error), Is.True, error);
+            var proof = CampaignCertification.Prove(level, 95);
+            Assert.That(proof.complete, Is.True, proof.error);
+            Assert.That(proof.minimum, Is.EqualTo(8));
+            Assert.That(Post40QualityAudit.CountProductiveResonanceMoves(
+                level, level.KnownSolution), Is.EqualTo(2));
+
+            var board = new BoardManager();
+            board.Load(level);
+            int step = 0, gates = 0;
+            var pulses = new List<int>();
+            var channels = new HashSet<int>();
+            foreach (var tap in level.KnownSolution)
+            {
+                step++;
+                Assert.That(board.RequestMove(tap), Is.True);
+                Assert.That(board.LastReactionWasCancelled, Is.False);
+                foreach (var action in board.Actions)
+                {
+                    if (action.Type == BoardActionType.GateOpened) gates++;
+                    if (action.Type == BoardActionType.ResonancePulse)
+                    {
+                        pulses.Add(step);
+                        channels.Add(board.Pieces[action.PieceId].Channel);
+                    }
+                }
+                board.CompleteResolution();
+            }
+            Assert.That(board.State, Is.EqualTo(GameState.Won));
+            Assert.That(pulses, Is.EqualTo(new[] { 1, 5 }));
+            Assert.That(channels.SetEquals(new[] { 1, 2 }), Is.True);
+            Assert.That(gates, Is.GreaterThanOrEqualTo(2));
+            Assert.That(Post40QualityAudit.AnalyzeRhythm(
+                level, level.KnownSolution).longestSinglePieceRun,
+                Is.LessThanOrEqualTo(3));
+
+            // The longer route should deliberately press the first switch
+            // manually BEFORE red could activate it remotely.
+            var alternative = Chapter5Drafts.AlternateWinningRoute(95);
+            Assert.That(alternative[0], Is.EqualTo(new GridPosition(4, 3)));
+            Assert.That(level.KnownSolution[0],
+                Is.EqualTo(new GridPosition(6, 0)));
+        }
+
+        [Test]
         public void Level97MustUseBothRemoteSignalsAndTheYellowConvoy()
         {
             var level = Chapter5Drafts.Get(97);
