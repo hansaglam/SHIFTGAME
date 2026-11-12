@@ -223,6 +223,10 @@ namespace Shift.Game
                 var before = CaptureLocal();
                 var priorSignals = (bool[])signaled.Clone();
                 int beforeActions = actions.Count;
+                // Present tension BEFORE the partner visibly moves. Any
+                // unsuccessful local transaction removes this cue as well.
+                Record(BoardActionType.TetherPull, piece,
+                    piece.Position, partner.Position);
                 moving[piece.Id] = true;
                 var directionToSource = Toward(partner.Position, next);
                 bool followed = Move(partner, directionToSource,
@@ -238,8 +242,6 @@ namespace Shift.Game
                 // Include the bond action in the normal presentation sequence.
                 // On failure, undo the entire local pull and its gate/signal
                 // effects, without cancelling earlier successful auto-moves.
-                Record(BoardActionType.TetherPull, piece,
-                    piece.Position, partner.Position);
                 bool advanced = MoveInto(piece, direction, depth, next, tile,
                     forcedTetherFollow);
                 if (!advanced && !overflow)
