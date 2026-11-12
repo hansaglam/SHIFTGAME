@@ -14,26 +14,26 @@ MonoBehaviour:
   m_EditorClassIdentifier:
   width: 6
   height: 8
-  moveLimit: 10
+  moveLimit: 9
   targetColor: 1
   targetColors: 0100000002000000
   placements:
   - type: 0
     color: 3
-    direction: 1
-    position: {x: 3, y: 0}
-    channel: 0
-    initialOpen: 0
-  - type: 0
-    color: 1
     direction: 3
     position: {x: 3, y: 1}
     channel: 0
     initialOpen: 0
   - type: 0
+    color: 1
+    direction: 3
+    position: {x: 4, y: 1}
+    channel: 0
+    initialOpen: 0
+  - type: 0
     color: 2
-    direction: 1
-    position: {x: 1, y: 1}
+    direction: 3
+    position: {x: 2, y: 3}
     channel: 0
     initialOpen: 0
   - type: 8
@@ -51,7 +51,7 @@ MonoBehaviour:
   - type: 2
     color: 0
     direction: 0
-    position: {x: 2, y: 1}
+    position: {x: 2, y: 0}
     channel: 0
     initialOpen: 0
   - type: 6
@@ -63,7 +63,7 @@ MonoBehaviour:
   - type: 7
     color: 0
     direction: 0
-    position: {x: 1, y: 5}
+    position: {x: 3, y: 5}
     channel: 1
     initialOpen: 0
   - type: 5
@@ -75,7 +75,7 @@ MonoBehaviour:
   - type: 5
     color: 2
     direction: 0
-    position: {x: 1, y: 6}
+    position: {x: 1, y: 7}
     channel: 0
     initialOpen: 0
   - type: 3
@@ -92,18 +92,18 @@ MonoBehaviour:
     initialOpen: 0
   - type: 3
     color: 0
-    direction: 4
+    direction: 1
     position: {x: 1, y: 1}
     channel: 0
     initialOpen: 0
-  displayTitle: 77 - False Lead
-  hint: "Çıkışa yakın olmak iyi bir başlangıç demek değildir."
+  displayTitle: 77 - The Return Signal
+  hint: "Bir taşı uyandırmak, başka bir taşın yolunu açabilir."
   knownSolution:
-  - {x: 3, y: 0}
+  - {x: 4, y: 1}
+  - {x: 2, y: 1}
+  - {x: 1, y: 2}
   - {x: 3, y: 3}
   - {x: 3, y: 5}
-  - {x: 1, y: 1}
-  - {x: 1, y: 2}
   - {x: 1, y: 3}
   - {x: 1, y: 4}
   - {x: 1, y: 5}
