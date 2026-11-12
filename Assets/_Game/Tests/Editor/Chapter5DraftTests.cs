@@ -69,6 +69,59 @@ namespace Shift.Game.Tests
         }
 
         [Test]
+        public void Level92MustOpenTwoDifferentGateChannelsFromDistinctDecisions()
+        {
+            var level = Chapter5Drafts.Get(92);
+            Assert.That(level, Is.Not.Null);
+            Assert.That(level.KnownSolutionLength, Is.EqualTo(8));
+            Assert.That(Chapter5Drafts.AlternateWinningRoute(92).Length,
+                Is.EqualTo(9));
+            Assert.That(LevelValidation.VerifySolution(level,
+                out string error, out _), Is.True, error);
+            var proof = CampaignCertification.Prove(level, 92);
+            Assert.That(proof.complete, Is.True, proof.error);
+            Assert.That(proof.minimum, Is.EqualTo(8));
+            Assert.That(Chapter5Drafts.CheckAlternate(level, 92,
+                out error), Is.True, error);
+            Assert.That(Post40QualityAudit.CountProductiveResonanceMoves(
+                level, level.KnownSolution), Is.EqualTo(2));
+
+            var board = new BoardManager();
+            board.Load(level);
+            int step = 0;
+            var openedChannels = new HashSet<int>();
+            var openingSteps = new List<int>();
+            var pulseSteps = new List<int>();
+            foreach (var tap in level.KnownSolution)
+            {
+                step++;
+                Assert.That(board.RequestMove(tap), Is.True);
+                Assert.That(board.LastReactionWasCancelled, Is.False);
+                foreach (var action in board.Actions)
+                {
+                    if (action.Type == BoardActionType.ResonancePulse)
+                        pulseSteps.Add(step);
+                    if (action.Type == BoardActionType.GateOpened)
+                    {
+                        openingSteps.Add(step);
+                        openedChannels.Add(board.Pieces[action.PieceId].Channel);
+                    }
+                }
+                board.CompleteResolution();
+            }
+            Assert.That(board.State, Is.EqualTo(GameState.Won));
+            Assert.That(openedChannels.SetEquals(new[] { 1, 2 }), Is.True);
+            Assert.That(pulseSteps, Is.EqualTo(new[] { 1, 3 }));
+            Assert.That(openingSteps, Is.EqualTo(new[] { 3, 4 }),
+                "Remote yellow should open the first gate before the yellow " +
+                "helper opens the second.");
+            var overlaps = Chapter5Drafts.ScanMotifSimilarities(.75f);
+            Assert.That(overlaps.candidatePairs.Exists(pair =>
+                pair.first == 85 && pair.second == 92), Is.False,
+                "Prevent a return to the Level85 decision motif.");
+        }
+
+        [Test]
         public void Level95MustHaveTwoUsefulSignalsAndAnOptionalManualGateRoute()
         {
             var level = Chapter5Drafts.Get(95);
