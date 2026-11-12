@@ -1,6 +1,6 @@
 namespace Shift.Game
 {
-    public enum BoardActionType { Move, Turn, Deliver, SwitchActivated, GateOpened, GateClosed, ResonancePulse }
+    public enum BoardActionType { Move, Turn, Deliver, SwitchActivated, GateOpened, GateClosed, ResonancePulse, TetherPull }
 
     public readonly struct BoardAction
     {
