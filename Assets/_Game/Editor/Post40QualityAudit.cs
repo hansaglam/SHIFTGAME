@@ -20,6 +20,7 @@ namespace Shift.Game.Editor
             public int multiPieceTaps, gateOpenings, gateClosings, simpleMoveTaps;
             public int distinctPulseChannels, totalActions, longestReaction;
             public int pulseEvents, occupiedRemotePulseEvents, emptyRemotePulseEvents;
+            public int productiveRemotePulseEvents, ineffectiveOccupiedPulseEvents;
             public bool solvedAndProven, needsDesignReview;
             public string title, error, fingerprint;
         }
@@ -82,6 +83,68 @@ namespace Shift.Game.Editor
             }
             if (board.State != GameState.Won)
                 throw new InvalidOperationException("Resonance audit route is not winning.");
+        }
+
+        // Tracks an actual remote piece move, not merely a signal landing on
+        // an occupied node. The receiver must move in the same atomic reaction,
+        // before the original triggering piece resumes.
+        public static int CountProductiveResonanceMoves(LevelData level,
+            IReadOnlyList<GridPosition> route)
+        {
+            int productive = 0;
+            var board = new BoardManager();
+            board.Load(level);
+            foreach (var tap in route)
+            {
+                var positions = new Dictionary<int, GridPosition>();
+                foreach (var piece in board.Pieces)
+                    if (piece.Type == PieceType.Normal && piece.Active)
+                        positions[piece.Id] = piece.Position;
+                if (!board.RequestMove(tap) || board.LastReactionWasCancelled ||
+                    board.Actions.Count == 0)
+                    throw new InvalidOperationException("Invalid route: " + tap);
+
+                int source = -1;
+                for (int i = 0; i < board.Actions.Count; i++)
+                {
+                    var action = board.Actions[i];
+                    if (action.Type == BoardActionType.Move)
+                    {
+                        if (board.Pieces[action.PieceId].Type == PieceType.Normal)
+                            positions[action.PieceId] = action.To;
+                        source = action.PieceId;
+                    }
+                    else if (action.Type == BoardActionType.Deliver)
+                        positions.Remove(action.PieceId);
+                    else if (action.Type == BoardActionType.ResonancePulse)
+                    {
+                        int remoteId = -1;
+                        foreach (var pair in positions)
+                            if (pair.Value == action.To && pair.Key != source)
+                            {
+                                remoteId = pair.Key;
+                                break;
+                            }
+                        if (remoteId < 0) continue;
+                        for (int j = i + 1; j < board.Actions.Count; j++)
+                        {
+                            var subsequent = board.Actions[j];
+                            if (subsequent.Type != BoardActionType.Move) continue;
+                            if (subsequent.PieceId == remoteId)
+                            {
+                                productive++;
+                                break;
+                            }
+                            if (subsequent.PieceId == source)
+                                break;
+                        }
+                    }
+                }
+                board.CompleteResolution();
+            }
+            if (board.State != GameState.Won)
+                throw new InvalidOperationException("Resonance replay failed to win.");
+            return productive;
         }
 
         [MenuItem("SHIFT/Quality/Export Level 41-80 Decision Matrix")]
@@ -149,6 +212,11 @@ namespace Shift.Game.Editor
                             out row.pulseEvents, out row.occupiedRemotePulseEvents);
                         row.emptyRemotePulseEvents =
                             row.pulseEvents - row.occupiedRemotePulseEvents;
+                        row.productiveRemotePulseEvents =
+                            CountProductiveResonanceMoves(level, level.KnownSolution);
+                        row.ineffectiveOccupiedPulseEvents =
+                            row.occupiedRemotePulseEvents -
+                            row.productiveRemotePulseEvents;
                     }
                     var quality = new PuzzleBatchAnalysis(level).Analyze(level.KnownSolution);
                     row.meaningfulDecisions = quality.meaningfulDecisions;
@@ -160,7 +228,7 @@ namespace Shift.Game.Editor
                     row.needsDesignReview = number >= 66 &&
                         (row.simpleMoveTaps > row.shortestMoves / 2 ||
                          row.multiPieceTaps < 2 && number >= 76 ||
-                         row.pulseEvents > 0 && row.occupiedRemotePulseEvents == 0);
+                         row.pulseEvents > 0 && row.productiveRemotePulseEvents == 0);
                     if (row.needsDesignReview) matrix.flagged++;
                     matrix.passed++;
                 }
