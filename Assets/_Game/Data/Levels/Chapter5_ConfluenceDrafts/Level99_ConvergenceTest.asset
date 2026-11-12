@@ -105,7 +105,7 @@ MonoBehaviour:
   - type: 7
     color: 0
     direction: 0
-    position: {x: 6, y: 0}
+    position: {x: 3, y: 3}
     channel: 2
     initialOpen: 0
   - type: 0
