@@ -16,7 +16,7 @@ namespace Shift.Game.Editor
                 case 57: return new[] { new GridPosition(3, 3), new GridPosition(2, 3), new GridPosition(2, 2), new GridPosition(5, 0), new GridPosition(4, 0), new GridPosition(3, 0), new GridPosition(3, 2), new GridPosition(2, 1), new GridPosition(2, 0), new GridPosition(1, 1) };
                 case 58: return new[] { new GridPosition(2, 2), new GridPosition(3, 2), new GridPosition(2, 2), new GridPosition(1, 2), new GridPosition(3, 4), new GridPosition(1, 2), new GridPosition(2, 2), new GridPosition(0, 3), new GridPosition(1, 1), new GridPosition(2, 1) };
                 case 59: return new[] { new GridPosition(2, 2), new GridPosition(3, 2), new GridPosition(2, 2), new GridPosition(1, 2), new GridPosition(3, 4), new GridPosition(1, 2), new GridPosition(0, 3), new GridPosition(1, 1), new GridPosition(0, 2), new GridPosition(2, 1) };
-                case 60: return new[] { new GridPosition(1, 2), new GridPosition(2, 2), new GridPosition(2, 4), new GridPosition(3, 3), new GridPosition(2, 1), new GridPosition(2, 2), new GridPosition(4, 3), new GridPosition(3, 3), new GridPosition(4, 1), new GridPosition(4, 2), new GridPosition(4, 3) };
+                case 60: return new[] { new GridPosition(2, 4), new GridPosition(3, 3), new GridPosition(4, 2), new GridPosition(4, 1), new GridPosition(2, 1), new GridPosition(1, 2), new GridPosition(4, 3), new GridPosition(3, 3), new GridPosition(2, 2), new GridPosition(3, 3), new GridPosition(4, 2), new GridPosition(4, 3) };
                 default: return null;
             }
         }
