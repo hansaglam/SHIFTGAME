@@ -51,7 +51,7 @@ MonoBehaviour:
   - type: 8
     color: 0
     direction: 0
-    position: {x: 3, y: 2}
+    position: {x: 3, y: 1}
     channel: 2
     initialOpen: 0
   - type: 8
@@ -84,12 +84,12 @@ MonoBehaviour:
     position: {x: 2, y: 5}
     channel: 0
     initialOpen: 0
-  displayTitle: 70 - Fifth Beat
-  hint: "Üç renk bir zincirin farklı halkaları olabilir."
+  displayTitle: 70 - Two-Stage Echo
+  hint: "İki sinyal aynı anda değil, doğru sırada yararlı olabilir."
   knownSolution:
   - {x: 3, y: 5}
   - {x: 3, y: 4}
   - {x: 1, y: 5}
   - {x: 1, y: 4}
-  - {x: 3, y: 1}
+  - {x: 3, y: 2}
   - {x: 5, y: 5}

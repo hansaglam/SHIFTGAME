@@ -16,6 +16,9 @@ namespace Shift.Game
         public HintLanguage Language { get => GameLanguageService.Shared.HintLanguage; set => GameLanguageService.Shared.Select(value == HintLanguage.Turkish ? GameLanguage.Turkish : GameLanguage.English); }
         public Action<ChapterMastery> MasteryViewed { get; set; }
         private Button secondTab;
+        private Button[] chapterTabs;
+        private ChapterJourneyPanel journey;
+        private bool expanded;
         private Text continueLabel;
         private LevelProgression progressState;
         private int page;
@@ -24,6 +27,9 @@ namespace Shift.Game
         public bool IsOpen => open;
         public void Build(Font font, Sprite rounded, int count, Action<int> select, Action close, Action playCurrent)
         {
+            // The shipped 40-level UI layout is left exactly as it was.
+            // New chapter navigation exists only when full draft chapters are wired.
+            expanded = count >= 60;
             var shade = gameObject.AddComponent<Image>(); shade.color = new Color(.055f,.13f,.23f,.88f);
             var content = PlaceholderVisuals.Rect("Chapter Content", transform, Vector2.zero, Vector2.one);
             group = content.gameObject.AddComponent<CanvasGroup>();
@@ -31,6 +37,14 @@ namespace Shift.Game
             IdentityStyle.Material(card); VisualTheme.Shadow(card,8);
             chapterTitle = PlaceholderVisuals.Label("Chapter Title", content, font, "CHAPTER 1", 64, VisualTheme.Ink, new Vector2(.08f,.83f),new Vector2(.92f,.91f));
             masterySummary = PlaceholderVisuals.Label("Chapter Hint", content, font, "", 30, VisualTheme.Ink,new Vector2(.05f,.79f),new Vector2(.95f,.83f));
+            if (expanded)
+            {
+                // Reserve a clean, non-overlapping header lane for the world track.
+                chapterTitle.rectTransform.anchorMin = new Vector2(.08f, .84f);
+                chapterTitle.rectTransform.anchorMax = new Vector2(.92f, .92f);
+                masterySummary.rectTransform.anchorMin = new Vector2(.05f, .799f);
+                masterySummary.rectTransform.anchorMax = new Vector2(.95f, .833f);
+            }
             masteryLegend = PlaceholderVisuals.Label("Mastery Legend", content, font, "", 23, VisualTheme.Ink,new Vector2(.04f,.25f),new Vector2(.96f,.278f));
             masteryReplay = PlaceholderVisuals.Label("Mastery Replay", content, font, "", 23, VisualTheme.Ink,new Vector2(.05f,.225f),new Vector2(.95f,.25f));
             masteryMarkers = new Text[count];
@@ -38,16 +52,50 @@ namespace Shift.Game
             for (int i = 0; i < count; i++)
             {
                 int index = i, row = (i % CampaignChapters.LevelsPerChapter) / 5, col = i % 5;
-                var min = new Vector2(.06f + col * .18f, .605f - row * .105f);
-                buttons[i] = CreateButton("Level " + (i + 1), font, rounded, content, min, min + new Vector2(.16f,.087f), () => select(index), out labels[i]);
+                var min = new Vector2(.06f + col * .18f,
+                    (expanded ? .57f - row * .095f : .605f - row * .105f));
+                buttons[i] = CreateButton("Level " + (i + 1), font, rounded,
+                    content, min, min + new Vector2(.16f, expanded ? .082f : .087f),
+                    () => select(index), out labels[i]);
                 backgrounds[i] = (Image)buttons[i].targetGraphic;
                 masteryMarkers[i] = PlaceholderVisuals.Label("Mastery Marker", buttons[i].transform, font, "", 28, Color.white, new Vector2(.73f,.68f),new Vector2(.96f,.96f));
                 masteryMarkers[i].raycastTarget = false;
             }
-            CreateButton("Chapter 1 Tab",font,rounded,content,new Vector2(.12f,.70f),new Vector2(.48f,.745f),() => ShowPage(0),out var tabOne);
-            LocalizedLabel.Bind(tabOne, "chapter.title", 1);
-            secondTab = CreateButton("Chapter 2 Tab",font,rounded,content,new Vector2(.52f,.70f),new Vector2(.88f,.745f),() => ShowPage(1),out var tabTwo);
-            LocalizedLabel.Bind(tabTwo, "chapter.title", 2);
+            if (!expanded)
+            {
+                var first = CreateButton("Chapter 1 Tab",font,rounded,content,
+                    new Vector2(.12f,.70f),new Vector2(.48f,.745f),
+                    () => ShowPage(0),out var tabOne);
+                LocalizedLabel.Bind(tabOne, "chapter.title", 1);
+                secondTab = CreateButton("Chapter 2 Tab",font,rounded,content,
+                    new Vector2(.52f,.70f),new Vector2(.88f,.745f),
+                    () => ShowPage(1),out var tabTwo);
+                LocalizedLabel.Bind(tabTwo, "chapter.title", 2);
+                chapterTabs = new[] { first, secondTab };
+            }
+            else
+            {
+                int tabCount = Mathf.Min(4, count / CampaignChapters.LevelsPerChapter);
+                chapterTabs = new Button[tabCount];
+                float gap = .015f, availableWidth = .88f;
+                float width = (availableWidth - gap * (tabCount - 1)) / tabCount;
+                for (int i = 0; i < tabCount; i++)
+                {
+                    int chapterIndex = i;
+                    float left = .06f + (width + gap) * i;
+                    chapterTabs[i] = CreateButton("Chapter " + (i + 1) + " Tab",
+                        font, rounded, content,
+                        new Vector2(left, .655f), new Vector2(left + width, .705f),
+                        () => ShowPage(chapterIndex), out var tab);
+                    LocalizedLabel.Bind(tab, "chapter.title", i + 1);
+                    tab.fontSize = tabCount == 4 ? 20 : 25;
+                }
+                secondTab = chapterTabs[1];
+                journey = PlaceholderVisuals.Rect("Chapter Journey", content,
+                    new Vector2(.07f, .755f), new Vector2(.93f, .795f))
+                    .gameObject.AddComponent<ChapterJourneyPanel>();
+                journey.Build(font, rounded);
+            }
             CreateButton("Play Current", font, rounded, content, new Vector2(.18f,.135f),new Vector2(.82f,.21f),playCurrent,out var play).targetGraphic.color = new Color32(39,136,116,255);
             continueLabel = play;
             LocalizedLabel.Bind(play, "resume.continue");
@@ -60,7 +108,11 @@ namespace Shift.Game
         private Button dailyEntry;
         public void BuildDailyEntry(Font font,Sprite rounded,Action open)
         {
-            dailyEntry=CreateButton("Daily Shift Entry",font,rounded,transform.Find("Chapter Content"),new Vector2(.14f,.75f),new Vector2(.86f,.787f),open,out dailyLabel);
+            dailyEntry=CreateButton("Daily Shift Entry",font,rounded,
+                transform.Find("Chapter Content"),
+                new Vector2(.14f, expanded ? .714f : .75f),
+                new Vector2(.86f, expanded ? .751f : .787f),
+                open,out dailyLabel);
             dailyLabel.fontSize=24;dailyEntry.GetComponent<PresentationMotion>().Settings=Settings;
         }
         public void RefreshDaily(DailyRecord today,HintLanguage language)
@@ -98,13 +150,41 @@ namespace Shift.Game
             if (progressState == null || chapter < 0 || !CampaignChapters.Valid(chapter, buttons.Length) || !progressState.IsUnlocked(CampaignChapters.Start(chapter))) return;
             page = chapter;
             var summary = progressState.ChapterSummary(page);
-            LocalizedLabel.Bind(chapterTitle, () => summary.Mastered ? MasteryText.Mastered(Language) : GameLanguageService.Shared.Text("chapter.title", page + 1));
-            if (summary.Mastered) chapterTitle.fontSize = 46; else chapterTitle.fontSize = 64;
-            LocalizedLabel.Bind(masterySummary, () => MasteryText.Summary(summary, Language));
-            LocalizedLabel.Bind(masteryLegend, () => MasteryText.Legend(Language));
-            LocalizedLabel.Bind(masteryReplay, () => summary.Completed == summary.Total ? MasteryText.Remaining(summary, Language) : "");
+            var chapterWorld = expanded ? ChapterJourneyCatalog.ForChapter(page) : null;
+            if (journey != null && chapterWorld != null &&
+                ChapterJourneyCatalog.Available(progressState, page))
+            {
+                chapterTitle.fontSize = 41;
+                LocalizedLabel.Bind(chapterTitle, () =>
+                    GameLanguageService.Shared.Text("chapter.title", page + 1) +
+                    " · " + (Language == HintLanguage.Turkish
+                        ? chapterWorld.titleTr : chapterWorld.titleEn));
+                masterySummary.fontSize = 25;
+                LocalizedLabel.Bind(masterySummary, () =>
+                    Language == HintLanguage.Turkish
+                        ? chapterWorld.purposeTr : chapterWorld.purposeEn);
+                LocalizedLabel.Bind(masteryLegend, () => MasteryText.Legend(Language));
+                LocalizedLabel.Bind(masteryReplay, () => MasteryText.Summary(summary, Language));
+                journey.Show(progressState, page);
+            }
+            else
+            {
+                if (journey != null) journey.Hide();
+                LocalizedLabel.Bind(chapterTitle, () =>
+                    summary.Mastered ? MasteryText.Mastered(Language)
+                        : GameLanguageService.Shared.Text("chapter.title", page + 1));
+                chapterTitle.fontSize = summary.Mastered ? 46 : 64;
+                masterySummary.fontSize = 30;
+                LocalizedLabel.Bind(masterySummary, () => MasteryText.Summary(summary, Language));
+                LocalizedLabel.Bind(masteryLegend, () => MasteryText.Legend(Language));
+                LocalizedLabel.Bind(masteryReplay, () =>
+                    summary.Completed == summary.Total ? MasteryText.Remaining(summary, Language) : "");
+            }
             MasteryViewed?.Invoke(summary);
-            secondTab.interactable = progressState.IsUnlocked(CampaignChapters.Start(1));
+            if (chapterTabs != null)
+                for (int i = 0; i < chapterTabs.Length; i++)
+                    chapterTabs[i].interactable =
+                        i == 0 || progressState.IsUnlocked(CampaignChapters.Start(i));
             for (int i = 0; i < buttons.Length; i++) buttons[i].gameObject.SetActive(CampaignChapters.Index(i) == page);
         }
         public void Close()

@@ -33,7 +33,7 @@ MonoBehaviour:
   - type: 0
     color: 2
     direction: 3
-    position: {x: 4, y: 1}
+    position: {x: 3, y: 1}
     channel: 0
     initialOpen: 0
   - type: 8
@@ -69,7 +69,7 @@ MonoBehaviour:
   - type: 5
     color: 1
     direction: 0
-    position: {x: 1, y: 3}
+    position: {x: 0, y: 3}
     channel: 0
     initialOpen: 0
   - type: 5
@@ -85,10 +85,10 @@ MonoBehaviour:
     channel: 0
     initialOpen: 0
   displayTitle: 66 - Signal Lock
-  hint: "Önce kapıyı değil, onu açacak sinyalin sırasını düşün."
+  hint: "Uzaktaki düğme, kapının anahtarı olabilir."
   knownSolution:
   - {x: 6, y: 3}
   - {x: 5, y: 3}
-  - {x: 4, y: 1}
+  - {x: 3, y: 3}
   - {x: 2, y: 1}
   - {x: 1, y: 1}

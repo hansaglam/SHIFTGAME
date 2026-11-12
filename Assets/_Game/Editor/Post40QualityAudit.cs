@@ -13,12 +13,23 @@ namespace Shift.Game.Editor
     public static class Post40QualityAudit
     {
         [Serializable]
+        public sealed class RhythmProfile
+        {
+            public int longestSinglePieceRun, finalThirdMultiPieceTaps;
+            public int firstPulseStep, lastPulseStep, separatePulseSteps;
+            public int finalTapEvents, finalTapDeliveries;
+        }
+
+        [Serializable]
         public sealed class Row
         {
             public int level, gridWidth, gridHeight, moveLimit, shortestMoves, exploredStates;
             public int meaningfulDecisions, efficiencyDecisions, pulseTaps;
             public int multiPieceTaps, gateOpenings, gateClosings, simpleMoveTaps;
             public int distinctPulseChannels, totalActions, longestReaction;
+            public int pulseEvents, occupiedRemotePulseEvents, emptyRemotePulseEvents;
+            public int productiveRemotePulseEvents, ineffectiveOccupiedPulseEvents;
+            public RhythmProfile rhythm = new RhythmProfile();
             public bool solvedAndProven, needsDesignReview;
             public string title, error, fingerprint;
         }
@@ -27,7 +38,7 @@ namespace Shift.Game.Editor
         public sealed class Matrix
         {
             public string status = "EXPERIMENTAL / EDITOR ONLY - not a shipping certificate";
-            public int attempted, passed, flagged;
+            public int attempted, passed, flagged, nonproductiveResonanceLevels;
             public List<Row> rows = new List<Row>();
         }
 
@@ -37,6 +48,164 @@ namespace Shift.Game.Editor
             if (number >= 61 && number <= 65) return Chapter4ResonanceDrafts.Get(number);
             return number >= 66 && number <= 80
                 ? Chapter4ResonanceExtendedDrafts.Get(number) : null;
+        }
+
+        // Counts whether a remote Resonance receiver was actually waiting at
+        // the partner node when the pulse happened. Merely emitting a pulse is
+        // not proof of a meaningful remote action. Replays BoardManager events
+        // in order so occupants arriving earlier within the tap are included.
+        public static void CountResonanceReceivers(LevelData level,
+            IReadOnlyList<GridPosition> route, out int pulses, out int occupied)
+        {
+            pulses = 0;
+            occupied = 0;
+            var board = new BoardManager();
+            board.Load(level);
+            foreach (var tap in route)
+            {
+                var timeline = new Dictionary<int, GridPosition>();
+                foreach (var piece in board.Pieces)
+                    if (piece.Type == PieceType.Normal && piece.Active)
+                        timeline[piece.Id] = piece.Position;
+                if (!board.RequestMove(tap) || board.LastReactionWasCancelled ||
+                    board.Actions.Count == 0)
+                    throw new InvalidOperationException("Invalid route for Resonance audit: " + tap);
+                foreach (var action in board.Actions)
+                {
+                    if (action.Type == BoardActionType.Move &&
+                        board.Pieces[action.PieceId].Type == PieceType.Normal)
+                        timeline[action.PieceId] = action.To;
+                    else if (action.Type == BoardActionType.Deliver)
+                        timeline.Remove(action.PieceId);
+                    else if (action.Type == BoardActionType.ResonancePulse)
+                    {
+                        pulses++;
+                        foreach (var remote in timeline)
+                            if (remote.Value == action.To)
+                            {
+                                occupied++;
+                                break;
+                            }
+                    }
+                }
+                board.CompleteResolution();
+            }
+            if (board.State != GameState.Won)
+                throw new InvalidOperationException("Resonance audit route is not winning.");
+        }
+
+        // Tracks an actual remote piece move, not merely a signal landing on
+        // an occupied node. The receiver must move in the same atomic reaction,
+        // before the original triggering piece resumes.
+        public static int CountProductiveResonanceMoves(LevelData level,
+            IReadOnlyList<GridPosition> route)
+        {
+            int productive = 0;
+            var board = new BoardManager();
+            board.Load(level);
+            foreach (var tap in route)
+            {
+                var positions = new Dictionary<int, GridPosition>();
+                foreach (var piece in board.Pieces)
+                    if (piece.Type == PieceType.Normal && piece.Active)
+                        positions[piece.Id] = piece.Position;
+                if (!board.RequestMove(tap) || board.LastReactionWasCancelled ||
+                    board.Actions.Count == 0)
+                    throw new InvalidOperationException("Invalid route: " + tap);
+
+                int source = -1;
+                for (int i = 0; i < board.Actions.Count; i++)
+                {
+                    var action = board.Actions[i];
+                    if (action.Type == BoardActionType.Move)
+                    {
+                        if (board.Pieces[action.PieceId].Type == PieceType.Normal)
+                            positions[action.PieceId] = action.To;
+                        source = action.PieceId;
+                    }
+                    else if (action.Type == BoardActionType.Deliver)
+                        positions.Remove(action.PieceId);
+                    else if (action.Type == BoardActionType.ResonancePulse)
+                    {
+                        int remoteId = -1;
+                        foreach (var pair in positions)
+                            if (pair.Value == action.To && pair.Key != source)
+                            {
+                                remoteId = pair.Key;
+                                break;
+                            }
+                        if (remoteId < 0) continue;
+                        for (int j = i + 1; j < board.Actions.Count; j++)
+                        {
+                            var subsequent = board.Actions[j];
+                            if (subsequent.Type != BoardActionType.Move) continue;
+                            if (subsequent.PieceId == remoteId)
+                            {
+                                productive++;
+                                break;
+                            }
+                            if (subsequent.PieceId == source)
+                                break;
+                        }
+                    }
+                }
+                board.CompleteResolution();
+            }
+            if (board.State != GameState.Won)
+                throw new InvalidOperationException("Resonance replay failed to win.");
+            return productive;
+        }
+
+        // Tracks player-facing solution rhythm, not difficulty or enjoyment.
+        // This deliberately records *where* reactions occur, rather than
+        // treating total animation/action count as a quality score.
+        public static RhythmProfile AnalyzeRhythm(LevelData level,
+            IReadOnlyList<GridPosition> route)
+        {
+            var result = new RhythmProfile();
+            var board = new BoardManager();
+            board.Load(level);
+            int simpleRun = 0, stepNumber = 0;
+            int tailStart = route.Count - Math.Max(1, (route.Count + 2) / 3) + 1;
+            foreach (var tap in route)
+            {
+                stepNumber++;
+                if (!board.RequestMove(tap) || board.LastReactionWasCancelled ||
+                    board.Actions.Count == 0)
+                    throw new InvalidOperationException("Invalid reaction rhythm route: " + tap);
+                var moved = new HashSet<int>();
+                bool pulsed = false;
+                int delivered = 0;
+                foreach (var action in board.Actions)
+                {
+                    if (action.Type == BoardActionType.Move)
+                        moved.Add(action.PieceId);
+                    if (action.Type == BoardActionType.ResonancePulse)
+                        pulsed = true;
+                    if (action.Type == BoardActionType.Deliver)
+                        delivered++;
+                }
+                simpleRun = moved.Count == 1 ? simpleRun + 1 : 0;
+                result.longestSinglePieceRun =
+                    Math.Max(result.longestSinglePieceRun, simpleRun);
+                if (moved.Count >= 2 && stepNumber >= tailStart)
+                    result.finalThirdMultiPieceTaps++;
+                if (pulsed)
+                {
+                    result.separatePulseSteps++;
+                    if (result.firstPulseStep == 0) result.firstPulseStep = stepNumber;
+                    result.lastPulseStep = stepNumber;
+                }
+                if (stepNumber == route.Count)
+                {
+                    result.finalTapEvents = board.Actions.Count;
+                    result.finalTapDeliveries = delivered;
+                }
+                board.CompleteResolution();
+            }
+            if (board.State != GameState.Won)
+                throw new InvalidOperationException("Reaction rhythm route must end in victory.");
+            return result;
         }
 
         [MenuItem("SHIFT/Quality/Export Level 41-80 Decision Matrix")]
@@ -98,6 +267,19 @@ namespace Shift.Game.Editor
                     if (board.State != GameState.Won)
                         throw new InvalidOperationException("Recorded route is not a win.");
                     row.distinctPulseChannels = channels.Count;
+                    row.rhythm = AnalyzeRhythm(level, level.KnownSolution);
+                    if (number >= 61)
+                    {
+                        CountResonanceReceivers(level, level.KnownSolution,
+                            out row.pulseEvents, out row.occupiedRemotePulseEvents);
+                        row.emptyRemotePulseEvents =
+                            row.pulseEvents - row.occupiedRemotePulseEvents;
+                        row.productiveRemotePulseEvents =
+                            CountProductiveResonanceMoves(level, level.KnownSolution);
+                        row.ineffectiveOccupiedPulseEvents =
+                            row.occupiedRemotePulseEvents -
+                            row.productiveRemotePulseEvents;
+                    }
                     var quality = new PuzzleBatchAnalysis(level).Analyze(level.KnownSolution);
                     row.meaningfulDecisions = quality.meaningfulDecisions;
                     row.efficiencyDecisions = quality.efficiencyDecisions;
@@ -107,7 +289,18 @@ namespace Shift.Game.Editor
                     // playtest can decide whether a pattern feels repetitive.
                     row.needsDesignReview = number >= 66 &&
                         (row.simpleMoveTaps > row.shortestMoves / 2 ||
-                         row.multiPieceTaps < 2 && number >= 76);
+                         row.multiPieceTaps < 2 && number >= 76 ||
+                         row.pulseEvents > 0 && row.productiveRemotePulseEvents == 0 ||
+                         row.rhythm.longestSinglePieceRun >= 4 ||
+                         number == 80 && row.rhythm.finalThirdMultiPieceTaps == 0);
+                    if (number >= 66 && row.pulseEvents > 0 &&
+                        row.productiveRemotePulseEvents == 0)
+                    {
+                        matrix.nonproductiveResonanceLevels++;
+                        Debug.LogWarning("Level " + number +
+                            " has Resonance visual pulses but no confirmed remote " +
+                            "piece movement on its intended route.");
+                    }
                     if (row.needsDesignReview) matrix.flagged++;
                     matrix.passed++;
                 }
@@ -126,6 +319,11 @@ namespace Shift.Game.Editor
                 "JSON: " + output + ". No Perfect rewards were enabled.");
             if (matrix.passed != 40)
                 Debug.LogError("SHIFT 41-80 audit FAILED. Keep the candidate branch isolated.");
+            if (matrix.nonproductiveResonanceLevels > 0)
+                Debug.LogError("SHIFT 41-80 DESIGN GATE OPEN: " +
+                    matrix.nonproductiveResonanceLevels +
+                    " levels have nonproductive Resonance pulses. " +
+                    "Do not release even if all shortest paths are provable.");
         }
     }
 }
