@@ -45,7 +45,7 @@ MonoBehaviour:
   - type: 8
     color: 0
     direction: 0
-    position: {x: 3, y: 1}
+    position: {x: 4, y: 1}
     channel: 1
     initialOpen: 0
   - type: 2
@@ -96,12 +96,12 @@ MonoBehaviour:
     position: {x: 6, y: 2}
     channel: 0
     initialOpen: 0
-  displayTitle: 71 - Threaded Motion
-  hint: "Yalnızca hedefe bakma; diğer taşlar da yolu hazırlayabilir."
+  displayTitle: 71 - Delayed Relay
+  hint: "Sinyali bekletmek yerine uzaktan bir hamle kazanabilirsin."
   knownSolution:
   - {x: 6, y: 3}
   - {x: 3, y: 3}
   - {x: 1, y: 3}
-  - {x: 4, y: 1}
+  - {x: 3, y: 1}
   - {x: 2, y: 1}
   - {x: 1, y: 1}
