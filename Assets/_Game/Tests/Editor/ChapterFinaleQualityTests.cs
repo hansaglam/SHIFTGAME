@@ -63,6 +63,25 @@ namespace Shift.Game.Tests
         }
 
         [Test]
+        public void DuplicateRouteAuditMustSurfaceExistingPatterns()
+        {
+            var longer58 = Chapter3AlternateSolutions.Get(58);
+            var longer59 = Chapter3AlternateSolutions.Get(59);
+            var alternateRisk = LevelRouteSimilarityAudit.Evaluate(58, 59, true,
+                longer58, longer59);
+            Assert.That(alternateRisk, Is.Not.Null,
+                "Near-identical alternate solutions must not escape review.");
+            Assert.That(alternateRisk.commonOpening, Is.GreaterThanOrEqualTo(6));
+            Assert.That(alternateRisk.priority, Is.EqualTo("HIGH"));
+
+            var route69 = Chapter4ResonanceExtendedDrafts.Get(69).KnownSolution;
+            var route72 = Chapter4ResonanceExtendedDrafts.Get(72).KnownSolution;
+            Assert.That(LevelRouteSimilarityAudit.Evaluate(69, 72, false,
+                route69, route72), Is.Not.Null,
+                "Repeated vertical-lane family must remain in the review queue.");
+        }
+
+        [Test]
         public void Chapter4FinaleMustRetainTwoSignalsTwoGatesAndThreeColors()
         {
             var finale = Chapter4ResonanceExtendedDrafts.Get(80);
