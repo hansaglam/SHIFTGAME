@@ -57,13 +57,13 @@ MonoBehaviour:
   - type: 8
     color: 0
     direction: 0
-    position: {x: 3, y: 1}
+    position: {x: 5, y: 6}
     channel: 2
     initialOpen: 0
   - type: 5
     color: 1
     direction: 0
-    position: {x: 6, y: 3}
+    position: {x: 6, y: 4}
     channel: 0
     initialOpen: 0
   - type: 5
@@ -122,7 +122,6 @@ MonoBehaviour:
   - {x: 3, y: 1}
   - {x: 2, y: 1}
   - {x: 4, y: 4}
-  - {x: 1, y: 1}
-  - {x: 5, y: 6}
-  - {x: 4, y: 5}
+  - {x: 6, y: 3}
   - {x: 4, y: 6}
+  - {x: 1, y: 1}
