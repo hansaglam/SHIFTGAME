@@ -36,6 +36,12 @@ MonoBehaviour:
     position: {x: 1, y: 2}
     channel: 0
     initialOpen: 0
+  - type: 0
+    color: 3
+    direction: 1
+    position: {x: 1, y: 3}
+    channel: 0
+    initialOpen: 0
   - type: 8
     color: 0
     direction: 0
@@ -48,6 +54,12 @@ MonoBehaviour:
     position: {x: 1, y: 3}
     channel: 1
     initialOpen: 0
+  - type: 2
+    color: 0
+    direction: 0
+    position: {x: 2, y: 1}
+    channel: 0
+    initialOpen: 0
   - type: 6
     color: 0
     direction: 0
@@ -57,19 +69,19 @@ MonoBehaviour:
   - type: 7
     color: 0
     direction: 0
-    position: {x: 3, y: 5}
+    position: {x: 3, y: 3}
     channel: 1
     initialOpen: 0
   - type: 5
     color: 1
     direction: 0
-    position: {x: 3, y: 7}
+    position: {x: 5, y: 7}
     channel: 0
     initialOpen: 0
   - type: 5
-    color: 2
+    color: 0
     direction: 0
-    position: {x: 1, y: 7}
+    position: {x: 1, y: 6}
     channel: 0
     initialOpen: 0
   - type: 3
@@ -78,14 +90,20 @@ MonoBehaviour:
     position: {x: 3, y: 4}
     channel: 0
     initialOpen: 0
-  displayTitle: 78 - Deferred Chain
-  hint: "Sinyali erken tüketme. Doğru hamle sırası iki taşı birlikte ilerletebilir."
+  - type: 3
+    color: 0
+    direction: 4
+    position: {x: 3, y: 7}
+    channel: 0
+    initialOpen: 0
+  displayTitle: 78 - The Deferred Handoff
+  hint: "Sinyal yardımcının yolunu açar. Kapı ve ortak çıkış için sırayı düşün."
   knownSolution:
   - {x: 3, y: 0}
   - {x: 3, y: 1}
-  - {x: 1, y: 2}
   - {x: 3, y: 3}
-  - {x: 3, y: 5}
+  - {x: 1, y: 2}
   - {x: 1, y: 4}
   - {x: 1, y: 5}
-  - {x: 1, y: 6}
+  - {x: 3, y: 5}
+  - {x: 3, y: 6}
