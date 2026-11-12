@@ -8,6 +8,9 @@ namespace Shift.Game
     {
         private const int ReactionLimit = 256;
         private const int RecursionLimit = 128;
+        // A visible pair stays linked at most three Manhattan grid steps apart.
+        private const int TetherLength = 3;
+        public static int TetherMaxDistance => TetherLength;
         private readonly List<BoardAction> actions = new List<BoardAction>(ReactionLimit);
         private readonly IReadOnlyList<BoardAction> readOnlyActions;
         private BoardPiece[] pieces;
@@ -15,6 +18,7 @@ namespace Shift.Game
         private BoardPiece[,] occupants;
         private BoardPiece[,] terrain;
         private BoardPiece[] resonancePartners;
+        private BoardPiece[] tetherPartners;
         private readonly bool[] signaled = new bool[3];
         private Snapshot[] snapshots;
         private Snapshot[] undoSnapshot;
@@ -66,6 +70,7 @@ namespace Shift.Game
             moving = new bool[pieces.Length];
             readOnlyPieces = Array.AsReadOnly(pieces);
             resonancePartners = new BoardPiece[pieces.Length];
+            tetherPartners = new BoardPiece[pieces.Length];
             for (int i = 0; i < pieces.Length; i++)
             {
                 var piece = new BoardPiece(i, level.Placements[i]); pieces[i] = piece;
@@ -82,6 +87,21 @@ namespace Shift.Game
                         break;
                     }
             }
+            // Link normal pieces by authored tetherId, not by current board
+            // position. The connection persists when either endpoint moves,
+            // and disappears only when an endpoint is delivered.
+            for (int i = 0; i < pieces.Length; i++)
+            {
+                if (pieces[i].Type != PieceType.Normal || pieces[i].TetherId == 0)
+                    continue;
+                for (int j = 0; j < pieces.Length; j++)
+                    if (j != i && pieces[j].Type == PieceType.Normal &&
+                        pieces[j].TetherId == pieces[i].TetherId)
+                    {
+                        tetherPartners[i] = pieces[j];
+                        break;
+                    }
+            }
             Array.Clear(signaled, 0, signaled.Length);
             actions.Clear(); LastReactionWasCancelled = false; State = GameState.Playing;
         }
@@ -89,6 +109,9 @@ namespace Shift.Game
         public bool IsValid(GridPosition p) => p.x >= 0 && p.y >= 0 && p.x < Width && p.y < Height;
         public BoardPiece GetOccupant(GridPosition p) => IsValid(p) && occupants != null ? occupants[p.x, p.y] : null;
         public BoardPiece GetTerrain(GridPosition p) => IsValid(p) && terrain != null ? terrain[p.x, p.y] : null;
+        public BoardPiece GetTetherPartner(int id) =>
+            tetherPartners != null && id >= 0 && id < tetherPartners.Length
+                ? tetherPartners[id] : null;
 
         public bool RequestMove(GridPosition position)
         {
@@ -131,7 +154,53 @@ namespace Shift.Game
             State = !remaining ? GameState.Won : MovesRemaining == 0 ? GameState.Lost : GameState.Playing;
         }
 
-        private bool Move(BoardPiece piece, Direction direction, int depth)
+        private static int Manhattan(GridPosition a, GridPosition b) =>
+            Math.Abs(a.x - b.x) + Math.Abs(a.y - b.y);
+
+        private static Direction Toward(GridPosition from, GridPosition to)
+        {
+            int dx = to.x - from.x, dy = to.y - from.y;
+            // Always prefer the longer axis, X first on ties. No random
+            // choice, swipe, or ambiguous diagonal pull.
+            if (Math.Abs(dx) >= Math.Abs(dy))
+                return dx >= 0 ? Direction.Right : Direction.Left;
+            return dy >= 0 ? Direction.Up : Direction.Down;
+        }
+
+        private Snapshot[] CaptureLocal()
+        {
+            var current = new Snapshot[pieces.Length];
+            for (int i = 0; i < pieces.Length; i++)
+                current[i] = new Snapshot
+                {
+                    Position = pieces[i].Position,
+                    Direction = pieces[i].Direction,
+                    Active = pieces[i].Active,
+                    GateOpen = pieces[i].GateOpen
+                };
+            return current;
+        }
+
+        private void RestoreLocal(Snapshot[] state, bool[] previousSignals,
+            int actionCount)
+        {
+            Array.Clear(occupants, 0, occupants.Length);
+            for (int i = 0; i < pieces.Length; i++)
+            {
+                var p = pieces[i];
+                p.Position = state[i].Position;
+                p.Direction = state[i].Direction;
+                p.Active = state[i].Active;
+                p.GateOpen = state[i].GateOpen;
+                if (p.Active && p.Movable)
+                    occupants[p.Position.x, p.Position.y] = p;
+            }
+            Array.Copy(previousSignals, signaled, signaled.Length);
+            actions.RemoveRange(actionCount, actions.Count - actionCount);
+        }
+
+        private bool Move(BoardPiece piece, Direction direction, int depth,
+            bool forcedTetherFollow = false)
         {
             if (overflow) return false;
             if (++operations > ReactionLimit || depth >= RecursionLimit) { overflow = true; return false; }
@@ -141,6 +210,47 @@ namespace Shift.Game
             if (tile != null && (tile.Type == PieceType.Wall || (tile.Type == PieceType.Gate && !tile.GateOpen) ||
                 (tile.Type == PieceType.Exit && (piece.Type != PieceType.Normal ||
                 (tile.Color != PieceColor.None && tile.Color != piece.Color))))) return false;
+            var partner = piece.Type == PieceType.Normal && !forcedTetherFollow
+                ? tetherPartners[piece.Id] : null;
+            if (partner != null && partner.Active &&
+                Manhattan(next, partner.Position) > TetherLength)
+            {
+                // A taut link creates a *real dependency*, unlike a remote
+                // signal. The initiator cannot move unless the partner can
+                // follow one legal step. Keep both movements atomic.
+                if (moving[piece.Id] || moving[partner.Id])
+                    return false;
+                var before = CaptureLocal();
+                var priorSignals = (bool[])signaled.Clone();
+                int beforeActions = actions.Count;
+                moving[piece.Id] = true;
+                var directionToSource = Toward(partner.Position, next);
+                bool followed = Move(partner, directionToSource,
+                    depth + 1, true);
+                moving[piece.Id] = false;
+                if (overflow) return false; // RequestMove rolls back the tap.
+                if (!followed || (partner.Active &&
+                    Manhattan(next, partner.Position) > TetherLength))
+                {
+                    RestoreLocal(before, priorSignals, beforeActions);
+                    return false;
+                }
+                // Include the bond action in the normal presentation sequence.
+                // On failure, undo the entire local pull and its gate/signal
+                // effects, without cancelling earlier successful auto-moves.
+                Record(BoardActionType.TetherPull, piece,
+                    piece.Position, partner.Position);
+                bool advanced = MoveInto(piece, direction, depth, next, tile);
+                if (!advanced && !overflow)
+                    RestoreLocal(before, priorSignals, beforeActions);
+                return advanced;
+            }
+            return MoveInto(piece, direction, depth, next, tile);
+        }
+
+        private bool MoveInto(BoardPiece piece, Direction direction,
+            int depth, GridPosition next, BoardPiece tile)
+        {
             var other = GetOccupant(next);
             if (other != null)
             {
