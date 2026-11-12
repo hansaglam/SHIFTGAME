@@ -22,12 +22,20 @@ namespace Shift.Game.Editor
         }
 
         [Serializable]
+        public sealed class LaneMotifRisk
+        {
+            public int level, longestAxisRun, shortestRouteTaps;
+            public string note;
+        }
+
+        [Serializable]
         public sealed class Report
         {
             public string status = "EDITOR CANDIDATE SCREENING / HUMAN REVIEW REQUIRED";
             public int evaluatedLevelPairs;
-            public int suspectedPatternPairs;
+            public int suspectedPatternPairs, laneMotifLevels;
             public List<Risk> risks = new List<Risk>();
+            public List<LaneMotifRisk> laneMotifs = new List<LaneMotifRisk>();
         }
 
         private static LevelData Get(int n)
@@ -92,6 +100,19 @@ namespace Shift.Game.Editor
             };
         }
 
+        public static int LongestSameAxisRun(IReadOnlyList<GridPosition> route)
+        {
+            if (route == null || route.Count == 0) return 0;
+            int sameColumn = 1, sameRow = 1, maximum = 1;
+            for (int i = 1; i < route.Count; i++)
+            {
+                sameColumn = route[i].x == route[i - 1].x ? sameColumn + 1 : 1;
+                sameRow = route[i].y == route[i - 1].y ? sameRow + 1 : 1;
+                maximum = Math.Max(maximum, Math.Max(sameColumn, sameRow));
+            }
+            return maximum;
+        }
+
         [MenuItem("SHIFT/Quality/Export Route Similarities 41-80")]
         public static void Export()
         {
@@ -108,6 +129,22 @@ namespace Shift.Game.Editor
                         if (risk != null) report.risks.Add(risk);
                     }
                 }
+            for (int n = 41; n <= 80; n++)
+            {
+                var route = Route(n, false);
+                int longest = LongestSameAxisRun(route);
+                if (longest < 4) continue;
+                report.laneMotifs.Add(new LaneMotifRisk
+                {
+                    level = n,
+                    longestAxisRun = longest,
+                    shortestRouteTaps = route.Count,
+                    note = "Four or more consecutive taps share a row or column. " +
+                           "Inspect whether these are repetitive manual advancement, " +
+                           "or genuinely distinct choices/reactions."
+                });
+            }
+            report.laneMotifLevels = report.laneMotifs.Count;
             report.risks.Sort((a, b) =>
             {
                 int severity = string.CompareOrdinal(a.priority, b.priority);
@@ -121,7 +158,8 @@ namespace Shift.Game.Editor
             File.WriteAllText(output, JsonUtility.ToJson(report, true));
             Debug.Log("SHIFT 41-80 route screening: " +
                 report.evaluatedLevelPairs + " level pairs, " +
-                report.suspectedPatternPairs + " suspicious route similarities. " +
+                report.suspectedPatternPairs + " suspicious route similarities, " +
+                report.laneMotifLevels + " corridor-run flags. " +
                 "Human review required; report at " + output);
         }
     }
