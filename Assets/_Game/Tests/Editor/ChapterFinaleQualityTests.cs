@@ -132,8 +132,8 @@ namespace Shift.Game.Tests
                 "The redesigned Level 59 must not rely on a long tap corridor.");
             Assert.That(LevelRouteSimilarityAudit.LongestSameAxisRun(
                 Chapter4ResonanceExtendedDrafts.Get(77).KnownSolution),
-                Is.GreaterThanOrEqualTo(5),
-                "Level 77 needs an explicit redesign; it is still too corridor-like.");
+                Is.LessThan(4),
+                "Level 77 must not regress to a repetitive straight corridor.");
 
             var route69 = Chapter4ResonanceExtendedDrafts.Get(69).KnownSolution;
             var route72 = Chapter4ResonanceExtendedDrafts.Get(72).KnownSolution;
@@ -143,16 +143,16 @@ namespace Shift.Game.Tests
         }
 
         [Test]
-        public void ResonanceAuditMustIdentifyDecorativeLevel77Pulse()
+        public void ResonanceAuditMustConfirmUsefulLevel77Pulse()
         {
             var level77 = Chapter4ResonanceExtendedDrafts.Get(77);
             Assert.That(level77, Is.Not.Null);
             Post40QualityAudit.CountResonanceReceivers(level77,
                 level77.KnownSolution, out int pulses77, out int occupied77);
-            Assert.That(pulses77, Is.GreaterThanOrEqualTo(1),
-                "Level 77 currently emits a visible signal.");
-            Assert.That(occupied77, Is.EqualTo(0),
-                "Document the real design defect until Level 77 is rebuilt.");
+            Assert.That(pulses77, Is.EqualTo(1),
+                "The Level 77 intended route should have one clear pulse.");
+            Assert.That(occupied77, Is.EqualTo(1),
+                "Level 77's signal must actually reach a waiting receiver.");
 
             var finale = Chapter4ResonanceExtendedDrafts.Get(80);
             Assert.That(finale, Is.Not.Null);
@@ -161,6 +161,68 @@ namespace Shift.Game.Tests
             Assert.That(pulses80, Is.GreaterThanOrEqualTo(2));
             Assert.That(occupied80, Is.GreaterThanOrEqualTo(2),
                 "Both finale signal channels must activate real remote pieces.");
+        }
+
+        [Test]
+        public void Level77ReturnSignalMustBeARealReciprocalChain()
+        {
+            var level = Chapter4ResonanceExtendedDrafts.Get(77);
+            Assert.That(level, Is.Not.Null);
+            Assert.That(level.KnownSolutionLength, Is.EqualTo(8));
+            Assert.That(level.MoveLimit, Is.EqualTo(9));
+            Assert.That(level.ResolvedTargetColors.Count, Is.EqualTo(2));
+            Assert.That(LevelValidation.VerifySolution(level, out string error, out _),
+                Is.True, error);
+            Assert.That(Chapter4ResonanceExtendedDrafts.CheckAlternate(level, 77, out error),
+                Is.True, error);
+            var proof = CampaignCertification.Prove(level, 77);
+            Assert.That(proof.complete, Is.True, proof.error);
+            Assert.That(proof.minimum, Is.EqualTo(8));
+
+            var board = new BoardManager();
+            board.Load(level);
+            bool remoteBlueMoved = false, redDelivered = false, gateOpened = false;
+            int sharedTaps = 0, pulseTaps = 0;
+            foreach (var tap in level.KnownSolution)
+            {
+                Assert.That(board.RequestMove(tap), Is.True, "Invalid tap: " + tap);
+                Assert.That(board.LastReactionWasCancelled, Is.False);
+                bool pulseOccurred = false;
+                var moved = new HashSet<int>();
+                foreach (var action in board.Actions)
+                {
+                    if (action.Type == BoardActionType.ResonancePulse)
+                    {
+                        pulseOccurred = true;
+                        pulseTaps++;
+                    }
+                    if (action.Type == BoardActionType.Move)
+                    {
+                        moved.Add(action.PieceId);
+                        if (pulseOccurred && board.Pieces[action.PieceId].Color == PieceColor.Blue)
+                            remoteBlueMoved = true;
+                    }
+                    if (action.Type == BoardActionType.GateOpened) gateOpened = true;
+                    if (action.Type == BoardActionType.Deliver &&
+                        board.Pieces[action.PieceId].Color == PieceColor.Red)
+                        redDelivered = true;
+                    if (action.Type == BoardActionType.GateClosed)
+                        Assert.That(redDelivered, Is.True,
+                            "Closing the red route under the red target obscures feedback.");
+                }
+                if (moved.Count >= 2) sharedTaps++;
+                board.CompleteResolution();
+            }
+            Assert.That(board.State, Is.EqualTo(GameState.Won));
+            Assert.That(remoteBlueMoved, Is.True,
+                "The remote pulse must MOVE the waiting blue piece.");
+            Assert.That(gateOpened, Is.True,
+                "Blue's chain must prepare the route for red.");
+            Assert.That(redDelivered, Is.True);
+            Assert.That(pulseTaps, Is.EqualTo(1));
+            Assert.That(sharedTaps, Is.GreaterThanOrEqualTo(5));
+            Assert.That(level.VerifiedOptimalMoveCount, Is.Null,
+                "Keep Perfect Shift disabled until final chapter approval.");
         }
 
         [Test]
