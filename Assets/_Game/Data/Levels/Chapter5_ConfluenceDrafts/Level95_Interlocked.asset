@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier:
   width: 8
   height: 8
-  moveLimit: 11
+  moveLimit: 10
   targetColor: 1
   targetColors: 010000000200000003000000
   placements:
