@@ -231,7 +231,9 @@ namespace Shift.Game.Tests
                 "Keep Perfect Shift disabled until final chapter approval.");
         }
 
+        [TestCase(66, 5, 3)]
         [TestCase(69, 6, 3)]
+        [TestCase(71, 6, 1)]
         [TestCase(72, 6, 2)]
         [TestCase(78, 8, 7)]
         public void QualityRevisionsMustUseRealRemoteMovementAndDistinctPaths(
@@ -284,6 +286,34 @@ namespace Shift.Game.Tests
             Assert.That(gateOpenings, Is.GreaterThanOrEqualTo(1));
             Assert.That(level.VerifiedOptimalMoveCount, Is.Null,
                 "Release-only Perfect fingerprints must remain unavailable.");
+        }
+
+        [Test]
+        public void Level71AlternateRouteMustChooseManualProgressInsteadOfThePulse()
+        {
+            var level = Chapter4ResonanceExtendedDrafts.Get(71);
+            Assert.That(level, Is.Not.Null);
+            var route = Chapter4ResonanceExtendedDrafts.AlternateWinningRoute(71);
+            Assert.That(route, Is.Not.Null);
+            var board = new BoardManager();
+            board.Load(level);
+            var remoteBlueMoved = false;
+            foreach (var tap in route)
+            {
+                Assert.That(board.RequestMove(tap), Is.True);
+                Assert.That(board.LastReactionWasCancelled, Is.False);
+                foreach (var action in board.Actions)
+                    if (action.Type == BoardActionType.ResonancePulse)
+                        foreach (var piece in board.Pieces)
+                            if (piece.Active && piece.Type == PieceType.Normal &&
+                                piece.Color == PieceColor.Blue &&
+                                piece.Position == action.To)
+                                remoteBlueMoved = true;
+                board.CompleteResolution();
+            }
+            Assert.That(board.State, Is.EqualTo(GameState.Won));
+            Assert.That(remoteBlueMoved, Is.False,
+                "The longer route should manually move the blue piece before signal.");
         }
 
         [Test]
