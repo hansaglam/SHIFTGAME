@@ -455,6 +455,68 @@ namespace Shift.Game.Tests
         }
 
         [Test]
+        public void Level80MustFinishWithGatedBlueToBlueHandoff()
+        {
+            var level = Chapter4ResonanceExtendedDrafts.Get(80);
+            Assert.That(level, Is.Not.Null);
+            Assert.That(level.KnownSolutionLength, Is.EqualTo(8));
+            Assert.That(Chapter4ResonanceExtendedDrafts.CheckAlternate(
+                level, 80, out string error), Is.True, error);
+            Assert.That(LevelValidation.VerifySolution(level, out error, out _),
+                Is.True, error);
+            var proof = CampaignCertification.Prove(level, 80);
+            Assert.That(proof.complete, Is.True, proof.error);
+            Assert.That(proof.minimum, Is.EqualTo(8));
+            int blueTargets = 0;
+            foreach (var piece in level.Placements)
+                if (piece.type == PieceType.Normal && piece.color == PieceColor.Blue)
+                    blueTargets++;
+            Assert.That(blueTargets, Is.EqualTo(2),
+                "The finale must preserve two blue targets, not a decorative helper.");
+
+            var board = new BoardManager();
+            board.Load(level);
+            int step = 0, deliveredBlue = 0;
+            bool lastBlueWasPushed = false;
+            foreach (var tap in level.KnownSolution)
+            {
+                step++;
+                Assert.That(board.RequestMove(tap), Is.True);
+                Assert.That(board.LastReactionWasCancelled, Is.False);
+                bool bluePushed = false, blueFollowed = false;
+                foreach (var action in board.Actions)
+                {
+                    if (action.Type == BoardActionType.Deliver &&
+                        board.Pieces[action.PieceId].Color == PieceColor.Blue)
+                        deliveredBlue++;
+                    if (step == 7 && action.Type == BoardActionType.Move &&
+                        action.PieceId == 14 &&
+                        action.From == new GridPosition(6, 3) &&
+                        action.To == new GridPosition(7, 3))
+                        bluePushed = true;
+                    if (step == 7 && action.Type == BoardActionType.Move &&
+                        action.PieceId == 1 &&
+                        action.From == new GridPosition(5, 3) &&
+                        action.To == new GridPosition(6, 3))
+                        blueFollowed = true;
+                }
+                if (step == 7)
+                    lastBlueWasPushed = bluePushed && blueFollowed;
+                board.CompleteResolution();
+            }
+            Assert.That(board.State, Is.EqualTo(GameState.Won));
+            Assert.That(deliveredBlue, Is.EqualTo(2));
+            Assert.That(lastBlueWasPushed, Is.True,
+                "The endgame must push the prepared second blue target out.");
+            Assert.That(Post40QualityAudit.CountProductiveResonanceMoves(
+                level, level.KnownSolution), Is.GreaterThanOrEqualTo(2));
+            var rhythm = Post40QualityAudit.AnalyzeRhythm(level, level.KnownSolution);
+            Assert.That(rhythm.finalThirdMultiPieceTaps, Is.GreaterThanOrEqualTo(1));
+            Assert.That(rhythm.separatePulseSteps, Is.EqualTo(2));
+            Assert.That(level.VerifiedOptimalMoveCount, Is.Null);
+        }
+
+        [Test]
         public void Chapter4FinaleMustRetainTwoSignalsTwoGatesAndThreeColors()
         {
             var finale = Chapter4ResonanceExtendedDrafts.Get(80);
@@ -485,7 +547,7 @@ namespace Shift.Game.Tests
             Assert.That(board.State, Is.EqualTo(GameState.Won));
             Assert.That(pulses.SetEquals(new[] { 1, 2 }), Is.True);
             Assert.That(gates.SetEquals(new[] { 1, 2 }), Is.True);
-            Assert.That(multiPieceTaps, Is.GreaterThanOrEqualTo(2));
+            Assert.That(multiPieceTaps, Is.GreaterThanOrEqualTo(3));
             Assert.That(finale.VerifiedOptimalMoveCount, Is.Null);
         }
     }
