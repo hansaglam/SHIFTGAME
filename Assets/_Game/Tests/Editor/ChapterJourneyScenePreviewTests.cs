@@ -62,11 +62,13 @@ namespace Shift.Game.Tests
             }
         }
 
-        [TestCase(40, false, false)]
-        [TestCase(80, true, false)]
-        [TestCase(100, true, true)]
+        [TestCase(40, false, false, false)]
+        [TestCase(80, true, false, false)]
+        [TestCase(100, true, true, false)]
+        [TestCase(104, true, true, true)]
         public void ChapterSelectorOnlyCreatesNewWorldsForExtendedCampaign(
-            int count, bool hasJourney, bool hasFifthChapter)
+            int count, bool hasJourney, bool hasFifthChapter,
+            bool hasTetherPilot)
         {
             var root = new GameObject("Journey Chapter UI Test", typeof(RectTransform));
             var rounded = PlaceholderVisuals.CreateRounded();
@@ -85,6 +87,10 @@ namespace Shift.Game.Tests
                     Is.EqualTo(hasJourney));
                 Assert.That(content.Find("Chapter 5 Tab") != null,
                     Is.EqualTo(hasFifthChapter));
+                Assert.That(content.Find("Chapter 6 Tab") != null,
+                    Is.EqualTo(hasTetherPilot),
+                    "The sixth tab exists ONLY in a full 104-level " +
+                    "isolated BAĞ prototype scene, never the 100-level game.");
                 Assert.That(content.Find("Chapter Journey") != null,
                     Is.EqualTo(hasJourney));
                 var world = content.Find("Chapter World Landscape");
@@ -109,6 +115,9 @@ namespace Shift.Game.Tests
                         "World route needs its own readable vertical space.");
                 }
                 Assert.That(content.Find("Level " + count), Is.Not.Null);
+                if (hasTetherPilot)
+                    Assert.That(content.Find("Level 105"), Is.Null,
+                        "Only four BAĞ pilot puzzles are authored, not 20.");
             }
             finally
             {
