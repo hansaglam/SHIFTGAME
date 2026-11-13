@@ -20,6 +20,8 @@ namespace Shift.Game
         private ChapterJourneyPanel journey;
         private ChapterWorldBackdrop worldBackdrop;
         private bool expanded;
+        // Opt-in Level 101-104 mechanic pilot, not a full Chapter 6.
+        private bool tetherPreview;
         private Text continueLabel;
         private LevelProgression progressState;
         private int page;
@@ -31,6 +33,7 @@ namespace Shift.Game
             // The shipped 40-level UI layout is left exactly as it was.
             // New chapter navigation exists only when full draft chapters are wired.
             expanded = count >= 60;
+            tetherPreview = count == 104;
             var shade = gameObject.AddComponent<Image>(); shade.color = new Color(.055f,.13f,.23f,.88f);
             var content = PlaceholderVisuals.Rect("Chapter Content", transform, Vector2.zero, Vector2.one);
             group = content.gameObject.AddComponent<CanvasGroup>();
@@ -94,7 +97,11 @@ namespace Shift.Game
             }
             else
             {
-                int tabCount = Mathf.Min(5, count / CampaignChapters.LevelsPerChapter);
+                // Only the isolated 104-level BAĞ preview has a sixth tab.
+                // Release and earlier previews retain their exact chapter count.
+                int tabCount = tetherPreview
+                    ? 6
+                    : Mathf.Min(5, CampaignChapters.Count(count));
                 chapterTabs = new Button[tabCount];
                 float gap = .015f, availableWidth = .88f;
                 float width = (availableWidth - gap * (tabCount - 1)) / tabCount;
@@ -106,8 +113,14 @@ namespace Shift.Game
                         font, rounded, content,
                         new Vector2(left, .655f), new Vector2(left + width, .705f),
                         () => ShowPage(chapterIndex), out var tab);
-                    LocalizedLabel.Bind(tab, "chapter.title", i + 1);
-                    tab.fontSize = tabCount == 5 ? 18 : tabCount == 4 ? 20 : 25;
+                    if (tetherPreview && i == 5)
+                        LocalizedLabel.Bind(tab, () =>
+                            GameLanguageService.Shared.CurrentLanguage ==
+                            GameLanguage.Turkish ? "6 · BAĞ" : "6 · TETHER");
+                    else
+                        LocalizedLabel.Bind(tab, "chapter.title", i + 1);
+                    tab.fontSize = tabCount == 6 ? 17
+                        : tabCount == 5 ? 18 : tabCount == 4 ? 20 : 25;
                 }
                 secondTab = chapterTabs[1];
                 journey = PlaceholderVisuals.Rect("Chapter Journey", content,
@@ -192,16 +205,43 @@ namespace Shift.Game
             {
                 if (journey != null) journey.Hide();
                 if (worldBackdrop != null) worldBackdrop.Hide();
-                LocalizedLabel.Bind(chapterTitle, () =>
-                    summary.Mastered ? MasteryText.Mastered(Language)
-                        : GameLanguageService.Shared.Text("chapter.title", page + 1));
-                chapterTitle.fontSize = expanded ? 38
-                    : summary.Mastered ? 46 : 64;
-                masterySummary.fontSize = expanded ? 23 : 30;
-                LocalizedLabel.Bind(masterySummary, () => MasteryText.Summary(summary, Language));
-                LocalizedLabel.Bind(masteryLegend, () => MasteryText.Legend(Language));
-                LocalizedLabel.Bind(masteryReplay, () =>
-                    summary.Completed == summary.Total ? MasteryText.Remaining(summary, Language) : "");
+                if (tetherPreview && page == 5)
+                {
+                    // Four mechanics experiments, not a falsely completed world.
+                    LocalizedLabel.Bind(chapterTitle, () =>
+                        GameLanguageService.Shared.CurrentLanguage ==
+                        GameLanguage.Turkish
+                            ? "BÖLÜM 6 · BAĞ PROTOTİPİ"
+                            : "CHAPTER 6 · TETHER PILOT");
+                    LocalizedLabel.Bind(masterySummary, () =>
+                        GameLanguageService.Shared.CurrentLanguage ==
+                        GameLanguage.Turkish
+                            ? "101–104 · Çekiş, engeller, Rezonans ve kapılar"
+                            : "101–104 · Pulls, obstacles, Resonance and gates");
+                    chapterTitle.fontSize = 35;
+                    masterySummary.fontSize = 23;
+                    LocalizedLabel.Bind(masteryLegend, () =>
+                        MasteryText.Legend(Language));
+                    LocalizedLabel.Bind(masteryReplay, () =>
+                        GameLanguageService.Shared.CurrentLanguage ==
+                        GameLanguage.Turkish
+                            ? summary.Completed + " / 4 test seviyesi tamamlandı"
+                            : summary.Completed + " / 4 pilot levels completed");
+                }
+                else
+                {
+                    LocalizedLabel.Bind(chapterTitle, () =>
+                        summary.Mastered ? MasteryText.Mastered(Language)
+                            : GameLanguageService.Shared.Text("chapter.title", page + 1));
+                    chapterTitle.fontSize = expanded ? 38
+                        : summary.Mastered ? 46 : 64;
+                    masterySummary.fontSize = expanded ? 23 : 30;
+                    LocalizedLabel.Bind(masterySummary, () => MasteryText.Summary(summary, Language));
+                    LocalizedLabel.Bind(masteryLegend, () => MasteryText.Legend(Language));
+                    LocalizedLabel.Bind(masteryReplay, () =>
+                        summary.Completed == summary.Total
+                            ? MasteryText.Remaining(summary, Language) : "");
+                }
             }
             MasteryViewed?.Invoke(summary);
             if (chapterTabs != null)
