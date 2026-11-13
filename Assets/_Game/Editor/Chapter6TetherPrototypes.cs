@@ -146,8 +146,11 @@ namespace Shift.Game.Editor
                 var level = Get(n);
                 try
                 {
+                    // Declare before short-circuit: when level is null,
+                    // ValidatePlayable is skipped and cannot assign error.
+                    string error = null;
                     if (level == null || !level.ValidatePlayable(
-                        out string error))
+                        out error))
                         throw new InvalidOperationException(
                             error ?? "Missing LevelData");
                     if (!LevelValidation.VerifySolution(level,
