@@ -198,8 +198,24 @@ namespace Shift.Game
             IsStartupWaiting = false;
             if (progress != null)
                 activeLevelIndex = selectedLevel = ContinueLevelIndex >= 0 ? ContinueLevelIndex : progress.Current;
-            if (CurrentLevel == null || !CurrentLevel.ValidatePlayable(out _))
-            { StartupShell("resume.no_levels"); yield break; }
+            // A broken preview level reference otherwise appears only as a
+            // background image. Log the exact problem before showing fallback.
+            var resuming = CurrentLevel;
+            string validationProblem = null;
+            if (resuming == null ||
+                !resuming.ValidatePlayable(out validationProblem))
+            {
+                Debug.LogError(
+                    "SHIFT campaign could not resume. Level index=" +
+                    (activeLevelIndex + 1) + ", assigned levels=" +
+                    (levels == null ? 0 : levels.Length) +
+                    ", asset=" + (resuming == null ? "<null>" : resuming.name) +
+                    ", validation=" + (validationProblem ?? "missing reference") +
+                    ". Check the isolated preview scene's LevelData references.",
+                    this);
+                StartupShell("resume.no_levels");
+                yield break;
+            }
             Rebuild("session_start", false);
             returningContext = true;
             OpenChapter();
