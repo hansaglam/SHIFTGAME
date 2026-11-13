@@ -238,21 +238,91 @@ namespace Shift.Game.Editor
                 Debug.LogError("Chapter 6 prototype is NOT cleared for release.");
         }
 
+        // Rebuild the LevelData references even when an earlier preview
+        // scene already exists. Merely reopening a stale copy can display
+        // "Campaign unavailable" despite all four puzzle proofs passing.
+        private static void RewirePreviewScene(Scene scene, LevelData[] levels)
+        {
+            if (!scene.IsValid() || !scene.isLoaded)
+                throw new InvalidOperationException(
+                    "BAĞ preview scene is not loaded.");
+            PrototypeGame game = null;
+            int count = 0;
+            foreach (var root in scene.GetRootGameObjects())
+                foreach (var candidate in
+                    root.GetComponentsInChildren<PrototypeGame>(true))
+                {
+                    game = candidate;
+                    count++;
+                }
+            if (count != 1)
+                throw new InvalidOperationException(
+                    "Expected exactly one PrototypeGame, found " + count);
+            var serialized = new SerializedObject(game);
+            serialized.Update();
+            var slots = serialized.FindProperty("levels");
+            var enabled = serialized.FindProperty("useLevelSet");
+            var selected = serialized.FindProperty("selectedLevel");
+            var progressKey = serialized.FindProperty("saveKeyPrefix");
+            var settingsKey = serialized.FindProperty("settingsKeyPrefix");
+            if (slots == null || enabled == null || selected == null ||
+                progressKey == null || settingsKey == null)
+                throw new InvalidOperationException(
+                    "PrototypeGame campaign fields are missing.");
+            slots.arraySize = levels.Length;
+            for (int i = 0; i < levels.Length; i++)
+                slots.GetArrayElementAtIndex(i).objectReferenceValue = levels[i];
+            enabled.boolValue = true;
+            selected.intValue = 0;
+            progressKey.stringValue = ProgressPrefix;
+            settingsKey.stringValue = SettingsPrefix;
+            serialized.ApplyModifiedPropertiesWithoutUndo();
+            EditorSceneManager.MarkSceneDirty(scene);
+            if (!EditorSceneManager.SaveScene(scene))
+                throw new InvalidOperationException(
+                    "Could not save the repaired BAĞ preview scene.");
+
+            // Inspect serialized values, not just the in-memory level set.
+            var verify = new SerializedObject(game);
+            var saved = verify.FindProperty("levels");
+            if (saved.arraySize != 104 ||
+                verify.FindProperty("saveKeyPrefix").stringValue !=
+                    ProgressPrefix ||
+                !verify.FindProperty("useLevelSet").boolValue)
+                throw new InvalidOperationException(
+                    "BAĞ preview wiring did not persist.");
+            for (int i = 0; i < levels.Length; i++)
+                if (saved.GetArrayElementAtIndex(i).objectReferenceValue
+                    != levels[i])
+                    throw new InvalidOperationException(
+                        "BAĞ preview level reference mismatch at " +
+                        (i + 1));
+        }
+
         [MenuItem("SHIFT/Chapter 6/Create or Open Isolated BAĞ Preview")]
         public static void CreateOrOpenPreview()
         {
             if (EditorApplication.isPlayingOrWillChangePlaymode)
-                throw new InvalidOperationException("Exit Play Mode first.");
-            var levels = Load104(); // Fail before touching the open scene.
-            if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
-                return;
-            if (AssetDatabase.LoadAssetAtPath<SceneAsset>(PreviewScene) != null)
             {
-                EditorSceneManager.OpenScene(PreviewScene, OpenSceneMode.Single);
-                Debug.Log("Existing BAĞ preview opened; real scene unchanged.");
+                Debug.LogWarning(
+                    "Stop Play Mode before opening the BAĞ preview.");
                 return;
             }
-            if (!AssetDatabase.CopyAsset(PrototypeSetup.ScenePath, PreviewScene))
+            var levels = Load104();
+            if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
+                return;
+            if (AssetDatabase.LoadAssetAtPath<SceneAsset>(
+                PreviewScene) != null)
+            {
+                var opened = EditorSceneManager.OpenScene(
+                    PreviewScene, OpenSceneMode.Single);
+                RewirePreviewScene(opened, levels);
+                Debug.Log("Existing BAĞ preview repaired and reopened. " +
+                    "104 LevelData references verified; shipped scene unchanged.");
+                return;
+            }
+            if (!AssetDatabase.CopyAsset(PrototypeSetup.ScenePath,
+                PreviewScene))
                 throw new InvalidOperationException(
                     "Cannot make an isolated copy of the shipped scene.");
             Scene scene = default;
@@ -260,56 +330,27 @@ namespace Shift.Game.Editor
             {
                 scene = EditorSceneManager.OpenScene(
                     PreviewScene, OpenSceneMode.Single);
-                PrototypeGame game = null;
-                int count = 0;
-                foreach (var root in scene.GetRootGameObjects())
-                    foreach (var component in root.GetComponentsInChildren<PrototypeGame>(true))
-                    {
-                        game = component;
-                        count++;
-                    }
-                if (count != 1)
-                    throw new InvalidOperationException(
-                        "Expected one PrototypeGame: " + count);
-                var serialized = new SerializedObject(game);
-                var list = serialized.FindProperty("levels");
-                if (list == null)
-                    throw new InvalidOperationException(
-                        "PrototypeGame.levels missing.");
-                list.arraySize = 104;
-                for (int i = 0; i < levels.Length; i++)
-                    list.GetArrayElementAtIndex(i).objectReferenceValue =
-                        levels[i];
-                serialized.FindProperty("useLevelSet").boolValue = true;
-                serialized.FindProperty("selectedLevel").intValue = 0;
-                serialized.FindProperty("saveKeyPrefix").stringValue =
-                    ProgressPrefix;
-                serialized.FindProperty("settingsKeyPrefix").stringValue =
-                    SettingsPrefix;
-                serialized.ApplyModifiedPropertiesWithoutUndo();
-                EditorSceneManager.MarkSceneDirty(scene);
-                if (!EditorSceneManager.SaveScene(scene))
-                    throw new InvalidOperationException(
-                        "Unable to save BAĞ preview scene.");
-
-                // Only the isolated debug prefix is touched. Chapter 6 is
-                // NOT installed/unlocked in an existing player's progress.
+                RewirePreviewScene(scene, levels);
                 var save = new SaveService(ProgressPrefix);
                 var previous = save.Load(104);
                 save.Save(new ProgressData(103, 100,
                     Math.Max(99, previous.HighestCompleted)));
-                Debug.Log("Isolated BAĞ preview created at Level101. " +
-                    "Build Settings and player saves remain unchanged.");
+                Debug.Log("Isolated BAĞ preview created with 104 verified " +
+                    "level references. Original scene and saves unchanged.");
             }
             catch
             {
                 if (scene.IsValid() && scene.isLoaded)
-                    EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,
-                        NewSceneMode.Single);
+                    EditorSceneManager.NewScene(
+                        NewSceneSetup.EmptyScene, NewSceneMode.Single);
                 AssetDatabase.DeleteAsset(PreviewScene);
                 throw;
             }
         }
+
+        [MenuItem("SHIFT/Chapter 6/Create or Open Isolated BAĞ Preview", true)]
+        public static bool CanOpenPreview() =>
+            !EditorApplication.isPlayingOrWillChangePlaymode;
 
         private static void OpenLevel(int level)
         {
@@ -321,7 +362,17 @@ namespace Shift.Game.Editor
                 return;
             }
             if (EditorApplication.isPlayingOrWillChangePlaymode)
-                throw new InvalidOperationException("Exit Play Mode first.");
+            {
+                Debug.LogWarning(
+                    "Stop Play Mode before selecting a BAĞ pilot level.");
+                return;
+            }
+            var levels = Load104();
+            if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
+                return;
+            var opened = EditorSceneManager.OpenScene(
+                PreviewScene, OpenSceneMode.Single);
+            RewirePreviewScene(opened, levels);
             var save = new SaveService(ProgressPrefix);
             var previous = save.Load(104);
             // This is a developer-only jump. Keep the test save's
@@ -329,9 +380,9 @@ namespace Shift.Game.Editor
             // none of these synthetic completions touch real players.
             save.Save(new ProgressData(103, level - 1,
                 Math.Max(level - 2, previous.HighestCompleted)));
-            EditorSceneManager.OpenScene(PreviewScene, OpenSceneMode.Single);
-            Debug.Log("BAĞ preview starts on Level " + level +
-                " using ONLY the developer preview save.");
+            Debug.Log("BAĞ preview level " + level +
+                " selected; 104 scene references verified. " +
+                "Now press Play in Unity.");
         }
 
         [MenuItem("SHIFT/Chapter 6/Preview Level 101")]
@@ -342,5 +393,14 @@ namespace Shift.Game.Editor
         public static void Preview103() => OpenLevel(103);
         [MenuItem("SHIFT/Chapter 6/Preview Level 104")]
         public static void Preview104() => OpenLevel(104);
+
+        [MenuItem("SHIFT/Chapter 6/Preview Level 101", true)]
+        public static bool CanPreview101() => CanOpenPreview();
+        [MenuItem("SHIFT/Chapter 6/Preview Level 102", true)]
+        public static bool CanPreview102() => CanOpenPreview();
+        [MenuItem("SHIFT/Chapter 6/Preview Level 103", true)]
+        public static bool CanPreview103() => CanOpenPreview();
+        [MenuItem("SHIFT/Chapter 6/Preview Level 104", true)]
+        public static bool CanPreview104() => CanOpenPreview();
     }
 }
