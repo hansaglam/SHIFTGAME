@@ -28,7 +28,7 @@ namespace Shift.Game
             for (int i = 0; i < pieces.Length; i++)
             {
                 var p = pieces[i]; var saved = undoSnapshot[i];
-                p.Position = saved.Position; p.Direction = saved.Direction; p.Active = saved.Active; p.GateOpen = saved.GateOpen;
+                p.Position = saved.Position; p.Direction = saved.Direction; p.Active = saved.Active; p.GateOpen = saved.GateOpen; p.RelayReady = saved.RelayReady;
                 if (p.Active && p.Movable) occupants[p.Position.x, p.Position.y] = p;
             }
             MovesRemaining = undoMoves; State = GameState.Playing;
@@ -41,7 +41,7 @@ namespace Shift.Game
         private HashSet<PieceColor> targetColors;
         private bool overflow;
         private int operations;
-        private struct Snapshot { public GridPosition Position; public Direction Direction; public bool Active; public bool GateOpen; }
+        private struct Snapshot { public GridPosition Position; public Direction Direction; public bool Active; public bool GateOpen; public bool RelayReady; }
 
         public int Width { get; private set; }
         public int Height { get; private set; }
@@ -94,21 +94,51 @@ namespace Shift.Game
         {
             if (State != GameState.Playing) return false;
             var piece = GetOccupant(position);
-            if (piece == null || piece.Type != PieceType.Normal) return false;
+            // A stone waiting on a relay cannot be manually moved; the next
+            // successful tap on ANOTHER Normal resolves its queued step.
+            if (piece == null || piece.Type != PieceType.Normal ||
+                piece.RelayReady) return false;
             State = GameState.Resolving;
             actions.Clear(); overflow = false; operations = 0; LastReactionWasCancelled = false;
             Array.Clear(moving, 0, moving.Length);
             Array.Clear(signaled, 0, signaled.Length);
             for (int i = 0; i < pieces.Length; i++)
-                snapshots[i] = new Snapshot { Position = pieces[i].Position, Direction = pieces[i].Direction, Active = pieces[i].Active, GateOpen = pieces[i].GateOpen };
+                snapshots[i] = new Snapshot { Position = pieces[i].Position, Direction = pieces[i].Direction, Active = pieces[i].Active, GateOpen = pieces[i].GateOpen, RelayReady = pieces[i].RelayReady };
             Move(piece, piece.Direction, 0);
+            // Only the pieces already waiting before this tap are eligible.
+            // Newly armed stones wait for a later successful tap. Resolve in
+            // stable placement order, never by random queue order.
+            if (!overflow && actions.Count > 0)
+            {
+                for (int i = 0; i < pieces.Length; i++)
+                {
+                    var waiting = pieces[i];
+                    if (!snapshots[i].RelayReady || !waiting.RelayReady ||
+                        !waiting.Active || waiting.Type != PieceType.Normal ||
+                        waiting.Id == piece.Id)
+                        continue;
+                    // Moving the other stone may have pushed this one away
+                    // from its relay; Move() already clears the waiting flag.
+                    var at = GetTerrain(waiting.Position);
+                    if (at == null || at.Type != PieceType.Relay) continue;
+                    GridPosition origin = waiting.Position;
+                    int beforeActions = actions.Count;
+                    if (Move(waiting, waiting.Direction, 0) &&
+                        !overflow && !waiting.Position.Equals(origin))
+                        Record(BoardActionType.RelayReleased,
+                            waiting, origin, waiting.Position);
+                    // A blocked release remains queued for a later tap. A
+                    // successful move clears the queued flag in Move().
+                    if (overflow) break;
+                }
+            }
             if (overflow)
             {
                 // Cancel the entire transaction on a cyclic/oversized reaction, never leave a partial board.
                 Array.Clear(occupants, 0, occupants.Length);
                 for (int i = 0; i < pieces.Length; i++)
                 {
-                    var p = pieces[i]; p.Position = snapshots[i].Position; p.Direction = snapshots[i].Direction; p.Active = snapshots[i].Active; p.GateOpen = snapshots[i].GateOpen;
+                    var p = pieces[i]; p.Position = snapshots[i].Position; p.Direction = snapshots[i].Direction; p.Active = snapshots[i].Active; p.GateOpen = snapshots[i].GateOpen; p.RelayReady = snapshots[i].RelayReady;
                     if (p.Active && p.Movable) occupants[p.Position.x, p.Position.y] = p;
                 }
                 actions.Clear(); LastReactionWasCancelled = true;
@@ -158,6 +188,9 @@ namespace Shift.Game
             if (tile != null && tile.Type == PieceType.Gate && !tile.GateOpen) { overflow = true; return false; }
             var previous = piece.Position;
             occupants[previous.x, previous.y] = null;
+            // Forced movement, a push or delayed release consumes the old
+            // waiting state. An entry onto another relay can arm it again.
+            piece.RelayReady = false;
             if (piece.Direction != direction)
             {
                 piece.Direction = direction;
@@ -170,6 +203,13 @@ namespace Shift.Game
             {
                 occupants[next.x, next.y] = null; piece.Active = false;
                 Record(BoardActionType.Deliver, piece, next, next);
+            }
+            else if (tile.Type == PieceType.Relay &&
+                     piece.Type == PieceType.Normal)
+            {
+                piece.RelayReady = true;
+                Record(BoardActionType.RelayArmed,
+                    piece, next, next);
             }
             else if (tile.Type == PieceType.Switch && piece.Type == PieceType.Normal)
             {
