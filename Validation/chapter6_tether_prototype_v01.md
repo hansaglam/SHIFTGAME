@@ -117,3 +117,21 @@ The normal 40-, 80- and 100-level selectors remain unchanged; main and the shipp
 
 **IMPORTANT:** The GitHub source fix is committed. It does **not** automatically update a local Unity checkout. In GitHub Desktop select `feature/chapter6-tether-prototype-v01` and **Fetch/Pull**; then wait for Unity to finish compiling. Use the top menu to create or open the isolated preview scene. If Unity's top menu itself is missing, local Console errors/branch state still require inspection; this workspace has not executed Unity compilation.
 
+
+
+## Unity device-report follow-up — 13 November 2026
+
+A developer opened the generated `SHIFT_Tether_101_104_Preview` scene and ran **`SHIFT → Chapter 6 → Validate BAĞ Prototype Levels 101-104`**. Unity's log reported **4/4 engine checks passing**, including Level 104's minimum five-tap route, six-tap alternate and solver state count. This establishes engine-level proof for the four *mechanical* candidates, **not** successful in-game presentation or player enjoyment.
+
+However, two distinct issues appeared in the Game view:
+
+1. `InvalidOperationException: Exit Play Mode first.` followed an attempt to choose a pilot Level 104 from the Editor menu **while already in Play Mode**. This is an invalid editor action, not a BoardManager failure. The `Preview Level 101–104` and `Create or Open Isolated BAĞ Preview` menus are now disabled during Play Mode; underlying methods also issue an informational warning instead of throwing in that case.
+2. `resume.no_levels` ("Kampanya kullanılamıyor") was shown on the scenic startup shell. In `PrototypeGame.ReturningStartup`, that message means `CurrentLevel` is either null or fails `LevelData.ValidatePlayable`. The specific cause cannot be identified from that screenshot because the previous code suppressed the validation reason.
+
+**Corrective implementation:** The old `CreateOrOpenPreview` returned immediately if the scene file already existed, without revalidating its 104 `LevelData` references. It now **rewires and saves any existing isolated preview scene**, just like a newly copied scene, ensuring all 104 references, `useLevelSet=true`, and separate `SHIFT.Preview.Chapter6Tether.v1.` save/settings prefixes match the generated campaign. Selecting a pilot level outside Play Mode also performs this repair, using the expected level set rather than trusting old serialized state. A post-save `SerializedObject` check ensures all 104 references and key settings remain correct.
+
+For any *remaining* startup failure, `PrototypeGame` now writes one explicit Console error with the **actual one-based level index, assigned array count, asset name and validation reason**, without resetting progress or bypassing broken content. This is intentionally diagnostic; it does not hide the error.
+
+**How to retest:** Stop Unity Play Mode, close Unity, pull the latest `feature/chapter6-tether-prototype-v01` into the isolated clone, reopen Unity, choose `SHIFT → Chapter 6 → Create or Open Isolated BAĞ Preview` and then `SHIFT → Chapter 6 → Preview Level 101` **while not playing**. Press Play only after the level is selected. If "Campaign unavailable" persists, report the new precise Console error; do not assume the repair worked or edit production/PlayerPrefs keys.
+
+The Play-mode fix and scene rewiring have been source-reviewed but **have not been rerun in Unity after the update**. The main scene, 1–100 asset data, Mora and live player records remain unchanged.
