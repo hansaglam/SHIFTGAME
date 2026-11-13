@@ -17,17 +17,17 @@ namespace Shift.Game
         };
         private static readonly string[] EnglishHints =
         {
-            "A red move can pull blue onto a distant switch.",
-            "If the pull hits a wall, move the partner to change the route.",
-            "A bond can activate Resonance and move a third stone in one tap.",
-            "The first gate controls the pull; the second controls the exit."
+            "The two gold 1 badges mean BONDED. Tap red: as it moves right, it pulls blue onto the switch.",
+            "The bond cannot pull through a wall. Tap blue first to bring red toward the up-arrow tile.",
+            "Tap red. Its gold bond pulls blue onto the cyan node, which then moves yellow remotely.",
+            "Open the first gate so blue can be pulled. Then use blue to open the second gate."
         };
         private static readonly string[] TurkishHints =
         {
-            "Kırmızıyı ilerletirsen mavi eşini çekip kapıyı açabilir.",
-            "Çekiş duvarda duruyorsa önce bağlı eşin yönünü düşün.",
-            "Bir çekiş, uzaktaki üçüncü taşı da harekete geçirebilir.",
-            "İlk kapı çekiş yolunu, ikinci kapı son geçişi kontrol eder."
+            "Altın 1 işaretli kırmızı ve mavi BAĞ’lı. Kırmızıya dokun: sağa giderken maviyi düğmeye çeker.",
+            "BAĞ duvardan çekemez. Önce maviye dokun; kırmızı yukarı okuna çekilsin.",
+            "Kırmızıya dokun: BAĞ maviyi turkuaz Rezonans’a çeker; Rezonans sarıyı uzaktan hareket ettirir.",
+            "Önce ilk kapıyı aç ki mavi çekilebilsin. Sonra maviyle ikinci kapıyı aç."
         };
 
         public static bool TryNumber(LevelData level, out int number)
