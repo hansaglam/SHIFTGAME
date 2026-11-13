@@ -74,7 +74,8 @@ namespace Shift.Game.Editor
         {
             var b=Replay(path); var key=new StringBuilder().Append(b.MovesRemaining).Append('|');
             foreach(var p in b.Pieces) key.Append(p.Id).Append(':').Append(p.Active?1:0).Append(',').Append(p.Position.x).Append(',')
-                .Append(p.Position.y).Append(',').Append((int)p.Direction).Append(',').Append(p.GateOpen?1:0).Append(';');
+                .Append(p.Position.y).Append(',').Append((int)p.Direction).Append(',').Append(p.GateOpen?1:0)
+                .Append(p.RelayReady?1:0).Append(';');
             if(cache.TryGetValue(key.ToString(),out var existing)) return existing;
             if(cache.Count>=limit) throw new InvalidOperationException("State bound reached; no optimum/probability certificate may be claimed.");
             var node=new Node(); cache.Add(key.ToString(),node);

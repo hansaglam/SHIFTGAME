@@ -11,6 +11,7 @@ namespace Shift.Game
         public bool GateShownOpen => appearance != null && appearance.GateShownOpen;
         private Button button;
         private Image image, trail, exitGlow, channelFeedback;
+        private GameObject relayReadyBadge;
         private CanvasGroup opacity;
         private Color baseColor;
         private GameFeelSettings feel;
@@ -54,6 +55,32 @@ namespace Shift.Game
             }
         }
 
+        // Only Chapter6 Relay boards request this tiny state badge. It is
+        // visible while a normal is waiting for another tap, and is not a
+        // second game control or a whole-board connecting line.
+        public void EnableRelayBadge(Sprite rounded)
+        {
+            if (Data.Type != PieceType.Normal || relayReadyBadge != null)
+                return;
+            var rect = PlaceholderVisuals.Rect("Waiting Relay Badge",
+                transform, new Vector2(.66f,.67f), new Vector2(.98f,.99f));
+            var image = rect.gameObject.AddComponent<Image>();
+            image.sprite = rounded;
+            image.color = new Color32(21,70,96,255);
+            image.raycastTarget = false;
+            BoardIcon.Create("Waiting Hourglass",rect,
+                BoardIconShape.RelayHourglass,
+                new Color32(223,242,245,255),
+                new Vector2(.15f,.13f),new Vector2(.85f,.87f));
+            relayReadyBadge = rect.gameObject;
+            ShowRelayReady(Data.RelayReady);
+        }
+        public void ShowRelayReady(bool ready)
+        {
+            if (relayReadyBadge != null)
+                relayReadyBadge.SetActive(ready);
+        }
+
         // Overlay belongs to this tile, but renders above occupants without intercepting input.
         public void BindChannelFeedback(Image overlay) { channelFeedback = overlay; appearance.UseExternalChannelBadge(); }
         private bool IsMechanism => Data != null && (Data.Type == PieceType.Gate || Data.Type == PieceType.Switch || Data.Type == PieceType.Resonance);
@@ -76,7 +103,7 @@ namespace Shift.Game
         {
             pulsing = false; pulseTime = 0; exitScale = 1;
             if (channelFeedback != null) channelFeedback.color = Color.clear;
-            gameObject.SetActive(Data.Active); Place(Data.Position); ShowDirection(Data.Direction); ShowGate(Data.GateOpen);
+            gameObject.SetActive(Data.Active); Place(Data.Position); ShowDirection(Data.Direction); ShowGate(Data.GateOpen); ShowRelayReady(Data.RelayReady);
             opacity.alpha = 1; body.anchoredPosition = Vector2.zero; appearance.Highlight(0); body.localScale = Vector3.one; trail.color = Color.clear; image.color = Color.white;
         }
         public void Feedback(float strength, bool isBlocked = false)

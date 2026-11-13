@@ -27,6 +27,9 @@ namespace Shift.Game
             { "guide.resonance.name", new[] { "Resonance Node", "Rezonans Düğümü" } },
             { "guide.resonance.body", new[] { "Two matching signal nodes are linked. When a moving piece ENTERS one, a piece waiting on the other node moves in its OWN direction. Then the first piece continues in its original direction. Both movements belong to ONE tap. No teleporting or rotation.\n\nEach link signals only once per tap. A blocked receiver stays in place, but the source still continues when possible. Undo restores every piece.", "Eşleşen iki sinyal düğümü uzaktan bağlıdır. Hareketli bir taş birine GİRDİĞİNDE, diğer düğümde bekleyen renkli taş KENDİ yönünde ilerler. Ardından ilk taş eski yönünde ilerlemeye devam eder. İkisi de TEK dokunuşun sonucudur. Işınlanma veya döndürme yoktur.\n\nHer bağlantı tek hamlede yalnızca bir sinyal verir. Uzak taş engelliyse yerinde kalır ancak ilk taş ilerleyebilir. Geri Al tüm taşları eski konumuna getirir." } },
             { "guide.resonance.example", new[] { "Enter A → activate B → continue A.", "A'ya gir → B'yi tetikle → A ile devam et." } },
+            { "guide.relay.name", new[] { "Relay — Waiting Move", "RÖLE — Bekleyen Hamle" } },
+            { "guide.relay.body", new[] { "An hourglass tile stores a Normal stone's next move. That stone waits and cannot be tapped directly. When you successfully tap another Normal, the waiting stone moves once in its own direction after that reaction. A blocked move stays waiting. Undo restores the wait. No gates or paired signal nodes are involved.", "Kum saati karosu bir taşın sonraki hareketini bekletir. Bekleyen taşa doğrudan dokunulmaz. Başka bir normal taşa başarılı bir hamle yaptığında bekleyen taş da ardından kendi yönünde ilerler. Yolu kapalıysa beklemeye devam eder. Geri Al bu durumu da geri getirir. Kapı veya eşleşen sinyal yoktur." } },
+            { "guide.relay.example", new[] { "Red enters hourglass → tap Blue → Red moves too.", "Kırmızı kum saatine girer → Maviye dokun → Kırmızı da ilerler." } },
             { "guide.gates.name", new[] { "Switches & gates", "Düğmeler ve Kapılar" } },
             { "guide.gates.body", new[] { "Colored pieces entering a switch trigger it. Pushed pieces count too.\n\nBoxes do not trigger switches.\n\nGates with the same channel symbol toggle: closed opens, open closes. Closed gates block entry.", "Düğmeye giren renkli taşlar onu tetikler. İtilen renkli taşlar da buna dahildir.\n\nKutular düğmeleri tetiklemez.\n\nAynı kanal simgesindeki kapılar durum değiştirir: kapalı açılır, açık kapanır. Kapalı kapıya girilemez." } },
             { "guide.gates.example", new[] { "Same symbol: switch · closed · open", "Aynı simge: düğme · kapalı · açık" } },
@@ -261,6 +264,9 @@ namespace Shift.Game
             if (ChapterDraftLocalization.TryTitle(level,
                 GameLanguageService.Shared.CurrentLanguage, out string title))
                 return title;
+            if (RelayPilotLocalization.TryTitle(level,
+                GameLanguageService.Shared.CurrentLanguage, out string pilotTitle))
+                return pilotTitle;
             return "SHIFT";
         }
 
@@ -272,6 +278,9 @@ namespace Shift.Game
             if (ChapterDraftLocalization.TryInstruction(level,
                 GameLanguageService.Shared.CurrentLanguage, out string draftHint))
                 return draftHint;
+            if (RelayPilotLocalization.TryHint(level,
+                GameLanguageService.Shared.CurrentLanguage, out string pilotHint))
+                return pilotHint;
             return GameLanguageService.Shared.CurrentLanguage == GameLanguage.English &&
                 !string.IsNullOrEmpty(level.Hint) ? level.Hint
                 : GameLanguageService.Shared.Text("hint.fallback");

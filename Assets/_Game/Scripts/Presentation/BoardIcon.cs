@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 namespace Shift.Game
 {
-    public enum BoardIconShape { Arrow, Clockwise, Diamond, DoubleDiamond, Crate, Resonance }
+    public enum BoardIconShape { Arrow, Clockwise, Diamond, DoubleDiamond, Crate, Resonance, RelayHourglass }
     [RequireComponent(typeof(CanvasRenderer))]
     public sealed class BoardIcon : MaskableGraphic
     {
@@ -72,6 +72,17 @@ namespace Shift.Game
                 Bar(new Vector2(.37f,-.24f),new Vector2(.37f,.24f),.08f);
                 Bar(new Vector2(-.24f,.37f),new Vector2(.24f,.37f),.08f);
                 Bar(new Vector2(-.24f,-.37f),new Vector2(.24f,-.37f),.08f);
+            }
+            else if(Shape==BoardIconShape.RelayHourglass)
+            {
+                // One compact hourglass: TEMPORAL marker, not a pad,
+                // lock, channel diamond, directional arrow or gate.
+                Bar(new Vector2(-.30f,.35f),new Vector2(.30f,.35f),.075f);
+                Bar(new Vector2(-.30f,-.35f),new Vector2(.30f,-.35f),.075f);
+                Tri(new Vector2(-.28f,.26f),new Vector2(.28f,.26f),
+                    new Vector2(0f,0f));
+                Tri(new Vector2(-.28f,-.26f),new Vector2(.28f,-.26f),
+                    new Vector2(0f,0f));
             }
             else if(Shape==BoardIconShape.Diamond) Diamond(0,.34f);
             else if(Shape==BoardIconShape.DoubleDiamond) { Diamond(-.26f,.25f); Diamond(.26f,.25f); }

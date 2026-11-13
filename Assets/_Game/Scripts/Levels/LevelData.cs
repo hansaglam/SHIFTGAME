@@ -102,6 +102,14 @@ namespace Shift.Game
                 if (resonator && (p.channel < 1 || p.channel > 2 || p.color != PieceColor.None ||
                     p.direction != Direction.None || p.initialOpen))
                 { error = "Resonance requires paired channel 1/2 with no color, direction or open state."; return false; }
+                // RÖLE has no channel, pairing, key, toggle or closed state.
+                // Only a Normal's NEXT successful tap can release a waiting
+                // Normal. This is deliberately unlike Switch/Gate or Resonance.
+                if (p.type == PieceType.Relay &&
+                    (p.color != PieceColor.None ||
+                     p.direction != Direction.None ||
+                     p.channel != 0 || p.initialOpen))
+                { error = "Relay must be a neutral, stateless timing tile."; return false; }
                 if ((!stateTile && !resonator && p.channel != 0) || (p.type != PieceType.Gate && p.initialOpen))
                 { error = "Channel is for Switch/Gate and Resonance; open state is for Gate."; return false; }
                 if (p.type == PieceType.Switch) switches.Add(p.channel);

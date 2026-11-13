@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Shift.Game
 {
-    public enum MechanicTopic { Push, Direction, Exits, Rotator, Gates, Channels, Objectives, Resonance }
+    public enum MechanicTopic { Push, Direction, Exits, Rotator, Gates, Channels, Objectives, Resonance, Relay }
 
     // Content discovery, never a solution lookup or a filename/index convention.
     public static class MechanicGuideCatalog
@@ -14,14 +14,14 @@ namespace Shift.Game
         public static bool Contains(LevelData level, MechanicTopic topic)
         {
             if (level == null) return false;
-            bool box=false, direction=false, exit=false, rotator=false, sw=false, gate=false, resonance=false;
+            bool box=false, direction=false, exit=false, rotator=false, sw=false, gate=false, resonance=false, relay=false;
             var channels=new HashSet<int>();
             foreach(var p in level.Placements)
             {
                 box |= p.type==PieceType.PushBlock; direction |= p.type==PieceType.Direction;
                 exit |= p.type==PieceType.Exit && p.color!=PieceColor.None;
                 rotator |= p.type==PieceType.Rotator; sw |= p.type==PieceType.Switch; gate |= p.type==PieceType.Gate;
-                resonance |= p.type==PieceType.Resonance;
+                resonance |= p.type==PieceType.Resonance; relay |= p.type==PieceType.Relay;
                 if(p.type==PieceType.Gate) channels.Add(p.channel);
             }
             switch(topic)
@@ -34,6 +34,7 @@ namespace Shift.Game
                 case MechanicTopic.Channels: return sw && channels.Count>1;
                 case MechanicTopic.Objectives: return level.ResolvedTargetColors.Count>1;
                 case MechanicTopic.Resonance: return resonance;
+                case MechanicTopic.Relay: return relay;
                 default: return false;
             }
         }
@@ -49,6 +50,7 @@ namespace Shift.Game
                 case MechanicTopic.Exits: return new[]{P(PieceType.Normal,PieceColor.Red,Direction.Right),P(PieceType.Exit,PieceColor.Red),P(PieceType.Exit,PieceColor.Blue)};
                 case MechanicTopic.Rotator: return new[]{P(PieceType.Normal,PieceColor.Red,Direction.Up),P(PieceType.Rotator),P(PieceType.Normal,PieceColor.Red,Direction.Right)};
                 case MechanicTopic.Resonance: return new[]{P(PieceType.Normal,PieceColor.Red,Direction.Right),P(PieceType.Resonance,channel:1),P(PieceType.Resonance,channel:1),P(PieceType.Normal,PieceColor.Blue,Direction.Up)};
+                case MechanicTopic.Relay: return new[]{P(PieceType.Normal,PieceColor.Red,Direction.Right),P(PieceType.Relay),P(PieceType.Normal,PieceColor.Blue,Direction.Right)};
                 case MechanicTopic.Gates: return new[]{P(PieceType.Switch,channel:1),P(PieceType.Gate,channel:1),P(PieceType.Gate,channel:1,open:true)};
                 case MechanicTopic.Channels: return new[]{P(PieceType.Switch,channel:1),P(PieceType.Gate,channel:1),P(PieceType.Switch,channel:2),P(PieceType.Gate,channel:2)};
                 default: return new[]{P(PieceType.Normal,PieceColor.Red,Direction.Up),P(PieceType.Normal,PieceColor.Blue,Direction.Right),P(PieceType.Exit,PieceColor.Red),P(PieceType.Exit,PieceColor.Blue)};
