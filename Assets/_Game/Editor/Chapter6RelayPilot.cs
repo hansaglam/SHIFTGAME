@@ -31,6 +31,48 @@ namespace Shift.Game.Editor
                     Folder + Names[level - 101] + ".asset")
                 : null;
 
+        // Distinct legal orders: not synthetic extra solo taps.
+        public static GridPosition[] Alternative(int level)
+        {
+            if (level == 101)
+                return new[] {
+                    new GridPosition(0,2), new GridPosition(0,1),
+                    new GridPosition(1,2), new GridPosition(2,1) };
+            if (level == 102)
+                return new[] {
+                    new GridPosition(2,1), new GridPosition(0,1),
+                    new GridPosition(0,2), new GridPosition(2,1) };
+            return null; // Delayed Triple has an intentional two-tap reveal.
+        }
+
+        public static bool VerifyAlternative(int level, out string error)
+        {
+            error = null;
+            var route = Alternative(level);
+            if (route == null) return true;
+            var data = Get(level);
+            if (data == null || route.Length > data.MoveLimit)
+            {
+                error = "Invalid RÖLE alternative asset or move budget.";
+                return false;
+            }
+            var board = new BoardManager();
+            board.Load(data);
+            foreach (var tap in route)
+            {
+                if (!board.RequestMove(tap) || board.LastReactionWasCancelled ||
+                    board.ReactionDepth == 0)
+                {
+                    error = "Alternative tap did not commit: " + tap;
+                    return false;
+                }
+                board.CompleteResolution();
+            }
+            if (board.State != GameState.Won)
+                error = "RÖLE alternate did not win.";
+            return error == null;
+        }
+
         public static LevelData[] Load103()
         {
             var first100 = ChapterJourneyScenePreview.Load100();
@@ -73,6 +115,12 @@ namespace Shift.Game.Editor
                     out int reactionDepth))
                 {
                     Debug.LogError("RÖLE " + n + " route: " + error);
+                    continue;
+                }
+                if (!VerifyAlternative(n, out error))
+                {
+                    Debug.LogError("RÖLE " + n +
+                        " alternative failed: " + error);
                     continue;
                 }
                 var proof = CampaignCertification.Prove(level, n);
