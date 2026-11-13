@@ -62,11 +62,13 @@ namespace Shift.Game.Tests
             }
         }
 
-        [TestCase(40, false, false)]
-        [TestCase(80, true, false)]
-        [TestCase(100, true, true)]
+        [TestCase(40, false, false, false)]
+        [TestCase(80, true, false, false)]
+        [TestCase(100, true, true, false)]
+        [TestCase(103, true, true, true)]
         public void ChapterSelectorOnlyCreatesNewWorldsForExtendedCampaign(
-            int count, bool hasJourney, bool hasFifthChapter)
+            int count, bool hasJourney, bool hasFifthChapter,
+            bool relayTestPage)
         {
             var root = new GameObject("Journey Chapter UI Test", typeof(RectTransform));
             var rounded = PlaceholderVisuals.CreateRounded();
@@ -85,6 +87,9 @@ namespace Shift.Game.Tests
                     Is.EqualTo(hasJourney));
                 Assert.That(content.Find("Chapter 5 Tab") != null,
                     Is.EqualTo(hasFifthChapter));
+                Assert.That(content.Find("Chapter 6 Tab") != null,
+                    Is.EqualTo(relayTestPage),
+                    "Three experimental RÖLE levels are accessible only in the 103-level preview.");
                 Assert.That(content.Find("Chapter Journey") != null,
                     Is.EqualTo(hasJourney));
                 var world = content.Find("Chapter World Landscape");
