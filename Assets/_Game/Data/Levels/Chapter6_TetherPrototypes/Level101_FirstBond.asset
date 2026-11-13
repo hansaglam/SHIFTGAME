@@ -61,7 +61,7 @@ MonoBehaviour:
     initialOpen: 0
     tetherId: 0
   displayTitle: 101 - First Bond
-  hint: "Altın 1 işaretli kırmızı ve mavi BAĞ’lı. Kırmızıya dokun: sağa giderken maviyi düğmeye çeker."
+  hint: "Altın 1'ler BAĞ'lı. Kırmızıya dokun: mavi düğmeye çekilir."
   knownSolution:
   - {x: 3, y: 1}
   - {x: 4, y: 1}
