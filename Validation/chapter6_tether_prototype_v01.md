@@ -171,3 +171,16 @@ The developer successfully opened Level101 and Level103 in Unity. **The actual i
 
 **Immediate game test:** In the separate Unity clone on `feature/chapter6-tether-prototype-v01`, stop Play, pull updates, reopen. In Level101 the **bright gold line must visibly run from the blue gold 1 to the red gold 1**. Tap red once: blue should move onto the switch and the gate open, while the line follows the movement. In Level103, one red tap should create a physical blue pull followed by cyan Resonance moving yellow. If the line remains invisible or overlaps controls, inspect the hierarchy for `Tether Bond 1` and its `Bond Bright Center` child and send a fresh Game-view screenshot.
 
+
+
+## Final aesthetic checkpoint — 13 November 2026
+
+The latest user screenshot of Level101 showed that the prior corrective link was now **visible but visually unacceptable**: a thick, high-contrast horizontal bar crossed the arrow stone, switch and exit labels. The linked `1` badges were recognizable but the line felt superimposed on the board instead of part of SHIFT's design language. This is an important UX rejection **even though the solver proof is valid**.
+
+**One deliberately limited final visual candidate has been committed**. `TetherLinkGraphic` now draws a thin, muted brass **quadratic Bézier arc**, connecting the upper rims of the two Normal stones through the **otherwise empty lane above** them in the existing Level101–104 layouts. Near a board's top edge, it routes below instead. The former thick horizontal bar, wide halo and decorative central knot are removed. The stroke has a narrow navy separator and a slightly brighter core when taut, with no particle loop, line-wide flash, extra gestures or new art download. Arc geometry follows both live animated endpoints and disappears if either endpoint is delivered.
+
+The rendering is still standard Unity UI `Image` primitives, nonraycasting, created only on levels that actually contain `tetherId` pairs. `TetherLinkVisualTests` now check: a link is at most ~4.5 Canvas units thick, its midpoint rises into the empty row in the actual Level101 7x3 geometry, movement interpolation follows the stones, a delivered endpoint hides the arc, and top-edge stones route downward. Static source/delimiter review passed; **these tests have been authored but not run in Unity**.
+
+Design decision gate: **Do not expand to Levels105–120 yet**. Review the next Unity Game-view screenshot at 1080x1920 and manually trigger Level101's first pull plus Level103's triple chain. If the arc remains decorative/noisy, masks an exit, or the physical distance rule is still hard to predict, **drop BAĞ from the planned Chapter6 gameplay**. Keep PR #4 as draft and choose a different mechanic that reads without an extra full-width board overlay. The user explicitly prefers removing an unsuitable mechanic rather than shipping a compromised look.
+
+No new economy/progression systems were added, and no old 1–100 asset, Mora, saved-game schema or production scene was changed.
