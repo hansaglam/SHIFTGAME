@@ -79,9 +79,8 @@ namespace Shift.Game
                 link.Bind((RectTransform)pieces[data.Id].transform,
                     (RectTransform)pieces[partner.Id].transform,
                     board.Width, board.Height, rounded);
-                if (!link.BondVisible)
-                    Debug.LogWarning("BAĞ link was not visible at board build: " +
-                        data.TetherId, link);
+                // The Canvas may not have calculated its size during Build;
+                // the link computes its final geometry in LateUpdate.
                 linkRect.SetSiblingIndex(Mathf.Min(insertionIndex,
                     transform.childCount - 1));
                 insertionIndex++;
