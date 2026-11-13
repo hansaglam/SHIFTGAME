@@ -277,10 +277,15 @@ namespace Shift.Game.Editor
         public static void Level103() => Select(103);
 
         [MenuItem("SHIFT/Chapter 6 RÖLE/Create or Repair Preview", true)]
+        public static bool CanRepair() => IsPreviewSafe();
         [MenuItem("SHIFT/Chapter 6 RÖLE/Preview Level 101", true)]
+        public static bool CanSelect101() => IsPreviewSafe();
         [MenuItem("SHIFT/Chapter 6 RÖLE/Preview Level 102", true)]
+        public static bool CanSelect102() => IsPreviewSafe();
         [MenuItem("SHIFT/Chapter 6 RÖLE/Preview Level 103", true)]
-        public static bool IsPreviewSafe() =>
+        public static bool CanSelect103() => IsPreviewSafe();
+
+        private static bool IsPreviewSafe() =>
             !EditorApplication.isPlayingOrWillChangePlaymode;
     }
 }
