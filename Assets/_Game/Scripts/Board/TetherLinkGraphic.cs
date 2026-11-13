@@ -131,7 +131,7 @@ namespace Shift.Game
                 Mathf.Max(aCenter.y, bCenter.y);
             float lowerRoom = Mathf.Min(aCenter.y, bCenter.y) -
                 overlay.rect.yMin;
-            bool above = upperRoom >= cell * .5f ||
+            bool above = upperRoom >= cell * .85f ||
                 upperRoom >= lowerRoom;
             float sign = above ? 1f : -1f;
 
