@@ -25,7 +25,7 @@ namespace Shift.Game
             Color tint=data.Type switch
             {
                 PieceType.Normal => PieceTint(data.Color), PieceType.Direction => new Color32(97,126,158,255),
-                PieceType.Rotator => new Color32(123,100,171,255), PieceType.Resonance => new Color32(28,155,167,255), PieceType.PushBlock => new Color32(191,134,69,255),
+                PieceType.Rotator => new Color32(123,100,171,255), PieceType.Resonance => new Color32(28,155,167,255), PieceType.Relay => new Color32(50,104,134,255), PieceType.PushBlock => new Color32(191,134,69,255),
                 PieceType.Switch => new Color32(97,73,43,255), PieceType.Gate => new Color32(41,57,70,255),
                 PieceType.Exit => data.Color==PieceColor.None?new Color32(51,190,142,255):PieceTint(data.Color),
                 _ => new Color32(46,63,79,255)
@@ -41,6 +41,16 @@ namespace Shift.Game
             {
                 BoardIcon.Create("Rotation Relief",body,BoardIconShape.Clockwise,new Color(0,0,0,.24f),new Vector2(.09f,.07f),new Vector2(.91f,.89f));
                 BoardIcon.Create("Clockwise Icon",body,BoardIconShape.Clockwise,new Color32(248,244,255,255),new Vector2(.09f,.10f),new Vector2(.91f,.92f));
+            }
+            else if(data.Type==PieceType.Relay)
+            {
+                Surface("Relay Tile Recess",body,new Color32(17,54,76,255),
+                    new Vector2(.08f,.08f),new Vector2(.92f,.92f),
+                    BoardSurface.Well);
+                BoardIcon.Create("Relay Hourglass",body,
+                    BoardIconShape.RelayHourglass,
+                    new Color32(198,233,240,255),
+                    new Vector2(.17f,.16f),new Vector2(.83f,.84f));
             }
             else if(data.Type==PieceType.Resonance)
             {
