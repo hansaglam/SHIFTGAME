@@ -64,6 +64,45 @@ namespace Shift.Game.Tests
         }
 
         [Test]
+        public void EditorCanRecoverMissingPilotAssetReferencesWithoutChangingFirstHundred()
+        {
+            var original = Chapter6TetherPrototypes.Load104();
+            var copied = (LevelData[])original.Clone();
+            for (int i = 100; i < 104; i++)
+                copied[i] = null;
+            Assert.That(TetherPreviewAssetRepair.RestoreMissing(copied,
+                TetherPreviewAssetRepair.PreviewSavePrefix),
+                Is.EqualTo(4));
+            for (int i = 0; i < copied.Length; i++)
+                Assert.That(copied[i], Is.SameAs(original[i]),
+                    "Only missing BAĞ pilot reference " + (i + 1) +
+                    " may be restored.");
+            Assert.That(TetherPreviewAssetRepair.RestoreMissing(copied,
+                TetherPreviewAssetRepair.PreviewSavePrefix), Is.Zero,
+                "Repairing an already intact preview must be a no-op.");
+        }
+
+        [Test]
+        public void PreviewRepairCannotAffectPublishedOrOtherDraftCampaigns()
+        {
+            var original = Chapter6TetherPrototypes.Load104();
+            var test = (LevelData[])original.Clone();
+            test[100] = null;
+            Assert.That(TetherPreviewAssetRepair.RestoreMissing(test,
+                "SHIFT.Progress.v1."), Is.Zero);
+            Assert.That(test[100], Is.Null);
+            Assert.That(TetherPreviewAssetRepair.RestoreMissing(test,
+                ChapterJourneyScenePreview.Preview100ProgressPrefix),
+                Is.Zero);
+            Assert.That(test[100], Is.Null);
+            Assert.Throws<System.InvalidOperationException>(() =>
+                TetherPreviewAssetRepair.RestoreMissing(
+                    new LevelData[100],
+                    TetherPreviewAssetRepair.PreviewSavePrefix),
+                "A malformed BAĞ preview must not silently mutate a 100-level scene.");
+        }
+
+        [Test]
         public void Level101To104AreDistinctMechanicProblemsNotClonedBoards()
         {
             var sizes = new System.Collections.Generic.HashSet<string>();
