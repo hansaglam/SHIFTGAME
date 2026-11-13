@@ -113,14 +113,26 @@ namespace Shift.Game
                         font, rounded, content,
                         new Vector2(left, .655f), new Vector2(left + width, .705f),
                         () => ShowPage(chapterIndex), out var tab);
-                    if (tetherPreview && i == 5)
-                        LocalizedLabel.Bind(tab, () =>
-                            GameLanguageService.Shared.CurrentLanguage ==
-                            GameLanguage.Turkish ? "6 · BAĞ" : "6 · TETHER");
+                    if (tetherPreview)
+                    {
+                        // Six full chapter titles do not fit a narrow phone.
+                        // Numeric tabs 1-5 plus an explicit experimental
+                        // sixth keep all touch targets 20-level-screen size.
+                        if (i == 5)
+                            LocalizedLabel.Bind(tab, () =>
+                                GameLanguageService.Shared.CurrentLanguage ==
+                                GameLanguage.Turkish ? "6 · BAĞ" : "6 · BOND");
+                        else
+                            LocalizedLabel.Bind(tab, () =>
+                                (chapterIndex + 1).ToString());
+                        tab.fontSize = i == 5 ? 15 : 23;
+                    }
                     else
+                    {
                         LocalizedLabel.Bind(tab, "chapter.title", i + 1);
-                    tab.fontSize = tabCount == 6 ? 17
-                        : tabCount == 5 ? 18 : tabCount == 4 ? 20 : 25;
+                        tab.fontSize = tabCount == 5 ? 18
+                            : tabCount == 4 ? 20 : 25;
+                    }
                 }
                 secondTab = chapterTabs[1];
                 journey = PlaceholderVisuals.Rect("Chapter Journey", content,
