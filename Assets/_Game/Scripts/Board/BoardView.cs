@@ -42,6 +42,9 @@ namespace Shift.Game
                     var image = cell.gameObject.AddComponent<Image>(); image.sprite = art.Surface(BoardSurface.Cell,new Color32(60,82,106,255)); image.type = Image.Type.Sliced;
                     image.color = Color.white; image.raycastTarget = false;
                 }
+            bool hasRelay = false;
+            foreach (var model in board.Pieces)
+                if (model.Type == PieceType.Relay) { hasRelay = true; break; }
             pieces = new Piece[board.Pieces.Count];
             for (int layer = 0; layer < 2; layer++)
                 foreach (var data in board.Pieces)
@@ -49,7 +52,10 @@ namespace Shift.Game
                     if (data.Movable != (layer == 1)) continue;
                     var pieceRect = PlaceholderVisuals.Rect($"{data.Type} {data.Id}", transform, Vector2.zero, Vector2.one);
                     var piece = pieceRect.gameObject.AddComponent<Piece>();
-                    piece.Initialize(data, board.Width, board.Height, font, circle, rounded, feel, onTap, art); pieces[data.Id] = piece;
+                    piece.Initialize(data, board.Width, board.Height, font, circle, rounded, feel, onTap, art);
+                    pieces[data.Id] = piece;
+                    if (hasRelay && data.Type == PieceType.Normal)
+                        piece.EnableRelayBadge(rounded);
                     if (sculptedTopology && data.Type == PieceType.Wall) pieceRect.gameObject.SetActive(false);
                 }
             // Non-interactive channel badges remain readable above occupied switches AND gates.
@@ -194,6 +200,15 @@ namespace Shift.Game
                     audioManager.Reaction(AudioCue.SwitchActivate, i + 1);
                     haptics.Interaction();
                     yield return PlayResonanceSignal(action, board);
+                }
+                else if (action.Type == BoardActionType.RelayArmed ||
+                         action.Type == BoardActionType.RelayReleased)
+                {
+                    bool ready = action.Type == BoardActionType.RelayArmed;
+                    piece.ShowRelayReady(ready);
+                    piece.Feedback(feel.tapPunch);
+                    audioManager.Reaction(ready ? AudioCue.SwitchActivate
+                        : AudioCue.Move, i + 1);
                 }
                 else if (action.Type == BoardActionType.SwitchActivated)
                 { piece.Feedback(feel.tapPunch); audioManager.Reaction(AudioCue.SwitchActivate, i + 1); haptics.Interaction(); }
