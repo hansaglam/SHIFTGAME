@@ -76,8 +76,12 @@ namespace Shift.Game
                     "Tether Bond " + data.TetherId, transform,
                     Vector2.zero, Vector2.one);
                 var link = linkRect.gameObject.AddComponent<TetherLinkGraphic>();
-                link.Bind(pieces[data.Id], pieces[partner.Id],
-                    rect, board.Width, board.Height);
+                link.Bind((RectTransform)pieces[data.Id].transform,
+                    (RectTransform)pieces[partner.Id].transform,
+                    board.Width, board.Height, rounded);
+                if (!link.BondVisible)
+                    Debug.LogWarning("BAĞ link was not visible at board build: " +
+                        data.TetherId, link);
                 linkRect.SetSiblingIndex(Mathf.Min(insertionIndex,
                     transform.childCount - 1));
                 insertionIndex++;
