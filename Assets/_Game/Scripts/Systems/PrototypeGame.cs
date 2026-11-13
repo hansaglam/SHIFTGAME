@@ -158,6 +158,12 @@ namespace Shift.Game
             if (useLevelSet && levels != null && levels.Length > 0)
             {
 #if UNITY_EDITOR
+                // Never touch the published campaign. An isolated 104-level
+                // BAĞ preview may have four null trailing scene references
+                // even when the authored LevelData assets are valid.
+                // Resolve the specific missing assets before SaveService
+                // selects Level 101, without modifying real progress.
+                TetherPreviewAssetRepair.RestoreMissing(levels, saveKeyPrefix);
                 var saves = new SaveService(saveKeyPrefix);
 #else
                 var saves = new SaveService();
