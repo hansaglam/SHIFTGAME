@@ -82,7 +82,7 @@ MonoBehaviour:
     initialOpen: 0
     tetherId: 0
   displayTitle: 104 - Two Gate Tether
-  hint: "Önce ilk kapıyı aç ki mavi çekilebilsin. Sonra maviyle ikinci kapıyı aç."
+  hint: "İlk kapıyı aç ki mavi çekilsin. Sonra maviyle ikinci kapıyı aç."
   knownSolution:
   - {x: 0, y: 3}
   - {x: 3, y: 1}
