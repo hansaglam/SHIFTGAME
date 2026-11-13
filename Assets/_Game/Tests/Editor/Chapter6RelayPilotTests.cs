@@ -138,6 +138,8 @@ namespace Shift.Game.Tests
                 var level = Chapter6RelayPilot.Get(n);
                 Assert.That(LevelValidation.VerifySolution(level,
                     out string error, out _), Is.True, error);
+                Assert.That(Chapter6RelayPilot.VerifyAlternative(
+                    n, out error), Is.True, error);
                 var proof = CampaignCertification.Prove(level, n);
                 Assert.That(proof.complete, Is.True, proof.error);
                 Assert.That(proof.minimum,
