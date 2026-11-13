@@ -20,6 +20,9 @@ namespace Shift.Game
         private ChapterJourneyPanel journey;
         private ChapterWorldBackdrop worldBackdrop;
         private bool expanded;
+        // A 103-level campaign is an opt-in RÖLE pilot, NOT a sixth
+        // complete 20-level chapter. All 40/80/100 layouts stay unchanged.
+        private bool relayPreview;
         private Text continueLabel;
         private LevelProgression progressState;
         private int page;
@@ -31,6 +34,7 @@ namespace Shift.Game
             // The shipped 40-level UI layout is left exactly as it was.
             // New chapter navigation exists only when full draft chapters are wired.
             expanded = count >= 60;
+            relayPreview = count == 103;
             var shade = gameObject.AddComponent<Image>(); shade.color = new Color(.055f,.13f,.23f,.88f);
             var content = PlaceholderVisuals.Rect("Chapter Content", transform, Vector2.zero, Vector2.one);
             group = content.gameObject.AddComponent<CanvasGroup>();
@@ -94,7 +98,9 @@ namespace Shift.Game
             }
             else
             {
-                int tabCount = Mathf.Min(5, count / CampaignChapters.LevelsPerChapter);
+                int tabCount = relayPreview
+                    ? 6 : Mathf.Min(5,
+                        count / CampaignChapters.LevelsPerChapter);
                 chapterTabs = new Button[tabCount];
                 float gap = .015f, availableWidth = .88f;
                 float width = (availableWidth - gap * (tabCount - 1)) / tabCount;
@@ -106,8 +112,23 @@ namespace Shift.Game
                         font, rounded, content,
                         new Vector2(left, .655f), new Vector2(left + width, .705f),
                         () => ShowPage(chapterIndex), out var tab);
-                    LocalizedLabel.Bind(tab, "chapter.title", i + 1);
-                    tab.fontSize = tabCount == 5 ? 18 : tabCount == 4 ? 20 : 25;
+                    if (relayPreview)
+                    {
+                        if (i == 5)
+                            LocalizedLabel.Bind(tab, () =>
+                                GameLanguageService.Shared.CurrentLanguage ==
+                                GameLanguage.Turkish ? "6 · RÖLE" : "6 · RELAY");
+                        else
+                            LocalizedLabel.Bind(tab, () =>
+                                (chapterIndex + 1).ToString());
+                        tab.fontSize = i == 5 ? 16 : 23;
+                    }
+                    else
+                    {
+                        LocalizedLabel.Bind(tab, "chapter.title", i + 1);
+                        tab.fontSize = tabCount == 5 ? 18
+                            : tabCount == 4 ? 20 : 25;
+                    }
                 }
                 secondTab = chapterTabs[1];
                 journey = PlaceholderVisuals.Rect("Chapter Journey", content,
@@ -192,16 +213,42 @@ namespace Shift.Game
             {
                 if (journey != null) journey.Hide();
                 if (worldBackdrop != null) worldBackdrop.Hide();
-                LocalizedLabel.Bind(chapterTitle, () =>
-                    summary.Mastered ? MasteryText.Mastered(Language)
-                        : GameLanguageService.Shared.Text("chapter.title", page + 1));
-                chapterTitle.fontSize = expanded ? 38
-                    : summary.Mastered ? 46 : 64;
-                masterySummary.fontSize = expanded ? 23 : 30;
-                LocalizedLabel.Bind(masterySummary, () => MasteryText.Summary(summary, Language));
-                LocalizedLabel.Bind(masteryLegend, () => MasteryText.Legend(Language));
-                LocalizedLabel.Bind(masteryReplay, () =>
-                    summary.Completed == summary.Total ? MasteryText.Remaining(summary, Language) : "");
+                if (relayPreview && page == 5)
+                {
+                    LocalizedLabel.Bind(chapterTitle, () =>
+                        GameLanguageService.Shared.CurrentLanguage ==
+                        GameLanguage.Turkish
+                            ? "BÖLÜM 6 · RÖLE TESTİ"
+                            : "CHAPTER 6 · RELAY PILOT");
+                    LocalizedLabel.Bind(masterySummary, () =>
+                        GameLanguageService.Shared.CurrentLanguage ==
+                        GameLanguage.Turkish
+                            ? "101–103 · Bekleyen hareket ve hamle sırası"
+                            : "101–103 · Waiting moves and timing");
+                    chapterTitle.fontSize = 34;
+                    masterySummary.fontSize = 22;
+                    LocalizedLabel.Bind(masteryLegend, () =>
+                        MasteryText.Legend(Language));
+                    LocalizedLabel.Bind(masteryReplay, () =>
+                        MasteryText.Summary(summary, Language));
+                }
+                else
+                {
+                    LocalizedLabel.Bind(chapterTitle, () =>
+                        summary.Mastered ? MasteryText.Mastered(Language)
+                            : GameLanguageService.Shared.Text(
+                                "chapter.title", page + 1));
+                    chapterTitle.fontSize = expanded ? 38
+                        : summary.Mastered ? 46 : 64;
+                    masterySummary.fontSize = expanded ? 23 : 30;
+                    LocalizedLabel.Bind(masterySummary, () =>
+                        MasteryText.Summary(summary, Language));
+                    LocalizedLabel.Bind(masteryLegend, () =>
+                        MasteryText.Legend(Language));
+                    LocalizedLabel.Bind(masteryReplay, () =>
+                        summary.Completed == summary.Total
+                            ? MasteryText.Remaining(summary, Language) : "");
+                }
             }
             MasteryViewed?.Invoke(summary);
             if (chapterTabs != null)
