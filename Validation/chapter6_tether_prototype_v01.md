@@ -135,3 +135,22 @@ For any *remaining* startup failure, `PrototypeGame` now writes one explicit Con
 **How to retest:** Stop Unity Play Mode, close Unity, pull the latest `feature/chapter6-tether-prototype-v01` into the isolated clone, reopen Unity, choose `SHIFT → Chapter 6 → Create or Open Isolated BAĞ Preview` and then `SHIFT → Chapter 6 → Preview Level 101` **while not playing**. Press Play only after the level is selected. If "Campaign unavailable" persists, report the new precise Console error; do not assume the repair worked or edit production/PlayerPrefs keys.
 
 The Play-mode fix and scene rewiring have been source-reviewed but **have not been rerun in Unity after the update**. The main scene, 1–100 asset data, Mora and live player records remain unchanged.
+
+
+## Scene persistence bug — Unity diagnostic at Level 101 (13 November 2026)
+
+A follow-up play-mode screenshot provided a decisive runtime error from the newly added explicit diagnostic:
+
+`SHIFT campaign could not resume. Level index=101, assigned levels=104, asset=<null>, validation=missing reference.`
+
+This proves the **first experimental LevelData reference was null at runtime**. It does **not** imply the Level101 asset is invalid: Unity's own `SHIFT → Chapter 6 → Validate BAĞ Prototype Levels 101-104` previously returned **4/4 valid mechanical/solver checks** from `AssetDatabase`.
+
+The previous Scene rebinding command verified a `SerializedObject` in the Editor without proving that Unity carried its final four scriptable-object references intact into Play Mode. The exact underlying Unity scene serialization/import cause is **not yet independently verified**. Do not claim that Editor save/reopen alone fixed it.
+
+**Scoped fix on this draft branch:** `TetherPreviewAssetRepair.cs` is compiled only for `UNITY_EDITOR`. In `PrototypeGame.Start`, before `LevelProgression` reads the debug save, it runs **only** when `saveKeyPrefix == "SHIFT.Preview.Chapter6Tether.v1."` and the scene has exactly 104 slots. For slots 101–104, it loads the exact four known `LevelData` assets using Unity's `AssetDatabase`, confirms they are playable, and fills **only null references**. It refuses unexpected non-null mismatches and never modifies slots 1–100. It logs a warning identifying how many references it restored. The runtime player build does not contain this code, and no production save or scene is changed.
+
+`Chapter6PreviewTests` now exercises recovery of all four missing references, idempotence, unchanged original first 100 references, a no-op for real `SHIFT.Progress.v1.` saves or Chapter5 previews, and rejection of a malformed 100-slot BAĞ preview.
+
+**Retest:** Exit Play, close Unity, pull `feature/chapter6-tether-prototype-v01`, reopen the existing isolated `SHIFT_Tether_101_104_Preview`, choose `SHIFT → Chapter 6 → Preview Level 101` while not playing, then press Play. Expected: no `resume.no_levels`; Level101 gameplay board and possibly a *yellow warning* that a missing BAĞ reference was restored from AssetDatabase. If it still fails, copy the exact new red Console error. **No post-fix Unity run has occurred in this assistant environment.**
+
+This is an **Editor-only prototype mitigation**, not a completed diagnosis of the scene serialization problem; persistent scene-reference fidelity must still be understood and tested before 101–120 becomes a production campaign.
