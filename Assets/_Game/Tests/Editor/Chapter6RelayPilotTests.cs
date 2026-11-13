@@ -82,6 +82,65 @@ namespace Shift.Game.Tests
         }
 
         [Test]
+        public void BlockedOtherTapDoesNotReleaseWaitingStoneOrSpendMove()
+        {
+            var level = ScriptableObject.CreateInstance<LevelData>();
+            try
+            {
+                level.Configure(4, 3, 4, PieceColor.Red,
+                    new[] {
+                        new PiecePlacement(PieceType.Normal,
+                            PieceColor.Red, Direction.Right,
+                            new GridPosition(0,1)),
+                        new PiecePlacement(PieceType.Normal,
+                            PieceColor.Blue, Direction.Left,
+                            new GridPosition(0,2)),
+                        new PiecePlacement(PieceType.Relay,
+                            PieceColor.None, Direction.None,
+                            new GridPosition(1,1)),
+                        new PiecePlacement(PieceType.Exit,
+                            PieceColor.Red, Direction.None,
+                            new GridPosition(3,1))
+                    });
+                Assert.That(level.ValidatePlayable(out string error),
+                    Is.True, error);
+                var board = new BoardManager();
+                board.Load(level);
+                Assert.That(board.RequestMove(new GridPosition(0,1)),
+                    Is.True);
+                board.CompleteResolution();
+                int before = board.MovesRemaining;
+                Assert.That(board.RequestMove(new GridPosition(0,2)),
+                    Is.True);
+                Assert.That(board.Actions.Count, Is.Zero);
+                Assert.That(board.MovesRemaining, Is.EqualTo(before));
+                Assert.That(board.Pieces[0].RelayReady, Is.True);
+                Assert.That(board.Pieces[0].Position,
+                    Is.EqualTo(new GridPosition(1,1)));
+            }
+            finally { Object.DestroyImmediate(level); }
+        }
+
+        [Test]
+        public void MissingPilotReferencesRecoverOnlyInIsolatedEditorPreview()
+        {
+            var list = Chapter6RelayPilot.Load103();
+            var copy = (LevelData[])list.Clone();
+            copy[100] = null;
+            copy[101] = null;
+            copy[102] = null;
+            Assert.That(RelayPreviewAssetRepair.Restore(copy,
+                "SHIFT.Progress.v1."), Is.Zero);
+            Assert.That(copy[100], Is.Null);
+            Assert.That(RelayPreviewAssetRepair.Restore(copy,
+                Chapter6RelayPilot.SavePrefix), Is.EqualTo(3));
+            for (int i = 0; i < 103; i++)
+                Assert.That(copy[i], Is.SameAs(list[i]));
+            Assert.That(RelayPreviewAssetRepair.Restore(copy,
+                Chapter6RelayPilot.SavePrefix), Is.Zero);
+        }
+
+        [Test]
         public void ADeferredMoveCanPushAnotherNormalToItsExit()
         {
             var level = Chapter6RelayPilot.Get(102);
