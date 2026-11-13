@@ -98,6 +98,22 @@ namespace Shift.Game
                 var aspect=square.gameObject.AddComponent<AspectRatioFitter>();aspect.aspectMode=AspectRatioFitter.AspectMode.FitInParent;aspect.aspectRatio=1;
                 var body=square.gameObject.AddComponent<Image>();
                 _=new PieceAppearance(new BoardPiece(i,pieces[i]),body,font,circle,rounded,art);
+                if (topic == MechanicTopic.Tether && pieces[i].tetherId > 0)
+                {
+                    var badge = PlaceholderVisuals.Rect("Linked Example Badge",
+                        square, new Vector2(.63f, .67f), new Vector2(.97f, .99f));
+                    var mark = badge.gameObject.AddComponent<Image>();
+                    mark.sprite = circle;
+                    mark.color = new Color32(254, 201, 99, 255);
+                    mark.raycastTarget = false;
+                    var digit = PlaceholderVisuals.Label("Bond 1", badge,
+                        font, pieces[i].tetherId.ToString(), 19,
+                        new Color32(23, 44, 61, 255),
+                        Vector2.zero, Vector2.one);
+                    digit.alignment = TextAnchor.MiddleCenter;
+                    digit.fontStyle = FontStyle.Bold;
+                    digit.raycastTarget = false;
+                }
             }
             foreach(var graphic in sample.GetComponentsInChildren<Graphic>())graphic.raycastTarget=false;
             Label("Example Caption",key+".example",.53f,.60f,28);
