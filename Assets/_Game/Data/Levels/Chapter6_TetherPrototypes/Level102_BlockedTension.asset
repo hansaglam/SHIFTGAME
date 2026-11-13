@@ -61,7 +61,7 @@ MonoBehaviour:
     initialOpen: 0
     tetherId: 0
   displayTitle: 102 - Blocked Tension
-  hint: "BAĞ duvardan çekemez. Önce maviye dokun; kırmızı yukarı okuna çekilsin."
+  hint: "BAĞ duvardan çekemez. Önce maviye dokun; kırmızıyı yukarı çek."
   knownSolution:
   - {x: 0, y: 1}
   - {x: 0, y: 2}
