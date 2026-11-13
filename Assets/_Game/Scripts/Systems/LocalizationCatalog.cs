@@ -264,6 +264,9 @@ namespace Shift.Game
             if (ChapterDraftLocalization.TryTitle(level,
                 GameLanguageService.Shared.CurrentLanguage, out string title))
                 return title;
+            if (RelayPilotLocalization.TryTitle(level,
+                GameLanguageService.Shared.CurrentLanguage, out string pilotTitle))
+                return pilotTitle;
             return "SHIFT";
         }
 
@@ -275,6 +278,9 @@ namespace Shift.Game
             if (ChapterDraftLocalization.TryInstruction(level,
                 GameLanguageService.Shared.CurrentLanguage, out string draftHint))
                 return draftHint;
+            if (RelayPilotLocalization.TryHint(level,
+                GameLanguageService.Shared.CurrentLanguage, out string pilotHint))
+                return pilotHint;
             return GameLanguageService.Shared.CurrentLanguage == GameLanguage.English &&
                 !string.IsNullOrEmpty(level.Hint) ? level.Hint
                 : GameLanguageService.Shared.Text("hint.fallback");
