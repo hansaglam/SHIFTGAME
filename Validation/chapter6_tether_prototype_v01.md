@@ -101,3 +101,19 @@ The internal candidate export now records **multi-piece taps, Rezonans pulse eve
 
 Note that the **preview's optional direct-level jumps** can mark earlier pilot levels completed *in the isolated development save only*, to preserve the ordered completion frontier. Real player progress and shipped Level1–100 saves are never touched.
 
+
+
+## Visibility fix — 13 November 2026
+
+**User observation:** “Chapter 6 isn't visible.” Source audit identified two separate UI locations:
+
+- **In the Unity Editor top menu:** The command `SHIFT → Chapter 6 → Create or Open Isolated BAĞ Preview` is declared in `Assets/_Game/Editor/Chapter6TetherPrototypes.cs` **on this feature branch only**. If the entire Editor menu is missing, confirm the currently checked-out branch and inspect Console for red script compilation errors. A normal 40-level main checkout cannot show this editor extension.
+- **Inside the game:** The previous `ChapterSelect` loop used `Mathf.Min(5, count / 20)`, intentionally showing only five **complete 20-level chapters**. A 104-level pilot therefore had no sixth chapter tab even after a successful preview scene creation. The prototype wasn't accessible from the chapter selector.
+
+**Implemented corrective change (prototype-only):**
+`ChapterSelect` uses `tetherPreview = count == 104` and creates **six tabs only in that isolated 104-level scene**. In narrow portrait layouts the first five tabs become numeric and the sixth shows `6 · BAĞ` (TR) or `6 · BOND` (EN). The page title is `BÖLÜM 6 · BAĞ PROTOTİPİ` / `CHAPTER 6 · TETHER PILOT`, clearly explaining that only four 101–104 puzzles exist. No fake five-beat restored Chapter 6 world is displayed. The existing LevelProgression unlock/save logic remains unchanged.
+
+The normal 40-, 80- and 100-level selectors remain unchanged; main and the shipped Prototype scene remain untouched. Updated `ChapterJourneyScenePreviewTests` checks that 104 adds the sixth tab and `Level 104` but not `Level 105`, and that the tab is absent in the 40/80/100 screens.
+
+**IMPORTANT:** The GitHub source fix is committed. It does **not** automatically update a local Unity checkout. In GitHub Desktop select `feature/chapter6-tether-prototype-v01` and **Fetch/Pull**; then wait for Unity to finish compiling. Use the top menu to create or open the isolated preview scene. If Unity's top menu itself is missing, local Console errors/branch state still require inspection; this workspace has not executed Unity compilation.
+
