@@ -158,6 +158,9 @@ namespace Shift.Game
             if (useLevelSet && levels != null && levels.Length > 0)
             {
 #if UNITY_EDITOR
+                // Repair only the isolated 103-level experiment, never any
+                // production scene, account, game save or other preview.
+                RelayPreviewAssetRepair.Restore(levels, saveKeyPrefix);
                 var saves = new SaveService(saveKeyPrefix);
 #else
                 var saves = new SaveService();
