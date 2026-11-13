@@ -154,3 +154,20 @@ The previous Scene rebinding command verified a `SerializedObject` in the Editor
 **Retest:** Exit Play, close Unity, pull `feature/chapter6-tether-prototype-v01`, reopen the existing isolated `SHIFT_Tether_101_104_Preview`, choose `SHIFT → Chapter 6 → Preview Level 101` while not playing, then press Play. Expected: no `resume.no_levels`; Level101 gameplay board and possibly a *yellow warning* that a missing BAĞ reference was restored from AssetDatabase. If it still fails, copy the exact new red Console error. **No post-fix Unity run has occurred in this assistant environment.**
 
 This is an **Editor-only prototype mitigation**, not a completed diagnosis of the scene serialization problem; persistent scene-reference fidelity must still be understood and tested before 101–120 becomes a production campaign.
+
+
+## BAĞ readability correction after first in-game screenshots (13 November 2026)
+
+The developer successfully opened Level101 and Level103 in Unity. **The actual in-game screenshots prove the original bond visualization was not visible:** both linked Normals have small gold `1` badges, but **no obvious line connects their centers**, making the defining new rule nearly impossible to discover visually. Four passing Unity solver proofs validate the mechanics, **not** this player-facing explanation.
+
+**Implementation changes:**
+- Replaced custom `MaskableGraphic.OnPopulateMesh` line rendering in `TetherLinkGraphic.cs` with **four ordinary Unity UI Images** (dark readable outline, gold halo, bright center, central diamond knot) on a passive overlay **under the normal pieces** and above the terrain. This uses the same reliable Image-based UI family as existing Resonance feedback, rather than depending on a manually generated mesh.
+- The link positions are recalculated from each live `RectTransform.TransformPoint(rect.center)` to the overlay's coordinate frame, following the pieces' interpolated motion. **Exactly one line connects the two gold-1 endpoints**. It brightens when the Manhattan distance reaches the three-cell limit, hides when either visual endpoint is delivered, and never intercepts taps (`CanvasGroup.blocksRaycasts=false`, all Image `raycastTarget=false`).
+- Replaced ambiguous “a red move can pull blue” hints with explicit EN/TR first-action cues; example for Level101: `Altın 1'ler BAĞ'lı. Kırmızıya dokun: mavi düğmeye çekilir.`. Level103 now states the BAĞ → blue → Resonance → yellow chain in clear order. All four level hints shortened to roughly 58–65 Turkish characters so the existing portrait help card can remain legible.
+- Shortened the mechanic guide's rule paragraph: the two gold 1 badges, maximum three-cell distance, automatic pull, blocked pull and Undo are explained first; the guide example now visibly draws the connecting line and both gold endpoint badges.
+- Added `TetherLinkVisualTests.cs` (EditMode) checking actual **visible Image strips**, sufficient link geometry, live endpoint tracking, disappearance on delivery and non-raycasting interaction.
+
+**Verification limitation:** These changes are committed on the isolated BAĞ branch, but the new link drawing **has not yet been seen in a post-fix Unity screenshot**. In-editor render/compile and screenshot confirmation remain acceptance gates before authoring Levels 105–120. No old 1–100 level asset, Perfect registration, Mora or published scene is edited.
+
+**Immediate game test:** In the separate Unity clone on `feature/chapter6-tether-prototype-v01`, stop Play, pull updates, reopen. In Level101 the **bright gold line must visibly run from the blue gold 1 to the red gold 1**. Tap red once: blue should move onto the switch and the gate open, while the line follows the movement. In Level103, one red tap should create a physical blue pull followed by cyan Resonance moving yellow. If the line remains invisible or overlaps controls, inspect the hierarchy for `Tether Bond 1` and its `Bond Bright Center` child and send a fresh Game-view screenshot.
+
