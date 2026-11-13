@@ -401,12 +401,25 @@ namespace Shift.Game
             }
             if (chapter != null && chapter.IsOpen) chapter.Open(progress);
             hud.Refresh(board); RefreshControls();
-            hud.SetCompletion(board.State == GameState.Won, !IsDaily && progress != null && CampaignChapters.IsLast(activeLevelIndex, levels.Length),
-                !IsDaily && progress != null && !debugLevel && activeLevelIndex < levels.Length - 1, chapterIndex + 1);
+            // The final experimental Level103 is NOT a completed twenty-level
+            // Chapter6. Never claim a chapter finale from this debug preview.
+            bool pilotPartial = false;
+#if UNITY_EDITOR
+            pilotPartial = saveKeyPrefix == "SHIFT.Preview.Chapter6Relay.v1." &&
+                levels != null && levels.Length == 103 &&
+                activeLevelIndex >= 100;
+#endif
+            hud.SetCompletion(board.State == GameState.Won,
+                !pilotPartial && !IsDaily && progress != null &&
+                CampaignChapters.IsLast(activeLevelIndex, levels.Length),
+                !IsDaily && progress != null && !debugLevel &&
+                activeLevelIndex < levels.Length - 1, chapterIndex + 1);
             if (board.State == GameState.Won && !IsDaily && !debugLevel && progress != null)
                 journeyNotice?.ShowNew(progress, activeLevelIndex, previousHighestCompleted);
             hud.FinishChain(); audioManager.ChainPayoff(board.Actions.Count); view.SetInput(board.State == GameState.Playing && !InputModalOpen);
-            if (board.State == GameState.Won && progress != null && !debugLevel && !IsDaily && CampaignChapters.IsLast(activeLevelIndex, levels.Length))
+            if (!pilotPartial && board.State == GameState.Won &&
+                progress != null && !debugLevel && !IsDaily &&
+                CampaignChapters.IsLast(activeLevelIndex, levels.Length))
                 hud.ShowChapterMastery(progress.ChapterSummary(chapterIndex));
             if(IsDaily)hud.ShowDailyCompletion(board.State==GameState.Won,Telemetry.Result?.perfectShift ?? false,DailyLanguage,Telemetry.Result);
             else hud.ShowMastery(Telemetry.Result, firstPerfect);
