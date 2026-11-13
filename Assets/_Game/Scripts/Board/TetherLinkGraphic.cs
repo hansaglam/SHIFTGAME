@@ -3,87 +3,144 @@ using UnityEngine.UI;
 
 namespace Shift.Game
 {
-    // One passive, dynamic rope per authored pair. Lives below pieces, draws
-    // directly from their animated RectTransform anchors and never captures input.
+    // A clear, persistent bond between the two linked stones.
+    //
+    // The original custom Mesh graphic did not appear in the Game view on
+    // the Chapter 6 pilot. Use ordinary Unity UI Images instead (the same
+    // rendering path as the already visible Resonance signal). Three passive
+    // overlapping strips provide a dark outline, a warm glow and a bright
+    // center, all safely behind the actual piece graphics.
     [RequireComponent(typeof(RectTransform))]
-    public sealed class TetherLinkGraphic : MaskableGraphic
+    public sealed class TetherLinkGraphic : MonoBehaviour
     {
-        private RectTransform first, second, board;
-        private Piece firstPiece, secondPiece;
-        private float cellSize;
+        private RectTransform endpointA, endpointB;
+        private RectTransform overlay;
+        private Image outline, halo, core, knot;
+        private int boardWidth, boardHeight;
+        private bool ready;
 
-        public void Bind(Piece a, Piece b, RectTransform boardRect,
-            int width, int height)
-        {
-            firstPiece = a;
-            secondPiece = b;
-            first = (RectTransform)a.transform;
-            second = (RectTransform)b.transform;
-            board = boardRect;
-            cellSize = Mathf.Max(.008f, 1f / Mathf.Max(width, height));
-            color = new Color32(250, 200, 109, 255);
-            raycastTarget = false;
-            SetVerticesDirty();
-        }
+        public bool BondVisible => core != null && core.enabled;
+        public bool IsNonInteractive =>
+            outline != null && !outline.raycastTarget &&
+            halo != null && !halo.raycastTarget &&
+            core != null && !core.raycastTarget &&
+            knot != null && !knot.raycastTarget;
 
-        private Vector2 Center(RectTransform piece)
+        public void Bind(RectTransform a, RectTransform b,
+            int width, int height, Sprite rounded)
         {
-            Rect bounds = board.rect;
-            Vector2 anchor = (piece.anchorMin + piece.anchorMax) * .5f;
-            return bounds.min + Vector2.Scale(anchor, bounds.size);
-        }
-
-        private static void Quad(VertexHelper helper, Vector2 a,
-            Vector2 b, Vector2 c, Vector2 d, Color color)
-        {
-            int start = helper.currentVertCount;
-            var vertex = UIVertex.simpleVert;
-            vertex.color = color;
-            vertex.position = a;
-            helper.AddVert(vertex);
-            vertex.position = b;
-            helper.AddVert(vertex);
-            vertex.position = c;
-            helper.AddVert(vertex);
-            vertex.position = d;
-            helper.AddVert(vertex);
-            helper.AddTriangle(start, start + 1, start + 2);
-            helper.AddTriangle(start, start + 2, start + 3);
-        }
-
-        protected override void OnPopulateMesh(VertexHelper helper)
-        {
-            helper.Clear();
-            if (first == null || second == null || board == null ||
-                firstPiece == null || secondPiece == null ||
-                !firstPiece.gameObject.activeInHierarchy ||
-                !secondPiece.gameObject.activeInHierarchy)
+            if (a == null || b == null || width <= 0 || height <= 0)
+            {
+                Debug.LogError("Cannot draw BAĞ: invalid endpoint or board.", this);
+                enabled = false;
                 return;
+            }
 
-            Vector2 a = Center(first), b = Center(second);
-            Vector2 diff = b - a;
-            if (diff.sqrMagnitude < 1f) return;
-            Vector2 perpendicular = new Vector2(-diff.y, diff.x).normalized;
-            float thickness = Mathf.Clamp(board.rect.height * cellSize * .038f,
-                2.5f, 5.5f);
-            var tint = color;
-            tint.a = .20f;
-            Quad(helper, a - perpendicular * thickness * 2f,
-                a + perpendicular * thickness * 2f,
-                b + perpendicular * thickness * 2f,
-                b - perpendicular * thickness * 2f, tint);
-            tint.a = .95f;
-            Quad(helper, a - perpendicular * thickness * .5f,
-                a + perpendicular * thickness * .5f,
-                b + perpendicular * thickness * .5f,
-                b - perpendicular * thickness * .5f, tint);
+            endpointA = a;
+            endpointB = b;
+            boardWidth = width;
+            boardHeight = height;
+            overlay = (RectTransform)transform;
+
+            // UI components, rather than a hand-authored mesh, also obey
+            // CanvasScaler, Canvas clipping and ordinary sibling ordering.
+            outline = MakeStrip("Bond Dark Outline", rounded);
+            halo = MakeStrip("Bond Gold Halo", rounded);
+            core = MakeStrip("Bond Bright Center", rounded);
+            knot = MakeStrip("Bond Center Knot", rounded);
+
+            var group = GetComponent<CanvasGroup>();
+            if (group == null) group = gameObject.AddComponent<CanvasGroup>();
+            group.interactable = false;
+            group.blocksRaycasts = false;
+
+            ready = true;
+            Refresh();
         }
 
-        private void LateUpdate()
+        private Image MakeStrip(string name, Sprite rounded)
         {
-            if (first != null && second != null &&
-                firstPiece != null && secondPiece != null)
-                SetVerticesDirty();
+            var rect = PlaceholderVisuals.Rect(name, transform,
+                new Vector2(.5f, .5f), new Vector2(.5f, .5f));
+            rect.pivot = new Vector2(.5f, .5f);
+            var graphic = rect.gameObject.AddComponent<Image>();
+            graphic.sprite = rounded;
+            graphic.type = Image.Type.Simple;
+            graphic.raycastTarget = false;
+            return graphic;
         }
+
+        private static void PlaceStrip(Image image, Vector2 middle,
+            float length, float thickness, float angle)
+        {
+            RectTransform rect = image.rectTransform;
+            rect.localRotation = Quaternion.Euler(0f, 0f, angle);
+            rect.anchoredPosition = middle;
+            rect.sizeDelta = new Vector2(length, thickness);
+        }
+
+        // A public refresh makes the actual UI geometry testable in EditMode.
+        // It is also used during the frame when the board is initially built.
+        public void Refresh()
+        {
+            if (!ready || overlay == null) return;
+            bool show = endpointA != null && endpointB != null &&
+                endpointA.gameObject.activeInHierarchy &&
+                endpointB.gameObject.activeInHierarchy;
+
+            outline.enabled = halo.enabled = core.enabled = knot.enabled = show;
+            if (!show) return;
+
+            // TransformPoint / InverseTransformPoint includes actual layout,
+            // board pivot and in-flight Piece.Place animations. Computing only
+            // from the anchors can put lines in the wrong local space.
+            Vector2 a = overlay.InverseTransformPoint(
+                endpointA.TransformPoint(endpointA.rect.center));
+            Vector2 b = overlay.InverseTransformPoint(
+                endpointB.TransformPoint(endpointB.rect.center));
+            Vector2 delta = b - a;
+            float distance = delta.magnitude;
+            if (distance < 1f)
+            {
+                outline.enabled = halo.enabled = core.enabled =
+                    knot.enabled = false;
+                return;
+            }
+
+            Vector2 center = (a + b) * .5f;
+            float angle = Mathf.Atan2(delta.y, delta.x) * Mathf.Rad2Deg;
+            float cell = Mathf.Min(overlay.rect.width / boardWidth,
+                overlay.rect.height / boardHeight);
+            float stroke = Mathf.Clamp(cell * .105f, 3.5f, 7f);
+
+            // Manhattan distance is deliberately consistent with the
+            // actual BoardManager TetherMaxDistance rule.
+            Vector2 aCell = (endpointA.anchorMin + endpointA.anchorMax) * .5f;
+            Vector2 bCell = (endpointB.anchorMin + endpointB.anchorMax) * .5f;
+            float manhattan = Mathf.Abs(aCell.x - bCell.x) * boardWidth +
+                Mathf.Abs(aCell.y - bCell.y) * boardHeight;
+            bool taut = manhattan >= BoardManager.TetherMaxDistance - .15f;
+
+            PlaceStrip(outline, center, distance + stroke * .5f,
+                stroke * 3.15f, angle);
+            PlaceStrip(halo, center, distance + stroke * .25f,
+                stroke * 2.1f, angle);
+            PlaceStrip(core, center, distance, stroke, angle);
+
+            var knotRect = knot.rectTransform;
+            knotRect.anchoredPosition = center;
+            knotRect.localRotation = Quaternion.Euler(0f, 0f, 45f);
+            knotRect.sizeDelta = Vector2.one * (stroke * 1.65f);
+
+            outline.color = new Color32(15, 31, 43, 235);
+            halo.color = taut ? new Color32(249, 177, 65, 180) :
+                new Color32(244, 190, 87, 137);
+            core.color = taut ? new Color32(255, 231, 145, 255) :
+                new Color32(250, 207, 109, 244);
+            knot.color = taut ? new Color32(255, 224, 124, 255) :
+                new Color32(251, 198, 93, 229);
+        }
+
+        private void LateUpdate() => Refresh();
     }
 }
